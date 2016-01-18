@@ -1,19 +1,21 @@
 #{$all-button-inputs},
 button,
 .btn {
+  @include transition(all 0.25s ease-in-out);
   appearance: none;
   -webkit-font-smoothing: antialiased;
-  background-color: lighten($lavender, 20%);
-  border-radius: 1.5em;
+  background-color: lighten($lavender, 23%);
+  border-radius: $button-border-radius;
   border: none;
-  color: #fff;
+  box-shadow: 0px 10px 20px 0px rgba(0,0,0,0.05);
+  color: $white;
   cursor: pointer;
   display: inline-block;
   font-family: $base-font-family;
-  font-size: $base-font-size;
+  font-size: 1.125rem;
   font-weight: 300;
   line-height: 1;
-  padding: 1em 1.5em;
+  padding: 0.75em 1.25em;
   text-decoration: none;
   user-select: none;
   vertical-align: middle;
@@ -23,8 +25,19 @@ button,
     cursor: not-allowed;
     opacity: 0.5;
   }
+
+  &:hover {
+    background-color: lighten($lavender, 21%);
+    color: $white;
+  }
 }
 
-.btn-download {
+.btn-primary {
   background-color: $yellow;
+  color: darken($yellow, 40%);
+
+  &:hover {
+    background-color: darken($yellow, 10%);
+    color: darken($yellow, 40%);
+  }
 }

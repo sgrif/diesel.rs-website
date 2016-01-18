@@ -5,10 +5,10 @@ $base-font-weight: 300;
 $heading-font-weight: 100;
 
 // Font Sizes
-$base-font-size: 1em;
-$h2-font-size: $base-font-size * 2.75;
-$h3-font-size: $base-font-size * 2;
-$h4-font-size: $base-font-size * 1.375;
+$base-font-size: 1.125em;
+$h2-font-size: $base-font-size * 2;
+$h3-font-size: $base-font-size * 1.6111;
+$h4-font-size: $base-font-size * 1.2777;
 
 // Line height
 $base-line-height: 1.5;
@@ -16,12 +16,15 @@ $heading-line-height: 1.2;
 
 // Other Sizes
 $base-border-radius: 3px;
+$button-border-radius: 1.5em;
 $base-spacing: $base-line-height * 1em;
 $small-spacing: $base-spacing / 2;
+$large-spacing: $base-spacing * 2;
 $base-z-index: 0;
 
 // Colors
 $blue: #477dca;
+$dark-purple: #553F5D;
 $dark-gray: #2B303B;
 $medium-gray: #999;
 $light-gray: #ddd;

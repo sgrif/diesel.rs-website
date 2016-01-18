@@ -1,6 +1,16 @@
 header {
+  padding: $base-spacing 0 0;
+
   .logo {
-    text-indent: -9999px;
+    @include size(195px 80px);
+    background: image_url("logo.svg") center no-repeat;
+    background-size: 100%;
+
+    a {
+      @include size(100%);
+      display: block;
+      text-indent: -9999px;
+    }
   }
 }
 
@@ -8,9 +18,17 @@ header {
   @extend %section;
   text-align: center;
 
-  &__heading,
-  &__sub-heading {
+  &-wrapper {
+    width: 580px;
+    margin: 0 auto;
+  }
 
+  .btn-container {
+    margin-top: $large-spacing;
+  }
+
+  .btn {
+    margin: 0 ($small-spacing / 2);
   }
 }
 
@@ -20,20 +38,45 @@ header {
 
 .demo {
   @extend %section;
-}
 
-.demo__example {
-  @include span-columns(6);
+  &__example-container {
+    @include clearfix;
+    background: transparentize($white, 0.95);
+    border-radius: $base-border-radius;
+    box-shadow: 0px 10px 50px 0px rgba(0,0,0,0.05), inset 0px 1px 0px 0px rgba(255,255,255,0.18);
+    padding: $base-spacing * 1.5;
+  }
+
+  &__example {
+    @include span-columns(6);
+  }
 }
 
 .feature-list {
   @extend %section;
+  color: $dark-purple;
 
   &__feature {
     @include span-columns(4);
+    padding-left: 105px;
+    position: relative;
+
+    &:before {
+      @include position(absolute, 0 null null 0);
+      @include size(75px);
+      background: transparentize($white, 0.9);
+      border-radius: $base-border-radius;
+      box-shadow: 0px 10px 50px 0px rgba(0,0,0,0.05), inset 0px 1px 0px 0px rgba(255,255,255,0.18);
+      content: "";
+      display: inline-block;
+    }
   }
 }
 
 footer {
   text-align: center;
+
+  p {
+    margin: 0;
+  }
 }

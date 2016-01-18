@@ -27,10 +27,12 @@ h2 {
 
 h3 {
   font-size: $h3-font-size;
+  margin-bottom: $base-spacing;
 }
 
 h4 {
-  font-size: $h4-font-size;
+  font-size: $base-font-size;
+  font-weight: 400;
 }
 
 p {
