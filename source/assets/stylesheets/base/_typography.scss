@@ -37,17 +37,21 @@ h4 {
 
 p {
   margin: 0 0 $small-spacing;
+
+  a {
+    font-weight: 400;
+  }
 }
 
 a {
-  color: $action-color;
+  color: $link-color;
   text-decoration: none;
   transition: color 0.1s linear;
 
   &:active,
   &:focus,
   &:hover {
-    color: darken($action-color, 15%);
+    color: darken($link-color, 15%);
   }
 
   &:active,
