@@ -13,7 +13,7 @@ button,
   display: inline-block;
   font-family: $base-font-family;
   font-size: 1.125rem;
-  font-weight: 300;
+  font-weight: 400;
   line-height: 1;
   padding: 0.75em 1.25em;
   text-decoration: none;
@@ -25,11 +25,6 @@ button,
     cursor: not-allowed;
     opacity: 0.5;
   }
-
-  &:hover {
-    background-color: lighten($lavender, 21%);
-    color: $white;
-  }
 }
 
 .btn-primary {
@@ -37,7 +32,25 @@ button,
   color: darken($yellow, 40%);
 
   &:hover {
-    background-color: darken($yellow, 10%);
     color: darken($yellow, 40%);
+  }
+}
+
+.btn-secondary {
+
+  &:hover {
+    background-color: lighten($lavender, 21%);
+    color: $white;
+  }
+}
+
+.btn-download {
+  background-image: image_url("liquid-bg.svg");
+  background-position: 0 -50%;
+  background-repeat: repeat-x;
+  transition: background-position 3s ease;
+
+  &:hover {
+    background-position: 100% 50%;
   }
 }
