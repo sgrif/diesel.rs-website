@@ -52,13 +52,13 @@ title: Diesel
   %section.feature-list
     .content-wrapper
       %h3.feature-list__heading.section-heading What makes Diesel so different?
-      .feature-list__feature
+      .feature-list__feature.type-safe
         %h4.feature__heading Truly Type Safe
         %p.feature__description Diesel takes advantage of Rust’s type system to catch errors at compile time, rather than a database error at runtime.
-      .feature-list__feature
+      .feature-list__feature.performance
         %h4.feature__heading Designed for Performance
         %p.feature__description Our query builder performs no boxing or allocations by default. This means that while your code can feel high level, the compiler can optimize away and inline almost all of it.
-      .feature-list__feature
+      .feature-list__feature.extensible
         %h4.feature__heading Extensible at its Core
         %p.feature__description No ORM can anticipate every use case, which is why we’ve made sure it’s easy for other crates or your code to add support for new things.
 

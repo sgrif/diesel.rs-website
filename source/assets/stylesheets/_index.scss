@@ -56,6 +56,10 @@ header {
   @extend %section;
   color: $dark-purple;
 
+  &__heading {
+    padding-bottom: $base-spacing;
+  }
+
   &__feature {
     @include span-columns(4);
     padding-left: 105px;
@@ -64,12 +68,32 @@ header {
     &:before {
       @include position(absolute, 0 null null 0);
       @include size(75px);
-      background: transparentize($white, 0.9);
       border-radius: $base-border-radius;
       box-shadow: 0px 10px 50px 0px rgba(0,0,0,0.05), inset 0px 1px 0px 0px rgba(255,255,255,0.18);
       content: "";
       display: inline-block;
     }
+  }
+
+  .type-safe:before,
+  .performance:before,
+  .extensible:before {
+    background-color: transparentize($white, 0.9);
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: 32px;
+  }
+
+  .type-safe:before {
+    background-image: image_url("inspect.svg");
+  }
+
+  .performance:before {
+    background-image: image_url("performance.svg");
+  }
+
+  .extensible:before {
+    background-image: image_url("extensible.svg");
   }
 }
 
