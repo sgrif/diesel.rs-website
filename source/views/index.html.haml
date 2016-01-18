@@ -20,44 +20,77 @@ title: Diesel
   %section.demo
     .content-wrapper
       %h3.demo__heading.section-heading What does it look like?
-      .demo__example-container
-        .demo__example
-          %p.demo__example-caption Here’s an example of what some code from <a href="http://crates.io">crates.io</a> looks like when ported over to Diesel…
-          .demo__example-browser
-            .browser-bar
-              .browser-bar__circle
-              .browser-bar__circle
-              .browser-bar__circle
-            %pre.demo__example-snippet
-              %code
-                :preserve
-                  let versions = Version::belonging_to(krate)
-                    .select(id)
-                    .order(num.desc())
-                    .limit(5);
-                  let downloads = try!(version_downloads
-                    .filter(date.gt(now - 90.days()))
-                    .filter(version_id.eq(any(versions)))
-                    .order(date)
-                    .load(&conn))
-                    .collect::<Vec<VersionDownload>>();
-        .demo__example
-          %p.demo__example-caption …which will ultimately execute this query:
-          .demo__example-browser
-            .browser-bar
-              .browser-bar__circle
-              .browser-bar__circle
-              .browser-bar__circle
-            %pre.demo__example-snippet
-              %code
-                :preserve
-                  SELECT version_downloads.* FROM version_downloads
-                  WHERE date > NOW() - '90 days'::interval
-                    AND version_id = ANY(SELECT id FROM versions
-                                         WHERE crate_id = 1
-                                         ORDER BY num DESC
-                                         LIMIT 5)
-                  ORDER BY date;
+      .vertical-tabs-container
+        .vertical-tabs
+          %a.js-vertical-tab.vertical-tab.is-active{:href => "javascript:void(0)", :rel => "tab1"} Example 1
+          %a.js-vertical-tab.vertical-tab{:href => "javascript:void(0)", :rel => "tab2"} Example 2
+
+        .vertical-tab-content-container
+          %a.js-vertical-tab-accordion-heading.vertical-tab-accordion-heading.is-active{:href => "", :rel => "tab1"} Item 1
+          #tab1.js-vertical-tab-content.vertical-tab-content
+            .demo__example
+              %p.demo__example-caption Here’s an example of what some code from <a href="http://crates.io">crates.io</a> looks like when ported over to Diesel:
+              .demo__example-browser
+                .browser-bar filename.rs
+                %a{href: "", class: "btn-demo-example"} Details
+                %pre.demo__example-snippet
+                  %code
+                    :preserve
+                      let versions = Version::belonging_to(krate)
+                        .select(id)
+                        .order(num.desc())
+                        .limit(5);
+                      let downloads = try!(version_downloads
+                        .filter(date.gt(now - 90.days()))
+                        .filter(version_id.eq(any(versions)))
+                        .order(date)
+                        .load(&conn))
+                        .collect::<Vec<VersionDownload>>();
+
+          %a.js-vertical-tab-accordion-heading.vertical-tab-accordion-heading{:href => "", :rel => "tab2"} Item 2
+          #tab2.js-vertical-tab-content.vertical-tab-content
+            .demo__example
+              %p.demo__example-caption This is a caption for the example below:
+              .demo__example-browser
+                .browser-bar build.rs
+                %a{href: "", class: "btn-demo-example"} Details
+                %pre.demo__example-snippet
+                  %code
+                    :preserve
+                      extern crate syntex;
+                      extern crate diesel_codegen;
+
+                      use std::env;
+                      use std::path::Path;
+
+                      pub fn main() {
+                        let out_dir = env::var_os("OUT_DIR").unwrap();
+                        let mut registry = syntex::Registry::new();
+                        diesel_codegen::register(&mut registry);
+
+                        let src = Path::new("src/schema.in.rs");
+                        let dst = Path::new(&out_dir).join("schema.rs");
+
+                        registry.expand("", &src, &dst).unwrap();
+                      }
+              .demo__example-browser
+                .browser-bar schema.in.rs
+                %a{href: "", class: "btn-demo-example"} Details
+                %pre.demo__example-snippet
+                  %code
+                    :preserve
+                      #[derive(Queryable)]
+                      pub struct User {
+                        id -> i32,
+                        name -> String,
+                      }
+              .demo__example-browser
+                .browser-bar schema.rs
+                %a{href: "", class: "btn-demo-example"} Details
+                %pre.demo__example-snippet
+                  %code
+                    :preserve
+                      include!(concat!(env!("OUT_DIR"), "/schema.rs"));
 
   %section.feature-list
     .content-wrapper
@@ -74,5 +107,5 @@ title: Diesel
 
 %footer
   .content-wrapper
-    %p &copy; 2015.
+    %p &copy; 2015
 

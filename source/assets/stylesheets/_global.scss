@@ -9,6 +9,7 @@ body {
 }
 
 %section {
+  display: block;
   padding: ($base-spacing * 2.5) 0 ($base-spacing * 3);
 
   &:last-child {

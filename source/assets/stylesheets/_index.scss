@@ -47,60 +47,45 @@ header {
 .demo {
   @extend %section;
 
-  &__example-container {
-    @include clearfix;
-    background: transparentize($white, 0.95);
-    border-radius: $base-border-radius;
-    box-shadow: 0px 10px 50px 0px rgba(0,0,0,0.05), inset 0px 1px 0px 0px rgba(255,255,255,0.18);
-    padding: $base-spacing * 1.5;
-  }
-
-  &__example {
-    @include clearfix;
-    @include span-columns(5.75);
-    height: 390px;
-    position: relative;
-
-    &:nth-child(2n) {
-      @include shift(0.5);
-    }
-
-    pre {
-      border-bottom-right-radius: $base-border-radius;
-      border-bottom-left-radius: $base-border-radius;
-      height: 275px;
-      margin: 0;
-    }
+  &__example pre {
+    border-bottom-right-radius: $base-border-radius;
+    border-bottom-left-radius: $base-border-radius;
+    margin: 0;
   }
 
   &__example-caption {
-    padding-bottom: $small-spacing;
+    margin-bottom: $base-spacing;
   }
 
   &__example-browser {
-    @include position(absolute, null null 0 null);
-    @include size(100% 300px);
+    @include size(100% auto);
+    position: relative;
+    margin-bottom: $base-spacing;
+
+    &:first-child,
+    &:last-child {
+      margin-bottom: 0;
+    }
 
     .browser-bar {
-      @include size(100% 25px);
+      @include size(100% null);
       background: $light-gray;
       border-top-left-radius: $base-border-radius;
       border-top-right-radius: $base-border-radius;
-      font-size: 0;
-      position: relative;
+      color: $dark-gray;
+      font-size: 1rem;
+      font-weight: 400;
+      padding: 5px 10px;
     }
 
-    .browser-bar__circle {
-      @include position(relative, 12px null null null);
-      @include size(12px);
-      border-radius: 50%;
-      background-color: darken($light-gray, 15%);
-      display: inline-block;
-      margin: -6px 5px 0 0;
-
-      &:first-child {
-        margin-left: 5px;
-      }
+    .btn-demo-example {
+      @include position(absolute, 45px 10px null null);
+      background-color: $yellow;
+      border-radius: $base-border-radius;
+      color: darken($yellow, 40%);
+      font-size: 1rem;
+      font-weight: 400;
+      padding: ($small-spacing / 4) ($small-spacing / 2);
     }
   }
 }
