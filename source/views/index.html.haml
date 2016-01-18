@@ -13,8 +13,8 @@ title: Diesel
       %h2.banner__heading A Safe, Extensible ORM and Query Builder for <a href="https://www.rust-lang.org/" class="rust-link">Rust</a>
       %p.banner__sub-heading Diesel gets rid of the boilerplate for database interaction and eliminates runtime errors, without sacrificing performance.
       .btn-container
-        %a.btn.btn-primary.btn-download{:href => ""} Download v0.1
-        %a.btn.btn-secondary{:href => ""} View on Github
+        %a.btn.btn-primary.btn-download{:href => "https://crates.io/crates/diesel/", :target => "_blank"} Download v0.1
+        %a.btn.btn-secondary{:href => "https://github.com/sgrif/diesel", :target => "_blank"} View on Github
 
 %main
   %section.demo
@@ -23,31 +23,41 @@ title: Diesel
       .demo__example-container
         .demo__example
           %p.demo__example-caption Here’s an example of what some code from <a href="http://crates.io">crates.io</a> looks like when ported over to Diesel…
-          %pre.demo__example-snippet
-            %code
-              :preserve
-                let versions = Version::belonging_to(krate)
-                  .select(id)
-                  .order(num.desc())
-                  .limit(5);
-                let downloads = try!(version_downloads
-                  .filter(date.gt(now - 90.days()))
-                  .filter(version_id.eq(any(versions)))
-                  .order(date)
-                  .load(&conn))
-                  .collect::<Vec<VersionDownload>>();
+          .demo__example-browser
+            .browser-bar
+              .browser-bar__circle
+              .browser-bar__circle
+              .browser-bar__circle
+            %pre.demo__example-snippet
+              %code
+                :preserve
+                  let versions = Version::belonging_to(krate)
+                    .select(id)
+                    .order(num.desc())
+                    .limit(5);
+                  let downloads = try!(version_downloads
+                    .filter(date.gt(now - 90.days()))
+                    .filter(version_id.eq(any(versions)))
+                    .order(date)
+                    .load(&conn))
+                    .collect::<Vec<VersionDownload>>();
         .demo__example
           %p.demo__example-caption …which will ultimately execute this query:
-          %pre.demo__example-snippet
-            %code
-              :preserve
-                SELECT version_downloads.* FROM version_downloads
-                WHERE date > NOW() - '90 days'::interval
-                  AND version_id = ANY(SELECT id FROM versions
-                                       WHERE crate_id = 1
-                                       ORDER BY num DESC
-                                       LIMIT 5)
-                ORDER BY date;
+          .demo__example-browser
+            .browser-bar
+              .browser-bar__circle
+              .browser-bar__circle
+              .browser-bar__circle
+            %pre.demo__example-snippet
+              %code
+                :preserve
+                  SELECT version_downloads.* FROM version_downloads
+                  WHERE date > NOW() - '90 days'::interval
+                    AND version_id = ANY(SELECT id FROM versions
+                                         WHERE crate_id = 1
+                                         ORDER BY num DESC
+                                         LIMIT 5)
+                  ORDER BY date;
 
   %section.feature-list
     .content-wrapper

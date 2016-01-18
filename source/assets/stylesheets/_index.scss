@@ -66,15 +66,42 @@ header {
     }
 
     pre {
-      bottom: 0;
+      border-bottom-right-radius: $base-border-radius;
+      border-bottom-left-radius: $base-border-radius;
+      height: 275px;
       margin: 0;
-      position: absolute;
-      width: 100%;
     }
   }
 
   &__example-caption {
     padding-bottom: $small-spacing;
+  }
+
+  &__example-browser {
+    @include position(absolute, null null 0 null);
+    @include size(100% 300px);
+
+    .browser-bar {
+      @include size(100% 25px);
+      background: $light-gray;
+      border-top-left-radius: $base-border-radius;
+      border-top-right-radius: $base-border-radius;
+      font-size: 0;
+      position: relative;
+    }
+
+    .browser-bar__circle {
+      @include position(relative, 12px null null null);
+      @include size(12px);
+      border-radius: 50%;
+      background-color: darken($light-gray, 15%);
+      display: inline-block;
+      margin: -6px 5px 0 0;
+
+      &:first-child {
+        margin-left: 5px;
+      }
+    }
   }
 }
 
@@ -91,7 +118,7 @@ header {
     padding-left: 105px;
     position: relative;
 
-    &:before {
+    &::before {
       @include position(absolute, 0 null null 0);
       @include size(75px);
       border-radius: $base-border-radius;
@@ -101,25 +128,20 @@ header {
     }
   }
 
-  .type-safe:before,
-  .performance:before,
-  .extensible:before {
+  .type-safe::before,
+  .performance::before,
+  .extensible::before {
     background-color: transparentize($white, 0.9);
     background-position: center center;
     background-repeat: no-repeat;
     background-size: 32px;
   }
 
-  .type-safe:before {
-    background-image: image_url("inspect.svg");
-  }
-
-  .performance:before {
-    background-image: image_url("performance.svg");
-  }
-
-  .extensible:before {
-    background-image: image_url("extensible.svg");
+  $features: type-safe performance extensible;
+  @each $feature in $features {
+    .#{$feature}::before {
+      background-image: image_url("#{$feature}.svg");
+    }
   }
 }
 

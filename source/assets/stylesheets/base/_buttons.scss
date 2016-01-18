@@ -31,6 +31,8 @@ button,
   background-color: $yellow;
   color: darken($yellow, 40%);
 
+  &:active,
+  &:focus,
   &:hover {
     color: darken($yellow, 40%);
   }
@@ -38,6 +40,8 @@ button,
 
 .btn-secondary {
 
+  &:active,
+  &:focus,
   &:hover {
     background-color: lighten($lavender, 21%);
     color: $white;
