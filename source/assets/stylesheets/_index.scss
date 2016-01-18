@@ -23,6 +23,14 @@ header {
     margin: 0 auto;
   }
 
+  .rust-link {
+    color: $yellow;
+
+    &:hover {
+      color: darken($yellow, 10%);
+    }
+  }
+
   .btn-container {
     margin-top: $large-spacing;
   }
