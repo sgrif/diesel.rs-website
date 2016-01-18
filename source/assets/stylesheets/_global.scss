@@ -1,19 +1,18 @@
 body {
-  background-color: $light-gray;
-  color: $medium-gray;
+  background: $lavender;
+  background: linear-gradient($lavender, lighten($lavender, 50%));
+  color: white;
 }
 
-.delete-me {
-  align-items: center;
-  display: flex;
-  justify-content: center;
-  height: 100vh;
+.content-wrapper {
+  @include outer-container;
+}
 
-  .container {
-    text-align: center;
+%section {
+  padding: $base-spacing * 4;
+}
 
-    h1 {
-      font-weight: 200;
-    }
-  }
+footer {
+  background: $dark-gray;
+  padding: $base-spacing * 2;
 }

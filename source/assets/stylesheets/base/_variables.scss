@@ -1,9 +1,14 @@
 // Typography
-$base-font-family: $helvetica;
+$base-font-family: "Roboto", $helvetica, sans-serif;
 $heading-font-family: $base-font-family;
+$base-font-weight: 300;
+$heading-font-weight: 100;
 
 // Font Sizes
 $base-font-size: 1em;
+$h2-font-size: $base-font-size * 2.75;
+$h3-font-size: $base-font-size * 2;
+$h4-font-size: $base-font-size * 1.375;
 
 // Line height
 $base-line-height: 1.5;
@@ -17,12 +22,15 @@ $base-z-index: 0;
 
 // Colors
 $blue: #477dca;
-$dark-gray: #333;
+$dark-gray: #2B303B;
 $medium-gray: #999;
 $light-gray: #ddd;
+$white: #fff;
+$lavender: #535379;
+$yellow: #FFCD57;
 
 // Font Colors
-$base-background-color: #fff;
+$base-background-color: $white;
 $base-font-color: $dark-gray;
 $action-color: $blue;
 

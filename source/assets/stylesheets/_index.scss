@@ -1,0 +1,39 @@
+header {
+  .logo {
+    text-indent: -9999px;
+  }
+}
+
+.banner {
+  @extend %section;
+  text-align: center;
+
+  &__heading,
+  &__sub-heading {
+
+  }
+}
+
+.section-heading {
+  text-align: center;
+}
+
+.demo {
+  @extend %section;
+}
+
+.demo__example {
+  @include span-columns(6);
+}
+
+.feature-list {
+  @extend %section;
+
+  &__feature {
+    @include span-columns(4);
+  }
+}
+
+footer {
+  text-align: center;
+}

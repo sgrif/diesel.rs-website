@@ -3,58 +3,62 @@ title: Diesel
 ---
 
 %header
-  %h1.logo Diesel
+  .content-wrapper
+    %h1.logo Diesel
 
 %section.banner
-  %h2.banner__heading A Safe, Extensible ORM and Query Builder for Rust
-  %p.banner__sub-heading Diesel gets rid of the boilerplate for database interaction and eliminates runtime errors, without sacrificing performance.
-  %a.banner__btn.btn-download{:href => ""} Download v0.1
-  %a.banner__btn.btn-view-on-github{:href => ""} View on Github
+  .content-wrapper
+    %h2.banner__heading A Safe, Extensible ORM and Query Builder for Rust
+    %p.banner__sub-heading Diesel gets rid of the boilerplate for database interaction and eliminates runtime errors, without sacrificing performance.
+    %a.banner__btn.btn.btn-download{:href => ""} Download v0.1
+    %a.banner__btn.btn.btn-view-on-github{:href => ""} View on Github
 
 %main
   %section.demo
-    %h3.demo__heading What does it look like?
-    %p.demo__example-caption Here’s an example of what some code from <a href="http://crates.io">crates.io</a> looks like when ported over to Diesel…
-    %pre.demo__example
-      %code
-        :preserve
-          let versions = Version::belonging_to(krate)
-            .select(id)
-            .order(num.desc())
-            .limit(5);
-          let downloads = try!(version_downloads
-            .filter(date.gt(now - 90.days()))
-            .filter(version_id.eq(any(versions)))
-            .order(date)
-            .load(&conn))
-            .collect::<Vec<VersionDownload>>();
-    %p.demo__example-caption …which will ultimately execute this query:
-    %pre.demo__example
-      %code
-        :preserve
-          SELECT version_downloads.* FROM version_downloads
-          WHERE date > NOW() - '90 days'::interval
-            AND version_id = ANY(SELECT id FROM versions
-                                 WHERE crate_id = 1
-                                 ORDER BY num DESC
-                                 LIMIT 5)
-          ORDER BY date;
+    .content-wrapper
+      %h3.demo__heading.section-heading What does it look like?
+      .demo__example
+        %p.demo__example-caption Here’s an example of what some code from <a href="http://crates.io">crates.io</a> looks like when ported over to Diesel…
+        %pre.demo__example-snippet
+          %code
+            :preserve
+              let versions = Version::belonging_to(krate)
+                .select(id)
+                .order(num.desc())
+                .limit(5);
+              let downloads = try!(version_downloads
+                .filter(date.gt(now - 90.days()))
+                .filter(version_id.eq(any(versions)))
+                .order(date)
+                .load(&conn))
+                .collect::<Vec<VersionDownload>>();
+      .demo__example
+        %p.demo__example-caption …which will ultimately execute this query:
+        %pre.demo__example-snippet
+          %code
+            :preserve
+              SELECT version_downloads.* FROM version_downloads
+              WHERE date > NOW() - '90 days'::interval
+                AND version_id = ANY(SELECT id FROM versions
+                                     WHERE crate_id = 1
+                                     ORDER BY num DESC
+                                     LIMIT 5)
+              ORDER BY date;
 
   %section.feature-list
-    %h3.feature-list__heading What makes Diesel so different?
-    .feature-list__feature
-      .feature__icon
-      %h4.feature__heading Truly Type Safe
-      %p.feature__description Diesel takes advantage of Rust’s type system to catch errors at compile time, rather than a database error at runtime.
-    .feature-list__feature
-      .feature__icon
-      %h4.feature__heading Designed for Performance
-      %p.feature__description Our query builder performs no boxing or allocations by default. This means that while your code can feel high level, the compiler can optimize away and inline almost all of it.
-    .feature-list__feature
-      .feature__icon
-      %h4.feature__heading Extensible at its Core
-      %p.feature__description No ORM can anticipate every use case, which is why we’ve made sure it’s easy for other crates or your code to add support for new things.
+    .content-wrapper
+      %h3.feature-list__heading.section-heading What makes Diesel so different?
+      .feature-list__feature
+        %h4.feature__heading Truly Type Safe
+        %p.feature__description Diesel takes advantage of Rust’s type system to catch errors at compile time, rather than a database error at runtime.
+      .feature-list__feature
+        %h4.feature__heading Designed for Performance
+        %p.feature__description Our query builder performs no boxing or allocations by default. This means that while your code can feel high level, the compiler can optimize away and inline almost all of it.
+      .feature-list__feature
+        %h4.feature__heading Extensible at its Core
+        %p.feature__description No ORM can anticipate every use case, which is why we’ve made sure it’s easy for other crates or your code to add support for new things.
 
 %footer
-  %p &copy; 2015.
+  .content-wrapper
+    %p &copy; 2015.
 
