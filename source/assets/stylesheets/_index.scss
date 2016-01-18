@@ -48,7 +48,25 @@ header {
   }
 
   &__example {
-    @include span-columns(6);
+    @include clearfix;
+    @include span-columns(5.75);
+    height: 390px;
+    position: relative;
+
+    &:nth-child(2n) {
+      @include shift(0.5);
+    }
+
+    pre {
+      bottom: 0;
+      margin: 0;
+      position: absolute;
+      width: 100%;
+    }
+  }
+
+  &__example-caption {
+    padding-bottom: $small-spacing;
   }
 }
 

@@ -7,8 +7,11 @@
     %title= current_page.data.title || "Diesel"
     %link{:href => "https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic,100", :rel => "stylesheet", :type => "text/css"}/
     = stylesheet_link_tag "application"
-
+    = stylesheet_link_tag "hybrid"
 
   %body{class: page_classes}
     = yield
     = javascript_include_tag "https://code.jquery.com/jquery-2.1.1.min.js", "application"
+    %script{:src => "assets/javascripts/highlight.pack.js"}
+    :javascript
+        hljs.initHighlightingOnLoad();
