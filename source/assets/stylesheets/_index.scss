@@ -1,6 +1,6 @@
 .banner {
   @extend %section;
-  margin-top: $large-spacing;
+  margin-top: $base-spacing;
   text-align: center;
 
   &-wrapper {
@@ -31,6 +31,7 @@
 
 .demo {
   @extend %section;
+  padding-top: $base-spacing;
 
   &__example pre {
     border-bottom-right-radius: $base-border-radius;
@@ -39,6 +40,7 @@
   }
 
   &__example-caption {
+    color: $dark-purple;
     margin-bottom: $base-spacing;
   }
 

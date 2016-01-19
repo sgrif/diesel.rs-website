@@ -1,13 +1,18 @@
 .feature-list {
   @extend %section;
-  color: $dark-purple;
+  color: $white;
 
   &__heading {
+    color: $white;
     padding-bottom: $small-spacing;
 
     @include media($medium-screen-up) {
-      padding-bottom: $base-spacing;
+      padding-bottom: $small-spacing;
     }
+  }
+
+  .feature__heading {
+    color: $dark-purple;
   }
 
   &__feature {
@@ -33,7 +38,7 @@
   .type-safe::before,
   .performance::before,
   .extensible::before {
-    background-color: transparentize($white, 0.9);
+    background-color: transparentize($white, 0.85);
     background-position: center center;
     background-repeat: no-repeat;
     background-size: 1.777777em;
