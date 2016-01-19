@@ -1,23 +1,53 @@
 body {
   background: $lavender;
   background: linear-gradient($lavender, lighten($lavender, 50%));
-  color: white;
+  color: $base-font-color;
+
+  @include media($medium-screen-up) {
+    font-size: $base-font-size;
+
+    h2 {
+      font-size: $h2-font-size;
+    }
+
+    h3 {
+      font-size: $h3-font-size;
+    }
+  }
 }
 
 .content-wrapper {
-  @include outer-container;
+  padding: 0 $small-spacing;
+
+  @include media($medium-screen-up) {
+    padding: 0 $base-spacing;
+  }
+
+  @include media($large-screen-up) {
+    @include outer-container;
+  }
 }
 
 %section {
   display: block;
-  padding: ($base-spacing * 2.5) 0 ($base-spacing * 3);
+  padding: ($base-spacing * 1.5) 0 ($base-spacing * 2);
 
-  &:last-child {
-    padding-bottom: $base-spacing * 5;
+  @include media($medium-screen-up) {
+    padding: ($base-spacing * 2.5) 0 ($base-spacing * 3);
+
+    &:last-child {
+      padding-bottom: $base-spacing * 5;
+    }
   }
 }
 
 footer {
   background: $dark-gray;
+  border-bottom: solid 5px $action-color;
   padding: $base-spacing * 2;
+  text-align: center;
+
+  p {
+    margin: 0;
+  }
 }

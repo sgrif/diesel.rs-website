@@ -3,7 +3,7 @@ body {
   -webkit-font-smoothing: antialiased;
   color: $base-font-color;
   font-family: $base-font-family;
-  font-size: $base-font-size;
+  font-size: $mobile-base-font-size;
   font-weight: $base-font-weight;
   line-height: $base-line-height;
 }
@@ -22,11 +22,11 @@ h6 {
 }
 
 h2 {
-  font-size: $h2-font-size;
+  font-size: $h2-font-size / 1.15;
 }
 
 h3 {
-  font-size: $h3-font-size;
+  font-size: $h3-font-size / 1.15;
   margin-bottom: $base-spacing;
 }
 

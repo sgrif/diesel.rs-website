@@ -5,6 +5,7 @@ $base-font-weight: 300;
 $heading-font-weight: 300;
 
 // Font Sizes
+$mobile-base-font-size: 1em;
 $base-font-size: 1.125em;
 $h2-font-size: $base-font-size * 2;
 $h3-font-size: $base-font-size * 1.6111;
@@ -33,8 +34,8 @@ $lavender: #535379;
 $yellow: #FFCD57;
 
 // Font Colors
-$base-background-color: $white;
-$base-font-color: $dark-gray;
+$base-background-color: $lavender;
+$base-font-color: $white;
 $action-color: $yellow;
 $link-color: $dark-purple;
 

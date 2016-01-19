@@ -8,25 +8,35 @@ header {
 
     a,
     .logo {
+      @include size(9.375em auto);
       display: block;
+
+      @include media($medium-screen-up) {
+        @include size(9.5em auto);
+      }
     }
   }
 }
 
 .banner {
   @extend %section;
+  margin-top: $base-spacing;
   text-align: center;
 
   &-wrapper {
-    width: 580px;
-    margin: 0 auto;
+    width: 100%;
+
+    @include media($medium-screen-up) {
+      width: 32.222222em;
+      margin: 0 auto;
+    }
   }
 
   .rust-link {
-    color: $yellow;
+    color: $action-color;
 
     &:hover {
-      color: darken($yellow, 10%);
+      color: darken($action-color, 10%);
     }
   }
 
@@ -35,7 +45,7 @@ header {
   }
 
   .btn {
-    margin: 0 ($small-spacing / 2);
+    margin: 0 ($small-spacing / 2) $small-spacing;
   }
 }
 
@@ -76,16 +86,6 @@ header {
       font-weight: 400;
       padding: 5px 10px;
     }
-
-    .btn-demo-example {
-      @include position(absolute, 45px 10px null null);
-      background-color: $yellow;
-      border-radius: $base-border-radius;
-      color: darken($yellow, 40%);
-      font-size: 1rem;
-      font-weight: 400;
-      padding: ($small-spacing / 4) ($small-spacing / 2);
-    }
   }
 }
 
@@ -94,17 +94,26 @@ header {
   color: $dark-purple;
 
   &__heading {
-    padding-bottom: $base-spacing;
+    padding-bottom: $small-spacing;
+
+    @include media($medium-screen-up) {
+      padding-bottom: $base-spacing;
+    }
   }
 
   &__feature {
-    @include span-columns(4);
-    padding-left: 105px;
+    margin-bottom: $large-spacing;
+    padding-left: 5em;
     position: relative;
+
+    @include media($large-screen-up) {
+      @include span-columns(4 of 12);
+      padding-left: 5.5em;
+    }
 
     &::before {
       @include position(absolute, 0 null null 0);
-      @include size(75px);
+      @include size(4.166666em);
       border-radius: $base-border-radius;
       box-shadow: 0px 10px 50px 0px rgba(0,0,0,0.05), inset 0px 1px 0px 0px rgba(255,255,255,0.18);
       content: "";
@@ -118,68 +127,13 @@ header {
     background-color: transparentize($white, 0.9);
     background-position: center center;
     background-repeat: no-repeat;
-    background-size: 32px;
+    background-size: 1.777777em;
   }
 
-  $features: type-safe performance extensible;
+  $features: type-safe, performance, extensible;
   @each $feature in $features {
     .#{$feature}::before {
       background-image: image_url("#{$feature}.svg");
     }
-  }
-}
-
-footer {
-  border-bottom: solid 5px $yellow;
-  text-align: center;
-
-  p {
-    margin: 0;
-  }
-}
-
-@keyframes logo-pour {
-  0% {
-    transform: rotate(0deg);
-  }
-  50% {
-    transform: rotate(10deg);
-  }
-  100% {
-    transform: rotate(0deg);
-  }
-}
-
-@keyframes logo-drip {
-  0% {
-    opacity: 1;
-    transform: translate(72.929204px, 51.710843px);
-  }
-  30% {
-    opacity: 0;
-    transform: translate(72.929204px, 64.710843px);
-  }
-  40% {
-    transform: translate(72.929204px, 51.710843px);
-  }
-  50% {
-    opacity: 0;
-    transform: translate(72.929204px, 38.710843px) scale(0.5);
-  }
-  100% {
-    opacity: 1;
-    transform: translate(72.929204px, 51.710843px) scale(1);
-  }
-}
-
-.logo:hover {
-  #can {
-    animation: logo-pour 1s ease-in-out forwards;
-    transform-origin: center;
-  }
-
-  #drop {
-    animation: logo-drip 1.75s ease-in-out forwards;
-    transform-origin: center;
   }
 }

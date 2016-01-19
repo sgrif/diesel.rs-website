@@ -28,13 +28,13 @@ button,
 }
 
 .btn-primary {
-  background-color: $yellow;
-  color: darken($yellow, 40%);
+  background-color: $action-color;
+  color: darken($action-color, 40%);
 
   &:active,
   &:focus,
   &:hover {
-    color: darken($yellow, 40%);
+    color: darken($action-color, 40%);
   }
 }
 
@@ -56,5 +56,20 @@ button,
 
   &:hover {
     background-position: 100% 50%;
+  }
+}
+
+.btn-demo-example {
+  @include position(absolute, 45px 10px null null);
+  background-color: $action-color;
+  border-radius: $base-border-radius;
+  color: darken($action-color, 40%);
+  font-size: 1rem;
+  font-weight: 400;
+  padding: ($small-spacing / 4) ($small-spacing / 2);
+
+  &:hover {
+    background-color: darken($action-color, 5%);
+    color: darken($action-color, 40%);
   }
 }
