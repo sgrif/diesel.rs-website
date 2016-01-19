@@ -41,13 +41,6 @@ body {
   }
 }
 
-footer {
-  background: $dark-gray;
-  border-bottom: solid 5px $action-color;
-  padding: $base-spacing * 2;
+.section-heading {
   text-align: center;
-
-  p {
-    margin: 0;
-  }
 }

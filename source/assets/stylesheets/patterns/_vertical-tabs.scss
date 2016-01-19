@@ -66,11 +66,16 @@
 
   .vertical-tab-accordion-heading {
     background: transparentize($white, 0.8);
-    color: $link-color;
+    color: $white;
     cursor: pointer;
     display: block;
     font-weight: 400;
     padding: $small-spacing;
+
+    &.is-active {
+      color: $link-color;
+      font-weight: 400;
+    }
 
     @include media($large-screen-up) {
       display: none;
