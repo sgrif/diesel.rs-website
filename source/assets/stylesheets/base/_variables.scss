@@ -26,12 +26,12 @@ $base-z-index: 0;
 
 // Colors
 $blue: #477dca;
-$dark-purple: #553F5D;
+$lavender: #535379;
+$dark-purple: darken($lavender, 10%);
 $dark-gray: #2B303B;
 $medium-gray: #999;
-$light-gray: #ddd;
+$light-gray: #D5D5D5;
 $white: #fff;
-$lavender: #535379;
 $yellow: #FFCD57;
 
 // Font Colors

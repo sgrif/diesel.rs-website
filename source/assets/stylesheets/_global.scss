@@ -1,6 +1,6 @@
 body {
   background: $lavender;
-  background: linear-gradient($lavender, lighten($lavender, 50%));
+  background: linear-gradient($lavender, lighten($lavender, 40%));
   color: $base-font-color;
 
   @include media($medium-screen-up) {
@@ -30,10 +30,10 @@ body {
 
 %section {
   display: block;
-  padding: ($base-spacing * 2) 0 ($base-spacing * 2.5);
+  padding: ($base-spacing * 2.5) 0 ($base-spacing * 2.5);
 
   @include media($medium-screen-up) {
-    padding: ($base-spacing * 2.5) 0 ($base-spacing * 3);
+    padding: ($base-spacing * 3) 0;
 
     &:last-child {
       padding-bottom: $base-spacing * 5;
