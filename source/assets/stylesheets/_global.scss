@@ -30,7 +30,7 @@ body {
 
 %section {
   display: block;
-  padding: ($base-spacing * 1.5) 0 ($base-spacing * 2);
+  padding: ($base-spacing * 2) 0 ($base-spacing * 2.5);
 
   @include media($medium-screen-up) {
     padding: ($base-spacing * 2.5) 0 ($base-spacing * 3);
