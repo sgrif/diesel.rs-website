@@ -1,15 +1,14 @@
 header {
   padding: $base-spacing 0 0;
 
-  .logo {
-    @include size(195px 80px);
-    background: image_url("logo.svg") center no-repeat;
-    background-size: 100%;
+  h1 {
+    display: inline-block;
+    margin: 0;
+    text-indent: -9999px;
 
-    a {
-      @include size(100%);
+    a,
+    .logo {
       display: block;
-      text-indent: -9999px;
     }
   }
 }
@@ -136,5 +135,51 @@ footer {
 
   p {
     margin: 0;
+  }
+}
+
+@keyframes logo-pour {
+  0% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(10deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes logo-drip {
+  0% {
+    opacity: 1;
+    transform: translate(72.929204px, 51.710843px);
+  }
+  30% {
+    opacity: 0;
+    transform: translate(72.929204px, 64.710843px);
+  }
+  40% {
+    transform: translate(72.929204px, 51.710843px);
+  }
+  50% {
+    opacity: 0;
+    transform: translate(72.929204px, 38.710843px) scale(0.5);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(72.929204px, 51.710843px) scale(1);
+  }
+}
+
+.logo:hover {
+  #can {
+    animation: logo-pour 1s ease-in-out forwards;
+    transform-origin: center;
+  }
+
+  #drop {
+    animation: logo-drip 1.75s ease-in-out forwards;
+    transform-origin: center;
   }
 }
