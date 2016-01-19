@@ -1,12 +1,21 @@
 %section.feature-list
   .content-wrapper
-    %h3.feature-list__heading.section-heading What makes Diesel so different?
+    %h3.feature-list__heading.section-heading What makes Diesel different?
     .feature-list__feature.type-safe
       %h4.feature__heading Truly Type Safe
-      %p.feature__description Diesel takes advantage of Rust’s type system to catch errors at compile time, rather than a database error at runtime.
+      %p.feature__description
+        Don't waste time trying to track down database errors at runtime.
+        Diesel prevents incorrect queries from even compiling, giving you confidence in your code.
     .feature-list__feature.performance
-      %h4.feature__heading Designed for Performance
-      %p.feature__description Our query builder performs no boxing or allocations by default. This means that while your code can feel high level, the compiler can optimize away and inline almost all of it.
+      %h4.feature__heading Built for Performance
+      %p.feature__description
+        Diesel offers a high level query builder and lets you think about your problems in Rust, not SQL.
+        But this doesn't come at a runtime cost.
+        Diesel can run your query and load your data even faster than C.
+        // FIXME: Do not ship with this link unfinished
+        %a(href="#") Want to know how?
     .feature-list__feature.extensible
-      %h4.feature__heading Extensible at its Core
-      %p.feature__description No ORM can anticipate every use case, which is why we’ve made sure it’s easy for other crates or your code to add support for new things.
+      %h4.feature__heading Productive and Extensible
+      %p.feature__description
+        Diesel is designed to help you solve your problems faster, and think about them in Rust.
+        It's built for extensibility, allowing you to compose and abstract over the problems specific to your domain.
