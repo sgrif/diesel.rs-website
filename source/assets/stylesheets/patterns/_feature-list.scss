@@ -33,6 +33,10 @@
       content: "";
       display: inline-block;
     }
+
+    a {
+      text-decoration: underline;
+    }
   }
 
   .type-safe::before,
