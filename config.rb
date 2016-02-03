@@ -1,4 +1,5 @@
 require "extensions/views"
+require "slim"
 
 activate :views
 activate :directory_indexes
@@ -10,6 +11,7 @@ set :js_dir, "assets/javascripts"
 set :images_dir, "assets/images"
 set :fonts_dir, "assets/fonts"
 set :layout, "layouts/application"
+set :haml, ugly: true
 
 configure :development do
  activate :livereload
