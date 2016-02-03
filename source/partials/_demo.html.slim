@@ -1,23 +1,22 @@
-%section.demo
+section.demo
   .content-wrapper
-    %h3.demo__heading.section-heading See some examples
+    h3.demo__heading.section-heading See some examples
     .vertical-tabs-container
       .vertical-tabs
-        %a.js-vertical-tab.vertical-tab.is-active{:href => "javascript:void(0)", :rel => "tab1"} Example 1
-        %a.js-vertical-tab.vertical-tab{:href => "javascript:void(0)", :rel => "tab2"} Example 2
+        a.js-vertical-tab.vertical-tab.is-active(href="javascript:void(0)" rel="tab1") Example 1
+        a.js-vertical-tab.vertical-tab(href="javascript:void(0)" rel="tab2") Example 2
 
       .vertical-tab-content-container
-        %a.js-vertical-tab-accordion-heading.vertical-tab-accordion-heading.is-active{:href => "", :rel => "tab1"} Item 1
+        a.js-vertical-tab-accordion-heading.vertical-tab-accordion-heading.is-active(href="" rel="tab1") Item 1
         #tab1.js-vertical-tab-content.vertical-tab-content
           .demo__example
-            %p.demo__example-caption Here’s an example of what some code from <a href="http://crates.io">crates.io</a> looks like when ported over to Diesel:
+            p.demo__example-caption Here’s an example of what some code from <a href="http://crates.io">crates.io</a> looks like when ported over to Diesel:
             .demo__example-browser
               .browser-bar filename.rs
-              %a{href: "", class: "btn-demo-example"} Details
-              %pre.demo__example-snippet
-                %code
-                  :preserve
-                    let versions = Version::belonging_to(krate)
+              a.btn-demo-example(href="") Details
+              pre.demo__example-snippet
+                code
+                  | let versions = Version::belonging_to(krate)
                       .select(id)
                       .order(num.desc())
                       .limit(5);
@@ -28,17 +27,16 @@
                       .load(&conn))
                       .collect::<Vec<VersionDownload>>();
 
-        %a.js-vertical-tab-accordion-heading.vertical-tab-accordion-heading{:href => "", :rel => "tab2"} Item 2
+        a.js-vertical-tab-accordion-heading.vertical-tab-accordion-heading(href="" rel="tab2") Item 2
         #tab2.js-vertical-tab-content.vertical-tab-content
           .demo__example
-            %p.demo__example-caption This is a caption for the example below:
+            p.demo__example-caption This is a caption for the example below:
             .demo__example-browser
               .browser-bar build.rs
-              %a{href: "", class: "btn-demo-example"} Details
-              %pre.demo__example-snippet
-                %code
-                  :preserve
-                    extern crate syntex;
+              a.btn-demo-example(href="") Details
+              pre.demo__example-snippet
+                code
+                  | extern crate syntex;
                     extern crate diesel_codegen;
 
                     use std::env;
@@ -56,19 +54,17 @@
                     }
             .demo__example-browser
               .browser-bar schema.in.rs
-              %a{href: "", class: "btn-demo-example"} Details
-              %pre.demo__example-snippet
-                %code
-                  :preserve
-                    #[derive(Queryable)]
+              a.btn-demo-example(href="") Details
+              pre.demo__example-snippet
+                code
+                  | #[derive(Queryable)]
                     pub struct User {
                       id -> i32,
                       name -> String,
                     }
             .demo__example-browser
               .browser-bar schema.rs
-              %a{href: "", class: "btn-demo-example"} Details
-              %pre.demo__example-snippet
-                %code
-                  :preserve
-                    include!(concat!(env!("OUT_DIR"), "/schema.rs"));
+              a.btn-demo-example(href="") Details
+              pre.demo__example-snippet
+                code
+                  | include!(concat!(env!("OUT_DIR"), "/schema.rs"));
