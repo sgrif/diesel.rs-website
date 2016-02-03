@@ -3,17 +3,44 @@ section.demo
     h3.demo__heading.section-heading See some examples
     .vertical-tabs-container
       .vertical-tabs
-        a.js-vertical-tab.vertical-tab.is-active(href="javascript:void(0)" rel="tab1") Example 1
-        a.js-vertical-tab.vertical-tab(href="javascript:void(0)" rel="tab2") Example 2
+        a.js-vertical-tab.vertical-tab.is-active(href="javascript:void(0)" rel="tab1") Simple Queries
+        a.js-vertical-tab.vertical-tab(href="javascript:void(0)" rel="tab2") Complex Queries
+        a.js-vertical-tab.vertical-tab(href="javascript:void(0)" rel="tab3") Inserting Data
+        a.js-vertical-tab.vertical-tab(href="javascript:void(0)" rel="tab4") Updating Data
 
       .vertical-tab-content-container
-        a.js-vertical-tab-accordion-heading.vertical-tab-accordion-heading.is-active(href="" rel="tab1") Item 1
         #tab1.js-vertical-tab-content.vertical-tab-content
           .demo__example
-            p.demo__example-caption Here’s an example of what some code from <a href="http://crates.io">crates.io</a> looks like when ported over to Diesel:
+            p.demo__example-caption
+              | Simple queries are a complete breeze.
+                Loading all users from a database:
             .demo__example-browser
-              .browser-bar filename.rs
-              a.btn-demo-example(href="") Details
+              .browser-bar Rust code
+              pre.demo__example-snippet
+                code users::table.load(&connection)
+            .demo__example-browser
+              .browser-bar Executed SQL
+              pre.demo__example-snippet
+                code SELECT * FROM users;
+
+            p.demo__example-caption
+              | Loading all the posts for a user:
+            .demo__example-browser
+              .browser-bar Rust code
+              pre.demo__example-snippet
+                code Post::belonging_to(user).load(&connection)
+            .demo__example-browser
+              .browser-bar Executed SQL
+              pre.demo__example-snippet
+                code SELECT * FROM posts WHERE user_id = 1;
+
+        #tab2.js-vertical-tab-content.vertical-tab-content
+          .demo__example
+            p.demo__example-caption
+              | Diesel's powerful query builder helps you construct queries as
+                simple or complex as you need, at 0 cost.
+            .demo__example-browser
+              .browser-bar Rust code
               pre.demo__example-snippet
                 code
                   | let versions = Version::belonging_to(krate)
@@ -24,47 +51,95 @@ section.demo
                       .filter(date.gt(now - 90.days()))
                       .filter(version_id.eq(any(versions)))
                       .order(date)
-                      .load(&conn))
-                      .collect::<Vec<VersionDownload>>();
+                      .load::&lt;Download&gt;(&conn));
+            .demo__example-browser
+              .browser-bar Executed SQL
+              pre.demo__example-snippet
+                code
+                  | SELECT version_downloads.*
+                      WHERE date > (NOW() - '90 days')
+                        AND version_id = ANY(
+                          SELECT id FROM versions
+                            WHERE crate_id = 1
+                            ORDER BY num DESC
+                            LIMIT 5
+                        )
+                      ORDER BY date
 
-        a.js-vertical-tab-accordion-heading.vertical-tab-accordion-heading(href="" rel="tab2") Item 2
-        #tab2.js-vertical-tab-content.vertical-tab-content
+        #tab3.js-vertical-tab-content.vertical-tab-content
           .demo__example
-            p.demo__example-caption This is a caption for the example below:
+            p.demo__example-caption
+              | It's just about reading data. Diesel makes it easy to use
+                structs for new records.
             .demo__example-browser
-              .browser-bar build.rs
-              a.btn-demo-example(href="") Details
+              .browser-bar Rust code
               pre.demo__example-snippet
                 code
-                  | extern crate syntex;
-                    extern crate diesel_codegen;
-
-                    use std::env;
-                    use std::path::Path;
-
-                    pub fn main() {
-                      let out_dir = env::var_os("OUT_DIR").unwrap();
-                      let mut registry = syntex::Registry::new();
-                      diesel_codegen::register(&mut registry);
-
-                      let src = Path::new("src/schema.in.rs");
-                      let dst = Path::new(&out_dir).join("schema.rs");
-
-                      registry.expand("", &src, &dst).unwrap();
+                  | #[insertable_into(users)]
+                    struct NewUser<'a> {
+                        name: &'a str,
+                        hair_color: Option<&'a str>,
                     }
+
+                    let new_users = vec![
+                        NewUser { name: "Sean", hair_color: Some("Black") },
+                        NewUser { name: "Gordon", hair_color: None },
+                    ];
+                    insert(&new_users).into(users::table)
+                        .execute(&connection);
             .demo__example-browser
-              .browser-bar schema.in.rs
-              a.btn-demo-example(href="") Details
+              .browser-bar Executed SQL
               pre.demo__example-snippet
                 code
-                  | #[derive(Queryable)]
-                    pub struct User {
-                      id -> i32,
-                      name -> String,
-                    }
+                  | INSERT INTO users (name, hair_color) VALUES
+                      ('Sean', 'Black'),
+                      ('Gordon', DEFAULT)
+            p.demo__example-caption
+              | If you need data from the rows you inserted, just change
+                `execute` to `get_result` or `get_results`. Diesel will take
+                care of the rest.
             .demo__example-browser
-              .browser-bar schema.rs
-              a.btn-demo-example(href="") Details
+              .browser-bar Rust code
               pre.demo__example-snippet
                 code
-                  | include!(concat!(env!("OUT_DIR"), "/schema.rs"));
+                    | let new_users = vec![
+                          NewUser { name: "Sean", hair_color: Some("Black") },
+                          NewUser { name: "Gordon", hair_color: None },
+                      ];
+                      let inserted_users = insert(&new_users).into(users::table)
+                          .get_results::&lt;User&gt;(&connection);
+            .demo__example-browser
+              .browser-bar Executed SQL
+              pre.demo__example-snippet
+                code
+                  | INSERT INTO users (name, hair_color) VALUES
+                      ('Sean', 'Black'),
+                      ('Gordon', DEFAULT)
+                      RETURNING *
+
+        #tab4.js-vertical-tab-content.vertical-tab-content
+          .demo__example
+            p.demo__example-caption
+              | Diesel's codegen can generate several ways to update a row,
+                letting you encapsulate your logic in the way that makes sense
+                for your app.
+            .demo__example-browser
+              .browser-bar Modifying a struct
+              pre.demo__example-snippet
+                code
+                  | post.published = true;
+                    post.save_changes(&connection);
+            .demo__example-browser
+              .browser-bar One-off batch changes
+              pre.demo__example-snippet
+                code
+                  | update(users.filter(email.like("%@spammer.com")))
+                        .set(banned.eq(true))
+                        .execute(&connection)
+            .demo__example-browser
+              .browser-bar Using a struct for encapsulation
+              pre.demo__example-snippet
+                code
+                  | update(Settings::belonging_to(current_user))
+                        .set(&settings_form)
+                        .execute(&connection)
