@@ -79,7 +79,7 @@ main
       .demo__example-browser
         pre.demo__example-snippet
           code
-            | echo DATABASE_URL=postgres://localhost/diesel_demo > .env
+            | echo DATABASE_URL=postgres://localhost/diesel_demo &gt; .env
 
       markdown:
         Now Diesel CLI can set everything up for us.
@@ -162,7 +162,7 @@ main
                 use dotenv::dotenv;
                 use std::env;
 
-                pub fn establish_connection() -> PgConnection {
+                pub fn establish_connection() -&gt; PgConnection {
                     dotenv().ok();
 
                     let database_url = env::var("DATABASE_URL")
@@ -251,7 +251,7 @@ main
                         .limit(5)
                         .load(&connection)
                         .expect("Error loading posts")
-                        .collect::<Vec<Post>>();
+                        .collect::&lt;Vec&lt;Post&gt;&gt;();
 
                     println!("Displaying {} posts", results.len());
                     for post in results {
@@ -290,7 +290,7 @@ main
               | use super::schema::posts;
 
                 #[insertable_into(posts)]
-                pub struct NewPost<'a> {
+                pub struct NewPost&lt;'a&gt; {
                     pub title: &'a str,
                     pub body: &'a str,
                 }
@@ -306,7 +306,7 @@ main
             code
               | use self::models::{Post, NewPost};
 
-                pub fn create_post<'a>(conn: &PgConnection, title: &'a str, body: &'a str) -> Post {
+                pub fn create_post&lt;'a&gt;(conn: &PgConnection, title: &'a str, body: &'a str) -&gt; Post {
                     use schema::posts;
 
                     let new_post = NewPost {
@@ -425,12 +425,12 @@ main
                     use diesel_demo::schema::posts::dsl::{posts, published};
 
                     let id = args().nth(1).expect("publish_post requires a post id")
-                        .parse::<i32>().expect("Invalid ID");
+                        .parse::&lt;i32&gt;().expect("Invalid ID");
                     let connection = establish_connection();
 
                     let post = diesel::update(posts.find(id))
                         .set(published.eq(true))
-                        .get_result::<Post>(&connection)
+                        .get_result::&lt;Post&gt;(&connection)
                         .expect(&format!("Unable to find post {}", id));
                     println!("Published post {}", post.title);
                 }
