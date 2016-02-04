@@ -8,11 +8,12 @@ main
     .content-wrapper
       markdown:
         For this guide, we're going to walk through some simple examples for
-        each of the pieces of CRUD. Each step in this guide will build on the
-        previous, and is meant to be followed along. This guide assumes that
-        you're using PostgreSQL on Rust nightly. We'll talk about how to use
-        Diesel on stable Rust in the final chapter. Before we start, make sure
-        you have PostgreSQL installed and running.
+        each of the pieces of CRUD, which stands for "Create", "Read",
+        "Update", "Delete". Each step in this guide will build on the previous,
+        and is meant to be followed along. This guide assumes that you're using
+        PostgreSQL on Rust nightly. We'll talk about how to use Diesel on
+        stable Rust in the final chapter. Before we start, make sure you have
+        PostgreSQL installed and running.
 
         The first thing we need to do is generate our project.
 
@@ -74,9 +75,9 @@ main
             | diesel setup
 
       markdown:
-        This will create our database for us (if it didn't already exist), and
-        create an empty migrations directory that we can use to manage our
-        schema (more on that later).
+        This will create our database (if it didn't already exist), and create
+        an empty migrations directory that we can use to manage our schema
+        (more on that later).
 
         Now we're going to write a small CLI that lets us manage a blog
         (ignoring the fact that we can only access the database from this
@@ -127,7 +128,7 @@ main
         the latest migration.
 
         OK enough SQL, let's write some Rust. We'll start by writing some code
-        to show us the last 5 published posts. The first thing we need to do is
+        to show the last 5 published posts. The first thing we need to do is
         establish a database connection.
 
       .demo__example
@@ -154,9 +155,9 @@ main
                 }
 
       markdown:
-        We'll also want to create a `Post` struct that we can read our data
-        into, and have diesel generate the names we'll use to reference our
-        tables and columns in our queries.
+        We'll also want to create a `Post` struct into which we can read our
+        data, and have diesel generate the names we'll use to reference tables
+        and columns in our queries.
 
         We'll add the following two lines to the top of `src/lib.rs`
 
@@ -370,7 +371,7 @@ main
         point can be found [here][commit-no-2].
 
         Now that we've got create and read out of the way, update is actually
-        relatively simple. Let's jump write into the script:
+        relatively simple. Let's jump right into the script:
 
         [commit-no-2]: FIXME ACTUAL LINK
 
@@ -459,7 +460,7 @@ main
 
       markdown:
         We can run the script with `cargo run --bin delete_post demo` (at least
-        with the title I chose. Your output should look something like:
+        with the title I chose). Your output should look something like:
 
       pre
         code.nohighlight.hljs
