@@ -1,3 +1,7 @@
+- first_commit = "81dd43dd2a76e8ed4316ad7d6516fad97d42782d"
+- second_commit = "dfb6164c1e2845c9702051826ae3d2641b0f4990"
+- third_commit = "dfb6164c1e2845c9702051826ae3d2641b0f4990"
+
 section.banner
   .content-wrapper
     .banner-wrapper
@@ -33,6 +37,8 @@ main
       .demo__example
         .demo__example-browser
           .browser-bar Cargo.toml
+          a.btn-demo-example href=demo_file_at_commit("Cargo.toml", first_commit)
+            | View on Github
           pre.demo__example-snippet
             code
               | [dependencies]
@@ -134,6 +140,8 @@ main
       .demo__example
         .demo__example-browser
           .browser-bar src/lib.rs
+          a.btn-demo-example href=demo_file_at_commit("src/lib.rs", first_commit)
+            | View on Github
           pre.demo__example-snippet
             code
               | #[macro_use]
@@ -164,6 +172,8 @@ main
       .demo__example
         .demo__example-browser
           .browser-bar src/lib.rs
+          a.btn-demo-example href=demo_file_at_commit("src/lib.rs", first_commit)
+            | View on Github
           pre.demo__example-snippet
             code
               | #![feature(custom_derive, custom_attribute, plugin)]
@@ -182,6 +192,8 @@ main
       .demo__example
         .demo__example-browser
           .browser-bar src/models.rs
+          a.btn-demo-example href=demo_file_at_commit("src/models.rs", first_commit)
+            | View on Github
           pre.demo__example-snippet
             code
               | #[derive(Queryable)]
@@ -194,6 +206,8 @@ main
 
         .demo__example-browser
           .browser-bar src/schema.rs
+          a.btn-demo-example href=demo_file_at_commit("src/schema.rs", first_commit)
+            | View on Github
           pre.demo__example-snippet
             code
               | infer_schema!(dotenv!("DATABASE_URL"));
@@ -209,6 +223,8 @@ main
       .demo__example
         .demo__example-browser
           .browser-bar src/bin/show_posts.rs
+          a.btn-demo-example href=demo_file_at_commit("src/bin/show_posts.rs", first_commit)
+            | View on Github
           pre.demo__example-snippet
             code
               | extern crate diesel_demo;
@@ -253,11 +269,13 @@ main
         Next, let's write some code to create a new post. We'll want a struct
         to use for inserting a new record.
 
-        [commit-no-1]: FIXME ACTUAL LINK
+        [commit-no-1]: https://github.com/sgrif/diesel_demo/tree/#{first_commit}
 
       .demo__example
         .demo__example-browser
           .browser-bar src/models.rs
+          a.btn-demo-example href=demo_file_at_commit("src/models.rs", second_commit)
+            | View on Github
           pre.demo__example-snippet
             code
               | use super::schema::posts;
@@ -273,6 +291,8 @@ main
       .demo__example
         .demo__example-browser
           .browser-bar src/lib.rs
+          a.btn-demo-example href=demo_file_at_commit("src/lib.rs", second_commit)
+            | View on Github
           pre.demo__example-snippet
             code
               | use self::models::{Post, NewPost};
@@ -310,6 +330,8 @@ main
       .demo__example
         .demo__example-browser
           .browser-bar src/bin/write_post.rs
+          a.btn-demo-example href=demo_file_at_commit("src/bin/write_post.rs", second_commit)
+            | View on Github
           pre.demo__example-snippet
             code
               | extern crate diesel_demo;
@@ -373,11 +395,13 @@ main
         Now that we've got create and read out of the way, update is actually
         relatively simple. Let's jump right into the script:
 
-        [commit-no-2]: FIXME ACTUAL LINK
+        [commit-no-2]: https://github.com/sgrif/diesel_demo/tree/#{second_commit}
 
       .demo__example
         .demo__example-browser
           .browser-bar src/bin/publish_post.rs
+          a.btn-demo-example href=demo_file_at_commit("src/bin/publish_post.rs", third_commit)
+            | View on Github
           pre.demo__example-snippet
             code
               | extern crate diesel_demo;
@@ -435,6 +459,8 @@ main
       .demo__example
         .demo__example-browser
           .browser-bar src/bin/delete_post.rs
+          a.btn-demo-example href=demo_file_at_commit("src/bin/delete_post.rs", third_commit)
+            | View on Github
           pre.demo__example-snippet
             code
               | extern crate diesel_demo;
@@ -473,12 +499,12 @@ main
         the post was in fact deleted. This barely scratches the surface of what
         you can do with Diesel, but hopefully this tutorial has given you a
         good foundation to build off of. We recommend exploring the [API
-        docs](docs.diesel.rs) to see more. The final code for this tutorial can
-        be found [here][commit-no-3].
+        docs][docs] to see more. The final code for this tutorial can be found
+        [here][commit-no-3].
+
+        [docs]: http://docs.diesel.rs
+        [commit-no-3]: https://github.com/sgrif/diesel_demo/tree/#{third_commit}
 
         FIXME cover how to use syntex on stable, recommend using nightly for
         dev and stable for deployment, show how to use both in the same
         codebase.
-
-        [commit-no-3]: FIXME ACTUAL LINK
-

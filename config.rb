@@ -38,4 +38,8 @@ helpers do
     options[:class] << " active" if page_url == current_url
     link_to(link_text, page_url, options)
   end
+
+  def demo_file_at_commit(file, commit)
+    "https://github.com/sgrif/diesel_demo/blob/#{commit}/#{file}"
+  end
 end
