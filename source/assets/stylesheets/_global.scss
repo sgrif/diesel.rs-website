@@ -1,6 +1,5 @@
 body {
   background: $lavender;
-  background: linear-gradient($lavender, lighten($lavender, 40%));
   color: $base-font-color;
 
   @include media($medium-screen-up) {
@@ -14,6 +13,10 @@ body {
       font-size: $h3-font-size;
     }
   }
+}
+
+body.index {
+  background: linear-gradient($lavender, lighten($lavender, 40%));
 }
 
 .content-wrapper {
