@@ -5,8 +5,9 @@ section.demo
       .vertical-tabs
         a.js-vertical-tab.vertical-tab.is-active(href="javascript:void(0)" rel="tab1") Simple Queries
         a.js-vertical-tab.vertical-tab(href="javascript:void(0)" rel="tab2") Complex Queries
-        a.js-vertical-tab.vertical-tab(href="javascript:void(0)" rel="tab3") Inserting Data
-        a.js-vertical-tab.vertical-tab(href="javascript:void(0)" rel="tab4") Updating Data
+        a.js-vertical-tab.vertical-tab(href="javascript:void(0)" rel="tab3") Less Boilerplate
+        a.js-vertical-tab.vertical-tab(href="javascript:void(0)" rel="tab4") Inserting Data
+        a.js-vertical-tab.vertical-tab(href="javascript:void(0)" rel="tab5") Updating Data
 
       .vertical-tab-content-container
         #tab1.js-vertical-tab-content.vertical-tab-content
@@ -69,6 +70,53 @@ section.demo
         #tab3.js-vertical-tab-content.vertical-tab-content
           .demo__example
             p.demo__example-caption
+              | Diesel codegen lets you focus on your business logic, not
+                mapping to and from SQL rows by generating boilerplate for you.
+                That means you can write this:
+
+            .demo__example-browser
+              .browser-bar With Diesel
+              pre.demo__example-snippet
+                code.rust
+                  | #[derive(Queryable)]
+                    pub struct Download {
+                        id: i32,
+                        version_id: i32,
+                        downloads: i32,
+                        counted: i32,
+                        date: SystemTime,
+                    }
+
+            p.demo__example-caption
+              | Instead of this:
+
+            .demo__example-browser
+              .browser-bar Without Diesel
+              pre.demo__example-snippet
+                code
+                  | pub struct Download {
+                        id: i32,
+                        version_id: i32,
+                        downloads: i32,
+                        counted: i32,
+                        date: SystemTime,
+                    }
+
+                    impl Download {
+                        fn from_row(row: &Row) -> Download {
+                            Download {
+                                id: row.get("id"),
+                                version_id: row.get("version_id"),
+                                downloads: row.get("downloads"),
+                                counted: row.get("counted"),
+                                date: row.get("date"),
+                            }
+                        }
+                    }
+
+        #tab4.js-vertical-tab-content.vertical-tab-content
+          .demo__example
+            p.demo__example-caption
               | It's just about reading data. Diesel makes it easy to use
                 structs for new records.
             .demo__example-browser
@@ -117,7 +165,7 @@ section.demo
                       ('Gordon', DEFAULT)
                       RETURNING *
 
-        #tab4.js-vertical-tab-content.vertical-tab-content
+        #tab5.js-vertical-tab-content.vertical-tab-content
           .demo__example
             p.demo__example-caption
               | Diesel's codegen can generate several ways to update a row,
