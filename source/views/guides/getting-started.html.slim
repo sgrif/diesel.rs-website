@@ -1,7 +1,7 @@
-- first_commit = "81dd43dd2a76e8ed4316ad7d6516fad97d42782d"
-- second_commit = "dfb6164c1e2845c9702051826ae3d2641b0f4990"
-- third_commit = "dfb6164c1e2845c9702051826ae3d2641b0f4990"
-- fourth_commit = "bb46e971f22bca1b68e3b33782f6b64a613a1f30"
+- first_commit = "0570f40ca439521e2cf31f673c788f372c67c407"
+- second_commit = "a856d3a7125eba792887da54fc3ff85490f46b6e"
+- third_commit = "ea9455bd43eb0609d3638215f857103bdf3c359a"
+- fourth_commit = "72a79a6632b5d259d3f757ce2397fe5d03cb835d"
 
 section.banner
   .content-wrapper
@@ -250,9 +250,8 @@ main
                     let connection = establish_connection();
                     let results = posts.filter(published.eq(true))
                         .limit(5)
-                        .load(&connection)
-                        .expect("Error loading posts")
-                        .collect::&lt;Vec&lt;Post&gt;&gt;();
+                        .load::&lt;Post&gt;(&connection)
+                        .expect("Error loading posts");
 
                     println!("Displaying {} posts", results.len());
                     for post in results {
