@@ -19,6 +19,23 @@ body.index {
   background: linear-gradient($lavender, lighten($lavender, 40%));
 }
 
+.guide-wrapper {
+  @include clearfix;
+
+  @include media($large-screen-up) {
+    @include span-columns(7 of 12);
+    @include shift(2.5 of 12);
+  }
+
+  .demo__example pre {
+    margin-bottom: $base-spacing;
+  }
+
+  h3 {
+    margin-top: $large-spacing;
+  }
+}
+
 .content-wrapper {
   padding: 0 $small-spacing;
 
@@ -32,6 +49,7 @@ body.index {
 }
 
 %section {
+  @include clearfix;
   display: block;
   padding: ($base-spacing * 2.5) 0 ($base-spacing * 2.5);
 

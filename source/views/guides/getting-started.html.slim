@@ -11,652 +11,659 @@ section.banner
 main
   section.demo
     .content-wrapper
-      markdown:
-        For this guide, we're going to walk through some simple examples for
-        each of the pieces of CRUD, which stands for "Create Read Update
-        Delete". Each step in this guide will build on the previous, and is
-        meant to be followed along. This guide assumes that you're using
-        PostgreSQL on Rust nightly. We'll talk about how to use Diesel on stable
-        Rust in the final chapter. Before we start, make sure you have
-        PostgreSQL installed and running.
-
-        The first thing we need to do is generate our project.
-
-      .demo__example-browser
-        pre.demo__example-snippet
-          code
-            | cargo new diesel_demo
-              cd diesel_demo
-
-      markdown:
-        First, let's add Diesel to our dependencies. We're also going to use a
-        tool called [`.env`][dotenv-rust] to manage our environment variables
-        for us. We'll add it to our dependencies as well.
-
-        [dotenv-rust]: https://github.com/slapresta/rust-dotenv
-
-      .demo__example
-        .demo__example-browser
-          .browser-bar Cargo.toml
-          a.btn-demo-example href=demo_file_at_commit("Cargo.toml", first_commit)
-            | View on Github
-          pre.demo__example-snippet
-            code
-              | [dependencies]
-                diesel = "0.5.0"
-                diesel_codegen = { version = "0.5.0", default-features = false, features = ["nightly", "postgres"] }
-                dotenv = "0.8.0"
-                dotenv_macros = "0.8.0"
-
-      markdown:
-        Diesel provides a separate [CLI][diesel-cli] tool to help manage your
-        project.  Since it's a standalone binary, and doesn't affect your
-        project's code directly, we don't add it to `Cargo.toml`. Instead, we
-        just install it on our system.
-
-        [diesel-cli]: https://github.com/sgrif/diesel/tree/master/diesel_cli
-
-      .demo__example-browser
-        pre.demo__example-snippet
-          code
-            | cargo install diesel_cli
-
-      markdown:
-        We need to tell Diesel where to find our database. We do this by
-        setting the `DATABASE_URL` environment variable. On our development
-        machines, we'll likely have multiple projects going, and we don't want
-        to pollute our environment. We can put the url in a `.env` file
-        instead.
-
-      .demo__example-browser
-        pre.demo__example-snippet
-          code
-            | echo DATABASE_URL=postgres://localhost/diesel_demo &gt; .env
-
-      markdown:
-        Now Diesel CLI can set everything up for us.
-
-      .demo__example-browser
-        pre.demo__example-snippet
-          code
-            | diesel setup
-
-      markdown:
-        This will create our database (if it didn't already exist), and create
-        an empty migrations directory that we can use to manage our schema
-        (more on that later).
-
-        Now we're going to write a small CLI that lets us manage a blog
-        (ignoring the fact that we can only access the database from this
-        CLI...). The first thing we're going to need is a table to store our
-        posts. Let's create a migration for that:
-
-      .demo__example-browser
-        pre.demo__example-snippet
-          code
-            | diesel migration generate create_posts_table
-
-      p
-        | Diesel CLI will create to empty files for us in the required structure.
-          You'll see output that looks something like this:
-
-      .demo__example-browser
-        pre.demo__example-snippet
-          code
-            | Creating migrations/20160202154039_create_posts/up.sql
-              Creating migrations/20160202154039_create_posts/down.sql
-
-      markdown:
-        Migrations allow us to evolve the database schema over time. Each
-        migration can be applied (`up.sql`) or reverted (`down.sql`). Applying
-        and immediately reverting a migration should leave your database schema
-        unchanged.
-
-        Next, we'll write the SQL for migrations
-
-      .demo__example
-        .demo__example-browser
-          .browser-bar up.sql
-          pre.demo__example-snippet
-            code
-              | CREATE TABLE posts (
-                  id SERIAL PRIMARY KEY,
-                  title VARCHAR NOT NULL,
-                  body TEXT NOT NULL,
-                  published BOOLEAN NOT NULL DEFAULT 'f'
-                )
-
-        .demo__example-browser
-          .browser-bar down.sql
-          pre.demo__example-snippet
-            code
-              | DROP TABLE posts
-
-      markdown:
-        We can apply our new migration with `diesel migration run`. It's a good
-        idea to make sure that `down.sql` is correct. You can do a quick sanity
-        check by doing `diesel migration redo`, which will revert and reapply
-        the latest migration.
-
-        OK enough SQL, let's write some Rust. We'll start by writing some code
-        to show the last 5 published posts. The first thing we need to do is
-        establish a database connection.
-
-      .demo__example
-        .demo__example-browser
-          .browser-bar src/lib.rs
-          a.btn-demo-example href=demo_file_at_commit("src/lib.rs", first_commit)
-            | View on Github
-          pre.demo__example-snippet
-            code
-              | #[macro_use]
-                extern crate diesel;
-                extern crate dotenv;
-
-                use diesel::prelude::*;
-                use diesel::pg::PgConnection;
-                use dotenv::dotenv;
-                use std::env;
-
-                pub fn establish_connection() -&gt; PgConnection {
-                    dotenv().ok();
-
-                    let database_url = env::var("DATABASE_URL")
-                        .expect("DATABASE_URL must be set");
-                    PgConnection::establish(&database_url)
-                        .expect(&format!("Error connecting to {}", database_url))
-                }
-
-      markdown:
-        We'll also want to create a `Post` struct into which we can read our
-        data, and have diesel generate the names we'll use to reference tables
-        and columns in our queries.
-
-        We'll add the following four lines to the top of `src/lib.rs`
-
-      .demo__example
-        .demo__example-browser
-          .browser-bar src/lib.rs
-          a.btn-demo-example href=demo_file_at_commit("src/lib.rs", first_commit)
-            | View on Github
-          pre.demo__example-snippet
-            code
-              | #![feature(custom_derive, custom_attribute, plugin)]
-                #![plugin(diesel_codegen, dotenv_macros)]
-
-                pub mod schema;
-                pub mod models;
-
-      markdown:
-        The first two lines tell Rust that we want to use some special compiler
-        plugins provided by Diesel and Dotenv. These will add various useful
-        class annotations that we can use, as well as the `infer_schema!` macro
-        which we'll see in just a moment. Next we need to create the two
-        modules that we just declared.
-
-      .demo__example
-        .demo__example-browser
-          .browser-bar src/models.rs
-          a.btn-demo-example href=demo_file_at_commit("src/models.rs", first_commit)
-            | View on Github
-          pre.demo__example-snippet
-            code
-              | #[derive(Queryable)]
-                pub struct Post {
-                    pub id: i32,
-                    pub title: String,
-                    pub body: String,
-                    pub published: bool,
-                }
-
-        .demo__example-browser
-          .browser-bar src/schema.rs
-          a.btn-demo-example href=demo_file_at_commit("src/schema.rs", first_commit)
-            | View on Github
-          pre.demo__example-snippet
-            code
-              | infer_schema!(dotenv!("DATABASE_URL"));
-
-      markdown:
-        The `#[derive(Queryable)]` will generate all of the code needed to load
-        a `Post` struct from a SQL query. The `infer_schema!` macro connects to
-        the database URL given to it, and creates a bunch of code based on the
-        database schema to represent all of the tables and columns. We'll see
-        exactly what that looks like next. Let's write the code to actually
-        show us our posts.
-
-      .demo__example
-        .demo__example-browser
-          .browser-bar src/bin/show_posts.rs
-          a.btn-demo-example href=demo_file_at_commit("src/bin/show_posts.rs", first_commit)
-            | View on Github
-          pre.demo__example-snippet
-            code
-              | extern crate diesel_demo;
-                extern crate diesel;
-
-                use self::diesel_demo::*;
-                use self::diesel_demo::models::*;
-                use self::diesel::prelude::*;
-
-                fn main() {
-                    use diesel_demo::schema::posts::dsl::*;
-
-                    let connection = establish_connection();
-                    let results = posts.filter(published.eq(true))
-                        .limit(5)
-                        .load::&lt;Post&gt;(&connection)
-                        .expect("Error loading posts");
-
-                    println!("Displaying {} posts", results.len());
-                    for post in results {
-                        println!("{}", post.title);
-                        println!("----------\n");
-                        println!("{}", post.body);
-                    }
-                }
-
-      markdown:
-        The `use posts::dsl::*` line imports a bunch of aliases so that we can
-        say `posts` instead of `posts::table`, and `published` instead of
-        `posts::published`. It's useful when we're only dealing with a single
-        table, but that's not always what we want.
-
-        We can run our script with `cargo run --bin show_posts`. Unfortunately,
-        the results won't be terribly interesting, as we don't actually have
-        any posts in the database. Still, we've written a decent amount of
-        code, so let's commit.
-
-        The full code for the demo at this point can be found
-        [here][commit-no-1].
-
-        Next, let's write some code to create a new post. We'll want a struct
-        to use for inserting a new record.
-
-        [commit-no-1]: https://github.com/sgrif/diesel_demo/tree/#{first_commit}
-
-      .demo__example
-        .demo__example-browser
-          .browser-bar src/models.rs
-          a.btn-demo-example href=demo_file_at_commit("src/models.rs", second_commit)
-            | View on Github
-          pre.demo__example-snippet
-            code
-              | use super::schema::posts;
-
-                #[insertable_into(posts)]
-                pub struct NewPost&lt;'a&gt; {
-                    pub title: &'a str,
-                    pub body: &'a str,
-                }
-
-        Now let's add a function to save a new post.
-
-      .demo__example
-        .demo__example-browser
-          .browser-bar src/lib.rs
-          a.btn-demo-example href=demo_file_at_commit("src/lib.rs", second_commit)
-            | View on Github
-          pre.demo__example-snippet
-            code
-              | use self::models::{Post, NewPost};
-
-                pub fn create_post&lt;'a&gt;(conn: &PgConnection, title: &'a str, body: &'a str) -&gt; Post {
-                    use schema::posts;
-
-                    let new_post = NewPost {
-                        title: title,
-                        body: body,
-                    };
-
-                    diesel::insert(&new_post).into(posts::table)
-                        .get_result(conn)
-                        .expect("Error saving new post")
-                }
-
-      markdown:
-        When we call `.get_result` on an insert or update statement, it
-        automatically adds `RETURNING *` to the end of the query, and lets us
-        load it into any struct that implements `Queryable` for the right
-        types. Neat!
-
-        /* #### Protip (This would be a sidebar or something) */
-
-        Diesel can insert more than one record in a single query. Just pass a
-        `Vec` or slice to `insert`, and then call `get_results` instead of
-        `get_result`. If you don't actually want to do anything with the row
-        that was just inserted, call `.execute` instead. The compiler won't
-        complain at you, that way. :)
-
-        Now that we've got everything set up, we can create a little script to
-        write a new post.
-
-      .demo__example
-        .demo__example-browser
-          .browser-bar src/bin/write_post.rs
-          a.btn-demo-example href=demo_file_at_commit("src/bin/write_post.rs", second_commit)
-            | View on Github
-          pre.demo__example-snippet
-            code
-              | extern crate diesel_demo;
-                extern crate diesel;
-
-                use self::diesel_demo::*;
-                use std::io::{stdin, Read};
-
-                fn main() {
-                    let connection = establish_connection();
-
-                    println!("What would you like your title to be?");
-                    let mut title = String::new();
-                    stdin().read_line(&mut title).unwrap();
-                    let title = &title[..(title.len() - 1)]; // Drop the newline character
-                    println!("\nOk! Let's write {} (Press {} when finished)\n", title, EOF);
-                    let mut body = String::new();
-                    stdin().read_to_string(&mut body).unwrap();
-
-                    let post = create_post(&connection, title, &body);
-                    println!("\nSaved draft {} with id {}", title, post.id);
-                }
-
-                #[cfg(not(windows))]
-                const EOF: &'static str = "CTRL+D";
-
-                #[cfg(windows)]
-                const EOF: &'static str = "CTRL+Z";
-
-      markdown:
-        We can run our new script with `cargo run --bin write_post`. Go ahead
-        and write a blog post. Get creative! Here was mine:
-
-      pre
-        code.nohighlight.hljs
-          |    Compiling diesel_demo v0.1.0 (file:///Users/sean/Documents/Projects/open-source/diesel_demo)
-                 Running `target/debug/write_post`
-
-            What would you like your title to be?
-            Diesel demo
-
-            Ok! Let's write Diesel demo (Press CTRL+D when finished)
-
-            You know, a CLI application probably isn't the best interface for a blog demo.
-            But really I just wanted a semi-simple example, where I could focus on Diesel.
-            I didn't want to get bogged down in some web framework here.
-            Plus I don't really like the Rust web frameworks out there. We might make a
-            new one, soon.
-
-            Saved draft Diesel demo with id 1
-
-      markdown:
-        Unfortunately, running `show_posts` still won't display our new post,
-        because we saved it as a draft. If we look back to the code in
-        `show_posts`, we added `.filter(published.eq(true))`, and we had
-        `published` default to false in our migration. We need to publish it!
-        But in order to do that, we'll need to look at how to update an
-        existing record. First, let's commit. The code for this demo at this
-        point can be found [here][commit-no-2].
-
-        Now that we've got create and read out of the way, update is actually
-        relatively simple. Let's jump right into the script:
-
-        [commit-no-2]: https://github.com/sgrif/diesel_demo/tree/#{second_commit}
-
-      .demo__example
-        .demo__example-browser
-          .browser-bar src/bin/publish_post.rs
-          a.btn-demo-example href=demo_file_at_commit("src/bin/publish_post.rs", third_commit)
-            | View on Github
-          pre.demo__example-snippet
-            code
-              | extern crate diesel_demo;
-                extern crate diesel;
-
-                use self::diesel::prelude::*;
-                use self::diesel_demo::*;
-                use self::diesel_demo::models::Post;
-                use std::env::args;
-
-                fn main() {
-                    use diesel_demo::schema::posts::dsl::{posts, published};
-
-                    let id = args().nth(1).expect("publish_post requires a post id")
-                        .parse::&lt;i32&gt;().expect("Invalid ID");
-                    let connection = establish_connection();
-
-                    let post = diesel::update(posts.find(id))
-                        .set(published.eq(true))
-                        .get_result::&lt;Post&gt;(&connection)
-                        .expect(&format!("Unable to find post {}", id));
-                    println!("Published post {}", post.title);
-                }
-
-      markdown:
-        That's it! Let's try it out with `cargo run --bin publish_post 1`.
-
-      pre
-        code.nohighlight.hljs
-          |  Compiling diesel_demo v0.1.0 (file:///Users/sean/Documents/Projects/open-source/diesel_demo)
-               Running `target/debug/publish_post 1`
-          Published post Diesel demo
-
-      p And now, finally, we can see our post with `cargo run --bin show_posts`.
-
-      pre
-        code.nohighlight.hljs
-          |      Running `target/debug/show_posts`
-            Displaying 1 posts
-            Diesel demo
-            ----------
-
-            You know, a CLI application probably isn't the best interface for a blog demo.
-            But really I just wanted a semi-simple example, where I could focus on Diesel.
-            I didn't want to get bogged down in some web framework here.
-            Plus I don't really like the Rust web frameworks out there. We might make a
-            new one, soon.
-
-      markdown:
-        We've still only covered 3 of the 4 letters of CRUD though. Let's show
-        how to delete things. Sometimes we write something we really hate, and
-        we don't have time to look up the ID. So let's delete based on the
-        title, or even just some words in the title.
-
-      .demo__example
-        .demo__example-browser
-          .browser-bar src/bin/delete_post.rs
-          a.btn-demo-example href=demo_file_at_commit("src/bin/delete_post.rs", third_commit)
-            | View on Github
-          pre.demo__example-snippet
-            code
-              | extern crate diesel_demo;
-                extern crate diesel;
-
-                use self::diesel::prelude::*;
-                use self::diesel_demo::*;
-                use std::env::args;
-
-                fn main() {
-                    use diesel_demo::schema::posts::dsl::*;
-
-                    let target = args().nth(1).expect("Expected a target to match against");
-                    let pattern = format!("%{}%", target);
-
-                    let connection = establish_connection();
-                    let num_deleted = diesel::delete(posts.filter(title.like(pattern)))
-                        .execute(&connection)
-                        .expect("Error deleting posts");
-
-                    println!("Deleted {} posts", num_deleted);
-                }
-
-      markdown:
-        We can run the script with `cargo run --bin delete_post demo` (at least
-        with the title I chose). Your output should look something like:
-
-      pre
-        code.nohighlight.hljs
-          |    Compiling diesel_demo v0.1.0 (file:///Users/sean/Documents/Projects/open-source/diesel_demo)
-                 Running `target/debug/delete_post demo`
-            Deleted 1 posts
-
-      markdown:
-        When we try to run `cargo run --bin show_posts` again, we can see that
-        the post was in fact deleted. This barely scratches the surface of what
-        you can do with Diesel, but hopefully this tutorial has given you a
-        good foundation to build off of. We recommend exploring the [API
-        docs][docs] to see more. The final code for this tutorial can be found
-        [here][commit-no-3].
-
-        [docs]: http://docs.diesel.rs
-        [commit-no-3]: https://github.com/sgrif/diesel_demo/tree/#{third_commit}
-
-        ### Compiling for Stable Rust
-
-        So far we've been working entirely on nightly. This is because
-        `diesel_codegen` and `dotenv_macros` are compiler plugins, which aren't
-        available on stable Rust. However, using nightly for production isn't a
-        great idea. We can work around this by using a tool called
-        [Syntex][syntex].
-
-        [syntex]: https://github.com/serde-rs/syntex
-
-        [Syntex][syntex] is essentially a fork of the Rust compiler that we can
-        run from a build script. It will then write Rust code that is valid for
-        Stable into another file, which we can include in our code. There's some
-        drawbacks to this method, the biggest of which is that we won't get
-        proper line numbers from compiler errors. For this reason, it's usually
-        preferable to develop on nightly, and then test on stable and deploy on
-        stable.
-
-        To use [Syntex][syntex], we'll need to have it process every file which
-        uses diesel_codegen or dotenv_macros. Right now this means `schema.rs`
-        and `models.rs`. Let's create a new file called `lib.in.rs`, and move
-        the module declarations there.
-
-      .demo__example
-        .demo__example-browser
-          .browser-bar src/lib.in.rs
-          a.btn-demo-example href=demo_file_at_commit("src/lib.in.rs", fourth_commit)
-            | View on Github
-          pre.demo__example-snippet
-            code
-              | pub mod schema;
-                pub mod models;
-
-      markdown:
-        Next we'll add Syntex to Cargo.toml, and set up our other dependencies
-        to work with it when we compile using stable.
-
-      .demo__example
-        .demo__example-browser
-          .browser-bar Cargo.toml
-          a.btn-demo-example href=demo_file_at_commit("Cargo.toml", fourth_commit)
-            | View on Github
-          pre.demo__example-snippet
-            code
-              | [package]
-                name = "diesel_demo"
-                version = "0.1.0"
-                authors = ["Sean Griffin <sean@seantheprogrammer.com>"]
-                build = "build.rs"
-
-                [build-dependencies]
-                syntex = { version = "0.26.0", optional = true }
-                diesel_codegen = { version = "0.5.0", default-features = false, features = ["postgres"] }
-                dotenv_codegen = { version = "0.8.0",  optional = true }
-
-                [dependencies]
-                diesel = "0.5.0"
-                diesel_codegen = { version = "0.5.0", default-features = false, features = ["postgres"] }
-                dotenv = "0.8.0"
-                dotenv_macros = { version = "0.8.0", optional = true }
-
-                [features]
-                default = ["nightly"]
-                with-syntex = ["syntex", "diesel_codegen/with-syntex", "dotenv_codegen"]
-                nightly = ["diesel/unstable", "diesel_codegen/nightly", "dotenv_macros"]
-
-      markdown:
-        This file changed a lot, so let's go through line by line. We've added
-        `build = "build.rs"` to the `[package]` section. This tells Cargo to run
-        that file before it compiles our code. The `[build-dependencies]`
-        section lists everything that is a dependency of `build.rs`, but isn't
-        needed for our main code base. We've added `syntex`, and the stable
-        compatible versions of our codegen dependencies.
-
-        We've also marked a bunch of dependencies as optional -- anything that
-        isn't used on both stable and nightly.
-
-        Finally, we set up our "features" section. We have two modes: nightly
-        and with-syntex (stable). We want to run on nightly by default, since
-        that's what we use in development.
-
-        Now we need to write the actual build script to process `lib.in.rs` with
-        syntex.
-
-      .demo__example
-        .demo__example-browser
-          .browser-bar build.rs
-          a.btn-demo-example href=demo_file_at_commit("build.rs", fourth_commit)
-            | View on Github
-          pre.demo__example-snippet
-            code
-              | #[cfg(feature = "with-syntex")]
-                fn main() {
-                    extern crate syntex;
-                    extern crate diesel_codegen;
-                    extern crate dotenv_codegen;
-
-                    use std::env;
-                    use std::path::Path;
-
-                    let out_dir = env::var_os("OUT_DIR").unwrap();
-                    let mut registry = syntex::Registry::new();
-                    diesel_codegen::register(&mut registry);
-                    dotenv_codegen::register(&mut registry);
-
-                    let src = Path::new("src/lib.in.rs");
-                    let dst = Path::new(&out_dir).join("lib.rs");
-
-                    registry.expand("", &src, &dst).unwrap();
-                }
-
-                #[cfg(feature = "nightly")]
-                fn main() {}
-
-      markdown:
-        This file tells syntex to read `src/lib.in.rs`, process it, and stick
-        the results in a special output directory. When we compile using
-        nightly, the `main` function is empty, as we don't need to pre-process.
-
-        Finally, we need to change `lib.rs` to use this new file, instead of
-        declaring the modules directly. We'll also change the two attributes at
-        the top to only be used on nightly.
-
-      .demo__example
-        .demo__example-browser
-          .browser-bar src/lib.rs
-          a.btn-demo-example href=demo_file_at_commit("src/lib.rs", fourth_commit)
-            | View on Github
-          pre.demo__example-snippet
-            code
-              | #![cfg_attr(feature = "nightly", feature(custom_derive, custom_attribute, plugin))]
-                #![cfg_attr(feature = "nightly", plugin(diesel_codegen, dotenv_macros))]
-
-                #[macro_use]
-                extern crate diesel;
-                extern crate dotenv;
-
-                #[cfg(feature = "nightly")]
-                include!("lib.in.rs");
-
-                #[cfg(feature = "with-syntex")]
-                include!(concat!(env!("OUT_DIR"), "/lib.rs"));
-
-      markdown:
-        And that's it. On nightly, we just run our commands as before. If we
-        want to do something on stable, we'll need to give cargo some additional
-        arguments. For example: `cargo build --no-default-features --features
-        with-syntex`.
-
-        The final code for this demo can be found at
-        [https://github.com/sgrif/diesel_demo](https://github.com/sgrif/diesel_demo)
+      .guide-wrapper
+        markdown:
+          For this guide, we're going to walk through some simple examples for
+          each of the pieces of CRUD, which stands for "Create Read Update
+          Delete". Each step in this guide will build on the previous, and is
+          meant to be followed along. This guide assumes that you're using
+          PostgreSQL on Rust nightly. We'll talk about how to use Diesel on stable
+          Rust in the final chapter. Before we start, make sure you have
+          PostgreSQL installed and running.
+
+          The first thing we need to do is generate our project.
+
+        .demo__example
+          .demo__example-browser
+            pre.demo__example-snippet
+              code
+                | cargo new diesel_demo
+                  cd diesel_demo
+
+        markdown:
+          First, let's add Diesel to our dependencies. We're also going to use a
+          tool called [`.env`][dotenv-rust] to manage our environment variables
+          for us. We'll add it to our dependencies as well.
+
+          [dotenv-rust]: https://github.com/slapresta/rust-dotenv
+
+        .demo__example
+          .demo__example-browser
+            .browser-bar Cargo.toml
+            a.btn-demo-example href=demo_file_at_commit("Cargo.toml", first_commit)
+              | View on Github
+            pre.demo__example-snippet
+              code
+                | [dependencies]
+                  diesel = "0.5.0"
+                  diesel_codegen = { version = "0.5.0", default-features = false, features = ["nightly", "postgres"] }
+                  dotenv = "0.8.0"
+                  dotenv_macros = "0.8.0"
+
+        markdown:
+          Diesel provides a separate [CLI][diesel-cli] tool to help manage your
+          project.  Since it's a standalone binary, and doesn't affect your
+          project's code directly, we don't add it to `Cargo.toml`. Instead, we
+          just install it on our system.
+
+          [diesel-cli]: https://github.com/sgrif/diesel/tree/master/diesel_cli
+
+        .demo__example
+          .demo__example-browser
+            pre.demo__example-snippet
+              code
+                | cargo install diesel_cli
+
+        markdown:
+          We need to tell Diesel where to find our database. We do this by
+          setting the `DATABASE_URL` environment variable. On our development
+          machines, we'll likely have multiple projects going, and we don't want
+          to pollute our environment. We can put the url in a `.env` file
+          instead.
+
+        .demo__example
+          .demo__example-browser
+            pre.demo__example-snippet
+              code
+                | echo DATABASE_URL=postgres://localhost/diesel_demo &gt; .env
+
+        markdown:
+          Now Diesel CLI can set everything up for us.
+
+        .demo__example
+          .demo__example-browser
+            pre.demo__example-snippet
+              code
+                | diesel setup
+
+        markdown:
+          This will create our database (if it didn't already exist), and create
+          an empty migrations directory that we can use to manage our schema
+          (more on that later).
+
+          Now we're going to write a small CLI that lets us manage a blog
+          (ignoring the fact that we can only access the database from this
+          CLI...). The first thing we're going to need is a table to store our
+          posts. Let's create a migration for that:
+
+        .demo__example
+          .demo__example-browser
+            pre.demo__example-snippet
+              code
+                | diesel migration generate create_posts_table
+
+        p
+          | Diesel CLI will create to empty files for us in the required structure.
+            You'll see output that looks something like this:
+
+        .demo__example
+          .demo__example-browser
+            pre.demo__example-snippet
+              code
+                | Creating migrations/20160202154039_create_posts/up.sql
+                  Creating migrations/20160202154039_create_posts/down.sql
+
+        markdown:
+          Migrations allow us to evolve the database schema over time. Each
+          migration can be applied (`up.sql`) or reverted (`down.sql`). Applying
+          and immediately reverting a migration should leave your database schema
+          unchanged.
+
+          Next, we'll write the SQL for migrations
+
+        .demo__example
+          .demo__example-browser
+            .browser-bar up.sql
+            pre.demo__example-snippet
+              code
+                | CREATE TABLE posts (
+                    id SERIAL PRIMARY KEY,
+                    title VARCHAR NOT NULL,
+                    body TEXT NOT NULL,
+                    published BOOLEAN NOT NULL DEFAULT 'f'
+                  )
+
+          .demo__example-browser
+            .browser-bar down.sql
+            pre.demo__example-snippet
+              code
+                | DROP TABLE posts
+
+        markdown:
+          We can apply our new migration with `diesel migration run`. It's a good
+          idea to make sure that `down.sql` is correct. You can do a quick sanity
+          check by doing `diesel migration redo`, which will revert and reapply
+          the latest migration.
+
+          OK enough SQL, let's write some Rust. We'll start by writing some code
+          to show the last 5 published posts. The first thing we need to do is
+          establish a database connection.
+
+        .demo__example
+          .demo__example-browser
+            .browser-bar src/lib.rs
+            a.btn-demo-example href=demo_file_at_commit("src/lib.rs", first_commit)
+              | View on Github
+            pre.demo__example-snippet
+              code
+                | #[macro_use]
+                  extern crate diesel;
+                  extern crate dotenv;
+
+                  use diesel::prelude::*;
+                  use diesel::pg::PgConnection;
+                  use dotenv::dotenv;
+                  use std::env;
+
+                  pub fn establish_connection() -&gt; PgConnection {
+                      dotenv().ok();
+
+                      let database_url = env::var("DATABASE_URL")
+                          .expect("DATABASE_URL must be set");
+                      PgConnection::establish(&database_url)
+                          .expect(&format!("Error connecting to {}", database_url))
+                  }
+
+        markdown:
+          We'll also want to create a `Post` struct into which we can read our
+          data, and have diesel generate the names we'll use to reference tables
+          and columns in our queries.
+
+          We'll add the following four lines to the top of `src/lib.rs`
+
+        .demo__example
+          .demo__example-browser
+            .browser-bar src/lib.rs
+            a.btn-demo-example href=demo_file_at_commit("src/lib.rs", first_commit)
+              | View on Github
+            pre.demo__example-snippet
+              code
+                | #![feature(custom_derive, custom_attribute, plugin)]
+                  #![plugin(diesel_codegen, dotenv_macros)]
+
+                  pub mod schema;
+                  pub mod models;
+
+        markdown:
+          The first two lines tell Rust that we want to use some special compiler
+          plugins provided by Diesel and Dotenv. These will add various useful
+          class annotations that we can use, as well as the `infer_schema!` macro
+          which we'll see in just a moment. Next we need to create the two
+          modules that we just declared.
+
+        .demo__example
+          .demo__example-browser
+            .browser-bar src/models.rs
+            a.btn-demo-example href=demo_file_at_commit("src/models.rs", first_commit)
+              | View on Github
+            pre.demo__example-snippet
+              code
+                | #[derive(Queryable)]
+                  pub struct Post {
+                      pub id: i32,
+                      pub title: String,
+                      pub body: String,
+                      pub published: bool,
+                  }
+
+          .demo__example-browser
+            .browser-bar src/schema.rs
+            a.btn-demo-example href=demo_file_at_commit("src/schema.rs", first_commit)
+              | View on Github
+            pre.demo__example-snippet
+              code
+                | infer_schema!(dotenv!("DATABASE_URL"));
+
+        markdown:
+          The `#[derive(Queryable)]` will generate all of the code needed to load
+          a `Post` struct from a SQL query. The `infer_schema!` macro connects to
+          the database URL given to it, and creates a bunch of code based on the
+          database schema to represent all of the tables and columns. We'll see
+          exactly what that looks like next. Let's write the code to actually
+          show us our posts.
+
+        .demo__example
+          .demo__example-browser
+            .browser-bar src/bin/show_posts.rs
+            a.btn-demo-example href=demo_file_at_commit("src/bin/show_posts.rs", first_commit)
+              | View on Github
+            pre.demo__example-snippet
+              code
+                | extern crate diesel_demo;
+                  extern crate diesel;
+
+                  use self::diesel_demo::*;
+                  use self::diesel_demo::models::*;
+                  use self::diesel::prelude::*;
+
+                  fn main() {
+                      use diesel_demo::schema::posts::dsl::*;
+
+                      let connection = establish_connection();
+                      let results = posts.filter(published.eq(true))
+                          .limit(5)
+                          .load::&lt;Post&gt;(&connection)
+                          .expect("Error loading posts");
+
+                      println!("Displaying {} posts", results.len());
+                      for post in results {
+                          println!("{}", post.title);
+                          println!("----------\n");
+                          println!("{}", post.body);
+                      }
+                  }
+
+        markdown:
+          The `use posts::dsl::*` line imports a bunch of aliases so that we can
+          say `posts` instead of `posts::table`, and `published` instead of
+          `posts::published`. It's useful when we're only dealing with a single
+          table, but that's not always what we want.
+
+          We can run our script with `cargo run --bin show_posts`. Unfortunately,
+          the results won't be terribly interesting, as we don't actually have
+          any posts in the database. Still, we've written a decent amount of
+          code, so let's commit.
+
+          The full code for the demo at this point can be found
+          [here][commit-no-1].
+
+          Next, let's write some code to create a new post. We'll want a struct
+          to use for inserting a new record.
+
+          [commit-no-1]: https://github.com/sgrif/diesel_demo/tree/#{first_commit}
+
+        .demo__example
+          .demo__example-browser
+            .browser-bar src/models.rs
+            a.btn-demo-example href=demo_file_at_commit("src/models.rs", second_commit)
+              | View on Github
+            pre.demo__example-snippet
+              code
+                | use super::schema::posts;
+
+                  #[insertable_into(posts)]
+                  pub struct NewPost&lt;'a&gt; {
+                      pub title: &'a str,
+                      pub body: &'a str,
+                  }
+
+        p Now let's add a function to save a new post.
+
+        .demo__example
+          .demo__example-browser
+            .browser-bar src/lib.rs
+            a.btn-demo-example href=demo_file_at_commit("src/lib.rs", second_commit)
+              | View on Github
+            pre.demo__example-snippet
+              code
+                | use self::models::{Post, NewPost};
+
+                  pub fn create_post&lt;'a&gt;(conn: &PgConnection, title: &'a str, body: &'a str) -&gt; Post {
+                      use schema::posts;
+
+                      let new_post = NewPost {
+                          title: title,
+                          body: body,
+                      };
+
+                      diesel::insert(&new_post).into(posts::table)
+                          .get_result(conn)
+                          .expect("Error saving new post")
+                  }
+
+        markdown:
+          When we call `.get_result` on an insert or update statement, it
+          automatically adds `RETURNING *` to the end of the query, and lets us
+          load it into any struct that implements `Queryable` for the right
+          types. Neat!
+
+          /* #### Protip (This would be a sidebar or something) */
+
+          Diesel can insert more than one record in a single query. Just pass a
+          `Vec` or slice to `insert`, and then call `get_results` instead of
+          `get_result`. If you don't actually want to do anything with the row
+          that was just inserted, call `.execute` instead. The compiler won't
+          complain at you, that way. :)
+
+          Now that we've got everything set up, we can create a little script to
+          write a new post.
+
+        .demo__example
+          .demo__example-browser
+            .browser-bar src/bin/write_post.rs
+            a.btn-demo-example href=demo_file_at_commit("src/bin/write_post.rs", second_commit)
+              | View on Github
+            pre.demo__example-snippet
+              code
+                | extern crate diesel_demo;
+                  extern crate diesel;
+
+                  use self::diesel_demo::*;
+                  use std::io::{stdin, Read};
+
+                  fn main() {
+                      let connection = establish_connection();
+
+                      println!("What would you like your title to be?");
+                      let mut title = String::new();
+                      stdin().read_line(&mut title).unwrap();
+                      let title = &title[..(title.len() - 1)]; // Drop the newline character
+                      println!("\nOk! Let's write {} (Press {} when finished)\n", title, EOF);
+                      let mut body = String::new();
+                      stdin().read_to_string(&mut body).unwrap();
+
+                      let post = create_post(&connection, title, &body);
+                      println!("\nSaved draft {} with id {}", title, post.id);
+                  }
+
+                  #[cfg(not(windows))]
+                  const EOF: &'static str = "CTRL+D";
+
+                  #[cfg(windows)]
+                  const EOF: &'static str = "CTRL+Z";
+
+        markdown:
+          We can run our new script with `cargo run --bin write_post`. Go ahead
+          and write a blog post. Get creative! Here was mine:
+
+        pre
+          code.nohighlight.hljs
+            |    Compiling diesel_demo v0.1.0 (file:///Users/sean/Documents/Projects/open-source/diesel_demo)
+                   Running `target/debug/write_post`
+
+              What would you like your title to be?
+              Diesel demo
+
+              Ok! Let's write Diesel demo (Press CTRL+D when finished)
+
+              You know, a CLI application probably isn't the best interface for a blog demo.
+              But really I just wanted a semi-simple example, where I could focus on Diesel.
+              I didn't want to get bogged down in some web framework here.
+              Plus I don't really like the Rust web frameworks out there. We might make a
+              new one, soon.
+
+              Saved draft Diesel demo with id 1
+
+        markdown:
+          Unfortunately, running `show_posts` still won't display our new post,
+          because we saved it as a draft. If we look back to the code in
+          `show_posts`, we added `.filter(published.eq(true))`, and we had
+          `published` default to false in our migration. We need to publish it!
+          But in order to do that, we'll need to look at how to update an
+          existing record. First, let's commit. The code for this demo at this
+          point can be found [here][commit-no-2].
+
+          Now that we've got create and read out of the way, update is actually
+          relatively simple. Let's jump right into the script:
+
+          [commit-no-2]: https://github.com/sgrif/diesel_demo/tree/#{second_commit}
+
+        .demo__example
+          .demo__example-browser
+            .browser-bar src/bin/publish_post.rs
+            a.btn-demo-example href=demo_file_at_commit("src/bin/publish_post.rs", third_commit)
+              | View on Github
+            pre.demo__example-snippet
+              code
+                | extern crate diesel_demo;
+                  extern crate diesel;
+
+                  use self::diesel::prelude::*;
+                  use self::diesel_demo::*;
+                  use self::diesel_demo::models::Post;
+                  use std::env::args;
+
+                  fn main() {
+                      use diesel_demo::schema::posts::dsl::{posts, published};
+
+                      let id = args().nth(1).expect("publish_post requires a post id")
+                          .parse::&lt;i32&gt;().expect("Invalid ID");
+                      let connection = establish_connection();
+
+                      let post = diesel::update(posts.find(id))
+                          .set(published.eq(true))
+                          .get_result::&lt;Post&gt;(&connection)
+                          .expect(&format!("Unable to find post {}", id));
+                      println!("Published post {}", post.title);
+                  }
+
+        markdown:
+          That's it! Let's try it out with `cargo run --bin publish_post 1`.
+
+        pre
+          code.nohighlight.hljs
+            |  Compiling diesel_demo v0.1.0 (file:///Users/sean/Documents/Projects/open-source/diesel_demo)
+                 Running `target/debug/publish_post 1`
+            Published post Diesel demo
+
+        p And now, finally, we can see our post with `cargo run --bin show_posts`.
+
+        pre
+          code.nohighlight.hljs
+            |      Running `target/debug/show_posts`
+              Displaying 1 posts
+              Diesel demo
+              ----------
+
+              You know, a CLI application probably isn't the best interface for a blog demo.
+              But really I just wanted a semi-simple example, where I could focus on Diesel.
+              I didn't want to get bogged down in some web framework here.
+              Plus I don't really like the Rust web frameworks out there. We might make a
+              new one, soon.
+
+        markdown:
+          We've still only covered 3 of the 4 letters of CRUD though. Let's show
+          how to delete things. Sometimes we write something we really hate, and
+          we don't have time to look up the ID. So let's delete based on the
+          title, or even just some words in the title.
+
+        .demo__example
+          .demo__example-browser
+            .browser-bar src/bin/delete_post.rs
+            a.btn-demo-example href=demo_file_at_commit("src/bin/delete_post.rs", third_commit)
+              | View on Github
+            pre.demo__example-snippet
+              code
+                | extern crate diesel_demo;
+                  extern crate diesel;
+
+                  use self::diesel::prelude::*;
+                  use self::diesel_demo::*;
+                  use std::env::args;
+
+                  fn main() {
+                      use diesel_demo::schema::posts::dsl::*;
+
+                      let target = args().nth(1).expect("Expected a target to match against");
+                      let pattern = format!("%{}%", target);
+
+                      let connection = establish_connection();
+                      let num_deleted = diesel::delete(posts.filter(title.like(pattern)))
+                          .execute(&connection)
+                          .expect("Error deleting posts");
+
+                      println!("Deleted {} posts", num_deleted);
+                  }
+
+        markdown:
+          We can run the script with `cargo run --bin delete_post demo` (at least
+          with the title I chose). Your output should look something like:
+
+        pre
+          code.nohighlight.hljs
+            |    Compiling diesel_demo v0.1.0 (file:///Users/sean/Documents/Projects/open-source/diesel_demo)
+                   Running `target/debug/delete_post demo`
+              Deleted 1 posts
+
+        markdown:
+          When we try to run `cargo run --bin show_posts` again, we can see that
+          the post was in fact deleted. This barely scratches the surface of what
+          you can do with Diesel, but hopefully this tutorial has given you a
+          good foundation to build off of. We recommend exploring the [API
+          docs][docs] to see more. The final code for this tutorial can be found
+          [here][commit-no-3].
+
+          [docs]: http://docs.diesel.rs
+          [commit-no-3]: https://github.com/sgrif/diesel_demo/tree/#{third_commit}
+
+          ### Compiling for Stable Rust
+
+          So far we've been working entirely on nightly. This is because
+          `diesel_codegen` and `dotenv_macros` are compiler plugins, which aren't
+          available on stable Rust. However, using nightly for production isn't a
+          great idea. We can work around this by using a tool called
+          [Syntex][syntex].
+
+          [syntex]: https://github.com/serde-rs/syntex
+
+          [Syntex][syntex] is essentially a fork of the Rust compiler that we can
+          run from a build script. It will then write Rust code that is valid for
+          Stable into another file, which we can include in our code. There's some
+          drawbacks to this method, the biggest of which is that we won't get
+          proper line numbers from compiler errors. For this reason, it's usually
+          preferable to develop on nightly, and then test on stable and deploy on
+          stable.
+
+          To use [Syntex][syntex], we'll need to have it process every file which
+          uses diesel_codegen or dotenv_macros. Right now this means `schema.rs`
+          and `models.rs`. Let's create a new file called `lib.in.rs`, and move
+          the module declarations there.
+
+        .demo__example
+          .demo__example-browser
+            .browser-bar src/lib.in.rs
+            a.btn-demo-example href=demo_file_at_commit("src/lib.in.rs", fourth_commit)
+              | View on Github
+            pre.demo__example-snippet
+              code
+                | pub mod schema;
+                  pub mod models;
+
+        markdown:
+          Next we'll add Syntex to Cargo.toml, and set up our other dependencies
+          to work with it when we compile using stable.
+
+        .demo__example
+          .demo__example-browser
+            .browser-bar Cargo.toml
+            a.btn-demo-example href=demo_file_at_commit("Cargo.toml", fourth_commit)
+              | View on Github
+            pre.demo__example-snippet
+              code
+                | [package]
+                  name = "diesel_demo"
+                  version = "0.1.0"
+                  authors = ["Sean Griffin <sean@seantheprogrammer.com>"]
+                  build = "build.rs"
+
+                  [build-dependencies]
+                  syntex = { version = "0.26.0", optional = true }
+                  diesel_codegen = { version = "0.5.0", default-features = false, features = ["postgres"] }
+                  dotenv_codegen = { version = "0.8.0",  optional = true }
+
+                  [dependencies]
+                  diesel = "0.5.0"
+                  diesel_codegen = { version = "0.5.0", default-features = false, features = ["postgres"] }
+                  dotenv = "0.8.0"
+                  dotenv_macros = { version = "0.8.0", optional = true }
+
+                  [features]
+                  default = ["nightly"]
+                  with-syntex = ["syntex", "diesel_codegen/with-syntex", "dotenv_codegen"]
+                  nightly = ["diesel/unstable", "diesel_codegen/nightly", "dotenv_macros"]
+
+        markdown:
+          This file changed a lot, so let's go through line by line. We've added
+          `build = "build.rs"` to the `[package]` section. This tells Cargo to run
+          that file before it compiles our code. The `[build-dependencies]`
+          section lists everything that is a dependency of `build.rs`, but isn't
+          needed for our main code base. We've added `syntex`, and the stable
+          compatible versions of our codegen dependencies.
+
+          We've also marked a bunch of dependencies as optional -- anything that
+          isn't used on both stable and nightly.
+
+          Finally, we set up our "features" section. We have two modes: nightly
+          and with-syntex (stable). We want to run on nightly by default, since
+          that's what we use in development.
+
+          Now we need to write the actual build script to process `lib.in.rs` with
+          syntex.
+
+        .demo__example
+          .demo__example-browser
+            .browser-bar build.rs
+            a.btn-demo-example href=demo_file_at_commit("build.rs", fourth_commit)
+              | View on Github
+            pre.demo__example-snippet
+              code
+                | #[cfg(feature = "with-syntex")]
+                  fn main() {
+                      extern crate syntex;
+                      extern crate diesel_codegen;
+                      extern crate dotenv_codegen;
+
+                      use std::env;
+                      use std::path::Path;
+
+                      let out_dir = env::var_os("OUT_DIR").unwrap();
+                      let mut registry = syntex::Registry::new();
+                      diesel_codegen::register(&mut registry);
+                      dotenv_codegen::register(&mut registry);
+
+                      let src = Path::new("src/lib.in.rs");
+                      let dst = Path::new(&out_dir).join("lib.rs");
+
+                      registry.expand("", &src, &dst).unwrap();
+                  }
+
+                  #[cfg(feature = "nightly")]
+                  fn main() {}
+
+        markdown:
+          This file tells syntex to read `src/lib.in.rs`, process it, and stick
+          the results in a special output directory. When we compile using
+          nightly, the `main` function is empty, as we don't need to pre-process.
+
+          Finally, we need to change `lib.rs` to use this new file, instead of
+          declaring the modules directly. We'll also change the two attributes at
+          the top to only be used on nightly.
+
+        .demo__example
+          .demo__example-browser
+            .browser-bar src/lib.rs
+            a.btn-demo-example href=demo_file_at_commit("src/lib.rs", fourth_commit)
+              | View on Github
+            pre.demo__example-snippet
+              code
+                | #![cfg_attr(feature = "nightly", feature(custom_derive, custom_attribute, plugin))]
+                  #![cfg_attr(feature = "nightly", plugin(diesel_codegen, dotenv_macros))]
+
+                  #[macro_use]
+                  extern crate diesel;
+                  extern crate dotenv;
+
+                  #[cfg(feature = "nightly")]
+                  include!("lib.in.rs");
+
+                  #[cfg(feature = "with-syntex")]
+                  include!(concat!(env!("OUT_DIR"), "/lib.rs"));
+
+        markdown:
+          And that's it. On nightly, we just run our commands as before. If we
+          want to do something on stable, we'll need to give cargo some additional
+          arguments. For example: `cargo build --no-default-features --features
+          with-syntex`.
+
+          The final code for this demo can be found at
+          [https://github.com/sgrif/diesel_demo](https://github.com/sgrif/diesel_demo)
