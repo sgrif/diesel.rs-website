@@ -29,6 +29,14 @@
   }
 }
 
+.guides a {
+  color: $action-color;
+
+  &:hover {
+    color: darken($action-color, 10%);
+  }
+}
+
 .demo {
   @extend %section;
   padding-top: $base-spacing;
