@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="32px" height="32px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.4.4 (17249) - http://www.bohemiancoding.com/sketch -->
+    <title>dashboard</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <rect id="path-1" x="0" y="0" width="32" height="32"></rect>
+        <rect id="path-3" x="0" y="0" width="32" height="32"></rect>
+        <rect id="path-5" x="0" y="0" width="32" height="32"></rect>
+        <rect id="path-7" x="0" y="0" width="32" height="32"></rect>
+        <rect id="path-9" x="0" y="0" width="32" height="32"></rect>
+        <rect id="path-11" x="0" y="0" width="32" height="32"></rect>
+        <rect id="path-13" x="0" y="0" width="32" height="32"></rect>
+        <rect id="path-15" x="0" y="0" width="32" height="32"></rect>
+        <rect id="path-17" x="0" y="0" width="32" height="32"></rect>
+        <rect id="path-19" x="0" y="0" width="32" height="32"></rect>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="Desktop-HD" sketch:type="MSArtboardGroup" transform="translate(-551.000000, -1551.000000)">
+            <g id="Rectangle-8-Copy-2-+-Truly-Type-Safe-+-Here’s-an-example-of-Copy-Copy" sketch:type="MSLayerGroup" transform="translate(530.000000, 1533.000000)">
+                <g id="dashboard" transform="translate(21.000000, 18.000000)">
+                    <g id="Layer_1">
+                        <g id="Group">
+                            <g id="Clipped">
+                                <mask id="mask-2" sketch:name="SVGID_1_" fill="white">
+                                    <use xlink:href="#path-1"></use>
+                                </mask>
+                                <g id="SVGID_1_"></g>
+                                <path d="M24.484,7.515 C22.216,5.25 19.203,4 15.996,4 C12.791,4 9.775,5.25 7.509,7.515 C2.83,12.194 2.83,19.807 7.509,24.486 C9.775,26.751 12.791,28 15.996,28 C19.203,28 22.216,26.751 24.484,24.486 C26.752,22.22 28,19.206 28,16 C28,12.796 26.752,9.781 24.484,7.515 M23.777,23.778 C21.699,25.856 18.935,27 15.996,27 C13.056,27 10.295,25.856 8.216,23.779 C6.142,21.704 5,18.942 5,16 C5,13.058 6.142,10.296 8.216,8.222 C10.295,6.144 13.058,5 15.996,5 C18.933,5 21.697,6.145 23.777,8.222 C25.855,10.299 27,13.062 27,16 C27,18.94 25.855,21.702 23.777,23.778" id="Shape" fill="#3e3e5b" sketch:type="MSShapeGroup" mask="url(#mask-2)"></path>
+                            </g>
+                            <g id="Clipped">
+                                <mask id="mask-4" sketch:name="SVGID_1_" fill="white">
+                                    <use xlink:href="#path-3"></use>
+                                </mask>
+                                <g id="SVGID_1_"></g>
+                                <path d="M16,0 C7.178,0 0,7.178 0,16 C0,24.822 7.178,32 16,32 C24.822,32 32,24.822 32,16 C32,7.178 24.822,0 16,0 M16,30 C8.268,30 2,23.732 2,16 C2,8.268 8.268,2 16,2 C23.732,2 30,8.268 30,16 C30,23.732 23.732,30 16,30" id="Shape" fill="#3e3e5b" sketch:type="MSShapeGroup" mask="url(#mask-4)"></path>
+                            </g>
+                            <g id="Clipped">
+                                <mask id="mask-6" sketch:name="SVGID_1_" fill="white">
+                                    <use xlink:href="#path-5"></use>
+                                </mask>
+                                <g id="SVGID_1_"></g>
+                                <path d="M8.676,9.407 L10.709,11.44 C10.934,11.178 11.178,10.933 11.442,10.708 L9.408,8.675 C9.151,8.906 8.906,9.15 8.676,9.407" id="Shape" fill="#3e3e5b" sketch:type="MSShapeGroup" mask="url(#mask-6)"></path>
+                            </g>
+                            <g id="Clipped">
+                                <mask id="mask-8" sketch:name="SVGID_1_" fill="white">
+                                    <use xlink:href="#path-7"></use>
+                                </mask>
+                                <g id="SVGID_1_"></g>
+                                <path d="M6.705,12.711 L9.363,13.812 C9.473,13.481 9.607,13.163 9.762,12.856 L7.103,11.754 C6.955,12.065 6.822,12.383 6.705,12.711" id="Shape" fill="#3e3e5b" sketch:type="MSShapeGroup" mask="url(#mask-8)"></path>
+                            </g>
+                            <g id="Clipped">
+                                <mask id="mask-10" sketch:name="SVGID_1_" fill="white">
+                                    <use xlink:href="#path-9"></use>
+                                </mask>
+                                <g id="SVGID_1_"></g>
+                                <path d="M16.52,9.034 L16.52,6.155 C16.345,6.146 16.175,6.129 16,6.129 C15.827,6.129 15.657,6.146 15.483,6.155 L15.483,9.034 C15.655,9.021 15.826,9.008 16,9.008 C16.175,9.008 16.347,9.021 16.52,9.034" id="Shape" fill="#3e3e5b" sketch:type="MSShapeGroup" mask="url(#mask-10)"></path>
+                            </g>
+                            <g id="Clipped">
+                                <mask id="mask-12" sketch:name="SVGID_1_" fill="white">
+                                    <use xlink:href="#path-11"></use>
+                                </mask>
+                                <g id="SVGID_1_"></g>
+                                <path d="M12.711,6.704 C12.383,6.821 12.065,6.954 11.754,7.102 L12.856,9.762 C13.164,9.606 13.481,9.472 13.813,9.362 L12.711,6.704 L12.711,6.704 Z" id="Shape" fill="#3e3e5b" sketch:type="MSShapeGroup" mask="url(#mask-12)"></path>
+                            </g>
+                            <g id="Clipped">
+                                <mask id="mask-14" sketch:name="SVGID_1_" fill="white">
+                                    <use xlink:href="#path-13"></use>
+                                </mask>
+                                <g id="SVGID_1_"></g>
+                                <path d="M24.898,11.754 L22.24,12.856 C22.394,13.162 22.529,13.481 22.638,13.812 L25.296,12.711 C25.179,12.383 25.048,12.065 24.898,11.754" id="Shape" fill="#3e3e5b" sketch:type="MSShapeGroup" mask="url(#mask-14)"></path>
+                            </g>
+                            <g id="Clipped">
+                                <mask id="mask-16" sketch:name="SVGID_1_" fill="white">
+                                    <use xlink:href="#path-15"></use>
+                                </mask>
+                                <g id="SVGID_1_"></g>
+                                <path d="M22.594,8.675 L20.561,10.707 C20.823,10.934 21.069,11.178 21.293,11.44 L23.326,9.407 C23.094,9.15 22.852,8.905 22.594,8.675" id="Shape" fill="#3e3e5b" sketch:type="MSShapeGroup" mask="url(#mask-16)"></path>
+                            </g>
+                            <g id="Clipped">
+                                <mask id="mask-18" sketch:name="SVGID_1_" fill="white">
+                                    <use xlink:href="#path-17"></use>
+                                </mask>
+                                <g id="SVGID_1_"></g>
+                                <path d="M18.19,9.362 C18.52,9.471 18.84,9.606 19.147,9.761 L20.249,7.102 C19.938,6.954 19.618,6.821 19.292,6.704 L18.19,9.362 L18.19,9.362 Z" id="Shape" fill="#3e3e5b" sketch:type="MSShapeGroup" mask="url(#mask-18)"></path>
+                            </g>
+                            <g id="Clipped">
+                                <mask id="mask-20" sketch:name="SVGID_1_" fill="white">
+                                    <use xlink:href="#path-19"></use>
+                                </mask>
+                                <g id="SVGID_1_"></g>
+                                <path d="M17,19.211 L17,12 C17,11.448 16.553,11 16,11 C15.447,11 15,11.448 15,12 L15,19.211 C14.119,19.597 13.5,20.475 13.5,21.5 C13.5,22.881 14.619,24 16,24 C17.381,24 18.5,22.881 18.5,21.5 C18.5,20.475 17.883,19.597 17,19.211" id="Shape" fill="#FFCD57" sketch:type="MSShapeGroup" mask="url(#mask-20)"></path>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
