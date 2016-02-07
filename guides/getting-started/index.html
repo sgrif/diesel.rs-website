@@ -61,7 +61,7 @@ an empty migrations directory that we can use to manage our schema
 (ignoring the fact that we can only access the database from this
 CLI…). The first thing we're going to need is a table to store our
 posts. Let's create a migration for that:</p>
-<div class="demo__example"><div class="demo__example-browser"><pre class="demo__example-snippet"><code>diesel migration generate create_posts_table</code></pre></div></div><p>Diesel CLI will create to empty files for us in the required structure.
+<div class="demo__example"><div class="demo__example-browser"><pre class="demo__example-snippet"><code>diesel migration generate create_posts_table</code></pre></div></div><p>Diesel CLI will create two empty files for us in the required structure.
 You'll see output that looks something like this:</p><div class="demo__example"><div class="demo__example-browser"><pre class="demo__example-snippet"><code>Creating migrations/20160202154039_create_posts/up.sql
 Creating migrations/20160202154039_create_posts/down.sql</code></pre></div></div><p>Migrations allow us to evolve the database schema over time. Each
 migration can be applied (<code>up.sql</code>) or reverted (<code>down.sql</code>). Applying
