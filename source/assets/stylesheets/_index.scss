@@ -44,7 +44,8 @@
   &__example pre {
     border-bottom-right-radius: $base-border-radius;
     border-bottom-left-radius: $base-border-radius;
-    margin: 0;
+    margin-top: 0;
+    margin-bottom: $base-spacing;
   }
 
   &__example-caption {
