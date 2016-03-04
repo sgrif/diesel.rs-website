@@ -129,6 +129,8 @@ main
         .demo__example
           .demo__example-browser
             .browser-bar up.sql
+            a.btn-demo-example href=demo_file_at_commit("migrations/20160202154039_create_posts/up.sql", first_commit)
+              | View on Github
             pre.demo__example-snippet
               code
                 | CREATE TABLE posts (
@@ -140,6 +142,8 @@ main
 
           .demo__example-browser
             .browser-bar down.sql
+            a.btn-demo-example href=demo_file_at_commit("migrations/20160202154039_create_posts/down.sql", first_commit)
+              | View on Github
             pre.demo__example-snippet
               code
                 | DROP TABLE posts
