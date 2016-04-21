@@ -251,9 +251,9 @@ main
                 | extern crate diesel_demo;
                   extern crate diesel;
 
-                  use self::diesel_demo::*;
-                  use self::diesel_demo::models::*;
-                  use self::diesel::prelude::*;
+                  use diesel_demo::*;
+                  use diesel_demo::models::*;
+                  use diesel::prelude::*;
 
                   fn main() {
                       use diesel_demo::schema::posts::dsl::*;
@@ -316,7 +316,7 @@ main
               | View on Github
             pre.demo__example-snippet
               code
-                | use self::models::{Post, NewPost};
+                | use models::{Post, NewPost};
 
                   pub fn create_post&lt;'a&gt;(conn: &PgConnection, title: &'a str, body: &'a str) -&gt; Post {
                       use schema::posts;
@@ -356,7 +356,7 @@ main
                 | extern crate diesel_demo;
                   extern crate diesel;
 
-                  use self::diesel_demo::*;
+                  use diesel_demo::*;
                   use std::io::{stdin, Read};
 
                   fn main() {
@@ -426,9 +426,9 @@ main
                 | extern crate diesel_demo;
                   extern crate diesel;
 
-                  use self::diesel::prelude::*;
-                  use self::diesel_demo::*;
-                  use self::diesel_demo::models::Post;
+                  use diesel::prelude::*;
+                  use diesel_demo::*;
+                  use diesel_demo::models::Post;
                   use std::env::args;
 
                   fn main() {
@@ -486,8 +486,8 @@ main
                 | extern crate diesel_demo;
                   extern crate diesel;
 
-                  use self::diesel::prelude::*;
-                  use self::diesel_demo::*;
+                  use diesel::prelude::*;
+                  use diesel_demo::*;
                   use std::env::args;
 
                   fn main() {
