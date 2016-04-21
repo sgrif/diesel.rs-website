@@ -318,7 +318,7 @@ main
               code
                 | use models::{Post, NewPost};
 
-                  pub fn create_post&lt;'a&gt;(conn: &PgConnection, title: &'a str, body: &'a str) -&gt; Post {
+                  pub fn create_post(conn: &PgConnection, title: &str, body: &str) -&gt; Post {
                       use schema::posts;
 
                       let new_post = NewPost {
