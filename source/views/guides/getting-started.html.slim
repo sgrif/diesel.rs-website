@@ -24,7 +24,7 @@ main
           Note: Diesel 0.6.1 currently compiles against nightly as of
           `2016-04-09`. If you're following along with this guide, make sure
           you're using nightly greater than or equal to version, or add the
-          steps in the final section to compile on stable
+          steps in the final section to compile on stable.
 
           The first thing we need to do is generate our project.
 
@@ -124,7 +124,7 @@ main
           and immediately reverting a migration should leave your database schema
           unchanged.
 
-          Next, we'll write the SQL for migrations
+          Next, we'll write the SQL for migrations:
 
         .demo__example
           .demo__example-browser
@@ -155,7 +155,7 @@ main
           the latest migration.
 
           OK enough SQL, let's write some Rust. We'll start by writing some code
-          to show the last 5 published posts. The first thing we need to do is
+          to show the last five published posts. The first thing we need to do is
           establish a database connection.
 
         .demo__example
@@ -188,7 +188,7 @@ main
           data, and have diesel generate the names we'll use to reference tables
           and columns in our queries.
 
-          We'll add the following four lines to the top of `src/lib.rs`
+          We'll add the following four lines to the top of `src/lib.rs`:
 
         .demo__example
           .demo__example-browser
@@ -469,7 +469,7 @@ main
               new one, soon.
 
         markdown:
-          We've still only covered 3 of the 4 letters of CRUD though. Let's show
+          We've still only covered three of the four letters of CRUD though. Let's show
           how to delete things. Sometimes we write something we really hate, and
           we don't have time to look up the ID. So let's delete based on the
           title, or even just some words in the title.
@@ -673,4 +673,4 @@ main
           with-syntex`.
 
           The final code for this demo can be found at
-          [https://github.com/sgrif/diesel_demo](https://github.com/sgrif/diesel_demo)
+          [https://github.com/sgrif/diesel_demo](https://github.com/sgrif/diesel_demo).
