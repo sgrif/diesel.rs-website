@@ -50,10 +50,10 @@ main
             pre.demo__example-snippet
               code
                 | [dependencies]
-                  diesel = "0.6.1"
-                  diesel_codegen = { version = "0.6.1", default-features = false, features = ["nightly", "postgres"] }
-                  dotenv = "0.8.0"
-                  dotenv_macros = "0.8.0"
+                  diesel = "0.6"
+                  diesel_codegen = { version = "0.6", default-features = false, features = ["nightly", "postgres"] }
+                  dotenv = "0.8"
+                  dotenv_macros = "0.8"
 
         markdown:
           Diesel provides a separate [CLI][diesel-cli] tool to help manage your
@@ -251,9 +251,9 @@ main
                 | extern crate diesel_demo;
                   extern crate diesel;
 
-                  use self::diesel_demo::*;
-                  use self::diesel_demo::models::*;
-                  use self::diesel::prelude::*;
+                  use diesel_demo::*;
+                  use diesel_demo::models::*;
+                  use diesel::prelude::*;
 
                   fn main() {
                       use diesel_demo::schema::posts::dsl::*;
@@ -306,7 +306,8 @@ main
                       pub body: &'a str,
                   }
 
-        p Now let's add a function to save a new post.
+        markdown:
+          Now let's add a function to save a new post.
 
         .demo__example
           .demo__example-browser
@@ -315,9 +316,9 @@ main
               | View on Github
             pre.demo__example-snippet
               code
-                | use self::models::{Post, NewPost};
+                | use models::{Post, NewPost};
 
-                  pub fn create_post&lt;'a&gt;(conn: &PgConnection, title: &'a str, body: &'a str) -&gt; Post {
+                  pub fn create_post(conn: &PgConnection, title: &str, body: &str) -&gt; Post {
                       use schema::posts;
 
                       let new_post = NewPost {
@@ -355,7 +356,7 @@ main
                 | extern crate diesel_demo;
                   extern crate diesel;
 
-                  use self::diesel_demo::*;
+                  use diesel_demo::*;
                   use std::io::{stdin, Read};
 
                   fn main() {
@@ -425,9 +426,9 @@ main
                 | extern crate diesel_demo;
                   extern crate diesel;
 
-                  use self::diesel::prelude::*;
-                  use self::diesel_demo::*;
-                  use self::diesel_demo::models::Post;
+                  use diesel::prelude::*;
+                  use diesel_demo::*;
+                  use diesel_demo::models::Post;
                   use std::env::args;
 
                   fn main() {
@@ -449,11 +450,12 @@ main
 
         pre
           code.nohighlight.hljs
-            |  Compiling diesel_demo v0.1.0 (file:///Users/sean/Documents/Projects/open-source/diesel_demo)
-                 Running `target/debug/publish_post 1`
-            Published post Diesel demo
+            |    Compiling diesel_demo v0.1.0 (file:///Users/sean/Documents/Projects/open-source/diesel_demo)
+                   Running `target/debug/publish_post 1`
+              Published post Diesel demo
 
-        p And now, finally, we can see our post with `cargo run --bin show_posts`.
+        markdown:
+          And now, finally, we can see our post with `cargo run --bin show_posts`.
 
         pre
           code.nohighlight.hljs
@@ -484,8 +486,8 @@ main
                 | extern crate diesel_demo;
                   extern crate diesel;
 
-                  use self::diesel::prelude::*;
-                  use self::diesel_demo::*;
+                  use diesel::prelude::*;
+                  use diesel_demo::*;
                   use std::env::args;
 
                   fn main() {
@@ -574,15 +576,15 @@ main
                   build = "build.rs"
 
                   [build-dependencies]
-                  syntex = { version = "0.31.0", optional = true }
-                  diesel_codegen = { version = "0.6.1", default-features = false, features = ["postgres"] }
-                  dotenv_codegen = { version = "0.8.1",  optional = true }
+                  syntex = { version = "0.31", optional = true }
+                  diesel_codegen = { version = "0.6", default-features = false, features = ["postgres"] }
+                  dotenv_codegen = { version = "0.8",  optional = true }
 
                   [dependencies]
-                  diesel = "0.6.1"
-                  diesel_codegen = { version = "0.6.1", default-features = false, features = ["postgres"] }
-                  dotenv = "0.8.0"
-                  dotenv_macros = { version = "0.8.0", optional = true }
+                  diesel = "0.6"
+                  diesel_codegen = { version = "0.6", default-features = false, features = ["postgres"] }
+                  dotenv = "0.8"
+                  dotenv_macros = { version = "0.8", optional = true }
 
                   [features]
                   default = ["nightly"]
