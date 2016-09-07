@@ -21,8 +21,8 @@ main
           Rust in the final chapter. Before we start, make sure you have
           PostgreSQL installed and running.
 
-          Note: Diesel 0.7.0 currently compiles against nightly as of
-          `2016-07-07`. If you're following along with this guide, make sure
+          Note: Diesel 0.7.1 currently compiles against nightly as of
+          `2016-08-18`. If you're following along with this guide, make sure
           you're using that nightly version, or add the steps in the final
           section to compile on stable. Diesel updates its supported nightly
           version every 6 weeks, coinciding with Rust release dates.
@@ -51,10 +51,10 @@ main
             pre.demo__example-snippet
               code
                 | [dependencies]
-                  diesel = "0.7.0"
-                  diesel_codegen = { version = "0.7.0", default-features = false, features = ["nightly", "postgres"] }
+                  diesel = "0.7.1"
+                  diesel_codegen = { version = "0.7.2", features = ["postgres"] }
                   dotenv = "0.8.0"
-                  dotenv_macros = "0.8.0"
+                  dotenv_macros = "0.9.0"
 
         markdown:
           Diesel provides a separate [CLI][diesel-cli] tool to help manage your
