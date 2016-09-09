@@ -37,6 +37,39 @@
   }
 }
 
+.aside {
+  margin-bottom: 1.5rem;
+
+  &:before {
+    display: block;
+
+    @include size(100% null);
+    background: transparentize($white, 0.5);
+    border-top-left-radius: $base-border-radius;
+    border-top-right-radius: $base-border-radius;
+    color: $dark-gray;
+    font-size: 1rem;
+    font-weight: 400;
+    padding: 5px 10px;
+  }
+
+  &--note {
+    &:before {
+      content: "Note";
+    }
+  }
+
+  &__text {
+    font-size: 1rem;
+    padding: 1rem 1.5em 1.5rem;
+    background: transparentize($white, 0.9);
+
+    p:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
 .demo {
   @extend %section;
   padding-top: $base-spacing;
