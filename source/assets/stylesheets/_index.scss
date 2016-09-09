@@ -40,10 +40,9 @@
 .aside {
   margin-bottom: 1.5rem;
 
-  &:before {
-    display: block;
-
+  &__header {
     @include size(100% null);
+    display: block;
     background: transparentize($white, 0.5);
     border-top-left-radius: $base-border-radius;
     border-top-right-radius: $base-border-radius;
@@ -53,19 +52,17 @@
     padding: 5px 10px;
   }
 
-  &--note {
-    &:before {
-      content: "Note";
-    }
-  }
-
   &__text {
     font-size: 1rem;
     padding: 1rem 1.5em 1.5rem;
     background: transparentize($white, 0.9);
 
-    p:last-child {
-      margin-bottom: 0;
+    p {
+      margin-bottom: 1rem;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
     }
   }
 }
