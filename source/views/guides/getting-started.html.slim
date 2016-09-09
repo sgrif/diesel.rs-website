@@ -160,7 +160,17 @@ main
           idea to make sure that `down.sql` is correct. You can do a quick sanity
           check by doing `diesel migration redo`, which will revert and reapply
           the latest migration.
+        
+        aside.aside.aside--note
+          .aside__text
+            markdown:
+              Since migrations are written in raw SQL, they can contain specific
+              features of the database system you use. For example, the
+              `CREATE TABLE` statement above uses PostgreSQL's `SERIAL` type.
+              If you want to use SQLite instead, you need to use `INTEGER`
+              instead.
 
+        markdown:
           OK enough SQL, let's write some Rust. We'll start by writing some code
           to show the last five published posts. The first thing we need to do is
           establish a database connection.
