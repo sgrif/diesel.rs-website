@@ -16,17 +16,35 @@ main
           For this guide, we're going to walk through some simple examples for
           each of the pieces of CRUD, which stands for "Create Read Update
           Delete". Each step in this guide will build on the previous, and is
-          meant to be followed along. This guide assumes that you're using
-          PostgreSQL on Rust nightly. We'll talk about how to use Diesel on stable
-          Rust in the final chapter. Before we start, make sure you have
-          PostgreSQL installed and running.
+          meant to be followed along.
+          
+          **This guide assumes that you're using PostgreSQL on Rust nightly.**
+          We'll talk about [how to use Diesel on stable Rust](#on-stable-rust)
+          in the final chapter. Before we start, make sure you have PostgreSQL
+          installed and running.
+        
+        aside.aside.aside--note
+          header.aside__header A Note on Rust Nightly Versions
+          .aside__text
+            markdown:
+              Diesel 0.7.1 compiles against the nightly Rust version from
+              `2016-08-18`.
+              
+              If you're following along with this guide, make sure you're using
+              that nightly version. If you are using [rustup], you can use
+              `rustup override add nightly-2016-08-18` in your project's
+              directory to set the correct Rust nightly for this version of
+              diesel.
 
-          Note: Diesel 0.7.0 currently compiles against nightly as of
-          `2016-07-07`. If you're following along with this guide, make sure
-          you're using that nightly version, or add the steps in the final
-          section to compile on stable. Diesel updates its supported nightly
-          version every 6 weeks, coinciding with Rust release dates.
+              [rustup]: https://www.rustup.rs
+              
+              Alternatively, add the steps in the final section to [compile on
+              stable](#on-stable-rust).
+              
+              Diesel updates its supported nightly version every 6 weeks,
+              coinciding with Rust release dates.
 
+        markdown:
           The first thing we need to do is generate our project.
 
         .demo__example
@@ -51,10 +69,10 @@ main
             pre.demo__example-snippet
               code
                 | [dependencies]
-                  diesel = "0.7.0"
-                  diesel_codegen = { version = "0.7.0", default-features = false, features = ["nightly", "postgres"] }
+                  diesel = "0.7.1"
+                  diesel_codegen = { version = "0.7.2", features = ["postgres"] }
                   dotenv = "0.8.0"
-                  dotenv_macros = "0.8.0"
+                  dotenv_macros = "0.9.0"
 
         markdown:
           Diesel provides a separate [CLI][diesel-cli] tool to help manage your
@@ -154,7 +172,18 @@ main
           idea to make sure that `down.sql` is correct. You can do a quick sanity
           check by doing `diesel migration redo`, which will revert and reapply
           the latest migration.
+        
+        aside.aside.aside--note
+          header.aside__header A Note on Raw SQL in Migrations
+          .aside__text
+            markdown:
+              Since migrations are written in raw SQL, they can contain specific
+              features of the database system you use. For example, the
+              `CREATE TABLE` statement above uses PostgreSQL's `SERIAL` type.
+              If you want to use SQLite instead, you need to use `INTEGER`
+              instead.
 
+        markdown:
           OK enough SQL, let's write some Rust. We'll start by writing some code
           to show the last five published posts. The first thing we need to do is
           establish a database connection.
@@ -524,8 +553,9 @@ main
           [docs]: http://docs.diesel.rs
           [commit-no-3]: https://github.com/sgrif/diesel_demo/tree/#{third_commit}
 
-          ### Compiling for Stable Rust
+        h3#on-stable-rust Compiling for Stable Rust
 
+        markdown:
           So far we've been working entirely on nightly. This is because
           `diesel_codegen` and `dotenv_macros` are compiler plugins, which aren't
           available on stable Rust. However, using nightly for production isn't a
@@ -575,15 +605,15 @@ main
                   build = "build.rs"
 
                   [build-dependencies]
-                  syntex = { version = "0.31.0", optional = true }
-                  diesel_codegen_syntex = { version = "0.7.0", features = ["postgres"], optional = true }
-                  dotenv_codegen = { version = "0.8.1",  optional = true }
+                  syntex = { version = "0.42.0", optional = true }
+                  diesel_codegen_syntex = { version = "0.7.2", features = ["postgres"], optional = true }
+                  dotenv_codegen = { version = "0.9.2",  optional = true }
 
                   [dependencies]
-                  diesel = "0.7.0"
-                  diesel_codegen = { version = "0.7.0", features = ["postgres"], optional = true }
+                  diesel = "0.7.1"
+                  diesel_codegen = { version = "0.7.2", features = ["postgres"], optional = true }
                   dotenv = "0.8.0"
-                  dotenv_macros = { version = "0.8.0", optional = true }
+                  dotenv_macros = { version = "0.9.0", optional = true }
 
                   [features]
                   default = ["nightly"]
@@ -598,6 +628,27 @@ main
           needed for our main code base. We've added `syntex`, and the stable
           compatible versions of our codegen dependencies.
 
+        aside.aside.aside__note
+          header.aside__header A Note on Syntex Versions
+          .aside__text
+            markdown:
+              The version of Syntex we chose above depends on what versions our
+              other dependencies support. As of version 0.7.2, diesel_codegen_syntex
+              works with Syntex versions from 0.37 up to 0.42 (as written on
+              [on crates.io][1]: `syntex >= 0.37.0, < 0.43.0`). The same is also
+              true for dotenv_codegen version 0.9.2 ([see crates.io][2]).
+              
+              If you want to add another dependency that depends on being built
+              with Syntex, you need to make sure it can work with the same
+              version. For example, recent versions of Serde's `serde_codegen`
+              (when this was written, the latest version was 0.8.8) require a
+              Syntex version `^0.43` which is not compatible. You should be able
+              to use `serde_codegen = "=0.8.4"` (note the extra `=`), though.
+
+              [1]: https://crates.io/crates/diesel_codegen_syntex/0.7.2
+              [2]: https://crates.io/crates/dotenv_codegen/0.9.2
+
+        markdown:
           We've also marked a bunch of dependencies as optional -- anything that
           isn't used on both stable and nightly.
 
