@@ -27,11 +27,22 @@ main
           header.aside__header A Note on Rust Nightly Versions
           .aside__text
             markdown:
-              Diesel 0.7.1 currently compiles against nightly as of
-              `2016-08-18`. If you're following along with this guide, make sure
-              you're using that nightly version, or add the steps in the final
-              section to compile on stable. Diesel updates its supported nightly
-              version every 6 weeks, coinciding with Rust release dates.
+              Diesel 0.7.1 compiles against the nightly Rust version from
+              `2016-08-18`.
+              
+              If you're following along with this guide, make sure you're using
+              that nightly version. If you are using [rustup], you can use
+              `rustup override add nightly-2016-08-18` in your project's
+              directory to set the correct Rust nightly for this version of
+              diesel.
+
+              [rustup]: https://www.rustup.rs
+              
+              Alternatively, add the steps in the final section to [compile on
+              stable](#on-stable-rust).
+              
+              Diesel updates its supported nightly version every 6 weeks,
+              coinciding with Rust release dates.
 
         markdown:
           The first thing we need to do is generate our project.
