@@ -16,10 +16,12 @@ main
           For this guide, we're going to walk through some simple examples for
           each of the pieces of CRUD, which stands for "Create Read Update
           Delete". Each step in this guide will build on the previous, and is
-          meant to be followed along. This guide assumes that you're using
-          PostgreSQL on Rust nightly. We'll talk about how to use Diesel on stable
-          Rust in the final chapter. Before we start, make sure you have
-          PostgreSQL installed and running.
+          meant to be followed along.
+          
+          **This guide assumes that you're using PostgreSQL on Rust nightly.**
+          We'll talk about [how to use Diesel on stable Rust](#on-stable-rust)
+          in the final chapter. Before we start, make sure you have PostgreSQL
+          installed and running.
         
         aside.aside.aside--note
           .aside__text
@@ -528,8 +530,9 @@ main
           [docs]: http://docs.diesel.rs
           [commit-no-3]: https://github.com/sgrif/diesel_demo/tree/#{third_commit}
 
-          ### Compiling for Stable Rust
+        h3#on-stable-rust Compiling for Stable Rust
 
+        markdown:
           So far we've been working entirely on nightly. This is because
           `diesel_codegen` and `dotenv_macros` are compiler plugins, which aren't
           available on stable Rust. However, using nightly for production isn't a
