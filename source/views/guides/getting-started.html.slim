@@ -1,7 +1,4 @@
-- first_commit = "0570f40ca439521e2cf31f673c788f372c67c407"
-- second_commit = "a856d3a7125eba792887da54fc3ff85490f46b6e"
-- third_commit = "ea9455bd43eb0609d3638215f857103bdf3c359a"
-- fourth_commit = "72a79a6632b5d259d3f757ce2397fe5d03cb835d"
+- HEAD = "bb1587768bb0dc7c18e8752848f3c9123bea70bb"
 
 section.banner
   .content-wrapper
@@ -64,7 +61,7 @@ main
         .demo__example
           .demo__example-browser
             .browser-bar Cargo.toml
-            a.btn-demo-example href=demo_file_at_commit("Cargo.toml", first_commit)
+            a.btn-demo-example href=link_to_demo_file(HEAD, 1, "Cargo.toml")
               | View on Github
             pre.demo__example-snippet
               code
@@ -134,8 +131,8 @@ main
           .demo__example-browser
             pre.demo__example-snippet
               code
-                | Creating migrations/20160202154039_create_posts/up.sql
-                  Creating migrations/20160202154039_create_posts/down.sql
+                | Creating migrations/20160815133237_create_posts/up.sql
+                  Creating migrations/20160815133237_create_posts/down.sql
 
         markdown:
           Migrations allow us to evolve the database schema over time. Each
@@ -148,7 +145,7 @@ main
         .demo__example
           .demo__example-browser
             .browser-bar up.sql
-            a.btn-demo-example href=demo_file_at_commit("migrations/20160202154039_create_posts/up.sql", first_commit)
+            a.btn-demo-example href=link_to_demo_file(HEAD, 1, "migrations/20160815133237_create_posts/up.sql")
               | View on Github
             pre.demo__example-snippet
               code
@@ -161,7 +158,7 @@ main
 
           .demo__example-browser
             .browser-bar down.sql
-            a.btn-demo-example href=demo_file_at_commit("migrations/20160202154039_create_posts/down.sql", first_commit)
+            a.btn-demo-example href=link_to_demo_file(HEAD, 1, "migrations/20160815133237_create_posts/down.sql")
               | View on Github
             pre.demo__example-snippet
               code
@@ -191,7 +188,7 @@ main
         .demo__example
           .demo__example-browser
             .browser-bar src/lib.rs
-            a.btn-demo-example href=demo_file_at_commit("src/lib.rs", first_commit)
+            a.btn-demo-example href=link_to_demo_file(HEAD, 1, "src/lib.rs")
               | View on Github
             pre.demo__example-snippet
               code
@@ -223,7 +220,7 @@ main
         .demo__example
           .demo__example-browser
             .browser-bar src/lib.rs
-            a.btn-demo-example href=demo_file_at_commit("src/lib.rs", first_commit)
+            a.btn-demo-example href=link_to_demo_file(HEAD, 1, "src/lib.rs")
               | View on Github
             pre.demo__example-snippet
               code
@@ -243,7 +240,7 @@ main
         .demo__example
           .demo__example-browser
             .browser-bar src/models.rs
-            a.btn-demo-example href=demo_file_at_commit("src/models.rs", first_commit)
+            a.btn-demo-example href=link_to_demo_file(HEAD, 1, "src/models.rs")
               | View on Github
             pre.demo__example-snippet
               code
@@ -257,7 +254,7 @@ main
 
           .demo__example-browser
             .browser-bar src/schema.rs
-            a.btn-demo-example href=demo_file_at_commit("src/schema.rs", first_commit)
+            a.btn-demo-example href=link_to_demo_file(HEAD, 1, "src/schema.rs")
               | View on Github
             pre.demo__example-snippet
               code
@@ -274,7 +271,7 @@ main
         .demo__example
           .demo__example-browser
             .browser-bar src/bin/show_posts.rs
-            a.btn-demo-example href=demo_file_at_commit("src/bin/show_posts.rs", first_commit)
+            a.btn-demo-example href=link_to_demo_file(HEAD, 1, "src/bin/show_posts.rs")
               | View on Github
             pre.demo__example-snippet
               code
@@ -319,12 +316,12 @@ main
           Next, let's write some code to create a new post. We'll want a struct
           to use for inserting a new record.
 
-          [commit-no-1]: https://github.com/sgrif/diesel_demo/tree/#{first_commit}
+          [commit-no-1]: #{link_to_demo_file(HEAD, 1, "")}
 
         .demo__example
           .demo__example-browser
             .browser-bar src/models.rs
-            a.btn-demo-example href=demo_file_at_commit("src/models.rs", second_commit)
+            a.btn-demo-example href=link_to_demo_file(HEAD, 2, "src/models.rs")
               | View on Github
             pre.demo__example-snippet
               code
@@ -341,7 +338,7 @@ main
         .demo__example
           .demo__example-browser
             .browser-bar src/lib.rs
-            a.btn-demo-example href=demo_file_at_commit("src/lib.rs", second_commit)
+            a.btn-demo-example href=link_to_demo_file(HEAD, 2, "src/lib.rs")
               | View on Github
             pre.demo__example-snippet
               code
@@ -378,7 +375,7 @@ main
         .demo__example
           .demo__example-browser
             .browser-bar src/bin/write_post.rs
-            a.btn-demo-example href=demo_file_at_commit("src/bin/write_post.rs", second_commit)
+            a.btn-demo-example href=link_to_demo_file(HEAD, 2, "src/bin/write_post.rs")
               | View on Github
             pre.demo__example-snippet
               code
@@ -443,12 +440,12 @@ main
           Now that we've got create and read out of the way, update is actually
           relatively simple. Let's jump right into the script:
 
-          [commit-no-2]: https://github.com/sgrif/diesel_demo/tree/#{second_commit}
+          [commit-no-2]: #{link_to_demo_file(HEAD, 2, "")}
 
         .demo__example
           .demo__example-browser
             .browser-bar src/bin/publish_post.rs
-            a.btn-demo-example href=demo_file_at_commit("src/bin/publish_post.rs", third_commit)
+            a.btn-demo-example href=link_to_demo_file(HEAD, 3, "src/bin/publish_post.rs")
               | View on Github
             pre.demo__example-snippet
               code
@@ -507,7 +504,7 @@ main
         .demo__example
           .demo__example-browser
             .browser-bar src/bin/delete_post.rs
-            a.btn-demo-example href=demo_file_at_commit("src/bin/delete_post.rs", third_commit)
+            a.btn-demo-example href=link_to_demo_file(HEAD, 3, "src/bin/delete_post.rs")
               | View on Github
             pre.demo__example-snippet
               code
@@ -551,7 +548,7 @@ main
           [here][commit-no-3].
 
           [docs]: http://docs.diesel.rs
-          [commit-no-3]: https://github.com/sgrif/diesel_demo/tree/#{third_commit}
+          [commit-no-3]: #{link_to_demo_file(HEAD, 3, "")}
 
         h3#on-stable-rust Compiling for Stable Rust
 
@@ -580,7 +577,7 @@ main
         .demo__example
           .demo__example-browser
             .browser-bar src/lib.in.rs
-            a.btn-demo-example href=demo_file_at_commit("src/lib.in.rs", fourth_commit)
+            a.btn-demo-example href=link_to_demo_file(HEAD, 4, "src/lib.in.rs")
               | View on Github
             pre.demo__example-snippet
               code
@@ -594,7 +591,7 @@ main
         .demo__example
           .demo__example-browser
             .browser-bar Cargo.toml
-            a.btn-demo-example href=demo_file_at_commit("Cargo.toml", fourth_commit)
+            a.btn-demo-example href=link_to_demo_file(HEAD, 4, "Cargo.toml")
               | View on Github
             pre.demo__example-snippet
               code
@@ -662,7 +659,7 @@ main
         .demo__example
           .demo__example-browser
             .browser-bar build.rs
-            a.btn-demo-example href=demo_file_at_commit("build.rs", fourth_commit)
+            a.btn-demo-example href=link_to_demo_file(HEAD, 4, "build.rs")
               | View on Github
             pre.demo__example-snippet
               code
@@ -701,7 +698,7 @@ main
         .demo__example
           .demo__example-browser
             .browser-bar src/lib.rs
-            a.btn-demo-example href=demo_file_at_commit("src/lib.rs", fourth_commit)
+            a.btn-demo-example href=link_to_demo_file(HEAD, 4, "src/lib.rs")
               | View on Github
             pre.demo__example-snippet
               code

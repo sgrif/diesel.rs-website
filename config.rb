@@ -39,7 +39,7 @@ helpers do
     link_to(link_text, page_url, options)
   end
 
-  def demo_file_at_commit(file, commit)
-    "https://github.com/sgrif/diesel_demo/blob/#{commit}/#{file}"
+  def link_to_demo_file(commit, step, file)
+    "https://github.com/diesel-rs/diesel/tree/#{commit}/examples/getting_started_step_#{step}/#{file}"
   end
 end
