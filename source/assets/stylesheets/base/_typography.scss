@@ -80,4 +80,5 @@ pre {
 
 code {
   font-weight: bold;
+  @include font-feature-settings("liga" 0);
 }
