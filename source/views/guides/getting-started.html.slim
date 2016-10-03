@@ -1,3 +1,4 @@
+- nightly_version = "2016-08-18"
 - HEAD = "bb1587768bb0dc7c18e8752848f3c9123bea70bb"
 
 section.banner
@@ -25,11 +26,11 @@ main
           .aside__text
             markdown:
               Diesel 0.7.1 compiles against the nightly Rust version from
-              `2016-08-18`.
+              `#{nightly_version}`.
               
               If you're following along with this guide, make sure you're using
               that nightly version. If you are using [rustup], you can use
-              `rustup override add nightly-2016-08-18` in your project's
+              `rustup override add nightly-#{nightly_version}` in your project's
               directory to set the correct Rust nightly for this version of
               diesel.
 
@@ -721,5 +722,6 @@ main
           arguments. For example: `cargo build --no-default-features --features
           with-syntex`.
 
-          The final code for this demo can be found at
-          [https://github.com/sgrif/diesel_demo](https://github.com/sgrif/diesel_demo).
+          The final code for this demo can be found in the
+          [`examples` directory](https://github.com/diesel-rs/diesel/tree/#{HEAD}/examples)
+          of the main diesel repository.
