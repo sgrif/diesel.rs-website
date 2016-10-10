@@ -15,32 +15,23 @@ main
           each of the pieces of CRUD, which stands for "Create Read Update
           Delete". Each step in this guide will build on the previous, and is
           meant to be followed along.
-          
+
           **This guide assumes that you're using PostgreSQL on Rust nightly.**
           We'll talk about [how to use Diesel on stable Rust](#on-stable-rust)
           in the final chapter. Before we start, make sure you have PostgreSQL
           installed and running.
-        
+
         aside.aside.aside--note
           header.aside__header A Note on Rust Nightly Versions
           .aside__text
             markdown:
-              Diesel 0.7.1 compiles against the nightly Rust version from
-              `#{nightly_version}`.
-              
-              If you're following along with this guide, make sure you're using
-              that nightly version. If you are using [rustup], you can use
-              `rustup override add nightly-#{nightly_version}` in your project's
-              directory to set the correct Rust nightly for this version of
-              diesel.
+              Diesel 0.8.0 compiles against any nightly Rust version from
+              October 10, 2016 or later.
 
-              [rustup]: https://www.rustup.rs
-              
-              Alternatively, add the steps in the final section to [compile on
+              If you're following along with this guide, make sure you're using
+              a nightly version from that date or later.  Alternatively, add
+              the steps in the final section to [compile on
               stable](#on-stable-rust).
-              
-              Diesel updates its supported nightly version every 6 weeks,
-              coinciding with Rust release dates.
 
         markdown:
           The first thing we need to do is generate our project.
@@ -67,10 +58,9 @@ main
             pre.demo__example-snippet
               code
                 | [dependencies]
-                  diesel = "0.7.1"
-                  diesel_codegen = { version = "0.7.2", features = ["postgres"] }
+                  diesel = "0.8.0"
+                  diesel_codegen = { version = "0.8.0", features = ["postgres"] }
                   dotenv = "0.8.0"
-                  dotenv_macros = "0.9.0"
 
         markdown:
           Diesel provides a separate [CLI][diesel-cli] tool to help manage your
@@ -170,7 +160,7 @@ main
           idea to make sure that `down.sql` is correct. You can do a quick sanity
           check by doing `diesel migration redo`, which will revert and reapply
           the latest migration.
-        
+
         aside.aside.aside--note
           header.aside__header A Note on Raw SQL in Migrations
           .aside__text
@@ -193,8 +183,7 @@ main
               | View on Github
             pre.demo__example-snippet
               code
-                | #[macro_use]
-                  extern crate diesel;
+                | #[macro_use] extern crate diesel;
                   extern crate dotenv;
 
                   use diesel::prelude::*;
@@ -225,18 +214,21 @@ main
               | View on Github
             pre.demo__example-snippet
               code
-                | #![feature(custom_derive, custom_attribute, plugin)]
-                  #![plugin(diesel_codegen, dotenv_macros)]
+                | #![feature(proc_macro)]
+
+                  #[macro_use] extern crate diesel_codegen;
 
                   pub mod schema;
                   pub mod models;
 
         markdown:
-          The first two lines tell Rust that we want to use some special compiler
-          plugins provided by Diesel and Dotenv. These will add various useful
-          attributes that we can use, as well as the `infer_schema!` macro which
-          we'll see in just a moment. Next we need to create the two modules that
-          we just declared.
+          The first two lines tell Rust that we want to use some special
+          compiler plugins provided by Diesel. These will add various useful
+          attributes that we can use, as well as the
+          [`infer_schema!`][infer-schema] macro which we'll see in just a
+          moment. Next we need to create the two modules that we just declared.
+
+          [infer-schema]: http://docs.diesel.rs/diesel/macro.infer_schema!.html
 
         .demo__example
           .demo__example-browser
@@ -259,15 +251,18 @@ main
               | View on Github
             pre.demo__example-snippet
               code
-                | infer_schema!(dotenv!("DATABASE_URL"));
+                | infer_schema!("dotenv:DATABASE_URL");
 
         markdown:
-          The `#[derive(Queryable)]` will generate all of the code needed to load
-          a `Post` struct from a SQL query. The `infer_schema!` macro connects to
-          the database URL given to it, and creates a bunch of code based on the
-          database schema to represent all of the tables and columns. We'll see
-          exactly what that looks like next. Let's write the code to actually
-          show us our posts.
+          The `#[derive(Queryable)]` will generate all of the code needed to
+          load a `Post` struct from a SQL query. The
+          [`infer_schema!`][infer-schema] macro connects to the database URL
+          given to it, and creates a bunch of code based on the database schema
+          to represent all of the tables and columns. We'll see exactly what
+          that looks like next. Let's write the code to actually show us our
+          posts.
+
+          [infer-schema]: http://docs.diesel.rs/diesel/macro.infer_schema!.html
 
         .demo__example
           .demo__example-browser
@@ -328,7 +323,8 @@ main
               code
                 | use super::schema::posts;
 
-                  #[insertable_into(posts)]
+                  #[derive(Insertable)]
+                  #[table_name="posts"]
                   pub struct NewPost&lt;'a&gt; {
                       pub title: &'a str,
                       pub body: &'a str,
@@ -603,20 +599,18 @@ main
                   build = "build.rs"
 
                   [build-dependencies]
-                  syntex = { version = "0.42.0", optional = true }
-                  diesel_codegen_syntex = { version = "0.7.2", features = ["postgres"], optional = true }
-                  dotenv_codegen = { version = "0.9.2",  optional = true }
+                  syntex = { version = "0.44.0", optional = true }
+                  diesel_codegen_syntex = { version = "0.8.0", features = ["postgres"], optional = true }
 
                   [dependencies]
-                  diesel = "0.7.1"
-                  diesel_codegen = { version = "0.7.2", features = ["postgres"], optional = true }
+                  diesel = "0.8.0"
+                  diesel_codegen = { version = "0.8.0", features = ["postgres"], optional = true }
                   dotenv = "0.8.0"
-                  dotenv_macros = { version = "0.9.0", optional = true }
 
                   [features]
                   default = ["nightly"]
-                  with-syntex = ["syntex", "diesel_codegen_syntex", "dotenv_codegen"]
-                  nightly = ["diesel/unstable", "diesel_codegen", "dotenv_macros"]
+                  with-syntex = ["syntex", "diesel_codegen_syntex"]
+                  nightly = ["diesel/unstable", "diesel_codegen"]
 
         markdown:
           This file changed a lot, so let's go through line by line. We've added
@@ -635,7 +629,7 @@ main
               works with Syntex versions from 0.37 up to 0.42 (as written on
               [on crates.io][1]: `syntex >= 0.37.0, < 0.43.0`). The same is also
               true for dotenv_codegen version 0.9.2 ([see crates.io][2]).
-              
+
               If you want to add another dependency that depends on being built
               with Syntex, you need to make sure it can work with the same
               version. For example, recent versions of Serde's `serde_codegen`
@@ -668,7 +662,6 @@ main
                   fn main() {
                       extern crate syntex;
                       extern crate diesel_codegen_syntex as diesel_codegen;
-                      extern crate dotenv_codegen;
 
                       use std::env;
                       use std::path::Path;
@@ -676,7 +669,6 @@ main
                       let out_dir = env::var_os("OUT_DIR").unwrap();
                       let mut registry = syntex::Registry::new();
                       diesel_codegen::register(&mut registry);
-                      dotenv_codegen::register(&mut registry);
 
                       let src = Path::new("src/lib.in.rs");
                       let dst = Path::new(&out_dir).join("lib.rs");
@@ -703,11 +695,11 @@ main
               | View on Github
             pre.demo__example-snippet
               code
-                | #![cfg_attr(feature = "nightly", feature(custom_derive, custom_attribute, plugin))]
-                  #![cfg_attr(feature = "nightly", plugin(diesel_codegen, dotenv_macros))]
+                | #![cfg_attr(feature = "nightly", feature(proc_macro))]
 
-                  #[macro_use]
-                  extern crate diesel;
+                  #[macro_use] extern crate diesel;
+                  #[cfg(feature = "nightly")]
+                  #[macro_use] extern crate diesel_codegen;
                   extern crate dotenv;
 
                   #[cfg(feature = "nightly")]
