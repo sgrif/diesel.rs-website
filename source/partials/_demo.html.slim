@@ -128,7 +128,8 @@ section.demo
               .browser-bar Rust code
               pre.demo__example-snippet
                 code
-                  | #[insertable_into(users)]
+                  | #[derive(Insertable)]
+                    #[table_name="users"]
                     struct NewUser<'a> {
                         name: &'a str,
                         hair_color: Option<&'a str>,
