@@ -1,4 +1,4 @@
-- HEAD = "v0.8.0"
+- HEAD = "v0.9.0"
 
 section.banner
   .content-wrapper
@@ -24,8 +24,8 @@ main
           header.aside__header A Note on Rust Nightly Versions
           .aside__text
             markdown:
-              Diesel 0.8.0 compiles against any nightly Rust version from
-              October 10, 2016 or later.
+              Diesel 0.9.0 compiles against any nightly Rust version from
+              November 11, 2016 or later.
 
               If you're following along with this guide, make sure you're using
               a nightly version from that date or later.  Alternatively, add
@@ -57,8 +57,8 @@ main
             pre.demo__example-snippet
               code
                 | [dependencies]
-                  diesel = "0.8.0"
-                  diesel_codegen = { version = "0.8.0", features = ["postgres"] }
+                  diesel = "0.9.0"
+                  diesel_codegen = { version = "0.9.0", features = ["postgres"] }
                   dotenv = "0.8.0"
 
         markdown:
@@ -598,17 +598,16 @@ main
                   build = "build.rs"
 
                   [build-dependencies]
-                  syntex = { version = "0.44.0", optional = true }
-                  diesel_codegen_syntex = { version = "0.8.0", features = ["postgres"], optional = true }
+                  diesel_codegen_syntex = { version = "0.9.0", features = ["postgres"], optional = true }
 
                   [dependencies]
-                  diesel = "0.8.0"
-                  diesel_codegen = { version = "0.8.0", features = ["postgres"], optional = true }
+                  diesel = "0.9.0"
+                  diesel_codegen = { version = "0.9.0", features = ["postgres"], optional = true }
                   dotenv = "0.8.0"
 
                   [features]
                   default = ["nightly"]
-                  with-syntex = ["syntex", "diesel_codegen_syntex"]
+                  with-syntex = ["diesel_codegen_syntex"]
                   nightly = ["diesel/unstable", "diesel_codegen"]
 
         markdown:
@@ -659,20 +658,17 @@ main
               code
                 | #[cfg(feature = "with-syntex")]
                   fn main() {
-                      extern crate syntex;
                       extern crate diesel_codegen_syntex as diesel_codegen;
 
                       use std::env;
                       use std::path::Path;
 
                       let out_dir = env::var_os("OUT_DIR").unwrap();
-                      let mut registry = syntex::Registry::new();
-                      diesel_codegen::register(&mut registry);
 
                       let src = Path::new("src/lib.in.rs");
                       let dst = Path::new(&out_dir).join("lib.rs");
 
-                      registry.expand("", &src, &dst).unwrap();
+                      diesel_codegen::expand(&src, &dst).unwrap();
                   }
 
                   #[cfg(feature = "nightly")]
