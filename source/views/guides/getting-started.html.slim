@@ -1,4 +1,4 @@
-- HEAD = "v0.9.0"
+- HEAD = "v0.10.0"
 
 section.banner
   .content-wrapper
@@ -15,22 +15,16 @@ main
           Delete". Each step in this guide will build on the previous, and is
           meant to be followed along.
 
-          **This guide assumes that you're using PostgreSQL on Rust nightly.**
-          We'll talk about [how to use Diesel on stable Rust](#on-stable-rust)
-          in the final chapter. Before we start, make sure you have PostgreSQL
-          installed and running.
+          **This guide assumes that you're using PostgreSQL.** Before we start,
+          make sure you have PostgreSQL installed and running.
 
         aside.aside.aside--note
-          header.aside__header A Note on Rust Nightly Versions
+          header.aside__header A Note on Rust Versions
           .aside__text
             markdown:
-              Diesel 0.9.0 compiles against any nightly Rust version from
-              November 11, 2016 or later.
-
-              If you're following along with this guide, make sure you're using
-              a nightly version from that date or later.  Alternatively, add
-              the steps in the final section to [compile on
-              stable](#on-stable-rust).
+              Diesel 0.10 requires Rust 1.15 or later. If you're following
+              along with this guide, make sure you're using at least that
+              version of Rust by running `rustup update stable`.
 
         markdown:
           The first thing we need to do is generate our project.
@@ -57,8 +51,8 @@ main
             pre.demo__example-snippet
               code
                 | [dependencies]
-                  diesel = "0.9.0"
-                  diesel_codegen = { version = "0.9.0", features = ["postgres"] }
+                  diesel = { version = "0.10.0", features = ["postgres"] }
+                  diesel_codegen = { version = "0.10.0", features = ["postgres"] }
                   dotenv = "0.8.0"
 
         markdown:
@@ -204,7 +198,7 @@ main
           data, and have diesel generate the names we'll use to reference tables
           and columns in our queries.
 
-          We'll add the following four lines to the top of `src/lib.rs`:
+          We'll add the following three lines to the top of `src/lib.rs`:
 
         .demo__example
           .demo__example-browser
@@ -213,17 +207,14 @@ main
               | View on Github
             pre.demo__example-snippet
               code
-                | #![feature(proc_macro)]
-
-                  #[macro_use] extern crate diesel_codegen;
+                | #[macro_use] extern crate diesel_codegen;
 
                   pub mod schema;
                   pub mod models;
 
         markdown:
-          The first two lines tell Rust that we want to use some special
-          compiler plugins provided by Diesel. These will add various useful
-          attributes that we can use, as well as the
+          The first line adds the `diesel_codegen` crate to our project.  This
+          will add various useful attributes that we can use, as well as the
           [`infer_schema!`][infer-schema] macro which we'll see in just a
           moment. Next we need to create the two modules that we just declared.
 
@@ -545,170 +536,3 @@ main
 
           [docs]: http://docs.diesel.rs
           [commit-no-3]: #{link_to_demo_file(HEAD, 3, "")}
-
-        h3#on-stable-rust Compiling for Stable Rust
-
-        markdown:
-          So far we've been working entirely on nightly. This is because
-          `diesel_codegen` and `dotenv_macros` are compiler plugins, which aren't
-          available on stable Rust. However, using nightly for production isn't a
-          great idea. We can work around this by using a tool called
-          [Syntex][syntex].
-
-          [syntex]: https://github.com/serde-rs/syntex
-
-          [Syntex][syntex] is essentially a fork of the Rust compiler that we can
-          run from a build script. It will then write Rust code that is valid for
-          Stable into another file, which we can include in our code. There's some
-          drawbacks to this method, the biggest of which is that we won't get
-          proper line numbers from compiler errors. For this reason, it's usually
-          preferable to develop on nightly, and then test on stable and deploy on
-          stable.
-
-          To use [Syntex][syntex], we'll need to have it process every file which
-          uses diesel_codegen or dotenv_macros. Right now this means `schema.rs`
-          and `models.rs`. Let's create a new file called `lib.in.rs`, and move
-          the module declarations there.
-
-        .demo__example
-          .demo__example-browser
-            .browser-bar src/lib.in.rs
-            a.btn-demo-example href=link_to_demo_file(HEAD, 4, "src/lib.in.rs")
-              | View on Github
-            pre.demo__example-snippet
-              code
-                | pub mod schema;
-                  pub mod models;
-
-        markdown:
-          Next we'll add Syntex to Cargo.toml, and set up our other dependencies
-          to work with it when we compile using stable.
-
-        .demo__example
-          .demo__example-browser
-            .browser-bar Cargo.toml
-            a.btn-demo-example href=link_to_demo_file(HEAD, 4, "Cargo.toml")
-              | View on Github
-            pre.demo__example-snippet
-              code
-                | [package]
-                  name = "diesel_demo"
-                  version = "0.1.0"
-                  authors = ["Sean Griffin <sean@seantheprogrammer.com>"]
-                  build = "build.rs"
-
-                  [build-dependencies]
-                  diesel_codegen_syntex = { version = "0.9.0", features = ["postgres"], optional = true }
-
-                  [dependencies]
-                  diesel = "0.9.0"
-                  diesel_codegen = { version = "0.9.0", features = ["postgres"], optional = true }
-                  dotenv = "0.8.0"
-
-                  [features]
-                  default = ["nightly"]
-                  with-syntex = ["diesel_codegen_syntex"]
-                  nightly = ["diesel/unstable", "diesel_codegen"]
-
-        markdown:
-          This file changed a lot, so let's go through line by line. We've added
-          `build = "build.rs"` to the `[package]` section. This tells Cargo to run
-          that file before it compiles our code. The `[build-dependencies]`
-          section lists everything that is a dependency of `build.rs`, but isn't
-          needed for our main code base. We've added `syntex`, and the stable
-          compatible versions of our codegen dependencies.
-
-        aside.aside.aside__note
-          header.aside__header A Note on Syntex Versions
-          .aside__text
-            markdown:
-              The version of Syntex we chose above depends on what versions our
-              other dependencies support. As of version 0.7.2, diesel_codegen_syntex
-              works with Syntex versions from 0.37 up to 0.42 (as written on
-              [on crates.io][1]: `syntex >= 0.37.0, < 0.43.0`). The same is also
-              true for dotenv_codegen version 0.9.2 ([see crates.io][2]).
-
-              If you want to add another dependency that depends on being built
-              with Syntex, you need to make sure it can work with the same
-              version. For example, recent versions of Serde's `serde_codegen`
-              (when this was written, the latest version was 0.8.8) require a
-              Syntex version `^0.43` which is not compatible. You should be able
-              to use `serde_codegen = "=0.8.4"` (note the extra `=`), though.
-
-              [1]: https://crates.io/crates/diesel_codegen_syntex/0.7.2
-              [2]: https://crates.io/crates/dotenv_codegen/0.9.2
-
-        markdown:
-          We've also marked a bunch of dependencies as optional -- anything that
-          isn't used on both stable and nightly.
-
-          Finally, we set up our "features" section. We have two modes: nightly
-          and with-syntex (stable). We want to run on nightly by default, since
-          that's what we use in development.
-
-          Now we need to write the actual build script to process `lib.in.rs` with
-          syntex.
-
-        .demo__example
-          .demo__example-browser
-            .browser-bar build.rs
-            a.btn-demo-example href=link_to_demo_file(HEAD, 4, "build.rs")
-              | View on Github
-            pre.demo__example-snippet
-              code
-                | #[cfg(feature = "with-syntex")]
-                  fn main() {
-                      extern crate diesel_codegen_syntex as diesel_codegen;
-
-                      use std::env;
-                      use std::path::Path;
-
-                      let out_dir = env::var_os("OUT_DIR").unwrap();
-
-                      let src = Path::new("src/lib.in.rs");
-                      let dst = Path::new(&out_dir).join("lib.rs");
-
-                      diesel_codegen::expand(&src, &dst).unwrap();
-                  }
-
-                  #[cfg(feature = "nightly")]
-                  fn main() {}
-
-        markdown:
-          This file tells syntex to read `src/lib.in.rs`, process it, and stick
-          the results in a special output directory. When we compile using
-          nightly, the `main` function is empty, as we don't need to pre-process.
-
-          Finally, we need to change `lib.rs` to use this new file, instead of
-          declaring the modules directly. We'll also change the two attributes at
-          the top to only be used on nightly.
-
-        .demo__example
-          .demo__example-browser
-            .browser-bar src/lib.rs
-            a.btn-demo-example href=link_to_demo_file(HEAD, 4, "src/lib.rs")
-              | View on Github
-            pre.demo__example-snippet
-              code
-                | #![cfg_attr(feature = "nightly", feature(proc_macro))]
-
-                  #[macro_use] extern crate diesel;
-                  #[cfg(feature = "nightly")]
-                  #[macro_use] extern crate diesel_codegen;
-                  extern crate dotenv;
-
-                  #[cfg(feature = "nightly")]
-                  include!("lib.in.rs");
-
-                  #[cfg(feature = "with-syntex")]
-                  include!(concat!(env!("OUT_DIR"), "/lib.rs"));
-
-        markdown:
-          And that's it. On nightly, we just run our commands as before. If we
-          want to do something on stable, we'll need to give cargo some additional
-          arguments. For example: `cargo build --no-default-features --features
-          with-syntex`.
-
-          The final code for this demo can be found in the
-          [`examples` directory](https://github.com/diesel-rs/diesel/tree/#{HEAD}/examples)
-          of the main diesel repository.
