@@ -149,10 +149,23 @@ main
                 | DROP TABLE posts
 
         markdown:
-          We can apply our new migration with `diesel migration run`. It's a good
-          idea to make sure that `down.sql` is correct. You can do a quick sanity
-          check by doing `diesel migration redo`, which will revert and reapply
-          the latest migration.
+          We can apply our new migration:
+
+        .demo__example
+          .demo__example-browser
+            pre.demo__example-snippet
+              code
+                | diesel migration run
+
+        markdown:
+          It's a good idea to make sure that `down.sql` is correct. You can quickly confirm
+          that your `down.sql` rolls back your migration correctly by **redoing** the migration:
+
+        .demo__example
+          .demo__example-browser
+            pre.demo__example-snippet
+              code
+                | diesel migration redo
 
         aside.aside.aside--note
           header.aside__header A Note on Raw SQL in Migrations
