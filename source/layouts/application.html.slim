@@ -6,6 +6,7 @@ html
     meta(name="viewport" content="width=device-width, initial-scale=1")
     title= current_page.data.title || "Diesel"
     link(href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic,100" rel="stylesheet" type="text/css")/
+    link(href="http://diesel.rs#{current_page.url}" rel="canonicical")/
     = stylesheet_link_tag "application"
     = stylesheet_link_tag "hybrid"
 
