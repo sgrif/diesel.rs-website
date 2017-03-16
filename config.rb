@@ -40,6 +40,6 @@ helpers do
   end
 
   def link_to_demo_file(commit, step, file)
-    "https://github.com/diesel-rs/diesel/tree/#{commit}/examples/getting_started_step_#{step}/#{file}"
+    "https://github.com/diesel-rs/diesel/tree/#{commit}/examples/postgres/getting_started_step_#{step}/#{file}"
   end
 end
