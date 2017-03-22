@@ -53,7 +53,7 @@ section.demo
                     let downloads = try!(version_downloads
                       .filter(date.gt(now - 90.days()))
                       .filter(version_id.eq(any(versions)))
-                      .order(date)
+                      .order(date) // asc by default, desc with date.desc()
                       .load::&lt;Download&gt;(&conn));
             .demo__example-browser
               .browser-bar Executed SQL
