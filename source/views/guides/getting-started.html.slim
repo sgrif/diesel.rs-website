@@ -42,8 +42,17 @@ main
           `sqlite`. You can list multiple.
 
           Please note that you may need to install the corresponding client libraries
-          for your operating system.
+          for your operating system. If they are not present, you might see errors like
+          this one:
 
+        .demo__example
+          .demo__example-browser
+            pre.demo__example-snippet
+              code
+                |  note: ld: library not found for -lpq
+                   clang: error: linker command failed with exit code 1
+
+        markdown:
           We're also going to use a tool called [`.env`][dotenv-rust] to manage our
           environment variables for us. We'll add it to our dependencies as well.
 
@@ -68,7 +77,8 @@ main
           just install it on our system.
 
           The CLI has the same features as the diesel library and you should pass
-          the same as you passed in `Cargo.toml`.
+          the same as you passed in `Cargo.toml`. `--no-default-features` deactivates
+          the default, which tries to build the tool with support for all databases.
 
           [diesel-cli]: https://github.com/sgrif/diesel/tree/master/diesel_cli
 
