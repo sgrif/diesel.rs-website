@@ -37,9 +37,15 @@ main
                   cd diesel_demo
 
         markdown:
-          First, let's add Diesel to our dependencies. We're also going to use a
-          tool called [`.env`][dotenv-rust] to manage our environment variables
-          for us. We'll add it to our dependencies as well.
+          First, let's add Diesel to our dependencies. The features option lists the
+          databases we want to use. The current options are: `postgres`, `mysql` and
+          `sqlite`. You can list multiple.
+
+          Please note that you may need to install the corresponding client libraries
+          for your operating system.
+
+          We're also going to use a tool called [`.env`][dotenv-rust] to manage our
+          environment variables for us. We'll add it to our dependencies as well.
 
           [dotenv-rust]: https://github.com/slapresta/rust-dotenv
 
@@ -61,13 +67,16 @@ main
           project's code directly, we don't add it to `Cargo.toml`. Instead, we
           just install it on our system.
 
+          The CLI has the same features as the diesel library and you should pass
+          the same as you passed in `Cargo.toml`.
+
           [diesel-cli]: https://github.com/sgrif/diesel/tree/master/diesel_cli
 
         .demo__example
           .demo__example-browser
             pre.demo__example-snippet
               code
-                | cargo install diesel_cli
+                | cargo install diesel_cli --no-default-features --features postgres
 
         markdown:
           We need to tell Diesel where to find our database. We do this by
