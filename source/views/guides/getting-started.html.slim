@@ -1,4 +1,4 @@
-- HEAD = "v0.14.0"
+- HEAD = "v0.15.0"
 
 section.banner
   .content-wrapper
@@ -22,7 +22,7 @@ main
           header.aside__header A Note on Rust Versions
           .aside__text
             markdown:
-              Diesel 0.14 requires Rust 1.17 or later. If you're following
+              Diesel 0.15 requires Rust 1.17 or later. If you're following
               along with this guide, make sure you're using at least that
               version of Rust by running `rustup update stable`.
 
@@ -51,8 +51,8 @@ main
             pre.demo__example-snippet
               code
                 | [dependencies]
-                  diesel = { version = "0.14.0", features = ["postgres"] }
-                  diesel_codegen = { version = "0.14.0", features = ["postgres"] }
+                  diesel = { version = "0.15.0", features = ["postgres"] }
+                  diesel_codegen = { version = "0.15.0", features = ["postgres"] }
                   dotenv = "0.9.0"
 
         markdown:
@@ -68,6 +68,34 @@ main
             pre.demo__example-snippet
               code
                 | cargo install diesel_cli
+
+        aside.aside.aside--note
+          header.aside__header A Note on Installing <code>diesel_cli</code>
+          .aside__text
+            markdown:
+              If you run into an error like:
+            .demo__example
+              .demo__example-browser
+                pre.demo__example-snippet
+                  code
+                    | note: ld: library not found for -lmysqlclient
+                      clang: error: linker command failed with exit code 1 (use -v to see invocation)
+            markdown:
+              This means you are missing the client library needed for a
+              database backend -- `mysqlclient` in this case. You can resolve
+              this issue by either installing the library (using the usual way
+              to do this depending on your operating system) or by specifying
+              the backends you want to install the CLI tool with.
+
+              For example, if you only have PostgreSQL installed, you can use
+              this to install `diesel_cli` with only PostgreSQL:
+            .demo__example
+              .demo__example-browser
+                pre.demo__example-snippet
+                  code
+                    | cargo install diesel_cli --no-default-features --features postgres
+
+
 
         markdown:
           We need to tell Diesel where to find our database. We do this by
