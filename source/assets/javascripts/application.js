@@ -12,3 +12,22 @@ var onReady = function() {
 };
 
 document.addEventListener("DOMContentLoaded", onReady, false);
+
+var toggleOff = function() {
+  if (!event.target.matches('.dropdown-btn')) {
+    var dropdowns = document.getElementsByClassName("dropdown-links");
+    var i;
+    for (i = 0; i < dropdowns.length; i++) {
+      var openDropdown = dropdowns[i];
+      if (openDropdown.classList.contains('show')) {
+        openDropdown.classList.remove('show');
+      }
+    }
+  }
+}
+
+document.addEventListener("click", toggleOff);
+
+function toggleDropdown() {
+  document.getElementById("guides-dropdown").classList.toggle("show");
+}

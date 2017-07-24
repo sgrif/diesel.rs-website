@@ -5,6 +5,10 @@ header.main-header
     nav.header-nav
       ul
         li.nav-item
-          a(href="/guides/getting-started") Guides
+          div.dropdown
+            a(onclick="toggleDropdown()" class="dropdown-btn") Guides
+            div.dropdown-links id="guides-dropdown"
+              a(href="/guides/getting-started") Getting Started
+              a(href="/guides/backend-adapters") Adapters
         li.nav-item
           a(href="http://docs.diesel.rs") API Docs

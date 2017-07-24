@@ -39,6 +39,33 @@
       display: inline-block;
       line-height: $main-header-height;
 
+      .dropdown-links {
+        display: none;
+        position: absolute;
+        background-color: $lavender;
+        min-width: 155px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+
+        a {
+          padding: 15px 15px 15px 15px;
+          display: block;
+          text-align: left;
+          line-height: 20px;
+        }
+      }
+
+      .show {
+        display: block;
+      }
+
+      .dropdown {
+        position: relative;
+
+        a {
+          cursor: pointer;
+        }
+      }
+
       &:not(:last-child) {
         margin-right: $small-spacing;
       }

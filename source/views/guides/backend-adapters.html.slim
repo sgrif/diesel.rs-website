@@ -1,0 +1,46 @@
+section.banner
+  .content-wrapper
+    .banner-wrapper
+      h2.banner__heading Backend Adapters
+
+main
+  section.demo
+    .content-wrapper
+      .guide-wrapper
+        markdown:
+          Diesel supports Postgresql and SQLite backends currently, with plugin
+          points so that additional backends can be added in both the main
+          crate and third party crates. As a user of Diesel, the primary
+          difference between backends is the connection type you use in your
+          code.
+
+        .demo__example
+          .demo__example-browser
+            pre.demo__example-snippet
+              code
+                | // Postgres
+                  use diesel::pg::PgConnection;
+                  PgConnection::establish("postgres://localhost/my_database")
+
+                  // SQLite
+                  use diesel::sqlite::SqliteConnection;
+                  SqliteConnection::establish("/path/to/my/database")
+
+          markdown:
+            There may also be a few minor differences between what the
+            different backends support, sometimes due to limitations or design
+            aspects of the backend itself, and sometimes due to ongoing
+            development on the adapter within Diesel.
+
+            A notable difference in the SQLite adapter is that the
+            `infer_schema!` and `infer_table_from_schema!` macros are not yet
+            supported (but [coming soon!][infer-table-pr]). Instead, you'll
+            need to call the `table!` macro for each of the tables you want
+            defined.
+
+            [infer-table-pr]: https://github.com/sgrif/diesel/pull/226
+
+            Other than that, using the different backends with Diesel is easy!
+            Diesel's CLI will detect what backend you're using automatically,
+            and using the right connection type in your own code gets you
+            pretty much all the way there.
