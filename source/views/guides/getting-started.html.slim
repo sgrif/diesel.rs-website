@@ -69,6 +69,30 @@ main
               code
                 | cargo install diesel_cli
 
+        aside.aside.aside--note
+          header.aside__header A Note on Installing diesel_cli
+          .aside__text
+            markdown:
+              If you run into the error:
+            .demo__example
+              .demo__example-browser
+                pre.demo__example-snippet
+                  code
+                    | note: ld: library not found for -lmysqlclient
+                      clang: error: linker command failed with exit code 1 (use -v to see invocation)
+            markdown:
+              You can resolve this issue by specifying the diesel
+              backends you want to install it with. If you only have
+              postgres installed, you can setup `diesel_cli` with only
+              postgres.
+            .demo__example
+              .demo__example-browser
+                pre.demo__example-snippet
+                  code
+                    | cargo install diesel_cli --no-default-features --features postgres
+
+
+
         markdown:
           We need to tell Diesel where to find our database. We do this by
           setting the `DATABASE_URL` environment variable. On our development
