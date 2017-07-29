@@ -112,3 +112,11 @@
     }
   }
 }
+
+.guides-link {
+  color: $action-color;
+
+  &:hover {
+    color: darken($action-color, 10%);
+  }
+}
