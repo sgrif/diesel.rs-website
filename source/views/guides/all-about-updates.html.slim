@@ -61,6 +61,7 @@ main
             pre.demo__example-snippet
               code UPDATE `posts` SET `draft` = ?
 
+        markdown:
           This is pretty much one-to-one with the Rust code (the `?` denotes a bound parameter in SQL, which will be substituted with `false` here). It's quite rare to want to update an entire table, though. So let's look at how we can scope that down. The second kind that you can pass to `update` is any query which has only had `.filter` called on it. We could scope our update to only touch posts where `publish_at` is in the past like so:
 
         .demo__example
