@@ -39,7 +39,15 @@ helpers do
     link_to(link_text, page_url, options)
   end
 
-  def link_to_demo_file(commit, step, file)
-    "https://github.com/diesel-rs/diesel/tree/#{commit}/examples/postgres/getting_started_step_#{step}/#{file}"
+  def repo_url(path)
+    "https://github.com/diesel-rs/diesel/tree/v0.15.2/#{path}"
+  end
+
+  def example_file(path)
+    repo_url("examples/#{path}")
+  end
+
+  def getting_started_demo_file(step, file)
+    example_file("postgres/getting_started_step_#{step}/#{file}")
   end
 end
