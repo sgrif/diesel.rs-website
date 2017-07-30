@@ -1,6 +1,15 @@
+html {
+  height: 100%;
+}
+
 body {
   background: $lavender;
   color: $base-font-color;
+  position: relative;
+  min-height: 100%;
+  padding-bottom: $base-spacing * 5.2;
+  margin: 0;
+
 
   @include media($medium-screen-up) {
     font-size: $base-font-size;
@@ -17,6 +26,8 @@ body {
 
 body.index {
   background: linear-gradient($lavender, lighten($lavender, 40%));
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 }
 
 .guide-wrapper {

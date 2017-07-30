@@ -70,6 +70,7 @@
 .demo {
   @extend %section;
   padding-top: $base-spacing;
+  margin: 0 auto;
 
   &__example pre {
     border-bottom-right-radius: $base-border-radius;
