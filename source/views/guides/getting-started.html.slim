@@ -287,11 +287,19 @@ main
           load a `Post` struct from a SQL query. The
           [`infer_schema!`][infer-schema] macro connects to the database URL
           given to it, and creates a bunch of code based on the database schema
-          to represent all of the tables and columns. We'll see exactly what
-          that looks like next. Let's write the code to actually show us our
-          posts.
+          to represent all of the tables and columns. We'll see how
+          exactly to use that in the next example.
+
+          Alternatively to using `infer_schema!`, you can run
+          `diesel print-schema` on the command line in your project directory
+          and copy the resulting [`table!`][table] declarations to your
+          `schema.rs`. You don't need a database to build your application this
+          way, but your schema also won't be updated when you add migrations.
+
+          Let's write the code to actually show us our posts.
 
           [infer-schema]: http://docs.diesel.rs/diesel/macro.infer_schema!.html
+          [table]: http://docs.diesel.rs/diesel/macro.table!.html
 
         .demo__example
           .demo__example-browser
