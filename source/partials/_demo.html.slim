@@ -139,7 +139,9 @@ section.demo
                         NewUser { name: "Sean", hair_color: Some("Black") },
                         NewUser { name: "Gordon", hair_color: None },
                     ];
-                    insert(&new_users).into(users::table)
+
+                    insert_into(users)
+                        .values(&new_users)
                         .execute(&connection);
             .demo__example-browser
               .browser-bar Executed SQL
@@ -160,7 +162,9 @@ section.demo
                           NewUser { name: "Sean", hair_color: Some("Black") },
                           NewUser { name: "Gordon", hair_color: None },
                       ];
-                      let inserted_users = insert(&new_users).into(users::table)
+
+                      let inserted_users = insert_into(users)
+                          .values(&new_users)
                           .get_results::&lt;User&gt;(&connection);
             .demo__example-browser
               .browser-bar Executed SQL
