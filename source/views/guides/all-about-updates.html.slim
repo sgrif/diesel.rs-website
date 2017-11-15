@@ -44,7 +44,7 @@ main
               | View on Github
             pre.demo__example-snippet
               code
-                | use posts::dsl:::*;
+                | use posts::dsl::*;
 
                   diesel::update(posts).set(draft.eq(false))
 
