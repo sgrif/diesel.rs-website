@@ -20,7 +20,7 @@ main
           header.aside__header A Note on Rust Versions
           .aside__text
             markdown:
-              Diesel 0.16 requires Rust 1.18 or later. If you're following
+              Diesel 0.99 requires Rust 1.20 or later. If you're following
               along with this guide, make sure you're using at least that
               version of Rust by running `rustup update stable`.
 
@@ -49,8 +49,8 @@ main
             pre.demo__example-snippet
               code
                 | [dependencies]
-                  diesel = { version = "0.16.0", features = ["postgres"] }
-                  diesel_codegen = { version = "0.16.0", features = ["postgres"] }
+                  diesel = { version = "0.99.0", features = ["postgres"] }
+                  diesel_infer_schema = { version = "0.99.0", features = ["postgres"] }
                   dotenv = "0.9.0"
 
         markdown:
@@ -246,16 +246,16 @@ main
               | View on Github
             pre.demo__example-snippet
               code
-                | #[macro_use] extern crate diesel_codegen;
+                | #[macro_use] extern crate diesel_infer_schema;
 
                   pub mod schema;
                   pub mod models;
 
         markdown:
-          The first line adds the `diesel_codegen` crate to our project.  This
-          will add various useful attributes that we can use, as well as the
-          [`infer_schema!`][infer-schema] macro which we'll see in just a
-          moment. Next we need to create the two modules that we just declared.
+          The first line adds the `diesel_infer_schema` crate to our project. This
+          will add the [`infer_schema!`][infer-schema] macro which we'll see in
+          just a moment. Next we need to create the two modules that we just
+          declared.
 
           [infer-schema]: http://docs.diesel.rs/diesel/macro.infer_schema!.html
 
@@ -386,7 +386,8 @@ main
                           body: body,
                       };
 
-                      diesel::insert(&new_post).into(posts::table)
+                      diesel::insert_into(posts::table)
+                          .values(&new_post)
                           .get_result(conn)
                           .expect("Error saving new post")
                   }

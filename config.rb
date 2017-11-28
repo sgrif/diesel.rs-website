@@ -40,7 +40,7 @@ helpers do
   end
 
   def repo_url(path)
-    "https://github.com/diesel-rs/diesel/tree/v0.16.0/#{path}"
+    "https://github.com/diesel-rs/diesel/tree/v0.99.0/#{path}"
   end
 
   def example_file(path)

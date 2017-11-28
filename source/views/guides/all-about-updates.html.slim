@@ -197,7 +197,7 @@ main
           AsChangeset
           -----------
 
-          While it's nice to have the ability to update columns directly like this, it can quickly get cumbersome when dealing with forms that have more than a handful of fields. If we look at the signature of [`.set`], you'll notice that the constraint is for a trait called [`AsChangeset`]. This is another trait that `diesel_codegen` can derive for us. We can add `#[derive(AsChangeset)]` to our `Post` struct, which will let us pass a `&Post` to `set`.
+          While it's nice to have the ability to update columns directly like this, it can quickly get cumbersome when dealing with forms that have more than a handful of fields. If we look at the signature of [`.set`], you'll notice that the constraint is for a trait called [`AsChangeset`]. This is another trait that `diesel` can derive for us. We can add `#[derive(AsChangeset)]` to our `Post` struct, which will let us pass a `&Post` to `set`.
 
           [`.set`]: http://docs.diesel.rs/diesel/query_builder/struct.IncompleteUpdateStatement.html#method.set
           [`AsChangeset`]: http://docs.diesel.rs/diesel/query_builder/trait.AsChangeset.html
