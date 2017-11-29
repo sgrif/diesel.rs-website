@@ -1,0 +1,118 @@
+section.banner
+  .content-wrapper
+    .banner-wrapper
+      h2.banner__heading Group By and QueryableByName
+
+main
+  section.demo
+    .content-wrapper
+      .guide-wrapper
+        markdown:
+          Diesel can't statically check all queries due to the limitless
+          combinations of SQL. When you can't represent your query with
+          Diesel's DSL, you can fallback to
+          [`sql_query`](http://docs.diesel.rs/diesel/fn.sql_query.html).
+          Aggregations such as `GROUP BY` provide a great learning example for
+          turning raw SQL into a structure Diesel can work with.
+
+          **This guide assumes that you're using PostgreSQL.** Before we start,
+          make sure you have PostgreSQL installed and running.
+
+          Let's condense our `posts` table from other guides and simply look
+          at the post id and when it was published:
+
+        .demo__example
+          .demo__example-browser
+            .browser-bar src/lib.rs
+            pre.demo__example-snippet
+              code
+                | table! {
+                      posts {
+                          id -> BigInt,
+                          publish_at -> Timestamp,
+                      }
+                  }
+
+        markdown:
+          We're going to write a query that returns how many posts we wrote a
+          month:
+
+        .demo__example
+          .demo__example-browser
+            .browser-bar query.sql
+            pre.demo__example-snippet
+              code
+                | SELECT
+                    date_trunc('month', publish_at) as pub_month,
+                    COUNT(*) as posted
+                  FROM posts
+                  GROUP BY pub_month
+                  ORDER BY pub_month;
+
+        markdown:
+          Currently, Diesel is unable to formulate this query using the DSL
+          generated from the `posts` table.
+
+          We'll be deserializing each returned row into the following struct.
+
+        .demo__example
+          .demo__example-browser
+            .browser-bar src/lib.rs
+            pre.demo__example-snippet
+              code
+                | struct MonthlyPosts {
+                      pub month: DateTime<Utc>,
+                      pub posted: i64,
+                  }
+
+        markdown:
+          We can satisfy Diesel by implementing the
+          [`QueryableByName`](http://docs.diesel.rs/diesel/query_source/trait.QueryableByName.html)
+          trait (this trait can be automatically if the query can be mapped to
+          a table or view). `QueryableByName` will give us a row to reference
+          our columns by name.
+
+        .demo__example
+          .demo__example-browser
+            .browser-bar src/lib.rs
+            pre.demo__example-snippet
+              code
+                | impl QueryableByName<Sqlite> for MonthlyPosts {
+                    fn build&lt;R: NamedRow&lt;Pg&gt;&gt;(row: &R) ->
+                      Result&lt;Self, Box&lt;Error + Send + Sync&gt;&gt; {
+                        Ok(MonthlyPosts {
+                            month: row.get::&lt;Timestamptz, _&gt;("pub_month")?,
+                            posted: row.get::&lt;BigInt, _&gt;("posted")?,
+                        })
+                      }
+                  }
+
+        aside.aside.aside--note
+          header.aside__header QueryableByName vs FromSql
+          .aside__text
+            markdown:
+              If you're looking to deserialize individual columns into
+              different types instead of the whole row, you'll need to
+              implement
+              [`FromSql`](http://docs.diesel.rs/diesel/types/trait.FromSql.html)
+              for the type.
+
+        markdown:
+          Now we can use our `MonthlyPosts` in a familiar fashion.
+
+        .demo__example
+          .demo__example-browser
+            .browser-bar src/lib.rs
+            pre.demo__example-snippet
+              code
+                | let results = sql_query(MONTHLY_POSTS_QUERY)
+                    .load::&lt;MonthlyPosts&gt;(&connection)
+                    .expect("Error loading aggregation");
+                    
+                    
+        markdown:
+          Queries using parameterized statements should use
+          [`bind`](http://docs.diesel.rs/diesel/query_builder/struct.SqlQuery.html#method.bind)
+          instead of string formatting to protect against SQL injection.
+
+
