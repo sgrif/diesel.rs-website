@@ -1,7 +1,7 @@
 section.banner
   .content-wrapper
     .banner-wrapper
-      h2.banner__heading Group By and QueryableByName
+      h2.banner__heading QueryableByName
 
 main
   section.demo
@@ -12,10 +12,12 @@ main
           combinations of SQL. When you can't represent your query with
           Diesel's DSL, you can fallback to
           [`sql_query`](http://docs.diesel.rs/diesel/fn.sql_query.html).
-          Aggregations such as `GROUP BY` provide a great learning example for
-          turning raw SQL into a structure Diesel can work with.
+          Aggregations such as `GROUP BY` condense multiple input rows into a single result,
+          and provide a great learning example for turning raw SQL into a structure Diesel can work with.
 
-          **This guide assumes that you're using PostgreSQL.** Before we start,
+          While this guide assumes that you're using PostgreSQL for data types exhibited,
+          `sql_query` is backend agnostic.
+          If you'd like to follow along,
           make sure you have PostgreSQL installed and running.
 
           Let's condense our `posts` table from other guides and simply look
@@ -29,13 +31,13 @@ main
                 | table! {
                       posts {
                           id -> BigInt,
-                          publish_at -> Timestamp,
+                          publish_at -> Timestamptz,
                       }
                   }
 
         markdown:
           We're going to write a query that returns how many posts we wrote a
-          month:
+          month after a given date:
 
         .demo__example
           .demo__example-browser
@@ -46,6 +48,7 @@ main
                     date_trunc('month', publish_at) as pub_month,
                     COUNT(*) as posted
                   FROM posts
+                  where publish_at > ?
                   GROUP BY pub_month
                   ORDER BY pub_month;
 
@@ -68,7 +71,7 @@ main
         markdown:
           We can satisfy Diesel by implementing the
           [`QueryableByName`](http://docs.diesel.rs/diesel/query_source/trait.QueryableByName.html)
-          trait (this trait can be automatically if the query can be mapped to
+          trait (this trait can be derived automatically if the query can be mapped to
           a table or view). `QueryableByName` will give us a row to reference
           our columns by name.
 
@@ -77,9 +80,10 @@ main
             .browser-bar src/lib.rs
             pre.demo__example-snippet
               code
-                | impl QueryableByName<Sqlite> for MonthlyPosts {
-                    fn build&lt;R: NamedRow&lt;Pg&gt;&gt;(row: &R) ->
-                      Result&lt;Self, Box&lt;Error + Send + Sync&gt;&gt; {
+                | impl QueryableByName<Pg> for MonthlyPosts {
+                    fn build&lt;R: NamedRow&lt;Pg&gt;&gt;(
+                        row: &R
+                    ) -> Result&lt;Self, Box&lt;Error + Send + Sync&gt;&gt; {
                         Ok(MonthlyPosts {
                             month: row.get::&lt;Timestamptz, _&gt;("pub_month")?,
                             posted: row.get::&lt;BigInt, _&gt;("posted")?,
@@ -105,9 +109,11 @@ main
             .browser-bar src/lib.rs
             pre.demo__example-snippet
               code
-                | let results = sql_query(MONTHLY_POSTS_QUERY)
-                    .load::&lt;MonthlyPosts&gt;(&connection)
-                    .expect("Error loading aggregation");
+                | let dt = Utc.ymd(2016, 1, 1).and_hms(0, 0, 0);
+                  let results = sql_query(MONTHLY_POSTS_QUERY)
+                      .bind::&lt;Timestamptz&gt;(dt)
+                      .load::&lt;MonthlyPosts&gt;(&connection)
+                      .expect("Error loading aggregation");
                     
                     
         markdown:
