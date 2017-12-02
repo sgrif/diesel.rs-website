@@ -4,15 +4,16 @@ section.banner
       h2.banner__heading Guides
 
 main
-  section.demo
+  section.guides-list
     .content-wrapper
       .guide-wrapper
-        .section-heading
-          h4
-            a.guides-link(href="/guides/getting-started") Getting Started
-          h4
-            a.guides-link(href="/guides/all-about-updates") All About Updates
-          h4
-            a.guides-link(href="/guides/schema-in-depth") Schema in Depth
-          h4
-            | (More coming soon)
+        a.guides-link(href="/guides/getting-started")
+          h4.guides-list-heading Getting Started
+          p Everything you need to know to install and configure Diesel, and create your first application.
+        a.guides-link(href="/guides/all-about-updates")
+          h4.guides-list-heading All About Updates
+          p This guide covers everything you need to know about constructing <code>UPDATE</code> queries with Diesel.
+        a.guides-link(href="/guides/schema-in-depth")
+          h4.guides-list-heading Schema in Depth
+          p Ever wondered what exactly <code>infer_schema!</code> and <code>table!</code> are doing? This guide will walk you through exactly what code gets generated, and how it's done.
+        h4.coming-soon-placeholder More coming soon...
