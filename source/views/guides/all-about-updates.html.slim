@@ -277,20 +277,20 @@ main
 
           The simplest method for running your query is [`execute`][]. This method will run your query, and return the number of rows that were affected. This is the method you should use if you simply want to ensure that the query executed successfully, and don't care about getting anything back from the database.
 
-          [`execute`]: http://docs.diesel.rs/diesel/prelude/trait.ExecuteDsl.html#tymethod.execute
+          [`execute`]: http://docs.diesel.rs/diesel/query_dsl/trait.RunQueryDsl.html#tymethod.execute
 
           For queries where you do want to get data back from the database, we need to use [`get_result`][] or [`get_results`][]. If you haven't explicitly called [`returning`][], these methods will return all of the columns on the table. Similar to [`load`][] on a select statement, you will need to specify the type you'd like to deserialize to (either a tuple or a struct with `#[derive(Queryable)]`). You should use [`get_results`][] when you are expecting more than one record back. If you are only expecting a single record, you can call [`get_result`][] instead.
 
           It should be noted that receiving 0 rows from [`get_result`][] is considered an error condition by default. If you want to get back 0 or 1 row (e.g. have a return type of `QueryResult<Option<T>>`), then you will need to call `.get_result(...).optional()`.
 
-          [`get_result`]: http://docs.diesel.rs/diesel/prelude/trait.LoadDsl.html#method.get_result
-          [`get_results`]: http://docs.diesel.rs/diesel/prelude/trait.LoadDsl.html#method.get_results
+          [`get_result`]: http://docs.diesel.rs/diesel/query_dsl/trait.RunQueryDsl.html#method.get_result
+          [`get_results`]: http://docs.diesel.rs/diesel/query_dsl/trait.RunQueryDsl.html#method.get_results
           [`returning`]: http://docs.diesel.rs/diesel/query_builder/update_statement/struct.UpdateStatement.html#method.returning
-          [`load`]: http://docs.diesel.rs/diesel/prelude/trait.LoadDsl.html#method.load
+          [`load`]: http://docs.diesel.rs/diesel/query_dsl/trait.RunQueryDsl.html#method.load
 
           Finally, if your struct has both `#[derive(AsChangeset)]` and `#[derive(Identifiable)]`, you will be able to use the [`save_changes`][] method. Unlike the other methods mentioned in this guide, you do not explicitly build a query when using [`save_changes`][]. Doing `foo.save_changes(&conn)` is equivalent to doing `diesel::update(&foo).set(&foo).get_result(&conn)`. Like [`get_result`][] and [`get_results`][], you will need to specify the type you'd like to get back.
 
-          [`save_changes`]: http://docs.diesel.rs/diesel/prelude/trait.SaveChangesDsl.html#method.save_changes
+          [`save_changes`]: http://docs.diesel.rs/diesel/query_dsl/trait.SaveChangesDsl.html#method.save_changes
 
           All of the code for this guide can be found in executable form in [this Diesel example].
 

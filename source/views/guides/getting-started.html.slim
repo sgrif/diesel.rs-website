@@ -20,7 +20,7 @@ main
           header.aside__header A Note on Rust Versions
           .aside__text
             markdown:
-              Diesel 0.99 requires Rust 1.20 or later. If you're following
+              Diesel requires Rust 1.20 or later. If you're following
               along with this guide, make sure you're using at least that
               version of Rust by running `rustup update stable`.
 
@@ -49,8 +49,8 @@ main
             pre.demo__example-snippet
               code
                 | [dependencies]
-                  diesel = { version = "0.99.0", features = ["postgres"] }
-                  diesel_infer_schema = { version = "0.99.0", features = ["postgres"] }
+                  diesel = { version = "1.0.0-beta1", features = ["postgres"] }
+                  diesel_infer_schema = { version = "1.0.0-beta1", features = ["postgres"] }
                   dotenv = "0.9.0"
 
         markdown:
