@@ -49,9 +49,9 @@ main
                   diesel::update(posts).set(draft.eq(false))
 
         markdown:
-          We can use the [`print_sql!`] macro to inspect the generated SQL. The macro's output will differ slightly from what actually gets sent to the database. It shows backend agnostic SQL, so the syntax used for bind parameters and quoting table/column names will be slightly different. If we look at the SQL from the above query, we'll see the following.
+          We can use the [`debug_query`] function to inspect the generated SQL. The output you see may slightly differ from this guide, depending on which backend you're using. If we run `println!("{}", debug_query::<Pg, _>(&our_query);`, we'll see the following:
 
-          [`print_sql!`]: http://docs.diesel.rs/diesel/macro.print_sql.html
+          [`debug_query`]: http://docs.diesel.rs/diesel/fn.debug_query.html
 
         .demo__example
           .demo__example-browser
@@ -59,7 +59,8 @@ main
             a.btn-demo-example href=example_file("postgres/all_about_updates/src/lib.rs#L40-L48")
               | View on Github
             pre.demo__example-snippet
-              code UPDATE `posts` SET `draft` = ?
+              code UPDATE "posts" SET "draft" = $1 -- binds: [false]
+
 
         markdown:
           This is pretty much one-to-one with the Rust code (the `?` denotes a bound parameter in SQL, which will be substituted with `false` here). It's quite rare to want to update an entire table, though. So let's look at how we can scope that down. The second kind that you can pass to `update` is any query which has only had `.filter` called on it. We could scope our update to only touch posts where `publish_at` is in the past like so:
@@ -268,7 +269,7 @@ main
 
           If you are using PostgreSQL, all of these options will work with `INSERT ON CONFLICT DO UPDATE` as well. See the [upsert docs][] for more details.
 
-          [upsert docs]: http://docs.diesel.rs/diesel/pg/upsert/fn.do_update.html
+          [upsert docs]: http://docs.diesel.rs/diesel/pg/upsert/index.html
 
           Executing your query
           --------------------
