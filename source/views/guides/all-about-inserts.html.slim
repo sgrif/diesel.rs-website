@@ -36,7 +36,7 @@ main
                       users {
                           id -> Integer,
                           name -> Text,
-                          hair_color -> Nullable<Text>,
+                          hair_color -> Nullable&lt;Text&gt;,
                           created_at -> Timestamp,
                           updated_at -> Timestamp,
                       }
@@ -176,9 +176,9 @@ main
 
                   #[derive(Deserialize, Insertable)]
                   #[table_name = "users"]
-                  pub struct UserForm<'a> {
+                  pub struct UserForm&lt;'a&gt; {
                       name: &'a str,
-                      hair_color: Option<&'a str>,
+                      hair_color: Option&lt;&'a str&gt;,
                   }
 
         .demo__example
@@ -191,7 +191,7 @@ main
                 | use schema::users::dsl::*;
 
                   let json = r#"{ "name": "Sean", "hair_color": "Black" }"#;
-                  let user_form = serde_json::from_str::<UserForm>(json)?;
+                  let user_form = serde_json::from_str::&lt;UserForm&gt;(json)?;
 
                   insert_into(users).values(&user_form).execute(conn)?;
 
@@ -224,7 +224,7 @@ main
                 | use schema::users::dsl::*;
 
                   let json = r#"{ "name": "Ruby", "hair_color": null }"#;
-                  let user_form = serde_json::from_str::<UserForm>(json)?;
+                  let user_form = serde_json::from_str::&lt;UserForm&gt;(json)?;
 
                   insert_into(users).values(&user_form).execute(conn)?;
 
@@ -297,7 +297,7 @@ main
               code
                 | for row in &values {
                       let query = insert_into(users).values(row);
-                      println!("{}", debug_query::<Sqlite, _>(&query));
+                      println!("{}", debug_query::&lt;Sqlite, _&gt;(&query));
                   }
 
         markdown:
@@ -414,7 +414,7 @@ main
                       { "name": "Sean", "hair_color": "Black" },
                       { "name": "Tess", "hair_color": "Brown" }
                   ]"#;
-                  let user_form = serde_json::from_str::<Vec<UserForm>>(json)?;
+                  let user_form = serde_json::from_str::&lt;Vec&lt;UserForm&gt;&gt;(json)?;
 
                   insert_into(users).values(&user_form).execute(conn)?;
 
@@ -459,7 +459,7 @@ main
                   struct User {
                       id: i32,
                       name: String,
-                      hair_color: Option<String>,
+                      hair_color: Option&lt;String&gt;,
                       created_at: SystemTime,
                       updated_at: SystemTime,
                   }
@@ -477,7 +477,7 @@ main
                 | use diesel::select;
                   use schema::users::dsl::*;
 
-                  let now = select(diesel::dsl::now).get_result::<SystemTime>(&conn)?;
+                  let now = select(diesel::dsl::now).get_result::&lt;SystemTime&gt;(&conn)?;
 
                   let inserted_users = insert_into(users)
                       .values(&vec![
@@ -544,7 +544,7 @@ main
                 | use diesel::select;
                   use schema::users::dsl::*;
 
-                  let now = select(diesel::dsl::now).get_result::<SystemTime>(&conn)?;
+                  let now = select(diesel::dsl::now).get_result::&lt;SystemTime&gt;(&conn)?;
 
                   let inserted_user = insert_into(users)
                       .values((id.eq(3), name.eq("Ruby")))
