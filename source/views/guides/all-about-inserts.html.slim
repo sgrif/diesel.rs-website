@@ -31,7 +31,7 @@ main
             a.btn-demo-example href=example_file("postgres/all_about_inserts/src/lib.rs#L16-L26")
               | View on Github
             pre.demo__example-snippet
-              code
+              code.rust
                 | table! {
                       users {
                           id -> Integer,
@@ -104,7 +104,7 @@ main
             a.btn-demo-example href=example_file("postgres/all_about_inserts/src/lib.rs#L62-L64")
               | View on Github
             pre.demo__example-snippet
-              code
+              code.rust
                 | use schema::users::dsl::*;
 
                   insert_into(users).values(name.eq("Sean")).execute(conn)
@@ -118,7 +118,7 @@ main
             a.btn-demo-example href=example_file("postgres/all_about_inserts/src/lib.rs#L72-L73")
               | View on Github
             pre.demo__example-snippet
-              code
+              code.sql
                 | INSERT INTO "users" ("name") VALUES ($1)
                   -- binds ["Sean"]
 
@@ -131,7 +131,7 @@ main
             a.btn-demo-example href=example_file("postgres/all_about_inserts/src/lib.rs#L80-83")
               | View on Github
             pre.demo__example-snippet
-              code
+              code.rust
                 | insert_into(users)
                       .values((name.eq("Tess"), hair_color.eq("Brown")))
                       .execute(conn)
@@ -171,7 +171,7 @@ main
             a.btn-demo-example href=example_file("postgres/all_about_inserts/src/lib.rs#L30-L35")
               | View on Github
             pre.demo__example-snippet
-              code
+              code.rust
                 | use schema::users;
 
                   #[derive(Deserialize, Insertable)]
@@ -187,7 +187,7 @@ main
             a.btn-demo-example href=example_file("postgres/all_about_inserts/src/lib.rs#L98-L103")
               | View on Github
             pre.demo__example-snippet
-              code
+              code.rust
                 | use schema::users::dsl::*;
 
                   let json = r#"{ "name": "Sean", "hair_color": "Black" }"#;
@@ -220,7 +220,7 @@ main
             a.btn-demo-example href=example_file("postgres/all_about_inserts/src/lib.rs#L119-L126")
               | View on Github
             pre.demo__example-snippet
-              code
+              code.rust
                 | use schema::users::dsl::*;
 
                   let json = r#"{ "name": "Ruby", "hair_color": null }"#;
@@ -239,7 +239,7 @@ main
             a.btn-demo-example href=example_file("postgres/all_about_inserts/src/lib.rs#L136-L137")
               | View on Github
             pre.demo__example-snippet
-              code
+              code.sql
                 | INSERT INTO "users" ("name", "hair_color")
                   VALUES ($1, DEFAULT) -- binds: ["Ruby"]
 
@@ -265,7 +265,7 @@ main
             a.btn-demo-example href=example_file("postgres/all_about_inserts/src/lib.rs#L142-L146")
               | View on Github
             pre.demo__example-snippet
-              code
+              code.rust
                 | use schema::users::dsl::*;
 
                   insert_into(users)
@@ -294,7 +294,7 @@ main
           .demo__example-browser
             .browser-bar src/lib.rs
             pre.demo__example-snippet
-              code
+              code.rust
                 | for row in &values {
                       let query = insert_into(users).values(row);
                       println!("{}", debug_query::&lt;Sqlite, _&gt;(&query));
@@ -310,7 +310,7 @@ main
             a.btn-demo-example href=example_file("postgres/all_about_inserts/src/lib.rs#L161-L165")
               | View on Github
             pre.demo__example-snippet
-              code
+              code.rust
                 | use schema::users::dsl::*;
 
                   insert_into(users)
@@ -328,7 +328,7 @@ main
             a.btn-demo-example href=example_file("postgres/all_about_inserts/src/lib.rs#L174-L175")
               | View on Github
             pre.demo__example-snippet
-              code
+              code.sql
                 | INSERT INTO "users" ("name") VALUES ($1), (DEFAULT)
                   -- binds ["Sean"]
 
@@ -341,7 +341,7 @@ main
             a.btn-demo-example href=example_file("postgres/all_about_inserts/src/lib.rs#L180-L187")
               | View on Github
             pre.demo__example-snippet
-              code
+              code.rust
                 | use schema::users::dsl::*;
 
                   insert_into(users)
@@ -374,7 +374,7 @@ main
             a.btn-demo-example href=example_file("postgres/all_about_inserts/src/lib.rs#L206-L213")
               | View on Github
             pre.demo__example-snippet
-              code
+              code.rust
                 | use schema::users::dsl::*;
 
                   insert_into(users)
@@ -454,7 +454,7 @@ main
             a.btn-demo-example href=example_file("postgres/all_about_inserts/src/lib.rs#L37-L44")
               | View on Github
             pre.demo__example-snippet
-              code
+              code.rust
                 | #[derive(Queryable, PartialEq, Debug)]
                   struct User {
                       id: i32,
@@ -473,7 +473,7 @@ main
             a.btn-demo-example href=example_file("postgres/all_about_inserts/src/lib.rs#L265-L295")
               | View on Github
             pre.demo__example-snippet
-              code
+              code.rust
                 | use diesel::select;
                   use schema::users::dsl::*;
 
@@ -515,7 +515,7 @@ main
             a.btn-demo-example href=example_file("postgres/all_about_inserts/src/lib.rs#L306-L309")
               | View on Github
             pre.demo__example-snippet
-              code
+              code.sql
                 | INSERT INTO "users" ("id", "name")
                   VALUES ($1, $2), ($3, $4)
                   RETURNING "users"."id", "users"."name", "users"."hair_color",
@@ -540,7 +540,7 @@ main
             a.btn-demo-example href=example_file("postgres/all_about_inserts/src/lib.rs#L317-L335")
               | View on Github
             pre.demo__example-snippet
-              code
+              code.rust
                 | use diesel::select;
                   use schema::users::dsl::*;
 
@@ -568,7 +568,7 @@ main
             a.btn-demo-example href=example_file("postgres/all_about_inserts/src/lib.rs#L347-L350")
               | View on Github
             pre.demo__example-snippet
-              code
+              code.sql
                 | INSERT INTO "users" ("id", "name") VALUES ($1, $2)
                   RETURNING "users"."id", "users"."name", "users"."hair_color",
                             "users"."created_at", "users"."updated_at"
@@ -584,7 +584,7 @@ main
             a.btn-demo-example href=example_file("postgres/all_about_inserts/src/lib.rs#L355-L360")
               | View on Github
             pre.demo__example-snippet
-              code
+              code.rust
                 | use schema::users::dsl::*;
 
                   insert_into(users)
@@ -601,7 +601,7 @@ main
             a.btn-demo-example href=example_file("postgres/all_about_inserts/src/lib.rs#L368-L370")
               | View on Github
             pre.demo__example-snippet
-              code
+              code.sql
                 | INSERT INTO "users" ("name") VALUES ($1)
                   RETURNING "users"."id"
                   -- binds: ["Ruby"]
