@@ -279,11 +279,12 @@ main
           .demo__example-browser
             pre.demo__example-snippet
               code
-                | diesel migration run > src/schema.rs
+                | diesel print-schema > src/schema.rs
 
         markdown:
           That will generate the following file:
-
+          
+        .demo__example 
           .demo__example-browser
             .browser-bar src/schema.rs
             a.btn-demo-example href=getting_started_demo_file(1, "src/schema.rs")
