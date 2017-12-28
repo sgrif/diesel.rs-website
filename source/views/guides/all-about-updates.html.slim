@@ -49,7 +49,7 @@ main
                   diesel::update(posts).set(draft.eq(false))
 
         markdown:
-          We can use the [`debug_query`] function to inspect the generated SQL. The output you see may slightly differ from this guide, depending on which backend you're using. If we run `println!("{}", debug_query::<Pg, _>(&our_query);`, we'll see the following:
+          We can use the [`debug_query`] function to inspect the generated SQL. The output you see may slightly differ from this guide, depending on which backend you're using. If we run `println!("{}", debug_query::<Pg, _>(&our_query));`, we'll see the following:
 
           [`debug_query`]: http://docs.diesel.rs/diesel/fn.debug_query.html
 
