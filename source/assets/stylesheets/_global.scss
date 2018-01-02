@@ -45,6 +45,12 @@ body.index {
   h3 {
     margin-top: $large-spacing;
   }
+
+  ul {
+    list-style-type: disc;
+    padding-bottom: 30px;
+    padding-left: 40px;
+  }
 }
 
 .content-wrapper {
