@@ -38,11 +38,11 @@ main
                 | use diesel::dsl::Eq;
                   use diesel::types::Text;
 
-                  sql_function!(canon_crate_name, CanonCrateName, (x: Text) -> Text);
+                  sql_function!(canon_crate_name, CanonCrateName, (x: Text) -&gt; Text);
 
-                  type WithName<'a> = Eq<canon_crate_name<crates::name>, canon_crate_name<&'a str>>;
+                  type WithName&lt;'a&gt; = Eq&lt;canon_crate_name&lt;crates::name&gt;, canon_crate_name&lt;&'a str&gt;&gt;;
 
-                  fn with_name(name: &str) -> WithName {
+                  fn with_name(name: &str) -&gt; WithName {
                       canon_crate_name(crates::name).eq(canon_crate_name(name))
                   }
 
@@ -62,13 +62,13 @@ main
                 | use diesel::dsl::Eq;
                   use diesel::types::Text;
 
-                  sql_function!(canon_crate_name, CanonCrateName, (x: Text) -> Text);
+                  sql_function!(canon_crate_name, CanonCrateName, (x: Text) -&gt; Text);
 
-                  type WithName<T> = Eq<canon_crate_name<crates::name>, canon_crate_name<T>>;
+                  type WithName&lt;T&gt; = Eq&lt;canon_crate_name&lt;crates::name&gt;, canon_crate_name&lt;T&gt;&gt;;
 
-                  fn with_name<T>(name: T) -> WithName<T>
+                  fn with_name&lt;T&gt;(name: T) -&gt; WithName&lt;T&gt;
                   where
-                      T: AsExpression<Text>,
+                      T: AsExpression&lt;Text&gt;,
                   {
                       canon_crate_name(crates::name).eq(canon_crate_name(name))
                   }
@@ -102,12 +102,12 @@ main
                 | use diesel::pg::Pg;
                   use diesel::types::Text;
 
-                  sql_function!(canon_crate_name, CanonCrateName, (x: Text) -> Text);
+                  sql_function!(canon_crate_name, CanonCrateName, (x: Text) -&gt; Text);
 
-                  fn with_name<'a, T>(name: T) -> Box<BoxableExpression<crates::table, Pg, SqlType = Bool> + 'a>
+                  fn with_name&lt;'a, T&gt;(name: T) -&gt; Box&lt;BoxableExpression&lt;crates::table, Pg, SqlType = Bool&gt; + 'a&gt;
                   where
-                      T: AsExpression<Text>,
-                      T::Expression: BoxableExpression<crates::table, Pg>,
+                      T: AsExpression&lt;Text&gt;,
+                      T::Expression: BoxableExpression&lt;crates::table, Pg&gt;,
                   {
                       canon_crate_name(crates::name).eq(canon_crate_name(name))
                   }
@@ -167,10 +167,10 @@ main
                       crates::created_at,
                   );
 
-                  type All = Select<crates::table, AllColumns>;
+                  type All = Select&lt;crates::table, AllColumns&gt;;
 
                   impl Crate {
-                      pub fn all() -> All {
+                      pub fn all() -&gt; All {
                           crates::table.select(ALL_COLUMNS)
                       }
                   }
@@ -189,10 +189,10 @@ main
               code
                 | use diesel::dsl::Filter;
 
-                  type ByName<T> = Filter<All, WithName<T>>;
+                  type ByName&lt;T&gt; = Filter&lt;All, WithName&lt;T&gt;&gt;;
 
                   impl Crate {
-                      fn by_name<T>(name: T) -> ByName<T> {
+                      fn by_name&lt;T&gt;(name: T) -&gt; ByName&lt;T&gt; {
                           Self::all().filter(with_name(name))
                       }
                   }
@@ -214,18 +214,18 @@ main
                   use diesel::pg::Pg;
                   use diesel::types::Text;
 
-                  type SqlType = <AllColumns as Expression>::SqlType;
-                  type BoxedQuery<'a> = crates::BoxedQuery<'a, Pg, SqlType>;
+                  type SqlType = &lt;AllColumns as Expression&gt;::SqlType;
+                  type BoxedQuery&lt;'a&gt; = crates::BoxedQuery&lt;'a, Pg, SqlType&gt;;
 
                   impl Crate {
-                      fn all() -> BoxedQuery<'static> {
+                      fn all() -&gt; BoxedQuery&lt;'static&gt; {
                           crates::table().select(ALL_COLUMNS).into_boxed()
                       }
 
-                      fn by_name<'a, T>(name: T) -> BoxedQuery<'a>
+                      fn by_name&lt;'a, T&gt;(name: T) -&gt; BoxedQuery&lt;'a&gt;
                       where
-                          T: AsExpression<Text>,
-                          T::Expression: BoxableExpression<crates::table, Pg>,
+                          T: AsExpression&lt;Text&gt;,
+                          T::Expression: BoxableExpression&lt;crates::table, Pg&gt;,
                       {
                           Self::all().filter(by_name(name))
                       }
@@ -262,7 +262,7 @@ main
             pre.demo__example-snippet
               code
                 | impl Crate {
-                      fn by_name(name: &str, conn: &PgConnection) -> QueryResult<Self> {
+                      fn by_name(name: &str, conn: &PgConnection) -&gt; QueryResult&lt;Self&gt; {
                           Self::all()
                               .filter(with_name(name))
                               .first(conn)
