@@ -58,7 +58,16 @@ main
           project's code directly, we don't add it to `Cargo.toml`. Instead, we
           just install it on our system.
 
+        aside.aside.aside--note
+          header.aside__header Writing migrations in Rust
+          .aside__text
+            markdown:
+              There is an optional flag you can provide when installing `diesel_cli`
+              that enables you to write your migrations in Rust via the [barrel][barrel]
+              crate. **Note** that diesel doesn't officially support this.
+
           [diesel-cli]: https://github.com/sgrif/diesel/tree/master/diesel_cli
+          [barrel]: https://github.com/spacekookie/barrel
 
         .demo__example
           .demo__example-browser
