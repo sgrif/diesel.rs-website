@@ -67,6 +67,25 @@ main
                 | cargo install diesel_cli
 
         aside.aside.aside--note
+          header.aside__header Writing migrations in Rust
+          .aside__text
+            markdown:
+              There is an optional flag you can provide when installing `diesel_cli`
+              that enables you to write your migrations in Rust via the [barrel][barrel]
+              crate. Find a barrel specific guide [here][barrel-guide].
+              
+              **Note** that diesel doesn't officially support this.
+
+              [barrel]: https://spacekookie.github.io/barrel/
+              [barrel-guide]: https://github.com/spacekookie/barrel/blob/master/guides/diesel-setup.md
+
+            .demo__example
+              .demo__example-browser
+                pre.demo__example-snippet
+                  code.bash
+                    | cargo install diesel_cli --features="rust-migrations"
+
+        aside.aside.aside--note
           header.aside__header A Note on Installing <code>diesel_cli</code>
           .aside__text
             markdown:
