@@ -8,6 +8,7 @@ section.demo
         a.js-vertical-tab.vertical-tab(href="javascript:void(0)" rel="tab3") Less Boilerplate
         a.js-vertical-tab.vertical-tab(href="javascript:void(0)" rel="tab4") Inserting Data
         a.js-vertical-tab.vertical-tab(href="javascript:void(0)" rel="tab5") Updating Data
+        a.js-vertical-tab.vertical-tab(href="javascript:void(0)" rel="tab6") Ergonomic Raw SQL
 
       .vertical-tab-content-container
         a.js-vertical-tab-accordion-heading.vertical-tab-accordion-heading.is-active(href="javascript:void(0)" rel="tab1") Simple Queries
@@ -202,3 +203,32 @@ section.demo
                   | update(Settings::belonging_to(current_user))
                         .set(&settings_form)
                         .execute(&connection)
+
+        a.js-vertical-tab-accordion-heading.vertical-tab-accordion-heading(href="javascript:void(0)" rel="tab6") Ergonomic Raw SQL
+        #tab6.js-vertical-tab-content.vertical-tab-content
+          .demo__example
+            p.demo__example-caption
+              | There will always be certain queries that are just easier
+                to write as raw SQL, or can't be expressed with the query builder.
+                Even in these cases, Diesel provides an easy to use API for
+                writing raw SQL.
+            .demo__example-browser
+              .browser-bar Running raw SQL
+              pre.demo__example-snippet
+                code
+                  | #[derive(QueryableByName)]
+                    #[table_name = "users"]
+                    struct User {
+                        id: i32,
+                        name: String,
+                        organization_id: i32,
+                    }
+
+                    // Using `include_str!` allows us to keep the SQL in a
+                    // separate file, where our editor can give us SQL specific
+                    // syntax hilighting.
+                    sql_query(include_str!("complex_users_by_organization.sql"))
+                        .bind::<Integer, _>(organization_id)
+                        .bind::<BigInt, _>(offset)
+                        .bind::<BigInt, _>(limit)
+                        .load::<User>(conn)?;
