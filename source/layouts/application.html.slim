@@ -4,7 +4,12 @@ html
     meta(charset="utf-8")
     meta(content="IE=edge,chrom=1", http-equiv="X-UA-Compatible")
     meta(name="viewport" content="width=device-width, initial-scale=1")
-    title= current_page.data.title || "Diesel"
+
+    - if current_page.data.title?
+        title= current_page.data.title + " | Diesel"
+    - else
+        title Diesel
+
     link(href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic,100" rel="stylesheet" type="text/css")/
     link(href="http://diesel.rs#{current_page.url}" rel="canonical")/
     = stylesheet_link_tag "application"
