@@ -226,7 +226,7 @@ section.demo
 
                     // Using `include_str!` allows us to keep the SQL in a
                     // separate file, where our editor can give us SQL specific
-                    // syntax hilighting.
+                    // syntax highlighting.
                     sql_query(include_str!("complex_users_by_organization.sql"))
                         .bind::&lt;Integer, _&gt;(organization_id)
                         .bind::&lt;BigInt, _&gt;(offset)
