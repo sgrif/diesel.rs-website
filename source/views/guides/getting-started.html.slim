@@ -34,7 +34,7 @@ main
         .demo__example
           .demo__example-browser
             pre.demo__example-snippet
-              code
+              code.shell
                 | cargo new --lib diesel_demo
                   cd diesel_demo
 
@@ -67,7 +67,7 @@ main
         .demo__example
           .demo__example-browser
             pre.demo__example-snippet
-              code.bash
+              code.shell
                 | cargo install diesel_cli
 
         aside.aside.aside--note
@@ -93,7 +93,7 @@ main
             .demo__example
               .demo__example-browser
                 pre.demo__example-snippet
-                  code.bash
+                  code.shell
                     | cargo install diesel_cli --no-default-features --features postgres
 
 
@@ -108,7 +108,7 @@ main
         .demo__example
           .demo__example-browser
             pre.demo__example-snippet
-              code
+              code.shell
                 | echo DATABASE_URL=postgres://username:password@localhost/diesel_demo &gt; .env
 
         markdown:
@@ -117,7 +117,7 @@ main
         .demo__example
           .demo__example-browser
             pre.demo__example-snippet
-              code
+              code.shell
                 | diesel setup
 
         markdown:
@@ -133,7 +133,7 @@ main
         .demo__example
           .demo__example-browser
             pre.demo__example-snippet
-              code
+              code.shell
                 | diesel migration generate create_posts
 
         p
@@ -183,7 +183,7 @@ main
         .demo__example
           .demo__example-browser
             pre.demo__example-snippet
-              code
+              code.shell
                 | diesel migration run
 
         markdown:
@@ -193,7 +193,7 @@ main
         .demo__example
           .demo__example-browser
             pre.demo__example-snippet
-              code
+              code.shell
                 | diesel migration redo
 
         aside.aside.aside--note
