@@ -26,7 +26,7 @@ main
             a.btn-demo-example href=example_file("postgres/all_about_updates/src/lib.rs#L12-L21")
               | View on Github
             pre.demo__example-snippet
-              code
+              code.rust
                 | table! {
                       posts {
                           id -> BigInt,
@@ -47,7 +47,7 @@ main
             a.btn-demo-example href=example_file("postgres/all_about_updates/src/lib.rs#L33-L38")
               | View on Github
             pre.demo__example-snippet
-              code
+              code.rust
                 | use posts::dsl::*;
 
                   diesel::update(posts).set(draft.eq(false))
@@ -63,7 +63,7 @@ main
             a.btn-demo-example href=example_file("postgres/all_about_updates/src/lib.rs#L40-L48")
               | View on Github
             pre.demo__example-snippet
-              code UPDATE "posts" SET "draft" = $1 -- binds: [false]
+              code.sql UPDATE "posts" SET "draft" = $1 -- binds: [false]
 
 
         markdown:
@@ -75,7 +75,7 @@ main
             a.btn-demo-example href=example_file("postgres/all_about_updates/src/lib.rs#L50-L57")
               | View on Github
             pre.demo__example-snippet
-              code
+              code.rust
                 | use posts::dsl::*;
                   use diesel::expression::dsl::now;
 
@@ -91,7 +91,7 @@ main
             a.btn-demo-example href=example_file("postgres/all_about_updates/src/lib.rs#L59-L71")
               | View on Github
             pre.demo__example-snippet
-              code
+              code.sql
                 | UPDATE `posts` SET `draft` = ?
                   WHERE `posts`.`publish_at` < CURRENT_TIMESTAMP
 
@@ -108,7 +108,7 @@ main
             a.btn-demo-example href=example_file("postgres/all_about_updates/src/lib.rs#L23-L31")
               | View on Github
             pre.demo__example-snippet
-              code
+              code.rust
                 | #[derive(Identifiable)]
                   pub struct Post {
                       pub id: i32,
@@ -129,7 +129,7 @@ main
             a.btn-demo-example href=example_file("postgres/all_about_updates/src/lib.rs#L73-L76")
               | View on Github
             pre.demo__example-snippet
-              code diesel::update(&post).set(posts::draft.eq(false))
+              code.rust diesel::update(&post).set(posts::draft.eq(false))
 
         markdown:
           It's important to note that we always pass a reference to the post, not the post itself. When we write `update(post)`, that's equivalent to writing `update(posts.find(post.id))`, or `update(posts.filter(id.eq(post.id)))`. We can see this in the generated SQL:
@@ -140,7 +140,7 @@ main
             a.btn-demo-example href=example_file("postgres/all_about_updates/src/lib.rs#L78-L93")
               | View on Github
             pre.demo__example-snippet
-              code UPDATE `posts` SET `draft` = ? WHERE `posts`.`id` = ?
+              code.sql UPDATE `posts` SET `draft` = ? WHERE `posts`.`id` = ?
 
         markdown:
           Now that we've seen all the ways to specify what we want to update, let's look at the different ways to provide the data to update it with. We've already seen the first way, which is to pass `column.eq(value)` directly. So far we've just been passing Rust values here, but we can actually use any Diesel expression. For example, we could increment a column:
@@ -151,7 +151,7 @@ main
             a.btn-demo-example href=example_file("postgres/all_about_updates/src/lib.rs#L95-L100")
               | View on Github
             pre.demo__example-snippet
-              code
+              code.rust
                 | use posts::dsl::*;
 
                   diesel::update(posts).set(visit_count.eq(visit_count + 1))
@@ -165,7 +165,7 @@ main
             a.btn-demo-example href=example_file("postgres/all_about_updates/src/lib.rs#L102-L111")
               | View on Github
             pre.demo__example-snippet
-              code
+              code.sql
                 | UPDATE `posts`
                   SET `visit_count` = `posts`.`visit_count` + 1
 
@@ -178,7 +178,7 @@ main
             a.btn-demo-example href=example_file("postgres/all_about_updates/src/lib.rs#L113-L122")
               | View on Github
             pre.demo__example-snippet
-              code
+              code.rust
                 | use posts::dsl::*;
 
                   diesel::update(posts)
@@ -196,7 +196,7 @@ main
             a.btn-demo-example href=example_file("postgres/all_about_updates/src/lib.rs#L124-L137")
               | View on Github
             pre.demo__example-snippet
-              code UPDATE `posts` SET `title` = ?, `body` = ?
+              code.sql UPDATE `posts` SET `title` = ?, `body` = ?
 
         markdown:
           AsChangeset
@@ -213,7 +213,7 @@ main
             a.btn-demo-example href=example_file("postgres/all_about_updates/src/lib.rs#L139-L142")
               | View on Github
             pre.demo__example-snippet
-              code diesel::update(posts::table).set(&post)
+              code.rust diesel::update(posts::table).set(&post)
 
         markdown:
           The SQL will set every field present on the `Post` struct *except* for the primary key.
@@ -224,7 +224,7 @@ main
             a.btn-demo-example href=example_file("postgres/all_about_updates/src/lib.rs#L144-L173")
               | View on Github
             pre.demo__example-snippet
-              code
+              code.sql
                 | UPDATE `posts` SET
                       `title` = ?,
                       `body` = ?,
@@ -243,7 +243,7 @@ main
             a.btn-demo-example href=example_file("postgres/all_about_updates/src/lib.rs#L175-L189")
               | View on Github
             pre.demo__example-snippet
-              code
+              code.rust
                 | #[derive(AsChangeset)]
                   #[table_name="posts"]
                   struct PostForm<'a> {
@@ -266,7 +266,7 @@ main
             a.btn-demo-example href=example_file("postgres/all_about_updates/src/lib.rs#L191-L211")
               | View on Github
             pre.demo__example-snippet
-              code UPDATE `posts` SET `body` = ?
+              code.sql UPDATE `posts` SET `body` = ?
 
         markdown:
           If you wanted to assign `NULL` instead, you can either specify `#[changeset_options(treat_none_as_null="true")]` on the struct, or you can have the field be of type `Option<Option<T>>`. Diesel doesn't currently provide a way to explicitly assign a field to its default value, though it may be provided in the future.

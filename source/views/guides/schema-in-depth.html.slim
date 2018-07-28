@@ -26,7 +26,7 @@ main
         .demo__example
           .demo__example-browser
             pre.demo__example-snippet
-              code
+              code.rust
                 | table! {
                       users {
                           id -&gt; Integer,
@@ -43,7 +43,7 @@ main
         .demo__example
           .demo__example-browser
             pre.demo__example-snippet
-              code pub struct table;
+              code.rust pub struct table;
 
         markdown:
           This is the struct that represents the user's table for the purpose of constructing SQL queries. It's usually referenced in code as `users::table` (or sometimes just `users`, more on that in a bit). Next, we'll see there's a module called `columns`, with one struct per column of the table.
@@ -51,7 +51,7 @@ main
         .demo__example
           .demo__example-browser
             pre.demo__example-snippet
-              code
+              code.rust
                 | pub struct id;
                   pub struct name;
                   pub struct hair_color;
@@ -64,7 +64,7 @@ main
         .demo__example
           .demo__example-browser
             pre.demo__example-snippet
-              code
+              code.rust
                 | impl Expression for id {
                       type SqlType = Integer;
                   }
@@ -88,7 +88,7 @@ main
         .demo__example
           .demo__example-browser
             pre.demo__example-snippet
-              code
+              code.rust
                 | pub struct star;
 
                   impl Expression for star {
@@ -103,7 +103,7 @@ main
         .demo__example
           .demo__example-browser
             pre.demo__example-snippet
-              code
+              code.rust
                 | pub use self::columns::*;
 
                   pub struct table;
@@ -118,7 +118,7 @@ main
         .demo__example
           .demo__example-browser
             pre.demo__example-snippet
-              code
+              code.rust
                 | pub mod dsl {
                       pub use super::columns::{id, name, hair_color};
                       pub use super::table as users;
@@ -130,7 +130,7 @@ main
         .demo__example
           .demo__example-browser
             pre.demo__example-snippet
-              code
+              code.rust
                 | users::table
                     .filter(users::name.eq("Sean"))
                     .filter(users::hair_color.eq("black"))
@@ -140,7 +140,7 @@ main
         .demo__example
           .demo__example-browser
             pre.demo__example-snippet
-              code users.filter(name.eq("Sean")).filter(hair_color.eq("black"))
+              code.rust users.filter(name.eq("Sean")).filter(hair_color.eq("black"))
 
         markdown:
           The `dsl` module should only ever be imported for single functions. You should never have `use schema::users::dsl::*;` at the top of a module. Code like `#[derive(Insertable)]` will assume that `users` points to the module, not the table struct.
@@ -150,7 +150,7 @@ main
         .demo__example
           .demo__example-browser
             pre.demo__example-snippet
-              code
+              code.rust
                 | impl table {
                       pub fn star(&self) -&gt; star {
                           star
@@ -165,7 +165,7 @@ main
         .demo__example
           .demo__example-browser
             pre.demo__example-snippet
-              code
+              code.rust
                 | impl AsQuery for table {
                       /* body omitted */
                   }
@@ -184,7 +184,7 @@ main
         .demo__example
           .demo__example-browser
             pre.demo__example-snippet
-              code
+              code.rust
                 | pub const all_columns: (id, name, hair_color) = (id, name, hair_color);
 
                   pub type SqlType = (Integer, Text, Nullable&lt;Text&gt;);
@@ -203,7 +203,7 @@ main
         .demo__example
           .demo__example-browser
             pre.demo__example-snippet
-              code
+              code.rust
                 | pub mod users {
                       pub use self::columns::*;
 

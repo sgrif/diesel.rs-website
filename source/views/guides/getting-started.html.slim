@@ -51,7 +51,7 @@ main
             a.btn-demo-example href=getting_started_demo_file(1, "Cargo.toml")
               | View on Github
             pre.demo__example-snippet
-              code
+              code.toml
                 | [dependencies]
                   diesel = { version = "1.0.0", features = ["postgres"] }
                   dotenv = "0.9.0"
@@ -161,7 +161,7 @@ main
             a.btn-demo-example href=getting_started_demo_file(1, "migrations/20160815133237_create_posts/up.sql")
               | View on Github
             pre.demo__example-snippet
-              code
+              code.sql
                 | CREATE TABLE posts (
                     id SERIAL PRIMARY KEY,
                     title VARCHAR NOT NULL,
@@ -174,7 +174,7 @@ main
             a.btn-demo-example href=getting_started_demo_file(1, "migrations/20160815133237_create_posts/down.sql")
               | View on Github
             pre.demo__example-snippet
-              code
+              code.sql
                 | DROP TABLE posts
 
         markdown:
@@ -217,7 +217,7 @@ main
             a.btn-demo-example href=getting_started_demo_file(1, "src/lib.rs")
               | View on Github
             pre.demo__example-snippet
-              code
+              code.rust
                 | #[macro_use]
                   extern crate diesel;
                   extern crate dotenv;
@@ -249,7 +249,7 @@ main
             a.btn-demo-example href=getting_started_demo_file(1, "src/lib.rs")
               | View on Github
             pre.demo__example-snippet
-              code
+              code.rust
                 | pub mod schema;
                   pub mod models;
 
@@ -262,7 +262,7 @@ main
             a.btn-demo-example href=getting_started_demo_file(1, "src/models.rs")
               | View on Github
             pre.demo__example-snippet
-              code
+              code.rust
                 | #[derive(Queryable)]
                   pub struct Post {
                       pub id: i32,
@@ -290,7 +290,7 @@ main
             a.btn-demo-example href=getting_started_demo_file(1, "src/schema.rs")
               | View on Github
             pre.demo__example-snippet
-              code
+              code.rust
                 | table! {
                       posts (id) {
                           id -> Integer,
@@ -320,7 +320,7 @@ main
             a.btn-demo-example href=getting_started_demo_file(1, "src/bin/show_posts.rs")
               | View on Github
             pre.demo__example-snippet
-              code
+              code.rust
                 | extern crate diesel_demo;
                   extern crate diesel;
 
@@ -370,7 +370,7 @@ main
             a.btn-demo-example href=getting_started_demo_file(2, "src/models.rs")
               | View on Github
             pre.demo__example-snippet
-              code
+              code.rust
                 | use super::schema::posts;
 
                   #[derive(Insertable)]
@@ -388,7 +388,7 @@ main
             a.btn-demo-example href=getting_started_demo_file(2, "src/lib.rs")
               | View on Github
             pre.demo__example-snippet
-              code
+              code.rust
                 | use self::models::{Post, NewPost};
 
                   pub fn create_post&lt;'a&gt;(conn: &PgConnection, title: &'a str, body: &'a str) -&gt; Post {
@@ -426,7 +426,7 @@ main
             a.btn-demo-example href=getting_started_demo_file(2, "src/bin/write_post.rs")
               | View on Github
             pre.demo__example-snippet
-              code
+              code.rust
                 | extern crate diesel_demo;
                   extern crate diesel;
 
@@ -496,7 +496,7 @@ main
             a.btn-demo-example href=getting_started_demo_file(3, "src/bin/publish_post.rs")
               | View on Github
             pre.demo__example-snippet
-              code
+              code.rust
                 | extern crate diesel_demo;
                   extern crate diesel;
 
@@ -555,7 +555,7 @@ main
             a.btn-demo-example href=getting_started_demo_file(3, "src/bin/delete_post.rs")
               | View on Github
             pre.demo__example-snippet
-              code
+              code.rust
                 | extern crate diesel_demo;
                   extern crate diesel;
 
