@@ -46,7 +46,7 @@ main
           .demo__example-browser
             .browser-bar Example
             pre.demo__example-snippet
-              code
+              code.rust
                 | use diesel::types::{Nullable, Text};
                   sql_function!(coalesce, Coalesce, (x: Nullable&lt;Text&gt;, y: Text) -&gt; Text);
 
@@ -74,7 +74,7 @@ main
           .demo__example-browser
             .browser-bar Example
             pre.demo__example-snippet
-              code
+              code.rust
                 | fn coalesce&lt;X, Y&gt;(x: X, y: Y) -&gt; Coalesce&lt;X::Expression, Y::Expression&gt;
                   where
                       X: AsExpression&lt;Nullable&lt;Text&gt;&gt;,
@@ -99,7 +99,7 @@ main
           .demo__example-browser
             .browser-bar Example
             pre.demo__example-snippet
-              code
+              code.sql
                 | SELECT *, COUNT(*) OVER () FROM (subselect t) LIMIT $1 OFFSET $1
 
         markdown:
@@ -124,7 +124,7 @@ main
             a.btn-demo-example href=example_file("postgres/advanced-blog-cli/src/pagination.rs#L55-L69")
               | View on Github
             pre.demo__example-snippet
-              code
+              code.rust
                 | impl&lt;T&gt; QueryFragment&lt;Pg&gt; for Paginated&lt;T&gt;
                   where
                       T: QueryFragment&lt;Pg&gt;,
@@ -172,7 +172,7 @@ main
             a.btn-demo-example href=example_file("postgres/advanced-blog-cli/src/pagination.rs#L47-L53")
               | View on Github
             pre.demo__example-snippet
-              code
+              code.rust
                 | impl_query_id!(Paginated&lt;T&gt;);
 
                   impl&lt;T: Query&gt; Query for Paginated&lt;T&gt; {
@@ -196,7 +196,7 @@ main
             a.btn-demo-example href=example_file("postgres/advanced-blog-cli/src/pagination.rs#L7-L32")
               | View on Github
             pre.demo__example-snippet
-              code
+              code.rust
                 | pub trait Paginate: AsQuery + Sized {
                       fn paginate(self, page: i64) -&gt; Paginated&lt;Self::Query&gt; {
                           Paginated {
@@ -230,7 +230,7 @@ main
           .demo__example-browser
             .browser-bar Example
             pre.demo__example-snippet
-              code
+              code.rust
                 | users::table
                       .paginate(3)
                       .per_page(25)
@@ -249,7 +249,7 @@ main
             a.btn-demo-example href=example_file("postgres/advanced-blog-cli/src/pagination.rs#L34-L44")
               | View on Github
             pre.demo__example-snippet
-              code
+              code.rust
                 | impl&lt;T&gt; Paginated&lt;T&gt; {
                       fn load_and_count_pages&lt;U&gt;(self, conn: &PgConnection) -&gt; QueryResult&lt;(Vec&lt;U&gt;, i64)
                       where
@@ -324,7 +324,7 @@ main
           .demo__example-browser
             .browser-bar Example
             pre.demo__example-snippet
-              code
+              code.rust
                 | // A simple operator. It returns `Bool` and works on all backends.
                   diesel_infix_operator!(Eq, " = ");
 
@@ -356,7 +356,7 @@ main
             a.btn-demo-example href="https://github.com/diesel-rs/diesel_full_text_search/blob/27b9946831caa8b08177c1818a50cb7f0563c9c0/src/lib.rs#L57-L62"
               | View on Github
             pre.demo__example-snippet
-              code
+              code.rust
                 | diesel_infix_operator!(Matches, " @@ ", backend: Pg);
                   diesel_infix_operator!(Concat, " || ", TsVector, backend: Pg);
                   diesel_infix_operator!(And, " && ", TsQuery, backend: Pg);
@@ -385,7 +385,7 @@ main
             a.btn-demo-example href=repo_url("diesel/src/expression_methods/global_expression_methods.rs")
               | View on Github
             pre.demo__example-snippet
-              code
+              code.rust
                 | pub trait ExpressionMethods: Expression + Sized {
                       fn eq&lt;T: AsExpression&lt;Self::SqlType&gt;&gt;(self, rhs: T) -&gt; Eq&lt;Self, T::Expression&gt; {
                           Eq::new(self, other.as_expression())
@@ -418,7 +418,7 @@ main
             a.btn-demo-example href=repo_url("diesel/src/expression_methods/bool_expression_methods.rs")
               | View on Github
             pre.demo__example-snippet
-              code
+              code.rust
                 | pub trait BoolExpressionMethods
                   where
                       Self: Expression&lt;SqlType = Bool&gt; + Sized,
@@ -441,7 +441,7 @@ main
             a.btn-demo-example href=repo_url("diesel/src/expression/not.rs#L27-L29")
               | View on Github
             pre.demo__example-snippet
-              code
+              code.rust
                 | pub fn not&lt;T: AsExpression&lt;Bool&gt;&gt;(expr: T)
                       -&gt; Not&lt;Grouped&lt;T::Expression&gt;&gt;
                   {
@@ -468,7 +468,7 @@ main
             a.btn-demo-example href=repo_url("diesel/src/expression/helper_types.rs#L18")
               | View on Github
             pre.demo__example-snippet
-              code
+              code.rust
                 | pub type Eq&lt;Lhs, Rhs&gt; =
                       super::operators::Eq&lt;Lhs, AsExpr&lt;Rhs, Lhs&gt;&gt;;
 
