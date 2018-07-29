@@ -359,28 +359,9 @@ main
           The full code for the demo at this point can be found
           [here][commit-no-1].
 
-          Next, let's write some code to create a new post. We'll want a struct
-          to use for inserting a new record.
+          Next, let's add a function to save a new post. 
 
           [commit-no-1]: #{getting_started_demo_file(1, "")}
-
-        .demo__example
-          .demo__example-browser
-            .browser-bar src/models.rs
-            a.btn-demo-example href=getting_started_demo_file(2, "src/models.rs")
-              | View on Github
-            pre.demo__example-snippet
-              code
-                | use super::schema::posts;
-
-                  #[derive(Insertable)]
-                  #[table_name="posts"]
-                  pub struct NewPost&lt;'a&gt; {
-                      pub title: &'a str,
-                      pub body: &'a str,
-                  }
-
-        p Now let's add a function to save a new post.
 
         .demo__example
           .demo__example-browser
@@ -389,20 +370,15 @@ main
               | View on Github
             pre.demo__example-snippet
               code
-                | use self::models::{Post, NewPost};
-
+                | use self::models::Post;
+                
                   pub fn create_post&lt;'a&gt;(conn: &PgConnection, title: &'a str, body: &'a str) -&gt; Post {
                       use schema::posts;
 
-                      let new_post = NewPost {
-                          title: title,
-                          body: body,
-                      };
-
                       diesel::insert_into(posts::table)
-                          .values(&new_post)
-                          .get_result(conn)
-                          .expect("Error saving new post")
+                        .values((posts::title.eq(title), posts::body.eq(body)))
+                        .get_result(conn)
+                        .expect("Error saving new post")
                   }
 
         markdown:
@@ -412,13 +388,22 @@ main
           types. Neat!
 
           Diesel can insert more than one record in a single query. Just pass a
-          `Vec` or slice to `insert`, and then call `get_results` instead of
+          `&Vec` or slice to `insert`, and then call `get_results` instead of
           `get_result`. If you don't actually want to do anything with the row
           that was just inserted, call `.execute` instead. The compiler won't
           complain at you, that way. :)
 
+          Inserting new data using tuples is the typical way when you already have
+          the values that you want to insert to the database. In our example,
+          we already have the title and body of our post as arguments of our
+          `create_post` function. If your data comes
+          from another source, such as a web form deserialized by Serde, you 
+          might want to [insert your data using the `Insertable` trait][insert-guide].
+
           Now that we've got everything set up, we can create a little script to
           write a new post.
+
+          [insert-guide]: /guides/all-about-inserts
 
         .demo__example
           .demo__example-browser
