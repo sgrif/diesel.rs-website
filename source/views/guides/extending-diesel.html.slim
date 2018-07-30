@@ -387,7 +387,7 @@ main
             pre.demo__example-snippet
               code.rust
                 | pub trait ExpressionMethods: Expression + Sized {
-                      fn eq&lt;T: AsExpression&lt;Self::SqlType&gt;&gt;(self, rhs: T) -&gt; Eq&lt;Self, T::Expression&gt; {
+                      fn eq&lt;T: AsExpression&lt;Self::SqlType&gt;&gt;(self, other: T) -&gt; Eq&lt;Self, T::Expression&gt; {
                           Eq::new(self, other.as_expression())
                       }
                   }
