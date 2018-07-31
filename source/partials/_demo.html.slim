@@ -20,22 +20,22 @@ section.demo
             .demo__example-browser
               .browser-bar Rust code
               pre.demo__example-snippet
-                code users::table.load(&connection)
+                code.rust users::table.load(&connection)
             .demo__example-browser
               .browser-bar Executed SQL
               pre.demo__example-snippet
-                code SELECT * FROM users;
+                code.sql SELECT * FROM users;
 
             p.demo__example-caption
               | Loading all the posts for a user:
             .demo__example-browser
               .browser-bar Rust code
               pre.demo__example-snippet
-                code Post::belonging_to(user).load(&connection)
+                code.rust Post::belonging_to(user).load(&connection)
             .demo__example-browser
               .browser-bar Executed SQL
               pre.demo__example-snippet
-                code SELECT * FROM posts WHERE user_id = 1;
+                code.sql SELECT * FROM posts WHERE user_id = 1;
 
         a.js-vertical-tab-accordion-heading.vertical-tab-accordion-heading(href="javascript:void(0)" rel="tab2") Complex Queries
         #tab2.js-vertical-tab-content.vertical-tab-content
@@ -46,7 +46,7 @@ section.demo
             .demo__example-browser
               .browser-bar Rust code
               pre.demo__example-snippet
-                code
+                code.rust
                   | let versions = Version::belonging_to(krate)
                       .select(id)
                       .order(num.desc())
@@ -59,7 +59,7 @@ section.demo
             .demo__example-browser
               .browser-bar Executed SQL
               pre.demo__example-snippet
-                code
+                code.sql
                   | SELECT version_downloads.*
                       WHERE date > (NOW() - '90 days')
                         AND version_id = ANY(
@@ -98,7 +98,7 @@ section.demo
             .demo__example-browser
               .browser-bar Without Diesel
               pre.demo__example-snippet
-                code
+                code.rust
                   | pub struct Download {
                         id: i32,
                         version_id: i32,
@@ -128,7 +128,7 @@ section.demo
             .demo__example-browser
               .browser-bar Rust code
               pre.demo__example-snippet
-                code
+                code.rust
                   | #[derive(Insertable)]
                     #[table_name="users"]
                     struct NewUser<'a> {
@@ -147,7 +147,7 @@ section.demo
             .demo__example-browser
               .browser-bar Executed SQL
               pre.demo__example-snippet
-                code
+                code.sql
                   | INSERT INTO users (name, hair_color) VALUES
                       ('Sean', 'Black'),
                       ('Gordon', DEFAULT)
@@ -158,7 +158,7 @@ section.demo
             .demo__example-browser
               .browser-bar Rust code
               pre.demo__example-snippet
-                code
+                code.rust
                     | let new_users = vec![
                           NewUser { name: "Sean", hair_color: Some("Black") },
                           NewUser { name: "Gordon", hair_color: None },
@@ -170,7 +170,7 @@ section.demo
             .demo__example-browser
               .browser-bar Executed SQL
               pre.demo__example-snippet
-                code
+                code.sql
                   | INSERT INTO users (name, hair_color) VALUES
                       ('Sean', 'Black'),
                       ('Gordon', DEFAULT)
@@ -186,20 +186,20 @@ section.demo
             .demo__example-browser
               .browser-bar Modifying a struct
               pre.demo__example-snippet
-                code
+                code.rust
                   | post.published = true;
                     post.save_changes(&connection);
             .demo__example-browser
               .browser-bar One-off batch changes
               pre.demo__example-snippet
-                code
+                code.rust
                   | update(users.filter(email.like("%@spammer.com")))
                         .set(banned.eq(true))
                         .execute(&connection)
             .demo__example-browser
               .browser-bar Using a struct for encapsulation
               pre.demo__example-snippet
-                code
+                code.rust
                   | update(Settings::belonging_to(current_user))
                         .set(&settings_form)
                         .execute(&connection)
@@ -215,7 +215,7 @@ section.demo
             .demo__example-browser
               .browser-bar Running raw SQL
               pre.demo__example-snippet
-                code
+                code.rust
                   | #[derive(QueryableByName)]
                     #[table_name = "users"]
                     struct User {

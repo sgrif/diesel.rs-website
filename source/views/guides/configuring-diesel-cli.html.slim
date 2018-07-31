@@ -65,7 +65,7 @@ main
           .demo__example-browser
             .browser-bar diesel.toml
             pre.demo__example-snippet
-              code
+              code.toml
                 | [print_schema]
                   # This will cause only the users and posts tables to be output
                   filter = { only_tables = ["users", "posts"] }
@@ -95,7 +95,7 @@ main
           .demo__example-browser
             .browser-bar diesel.toml
             pre.demo__example-snippet
-              code
+              code.toml
                 | [print_schema]
                   # Add types from `diesel_full_text_search` like `tsvector`
                   import_types = ["diesel::sql_types::*", "diesel_full_text_search::types::*"]
