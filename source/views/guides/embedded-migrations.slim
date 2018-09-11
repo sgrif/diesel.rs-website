@@ -1,0 +1,38 @@
+---
+title: Embedding migrations
+---
+
+section.banner
+  .content-wrapper
+    .banner-wrapper
+      h2.banner__heading Embedding migrations
+
+main
+  section.demo
+    .content-wrapper
+      .guide-wrapper
+        markdown:
+          Sometimes you want your binary to manage the initialization and
+          migrations for the users, without asking them to use diesel_cli.
+          In this case you can embed your migrations into your binary with
+          `embed_migrations!`.
+
+        .demo__example
+          .demo__example-browser
+            .browser-bar src/lib.rs
+            a.btn-demo-example href="TODO"
+              | View on Github
+            pre.demo__example-snippet
+              code.rust
+                | embed_migrations!("../migrations/sqlite");
+
+                  fn main() {
+                      let connection = establish_connection();
+
+                      // This will run the necessary migrations.
+                      embedded_migrations::run(&connection);
+
+                      // By default the output is thrown out. If you want to redirect it to stdout, you
+                      // should call embedded_migrations::run_with_output.
+                      embedded_migrations::run_with_output(&connection, &mut std::io::stdout());
+                  }
