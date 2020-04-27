@@ -1,5 +1,6 @@
 The MIT License (MIT)
 
+Copyright © 2015–2020 Sean Griffin
 Copyright © 2014–2015 [thoughtbot, inc.](http://thoughtbot.com)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
