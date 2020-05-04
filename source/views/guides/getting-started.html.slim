@@ -250,11 +250,20 @@ main
                   }
 
         markdown:
-          We'll also want to create a `Post` struct into which we can read our
-          data, and have diesel generate the names we'll use to reference tables
-          and columns in our queries.
+          We'll also want to create two things:
+ 
+          1. `Post` struct for a query, into which we can read our data.
+          2. A `Post` struct for a table, into which we can write our data.
+          
+          In this example there's a 1:1 mapping between these, but that's 
+          not always going to be the case! We'll often want to query multiple 
+          tables and collect the final result.
+          
+          Diesel will handle all of this for us by generating the names we'll
+          use to reference tables and columns in our queries - as long as we supply
+          the `schema` (for the tables) and `model` (for the queries).
 
-          We'll add the following lines to the top of `src/lib.rs`:
+          We only need to  add the following lines to the top of `src/lib.rs`:
 
         .demo__example
           .demo__example-browser
