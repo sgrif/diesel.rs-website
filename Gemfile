@@ -1,8 +1,10 @@
 source "https://rubygems.org"
 
 gem "bourbon"
+gem "execjs"
 gem "middleman", ">= 4.0.0"
 gem "middleman-autoprefixer"
 gem "middleman-livereload"
+gem "mini_racer"
 gem "neat"
 gem "slim"
