@@ -24,7 +24,7 @@ main
           .demo__example-browser
             .browser-bar src/lib.rs
             a.btn-demo-example href=example_file("postgres/all_about_updates/src/lib.rs#L12-L21")
-              | View on Github
+              | View on GitHub
             pre.demo__example-snippet
               code.rust
                 | table! {
@@ -45,7 +45,7 @@ main
           .demo__example-browser
             .browser-bar src/lib.rs
             a.btn-demo-example href=example_file("postgres/all_about_updates/src/lib.rs#L33-L38")
-              | View on Github
+              | View on GitHub
             pre.demo__example-snippet
               code.rust
                 | use posts::dsl::*;
@@ -61,7 +61,7 @@ main
           .demo__example-browser
             .browser-bar Generated SQL
             a.btn-demo-example href=example_file("postgres/all_about_updates/src/lib.rs#L40-L48")
-              | View on Github
+              | View on GitHub
             pre.demo__example-snippet
               code.sql UPDATE "posts" SET "draft" = $1 -- binds: [false]
 
@@ -73,7 +73,7 @@ main
           .demo__example-browser
             .browser-bar src/lib.rs
             a.btn-demo-example href=example_file("postgres/all_about_updates/src/lib.rs#L50-L57")
-              | View on Github
+              | View on GitHub
             pre.demo__example-snippet
               code.rust
                 | use posts::dsl::*;
@@ -89,7 +89,7 @@ main
           .demo__example-browser
             .browser-bar Generated SQL
             a.btn-demo-example href=example_file("postgres/all_about_updates/src/lib.rs#L59-L71")
-              | View on Github
+              | View on GitHub
             pre.demo__example-snippet
               code.sql
                 | UPDATE `posts` SET `draft` = ?
@@ -106,7 +106,7 @@ main
           .demo__example-browser
             .browser-bar src/lib.rs
             a.btn-demo-example href=example_file("postgres/all_about_updates/src/lib.rs#L23-L31")
-              | View on Github
+              | View on GitHub
             pre.demo__example-snippet
               code.rust
                 | #[derive(Identifiable)]
@@ -127,7 +127,7 @@ main
           .demo__example-browser
             .browser-bar src/lib.rs
             a.btn-demo-example href=example_file("postgres/all_about_updates/src/lib.rs#L73-L76")
-              | View on Github
+              | View on GitHub
             pre.demo__example-snippet
               code.rust diesel::update(&post).set(posts::draft.eq(false))
 
@@ -138,7 +138,7 @@ main
           .demo__example-browser
             .browser-bar Generated SQL
             a.btn-demo-example href=example_file("postgres/all_about_updates/src/lib.rs#L78-L93")
-              | View on Github
+              | View on GitHub
             pre.demo__example-snippet
               code.sql UPDATE `posts` SET `draft` = ? WHERE `posts`.`id` = ?
 
@@ -149,7 +149,7 @@ main
           .demo__example-browser
             .browser-bar src/lib.rs
             a.btn-demo-example href=example_file("postgres/all_about_updates/src/lib.rs#L95-L100")
-              | View on Github
+              | View on GitHub
             pre.demo__example-snippet
               code.rust
                 | use posts::dsl::*;
@@ -163,7 +163,7 @@ main
           .demo__example-browser
             .browser-bar Generated SQL
             a.btn-demo-example href=example_file("postgres/all_about_updates/src/lib.rs#L102-L111")
-              | View on Github
+              | View on GitHub
             pre.demo__example-snippet
               code.sql
                 | UPDATE `posts`
@@ -176,7 +176,7 @@ main
           .demo__example-browser
             .browser-bar src/lib.rs
             a.btn-demo-example href=example_file("postgres/all_about_updates/src/lib.rs#L113-L122")
-              | View on Github
+              | View on GitHub
             pre.demo__example-snippet
               code.rust
                 | use posts::dsl::*;
@@ -194,7 +194,7 @@ main
           .demo__example-browser
             .browser-bar Generated SQL
             a.btn-demo-example href=example_file("postgres/all_about_updates/src/lib.rs#L124-L137")
-              | View on Github
+              | View on GitHub
             pre.demo__example-snippet
               code.sql UPDATE `posts` SET `title` = ?, `body` = ?
 
@@ -211,7 +211,7 @@ main
           .demo__example-browser
             .browser-bar src/lib.rs
             a.btn-demo-example href=example_file("postgres/all_about_updates/src/lib.rs#L139-L142")
-              | View on Github
+              | View on GitHub
             pre.demo__example-snippet
               code.rust diesel::update(posts::table).set(&post)
 
@@ -222,7 +222,7 @@ main
           .demo__example-browser
             .browser-bar Generated SQL
             a.btn-demo-example href=example_file("postgres/all_about_updates/src/lib.rs#L144-L173")
-              | View on Github
+              | View on GitHub
             pre.demo__example-snippet
               code.sql
                 | UPDATE `posts` SET
@@ -241,7 +241,7 @@ main
           .demo__example-browser
             .browser-bar src/lib.rs
             a.btn-demo-example href=example_file("postgres/all_about_updates/src/lib.rs#L175-L189")
-              | View on Github
+              | View on GitHub
             pre.demo__example-snippet
               code.rust
                 | #[derive(AsChangeset)]
@@ -264,7 +264,7 @@ main
           .demo__example-browser
             .browser-bar Generated SQL
             a.btn-demo-example href=example_file("postgres/all_about_updates/src/lib.rs#L191-L211")
-              | View on Github
+              | View on GitHub
             pre.demo__example-snippet
               code.sql UPDATE `posts` SET `body` = ?
 
