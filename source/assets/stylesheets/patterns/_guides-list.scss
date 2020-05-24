@@ -26,12 +26,10 @@
   padding: $small-spacing;
 
   &:hover {
-    @include transition(background-color 0.25s ease-in-out);
     background-color: transparentize($white, 0.9);
     color: darken($action-color, 10%);
 
     .guides-list-heading::after {
-      @include transition(opacity 0.25s ease-in-out);
       opacity: 1;
     }
   }

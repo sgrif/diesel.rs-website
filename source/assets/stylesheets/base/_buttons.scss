@@ -1,7 +1,6 @@
-#{$all-button-inputs},
+#{$all-buttons},
 button,
 .btn {
-  @include transition(all 0.25s ease-in-out);
   appearance: none;
   -webkit-font-smoothing: antialiased;
   background-color: lighten($lavender, 23%);
