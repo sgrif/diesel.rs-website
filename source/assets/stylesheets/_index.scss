@@ -43,7 +43,7 @@
   margin-bottom: 1.5rem;
 
   &__header {
-    @include size(100% null);
+    @include size(100%);
     display: block;
     background: transparentize($white, 0.5);
     border-top-left-radius: $base-border-radius;
@@ -86,7 +86,7 @@
   }
 
   &__example-browser {
-    @include size(100% auto);
+    @include size(100%, auto);
     position: relative;
     margin-bottom: $base-spacing;
 
@@ -96,7 +96,7 @@
     }
 
     .browser-bar {
-      @include size(100% null);
+      @include size(100%);
       background: $light-gray;
       border-top-left-radius: $base-border-radius;
       border-top-right-radius: $base-border-radius;

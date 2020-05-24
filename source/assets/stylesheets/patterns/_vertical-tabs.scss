@@ -49,7 +49,7 @@
     position: relative;
 
     @include media($large-screen-up) {
-      @include size(80% null);
+      @include size(80%);
       display: inline-block;
       padding: $base-spacing;
     }

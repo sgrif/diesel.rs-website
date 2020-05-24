@@ -14,11 +14,11 @@
 
     a,
     .logo {
-      @include size(auto $main-header-height);
+      @include size(auto, $main-header-height);
       display: block;
 
       @include media($medium-screen-up) {
-        @include size(auto $main-header-height);
+        @include size(auto, $main-header-height);
       }
     }
 
