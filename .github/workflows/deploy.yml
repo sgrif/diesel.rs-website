@@ -1,7 +1,7 @@
-name: Ruby
+name: Deploy
 
 on:
-  pull_request:
+  push:
     branches: [ master ]
 
 jobs:
@@ -17,3 +17,9 @@ jobs:
       run: bundle install
     - name: Build pages
       run: bundle exec middleman build
+    - name: Deploy
+      uses: JamesIves/github-pages-deploy-action@releases/v3
+      with:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        BRANCH: gh-pages # The branch the action should deploy to.
+        FOLDER: build # The folder the action should deploy.
