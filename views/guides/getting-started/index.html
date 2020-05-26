@@ -40,9 +40,9 @@ cd diesel_demo</code></pre></div></div><p>First, let's add Diesel to our depende
 tool called <a href="https://github.com/dotenv-rs/dotenv"><code>.env</code></a> to manage our environment variables
 for us. We'll add it to our dependencies as well.</p>
 
-<div class="demo__example"><div class="demo__example-browser"><div class="browser-bar">Cargo.toml</div><a class="btn-demo-example" href="https://github.com/diesel-rs/diesel/tree/v1.3.0/examples/postgres/getting_started_step_1/Cargo.toml">View on Github</a><pre class="demo__example-snippet"><code class="toml">[dependencies]
-diesel = { version = "1.0.0", features = ["postgres"] }
-dotenv = "0.9.0"</code></pre></div></div><p>Diesel provides a separate <a href="https://github.com/diesel-rs/diesel/tree/master/diesel_cli">CLI</a> tool to help manage your
+<div class="demo__example"><div class="demo__example-browser"><div class="browser-bar">Cargo.toml</div><a class="btn-demo-example" href="https://github.com/diesel-rs/diesel/tree/v1.4.4/examples/postgres/getting_started_step_1/Cargo.toml">View on GitHub</a><pre class="demo__example-snippet"><code class="toml">[dependencies]
+diesel = { version = "1.4.4", features = ["postgres"] }
+dotenv = "0.15.0"</code></pre></div></div><p>Diesel provides a separate <a href="https://github.com/diesel-rs/diesel/tree/master/diesel_cli">CLI</a> tool to help manage your
 project.  Since it's a standalone binary, and doesn't affect your
 project's code directly, we don't add it to <code>Cargo.toml</code>. Instead, we
 just install it on our system.</p>
@@ -52,8 +52,8 @@ just install it on our system.</p>
 clang: error: linker command failed with exit code 1 (use -v to see invocation)</code></pre></div></div><p>This means you are missing the client library needed for a
 database backend – <code>mysqlclient</code> in this case. You can resolve
 this issue by either installing the library (using the usual way
-to do this depending on your operating system) or by specifying
-the backends you want to install the CLI tool with.</p>
+to do this depending on your operating system) or by excluding the
+undesired default library with the <code>--no-default-features</code> flag.</p>
 
 <p>For example, if you only have PostgreSQL installed, you can use
 this to install <code>diesel_cli</code> with only PostgreSQL:</p>
@@ -79,12 +79,12 @@ and immediately reverting a migration should leave your database schema
 unchanged.</p>
 
 <p>Next, we'll write the SQL for migrations:</p>
-<div class="demo__example"><div class="demo__example-browser"><div class="browser-bar">up.sql</div><a class="btn-demo-example" href="https://github.com/diesel-rs/diesel/tree/v1.3.0/examples/postgres/getting_started_step_1/migrations/20160815133237_create_posts/up.sql">View on Github</a><pre class="demo__example-snippet"><code class="sql">CREATE TABLE posts (
+<div class="demo__example"><div class="demo__example-browser"><div class="browser-bar">up.sql</div><a class="btn-demo-example" href="https://github.com/diesel-rs/diesel/tree/v1.4.4/examples/postgres/getting_started_step_1/migrations/20160815133237_create_posts/up.sql">View on GitHub</a><pre class="demo__example-snippet"><code class="sql">CREATE TABLE posts (
   id SERIAL PRIMARY KEY,
   title VARCHAR NOT NULL,
   body TEXT NOT NULL,
   published BOOLEAN NOT NULL DEFAULT 'f'
-)</code></pre></div><div class="demo__example-browser"><div class="browser-bar">down.sql</div><a class="btn-demo-example" href="https://github.com/diesel-rs/diesel/tree/v1.3.0/examples/postgres/getting_started_step_1/migrations/20160815133237_create_posts/down.sql">View on Github</a><pre class="demo__example-snippet"><code class="sql">DROP TABLE posts</code></pre></div></div><p>We can apply our new migration:</p>
+)</code></pre></div><div class="demo__example-browser"><div class="browser-bar">down.sql</div><a class="btn-demo-example" href="https://github.com/diesel-rs/diesel/tree/v1.4.4/examples/postgres/getting_started_step_1/migrations/20160815133237_create_posts/down.sql">View on GitHub</a><pre class="demo__example-snippet"><code class="sql">DROP TABLE posts</code></pre></div></div><p>We can apply our new migration:</p>
 <div class="demo__example"><div class="demo__example-browser"><pre class="demo__example-snippet"><code class="shell">diesel migration run</code></pre></div></div><p>It's a good idea to make sure that <code>down.sql</code> is correct. You can quickly confirm
 that your <code>down.sql</code> rolls back your migration correctly by <strong>redoing</strong> the migration:</p>
 <div class="demo__example"><div class="demo__example-browser"><pre class="demo__example-snippet"><code class="shell">diesel migration redo</code></pre></div></div><aside class="aside aside--note"><header class="aside__header">A Note on Raw SQL in Migrations</header><div class="aside__text"><p>Since migrations are written in raw SQL, they can contain specific
@@ -102,7 +102,7 @@ at the start of your <code>main</code> function to run migrations every time the
 </div></aside><p>OK enough SQL, let's write some Rust. We'll start by writing some code
 to show the last five published posts. The first thing we need to do is
 establish a database connection.</p>
-<div class="demo__example"><div class="demo__example-browser"><div class="browser-bar">src/lib.rs</div><a class="btn-demo-example" href="https://github.com/diesel-rs/diesel/tree/v1.3.0/examples/postgres/getting_started_step_1/src/lib.rs">View on Github</a><pre class="demo__example-snippet"><code class="rust">#[macro_use]
+<div class="demo__example"><div class="demo__example-browser"><div class="browser-bar">src/lib.rs</div><a class="btn-demo-example" href="https://github.com/diesel-rs/diesel/tree/v1.4.4/examples/postgres/getting_started_step_1/src/lib.rs">View on GitHub</a><pre class="demo__example-snippet"><code class="rust">#[macro_use]
 extern crate diesel;
 extern crate dotenv;
 
@@ -123,9 +123,9 @@ data, and have diesel generate the names we'll use to reference tables
 and columns in our queries.</p>
 
 <p>We'll add the following lines to the top of <code>src/lib.rs</code>:</p>
-<div class="demo__example"><div class="demo__example-browser"><div class="browser-bar">src/lib.rs</div><a class="btn-demo-example" href="https://github.com/diesel-rs/diesel/tree/v1.3.0/examples/postgres/getting_started_step_1/src/lib.rs">View on Github</a><pre class="demo__example-snippet"><code class="rust">pub mod schema;
+<div class="demo__example"><div class="demo__example-browser"><div class="browser-bar">src/lib.rs</div><a class="btn-demo-example" href="https://github.com/diesel-rs/diesel/tree/v1.4.4/examples/postgres/getting_started_step_1/src/lib.rs">View on GitHub</a><pre class="demo__example-snippet"><code class="rust">pub mod schema;
 pub mod models;</code></pre></div></div><p>Next we need to create the two modules that we just declared.</p>
-<div class="demo__example"><div class="demo__example-browser"><div class="browser-bar">src/models.rs</div><a class="btn-demo-example" href="https://github.com/diesel-rs/diesel/tree/v1.3.0/examples/postgres/getting_started_step_1/src/models.rs">View on Github</a><pre class="demo__example-snippet"><code class="rust">#[derive(Queryable)]
+<div class="demo__example"><div class="demo__example-browser"><div class="browser-bar">src/models.rs</div><a class="btn-demo-example" href="https://github.com/diesel-rs/diesel/tree/v1.4.4/examples/postgres/getting_started_step_1/src/models.rs">View on GitHub</a><pre class="demo__example-snippet"><code class="rust">#[derive(Queryable)]
 pub struct Post {
     pub id: i32,
     pub title: String,
@@ -137,11 +137,11 @@ load a <code>Post</code> struct from a SQL query.</p>
 <p>Typically the <code>schema</code> module isn't created by hand,
 it gets generated by Diesel.
 When we ran <code>diesel setup</code>,
-a file called <a href="https://github.com/diesel-rs/diesel/tree/v1.3.0/examples/postgres/getting_started_step_1/diesel.toml"><code>diesel.toml</code></a> was created
+a file called <a href="https://github.com/diesel-rs/diesel/tree/v1.4.4/examples/postgres/getting_started_step_1/diesel.toml"><code>diesel.toml</code></a> was created
 which tells Diesel to maintain a file at src/schema.rs for us.
 The file should look like this:</p>
 
-<div class="demo__example"><div class="demo__example-browser"><div class="browser-bar">src/schema.rs</div><a class="btn-demo-example" href="https://github.com/diesel-rs/diesel/tree/v1.3.0/examples/postgres/getting_started_step_1/src/schema.rs">View on Github</a><pre class="demo__example-snippet"><code class="rust">table! {
+<div class="demo__example"><div class="demo__example-browser"><div class="browser-bar">src/schema.rs</div><a class="btn-demo-example" href="https://github.com/diesel-rs/diesel/tree/v1.4.4/examples/postgres/getting_started_step_1/src/schema.rs">View on GitHub</a><pre class="demo__example-snippet"><code class="rust">table! {
     posts (id) {
         id -> Integer,
         title -> Text,
@@ -161,7 +161,7 @@ exactly to use that in the next example.</p>
 <code>Post</code> struct matches the columns in the <code>posts</code> table, so make
 sure to define them in the order seen in the <code>schema.rs</code> file.</p>
 </div></aside><p>Let's write the code to actually show us our posts.</p>
-<div class="demo__example"><div class="demo__example-browser"><div class="browser-bar">src/bin/show_posts.rs</div><a class="btn-demo-example" href="https://github.com/diesel-rs/diesel/tree/v1.3.0/examples/postgres/getting_started_step_1/src/bin/show_posts.rs">View on Github</a><pre class="demo__example-snippet"><code class="rust">extern crate diesel_demo;
+<div class="demo__example"><div class="demo__example-browser"><div class="browser-bar">src/bin/show_posts.rs</div><a class="btn-demo-example" href="https://github.com/diesel-rs/diesel/tree/v1.4.4/examples/postgres/getting_started_step_1/src/bin/show_posts.rs">View on GitHub</a><pre class="demo__example-snippet"><code class="rust">extern crate diesel_demo;
 extern crate diesel;
 
 use self::diesel_demo::*;
@@ -194,19 +194,19 @@ any posts in the database. Still, we've written a decent amount of
 code, so let's commit.</p>
 
 <p>The full code for the demo at this point can be found
-<a href="https://github.com/diesel-rs/diesel/tree/v1.3.0/examples/postgres/getting_started_step_1/">here</a>.</p>
+<a href="https://github.com/diesel-rs/diesel/tree/v1.4.4/examples/postgres/getting_started_step_1/">here</a>.</p>
 
 <p>Next, let's write some code to create a new post. We'll want a struct
 to use for inserting a new record.</p>
 
-<div class="demo__example"><div class="demo__example-browser"><div class="browser-bar">src/models.rs</div><a class="btn-demo-example" href="https://github.com/diesel-rs/diesel/tree/v1.3.0/examples/postgres/getting_started_step_2/src/models.rs">View on Github</a><pre class="demo__example-snippet"><code class="rust">use super::schema::posts;
+<div class="demo__example"><div class="demo__example-browser"><div class="browser-bar">src/models.rs</div><a class="btn-demo-example" href="https://github.com/diesel-rs/diesel/tree/v1.4.4/examples/postgres/getting_started_step_2/src/models.rs">View on GitHub</a><pre class="demo__example-snippet"><code class="rust">use super::schema::posts;
 
 #[derive(Insertable)]
 #[table_name="posts"]
 pub struct NewPost&lt;'a&gt; {
     pub title: &'a str,
     pub body: &'a str,
-}</code></pre></div></div><p>Now let's add a function to save a new post.</p><div class="demo__example"><div class="demo__example-browser"><div class="browser-bar">src/lib.rs</div><a class="btn-demo-example" href="https://github.com/diesel-rs/diesel/tree/v1.3.0/examples/postgres/getting_started_step_2/src/lib.rs">View on Github</a><pre class="demo__example-snippet"><code class="rust">use self::models::{Post, NewPost};
+}</code></pre></div></div><p>Now let's add a function to save a new post.</p><div class="demo__example"><div class="demo__example-browser"><div class="browser-bar">src/lib.rs</div><a class="btn-demo-example" href="https://github.com/diesel-rs/diesel/tree/v1.4.4/examples/postgres/getting_started_step_2/src/lib.rs">View on GitHub</a><pre class="demo__example-snippet"><code class="rust">use self::models::{Post, NewPost};
 
 pub fn create_post&lt;'a&gt;(conn: &PgConnection, title: &'a str, body: &'a str) -&gt; Post {
     use schema::posts;
@@ -233,7 +233,7 @@ complain at you, that way. :)</p>
 
 <p>Now that we've got everything set up, we can create a little script to
 write a new post.</p>
-<div class="demo__example"><div class="demo__example-browser"><div class="browser-bar">src/bin/write_post.rs</div><a class="btn-demo-example" href="https://github.com/diesel-rs/diesel/tree/v1.3.0/examples/postgres/getting_started_step_2/src/bin/write_post.rs">View on Github</a><pre class="demo__example-snippet"><code class="rust">extern crate diesel_demo;
+<div class="demo__example"><div class="demo__example-browser"><div class="browser-bar">src/bin/write_post.rs</div><a class="btn-demo-example" href="https://github.com/diesel-rs/diesel/tree/v1.4.4/examples/postgres/getting_started_step_2/src/bin/write_post.rs">View on GitHub</a><pre class="demo__example-snippet"><code class="rust">extern crate diesel_demo;
 extern crate diesel;
 
 use self::diesel_demo::*;
@@ -280,12 +280,12 @@ because we saved it as a draft. If we look back to the code in
 <code>published</code> default to false in our migration. We need to publish it!
 But in order to do that, we'll need to look at how to update an
 existing record. First, let's commit. The code for this demo at this
-point can be found <a href="https://github.com/diesel-rs/diesel/tree/v1.3.0/examples/postgres/getting_started_step_2/">here</a>.</p>
+point can be found <a href="https://github.com/diesel-rs/diesel/tree/v1.4.4/examples/postgres/getting_started_step_2/">here</a>.</p>
 
 <p>Now that we've got create and read out of the way, update is actually
 relatively simple. Let's jump right into the script:</p>
 
-<div class="demo__example"><div class="demo__example-browser"><div class="browser-bar">src/bin/publish_post.rs</div><a class="btn-demo-example" href="https://github.com/diesel-rs/diesel/tree/v1.3.0/examples/postgres/getting_started_step_3/src/bin/publish_post.rs">View on Github</a><pre class="demo__example-snippet"><code class="rust">extern crate diesel_demo;
+<div class="demo__example"><div class="demo__example-browser"><div class="browser-bar">src/bin/publish_post.rs</div><a class="btn-demo-example" href="https://github.com/diesel-rs/diesel/tree/v1.4.4/examples/postgres/getting_started_step_3/src/bin/publish_post.rs">View on GitHub</a><pre class="demo__example-snippet"><code class="rust">extern crate diesel_demo;
 extern crate diesel;
 
 use self::diesel::prelude::*;
@@ -308,7 +308,8 @@ fn main() {
 }</code></pre></div></div><p>That's it! Let's try it out with <code>cargo run --bin publish_post 1</code>.</p>
 <pre><code class="nohighlight hljs"> Compiling diesel_demo v0.1.0 (file:///Users/sean/Documents/Projects/open-source/diesel_demo)
    Running `target/debug/publish_post 1`
-Published post Diesel demo</code></pre><p>And now, finally, we can see our post with `cargo run --bin show_posts`.</p><pre><code class="nohighlight hljs">     Running `target/debug/show_posts`
+Published post Diesel demo</code></pre><p>And now, finally, we can see our post with <code>cargo run --bin show_posts</code>.</p>
+<pre><code class="nohighlight hljs">     Running `target/debug/show_posts`
 Displaying 1 posts
 Diesel demo
 ----------
@@ -321,7 +322,7 @@ new one, soon.</code></pre><p>We've still only covered three of the four letters
 how to delete things. Sometimes we write something we really hate, and
 we don't have time to look up the ID. So let's delete based on the
 title, or even just some words in the title.</p>
-<div class="demo__example"><div class="demo__example-browser"><div class="browser-bar">src/bin/delete_post.rs</div><a class="btn-demo-example" href="https://github.com/diesel-rs/diesel/tree/v1.3.0/examples/postgres/getting_started_step_3/src/bin/delete_post.rs">View on Github</a><pre class="demo__example-snippet"><code class="rust">extern crate diesel_demo;
+<div class="demo__example"><div class="demo__example-browser"><div class="browser-bar">src/bin/delete_post.rs</div><a class="btn-demo-example" href="https://github.com/diesel-rs/diesel/tree/v1.4.4/examples/postgres/getting_started_step_3/src/bin/delete_post.rs">View on GitHub</a><pre class="demo__example-snippet"><code class="rust">extern crate diesel_demo;
 extern crate diesel;
 
 use self::diesel::prelude::*;
@@ -349,10 +350,10 @@ the post was in fact deleted. This barely scratches the surface of what
 you can do with Diesel, but hopefully this tutorial has given you a
 good foundation to build off of. We recommend exploring the <a href="http://docs.diesel.rs">API
 docs</a> to see more. The final code for this tutorial can be found
-<a href="https://github.com/diesel-rs/diesel/tree/v1.3.0/examples/postgres/getting_started_step_3/">here</a>.</p>
+<a href="https://github.com/diesel-rs/diesel/tree/v1.4.4/examples/postgres/getting_started_step_3/">here</a>.</p>
 
 <p><a href="/guides">View More Guides</a></p>
-</div></div></section></main><footer><div class="content-wrapper"><p>Copyright &copy; 2015-2018 Sean Griffin</p></div></footer><script src="https://code.jquery.com/jquery-2.1.1.min.js"></script><script src="../../../assets/javascripts/application.js"></script><script src="../../../assets/javascripts/highlight.pack.js"></script><script src="../../../assets/javascripts/vertical-tabs.js"></script><script>hljs.initHighlightingOnLoad();</script><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+</div></div></section></main><footer><div class="content-wrapper"><p>Copyright &copy; 2015-2020 Sean Griffin</p></div></footer><script src="https://code.jquery.com/jquery-2.1.1.min.js"></script><script src="../../../assets/javascripts/application.js"></script><script src="../../../assets/javascripts/highlight.pack.js"></script><script src="../../../assets/javascripts/vertical-tabs.js"></script><script>hljs.initHighlightingOnLoad();</script><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
 m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 })(window,document,'script','//www.google-analytics.com/analytics.js','ga');

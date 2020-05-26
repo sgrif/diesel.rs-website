@@ -38,7 +38,7 @@ The full code examples for all backends are linked at the bottom of this guide.<
 The first argument to this function is the table you're inserting into.</p>
 
 <p>For this guide, our schema will look like this:</p>
-<div class="demo__example"><div class="demo__example-browser"><div class="browser-bar">src/lib.rs</div><a class="btn-demo-example" href="https://github.com/diesel-rs/diesel/tree/v1.3.0/examples/postgres/all_about_inserts/src/lib.rs#L16-L26">View on Github</a><pre class="demo__example-snippet"><code class="rust">table! {
+<div class="demo__example"><div class="demo__example-browser"><div class="browser-bar">src/lib.rs</div><a class="btn-demo-example" href="https://github.com/diesel-rs/diesel/tree/v1.4.4/examples/postgres/all_about_inserts/src/lib.rs#L16-L26">View on GitHub</a><pre class="demo__example-snippet"><code class="rust">table! {
     users {
         id -> Integer,
         name -> Text,
@@ -57,7 +57,7 @@ make sure it's always inside a function, not the top of your module.</p>
 the simplest thing we can do is call <a href="//docs.diesel.rs/diesel/query_builder/insert_statement/struct.IncompleteInsertStatement.html#method.default_values"><code>.default_values</code></a>.
 We could write a function that ran that query like this:</p>
 
-<div class="demo__example"><div class="demo__example-browser"><div class="browser-bar">src/lib.rs</div><a class="btn-demo-example" href="https://github.com/diesel-rs/diesel/tree/v1.3.0/examples/postgres/all_about_inserts/src/lib.rs#L47-L49">View on Github</a><pre class="demo__example-snippet"><code class="rust">use schema::users::dsl::*;
+<div class="demo__example"><div class="demo__example-browser"><div class="browser-bar">src/lib.rs</div><a class="btn-demo-example" href="https://github.com/diesel-rs/diesel/tree/v1.4.4/examples/postgres/all_about_inserts/src/lib.rs#L47-L49">View on GitHub</a><pre class="demo__example-snippet"><code class="rust">use schema::users::dsl::*;
 
 insert_into(users).default_values().execute(conn)</code></pre></div></div><p>It's worth noting that this code will still compile,
 even if you don't have default values on all of your columns.
@@ -71,19 +71,19 @@ The exact SQL that is generated may differ depending on the backend you're using
 If we run <code>println!("{}", debug_query::&lt;Pg, _&gt;(&amp;our_query));</code>,
 we'll see the following:</p>
 
-<div class="demo__example"><div class="demo__example-browser"><div class="browser-bar">src/lib.rs</div><a class="btn-demo-example" href="https://github.com/diesel-rs/diesel/tree/v1.3.0/examples/postgres/all_about_inserts/src/lib.rs#L57">View on Github</a><pre class="demo__example-snippet"><code class="sql">INSERT INTO "users" DEFAULT VALUES -- binds: []</code></pre></div></div><p>If we want to actually provide values, we can call <a href="//docs.diesel.rs/diesel/query_builder/insert_statement/struct.IncompleteInsertStatement.html#method.values"><code>.values</code></a> instead.
+<div class="demo__example"><div class="demo__example-browser"><div class="browser-bar">src/lib.rs</div><a class="btn-demo-example" href="https://github.com/diesel-rs/diesel/tree/v1.4.4/examples/postgres/all_about_inserts/src/lib.rs#L57">View on GitHub</a><pre class="demo__example-snippet"><code class="sql">INSERT INTO "users" DEFAULT VALUES -- binds: []</code></pre></div></div><p>If we want to actually provide values, we can call <a href="//docs.diesel.rs/diesel/query_builder/insert_statement/struct.IncompleteInsertStatement.html#method.values"><code>.values</code></a> instead.
 There are a lot of different arguments we can provide here.
 The simplest is a single column/value pair using <a href="//docs.diesel.rs/diesel/expression_methods/trait.ExpressionMethods.html#method.eq"><code>.eq</code></a>.</p>
 
-<div class="demo__example"><div class="demo__example-browser"><div class="browser-bar">src/lib.rs</div><a class="btn-demo-example" href="https://github.com/diesel-rs/diesel/tree/v1.3.0/examples/postgres/all_about_inserts/src/lib.rs#L62-L64">View on Github</a><pre class="demo__example-snippet"><code class="rust">use schema::users::dsl::*;
+<div class="demo__example"><div class="demo__example-browser"><div class="browser-bar">src/lib.rs</div><a class="btn-demo-example" href="https://github.com/diesel-rs/diesel/tree/v1.4.4/examples/postgres/all_about_inserts/src/lib.rs#L62-L64">View on GitHub</a><pre class="demo__example-snippet"><code class="rust">use schema::users::dsl::*;
 
 insert_into(users).values(name.eq("Sean")).execute(conn)</code></pre></div></div><p>This will generate the following SQL:</p>
-<div class="demo__example"><div class="demo__example-browser"><div class="browser-bar">src/lib.rs</div><a class="btn-demo-example" href="https://github.com/diesel-rs/diesel/tree/v1.3.0/examples/postgres/all_about_inserts/src/lib.rs#L72-L73">View on Github</a><pre class="demo__example-snippet"><code class="sql">INSERT INTO "users" ("name") VALUES ($1)
+<div class="demo__example"><div class="demo__example-browser"><div class="browser-bar">src/lib.rs</div><a class="btn-demo-example" href="https://github.com/diesel-rs/diesel/tree/v1.4.4/examples/postgres/all_about_inserts/src/lib.rs#L72-L73">View on GitHub</a><pre class="demo__example-snippet"><code class="sql">INSERT INTO "users" ("name") VALUES ($1)
 -- binds ["Sean"]</code></pre></div></div><p>If we want to provide values for more than one column, we can pass a tuple.</p>
-<div class="demo__example"><div class="demo__example-browser"><div class="browser-bar">src/lib.rs</div><a class="btn-demo-example" href="https://github.com/diesel-rs/diesel/tree/v1.3.0/examples/postgres/all_about_inserts/src/lib.rs#L80-83">View on Github</a><pre class="demo__example-snippet"><code class="rust">insert_into(users)
+<div class="demo__example"><div class="demo__example-browser"><div class="browser-bar">src/lib.rs</div><a class="btn-demo-example" href="https://github.com/diesel-rs/diesel/tree/v1.4.4/examples/postgres/all_about_inserts/src/lib.rs#L80-83">View on GitHub</a><pre class="demo__example-snippet"><code class="rust">insert_into(users)
     .values((name.eq("Tess"), hair_color.eq("Brown")))
     .execute(conn)</code></pre></div></div><p>This will generate the following SQL:</p>
-<div class="demo__example"><div class="demo__example-browser"><div class="browser-bar">src/lib.rs</div><a class="btn-demo-example" href="https://github.com/diesel-rs/diesel/tree/v1.3.0/examples/postgres/all_about_inserts/src/lib.rs#L90-L91">View on Github</a><pre class="demo__example-snippet"><code class="sql">INSERT INTO "users" ("name", "hair_color")
+<div class="demo__example"><div class="demo__example-browser"><div class="browser-bar">src/lib.rs</div><a class="btn-demo-example" href="https://github.com/diesel-rs/diesel/tree/v1.4.4/examples/postgres/all_about_inserts/src/lib.rs#L90-L91">View on GitHub</a><pre class="demo__example-snippet"><code class="sql">INSERT INTO "users" ("name", "hair_color")
 VALUES ($1, $2) -- binds: ["Tess", "Brown"]</code></pre></div></div><h2 id="insertable"><code>Insertable</code></h2>
 
 <p>Working with tuples is the typical way to do an insert
@@ -97,14 +97,14 @@ It'd be annoying to have to write
 <code>Insertable</code> maps your struct to columns in the database.
 We can derive this automatically by adding <code>#[derive(Insertable)]</code> to our type.</p>
 
-<div class="demo__example"><div class="demo__example-browser"><div class="browser-bar">src/lib.rs</div><a class="btn-demo-example" href="https://github.com/diesel-rs/diesel/tree/v1.3.0/examples/postgres/all_about_inserts/src/lib.rs#L30-L35">View on Github</a><pre class="demo__example-snippet"><code class="rust">use schema::users;
+<div class="demo__example"><div class="demo__example-browser"><div class="browser-bar">src/lib.rs</div><a class="btn-demo-example" href="https://github.com/diesel-rs/diesel/tree/v1.4.4/examples/postgres/all_about_inserts/src/lib.rs#L30-L35">View on GitHub</a><pre class="demo__example-snippet"><code class="rust">use schema::users;
 
 #[derive(Deserialize, Insertable)]
 #[table_name = "users"]
 pub struct UserForm&lt;'a&gt; {
     name: &'a str,
     hair_color: Option&lt;&'a str&gt;,
-}</code></pre></div></div><div class="demo__example"><div class="demo__example-browser"><div class="browser-bar">src/lib.rs</div><a class="btn-demo-example" href="https://github.com/diesel-rs/diesel/tree/v1.3.0/examples/postgres/all_about_inserts/src/lib.rs#L98-L103">View on Github</a><pre class="demo__example-snippet"><code class="rust">use schema::users::dsl::*;
+}</code></pre></div></div><div class="demo__example"><div class="demo__example-browser"><div class="browser-bar">src/lib.rs</div><a class="btn-demo-example" href="https://github.com/diesel-rs/diesel/tree/v1.4.4/examples/postgres/all_about_inserts/src/lib.rs#L98-L103">View on GitHub</a><pre class="demo__example-snippet"><code class="rust">use schema::users::dsl::*;
 
 let json = r#"{ "name": "Sean", "hair_color": "Black" }"#;
 let user_form = serde_json::from_str::&lt;UserForm&gt;(json)?;
@@ -112,10 +112,10 @@ let user_form = serde_json::from_str::&lt;UserForm&gt;(json)?;
 insert_into(users).values(&user_form).execute(conn)?;
 
 Ok(())</code></pre></div></div><p>This will generate the same SQL as if we had used a tuple.</p>
-<div class="demo__example"><div class="demo__example-browser"><div class="browser-bar">src/lib.rs</div><a class="btn-demo-example" href="https://github.com/diesel-rs/diesel/tree/v1.3.0/examples/postgres/all_about_inserts/src/lib.rs#L113-L114">View on Github</a><pre class="demo__example-snippet"><code class="sql">INSERT INTO "users" ("name", "hair_color")
+<div class="demo__example"><div class="demo__example-browser"><div class="browser-bar">src/lib.rs</div><a class="btn-demo-example" href="https://github.com/diesel-rs/diesel/tree/v1.4.4/examples/postgres/all_about_inserts/src/lib.rs#L113-L114">View on GitHub</a><pre class="demo__example-snippet"><code class="sql">INSERT INTO "users" ("name", "hair_color")
 VALUES ($1, $2) -- binds: ["Sean", "Black"]</code></pre></div></div><p>If one of the fields is <code>None</code>,
 the default value will be inserted for that field.</p>
-<div class="demo__example"><div class="demo__example-browser"><div class="browser-bar">src/lib.rs</div><a class="btn-demo-example" href="https://github.com/diesel-rs/diesel/tree/v1.3.0/examples/postgres/all_about_inserts/src/lib.rs#L119-L126">View on Github</a><pre class="demo__example-snippet"><code class="rust">use schema::users::dsl::*;
+<div class="demo__example"><div class="demo__example-browser"><div class="browser-bar">src/lib.rs</div><a class="btn-demo-example" href="https://github.com/diesel-rs/diesel/tree/v1.4.4/examples/postgres/all_about_inserts/src/lib.rs#L119-L126">View on GitHub</a><pre class="demo__example-snippet"><code class="rust">use schema::users::dsl::*;
 
 let json = r#"{ "name": "Ruby", "hair_color": null }"#;
 let user_form = serde_json::from_str::&lt;UserForm&gt;(json)?;
@@ -123,7 +123,7 @@ let user_form = serde_json::from_str::&lt;UserForm&gt;(json)?;
 insert_into(users).values(&user_form).execute(conn)?;
 
 Ok(())</code></pre></div></div><p>That will generate the following SQL:</p>
-<div class="demo__example"><div class="demo__example-browser"><div class="browser-bar">src/lib.rs</div><a class="btn-demo-example" href="https://github.com/diesel-rs/diesel/tree/v1.3.0/examples/postgres/all_about_inserts/src/lib.rs#L136-L137">View on Github</a><pre class="demo__example-snippet"><code class="sql">INSERT INTO "users" ("name", "hair_color")
+<div class="demo__example"><div class="demo__example-browser"><div class="browser-bar">src/lib.rs</div><a class="btn-demo-example" href="https://github.com/diesel-rs/diesel/tree/v1.4.4/examples/postgres/all_about_inserts/src/lib.rs#L136-L137">View on GitHub</a><pre class="demo__example-snippet"><code class="sql">INSERT INTO "users" ("name", "hair_color")
 VALUES ($1, DEFAULT) -- binds: ["Ruby"]</code></pre></div></div><h2 id="batch-insert">Batch Insert</h2>
 
 <p>If we want to insert more than one row at a time,
@@ -138,12 +138,12 @@ On SQLite, one query will be performed per row.</p>
 
 <p>For example, if we wanted to insert two rows with a single value,
 we can just use a <code>Vec</code>.</p>
-<div class="demo__example"><div class="demo__example-browser"><div class="browser-bar">src/lib.rs</div><a class="btn-demo-example" href="https://github.com/diesel-rs/diesel/tree/v1.3.0/examples/postgres/all_about_inserts/src/lib.rs#L142-L146">View on Github</a><pre class="demo__example-snippet"><code class="rust">use schema::users::dsl::*;
+<div class="demo__example"><div class="demo__example-browser"><div class="browser-bar">src/lib.rs</div><a class="btn-demo-example" href="https://github.com/diesel-rs/diesel/tree/v1.4.4/examples/postgres/all_about_inserts/src/lib.rs#L142-L146">View on GitHub</a><pre class="demo__example-snippet"><code class="rust">use schema::users::dsl::*;
 
 insert_into(users)
     .values(&vec![name.eq("Sean"), name.eq("Tess")])
     .execute(conn)</code></pre></div></div><p>Which generates the following SQL:</p>
-<div class="demo__example"><div class="demo__example-browser"><div class="browser-bar">src/lib.rs</div><a class="btn-demo-example" href="https://github.com/diesel-rs/diesel/tree/v1.3.0/examples/postgres/all_about_inserts/src/lib.rs#L155-L156">View on Github</a><pre class="demo__example-snippet"><code class="sql">INSERT INTO "users" ("name") VALUES ($1), ($2)
+<div class="demo__example"><div class="demo__example-browser"><div class="browser-bar">src/lib.rs</div><a class="btn-demo-example" href="https://github.com/diesel-rs/diesel/tree/v1.4.4/examples/postgres/all_about_inserts/src/lib.rs#L155-L156">View on GitHub</a><pre class="demo__example-snippet"><code class="sql">INSERT INTO "users" ("name") VALUES ($1), ($2)
 -- binds ["Sean", "Tess"]</code></pre></div></div><p>Note that on SQLite, you won't be able to use <code>debug_query</code> for this,
 since it doesn't map to a single query.
 You can inspect each row like this:</p>
@@ -152,16 +152,16 @@ You can inspect each row like this:</p>
     println!("{}", debug_query::&lt;Sqlite, _&gt;(&query));
 }</code></pre></div></div><p>If we wanted to use <code>DEFAULT</code> for some of our rows,
 we can use an option here.</p>
-<div class="demo__example"><div class="demo__example-browser"><div class="browser-bar">src/lib.rs</div><a class="btn-demo-example" href="https://github.com/diesel-rs/diesel/tree/v1.3.0/examples/postgres/all_about_inserts/src/lib.rs#L161-L165">View on Github</a><pre class="demo__example-snippet"><code class="rust">use schema::users::dsl::*;
+<div class="demo__example"><div class="demo__example-browser"><div class="browser-bar">src/lib.rs</div><a class="btn-demo-example" href="https://github.com/diesel-rs/diesel/tree/v1.4.4/examples/postgres/all_about_inserts/src/lib.rs#L161-L165">View on GitHub</a><pre class="demo__example-snippet"><code class="rust">use schema::users::dsl::*;
 
 insert_into(users)
     .values(&vec![Some(name.eq("Sean")), None])
     .execute(conn)</code></pre></div></div><p>Note that the type here is <code>Option&lt;Eq&lt;Column, Value&gt;&gt;</code> not <code>Eq&lt;Column, Option&lt;Value&gt;&gt;</code>.
 Doing <code>column.eq(None)</code> would insert <code>NULL</code> not <code>DEFAULT</code>.
 This generates the following SQL:</p>
-<div class="demo__example"><div class="demo__example-browser"><div class="browser-bar">src/lib.rs</div><a class="btn-demo-example" href="https://github.com/diesel-rs/diesel/tree/v1.3.0/examples/postgres/all_about_inserts/src/lib.rs#L174-L175">View on Github</a><pre class="demo__example-snippet"><code class="sql">INSERT INTO "users" ("name") VALUES ($1), (DEFAULT)
+<div class="demo__example"><div class="demo__example-browser"><div class="browser-bar">src/lib.rs</div><a class="btn-demo-example" href="https://github.com/diesel-rs/diesel/tree/v1.4.4/examples/postgres/all_about_inserts/src/lib.rs#L174-L175">View on GitHub</a><pre class="demo__example-snippet"><code class="sql">INSERT INTO "users" ("name") VALUES ($1), (DEFAULT)
 -- binds ["Sean"]</code></pre></div></div><p>We can do the same thing with tuples.</p>
-<div class="demo__example"><div class="demo__example-browser"><div class="browser-bar">src/lib.rs</div><a class="btn-demo-example" href="https://github.com/diesel-rs/diesel/tree/v1.3.0/examples/postgres/all_about_inserts/src/lib.rs#L180-L187">View on Github</a><pre class="demo__example-snippet"><code class="rust">use schema::users::dsl::*;
+<div class="demo__example"><div class="demo__example-browser"><div class="browser-bar">src/lib.rs</div><a class="btn-demo-example" href="https://github.com/diesel-rs/diesel/tree/v1.4.4/examples/postgres/all_about_inserts/src/lib.rs#L180-L187">View on GitHub</a><pre class="demo__example-snippet"><code class="rust">use schema::users::dsl::*;
 
 insert_into(users)
     .values(&vec![
@@ -169,10 +169,10 @@ insert_into(users)
         (name.eq("Tess"), hair_color.eq("Brown")),
     ])
     .execute(conn)</code></pre></div></div><p>Which generates the following SQL:</p>
-<div class="demo__example"><div class="demo__example-browser"><div class="browser-bar">src/lib.rs</div><a class="btn-demo-example" href="https://github.com/diesel-rs/diesel/tree/v1.3.0/examples/postgres/all_about_inserts/src/lib.rs#L199-L201">View on Github</a><pre class="demo__example-snippet"><code class="sql">INSERT INTO "users" ("name", "hair_color")
+<div class="demo__example"><div class="demo__example-browser"><div class="browser-bar">src/lib.rs</div><a class="btn-demo-example" href="https://github.com/diesel-rs/diesel/tree/v1.4.4/examples/postgres/all_about_inserts/src/lib.rs#L199-L201">View on GitHub</a><pre class="demo__example-snippet"><code class="sql">INSERT INTO "users" ("name", "hair_color")
 VALUES ($1, $2), ($3, $4)
 -- binds: ["Sean", "Black", "Tess", "Brown"]</code></pre></div></div><p>Once again, we can use an <code>Option</code> for any of the fields to insert <code>DEFAULT</code>.</p>
-<div class="demo__example"><div class="demo__example-browser"><div class="browser-bar">src/lib.rs</div><a class="btn-demo-example" href="https://github.com/diesel-rs/diesel/tree/v1.3.0/examples/postgres/all_about_inserts/src/lib.rs#L206-L213">View on Github</a><pre class="demo__example-snippet"><code class="rust">use schema::users::dsl::*;
+<div class="demo__example"><div class="demo__example-browser"><div class="browser-bar">src/lib.rs</div><a class="btn-demo-example" href="https://github.com/diesel-rs/diesel/tree/v1.4.4/examples/postgres/all_about_inserts/src/lib.rs#L206-L213">View on GitHub</a><pre class="demo__example-snippet"><code class="rust">use schema::users::dsl::*;
 
 insert_into(users)
     .values(&vec![
@@ -180,10 +180,10 @@ insert_into(users)
         (name.eq("Ruby"), None),
     ])
     .execute(conn)</code></pre></div></div><p>Which generates the following SQL:</p>
-<div class="demo__example"><div class="demo__example-browser"><div class="browser-bar">src/lib.rs</div><a class="btn-demo-example" href="https://github.com/diesel-rs/diesel/tree/v1.3.0/examples/postgres/all_about_inserts/src/lib.rs#L225-L227">View on Github</a><pre class="demo__example-snippet"><code class="sql">INSERT INTO "users" ("name", "hair_color")
+<div class="demo__example"><div class="demo__example-browser"><div class="browser-bar">src/lib.rs</div><a class="btn-demo-example" href="https://github.com/diesel-rs/diesel/tree/v1.4.4/examples/postgres/all_about_inserts/src/lib.rs#L225-L227">View on GitHub</a><pre class="demo__example-snippet"><code class="sql">INSERT INTO "users" ("name", "hair_color")
 VALUES ($1, $2), ($3, DEFAULT)
 -- binds: ["Sean", "Black", "Ruby"]</code></pre></div></div><p>Finally, <code>Insertable</code> structs can be used for batch insert as well.</p>
-<div class="demo__example"><div class="demo__example-browser"><div class="browser-bar">src/lib.rs</div><a class="btn-demo-example" href="https://github.com/diesel-rs/diesel/tree/v1.3.0/examples/postgres/all_about_inserts/src/lib.rs#L232-L242">View on Github</a><pre class="demo__example-snippet"><code class="rust">use schema::users::dsl::*;
+<div class="demo__example"><div class="demo__example-browser"><div class="browser-bar">src/lib.rs</div><a class="btn-demo-example" href="https://github.com/diesel-rs/diesel/tree/v1.4.4/examples/postgres/all_about_inserts/src/lib.rs#L232-L242">View on GitHub</a><pre class="demo__example-snippet"><code class="rust">use schema::users::dsl::*;
 
 let json = r#"[
     { "name": "Sean", "hair_color": "Black" },
@@ -194,7 +194,7 @@ let user_form = serde_json::from_str::&lt;Vec&lt;UserForm&gt;&gt;(json)?;
 insert_into(users).values(&user_form).execute(conn)?;
 
 Ok(())</code></pre></div></div><p>This generates the same SQL as if we had used a tuple:</p>
-<div class="demo__example"><div class="demo__example-browser"><div class="browser-bar">src/lib.rs</div><a class="btn-demo-example" href="https://github.com/diesel-rs/diesel/tree/v1.3.0/examples/postgres/all_about_inserts/src/lib.rs#L255-L257">View on Github</a><pre class="demo__example-snippet"><code class="sql">INSERT INTO "users" ("name", "hair_color")
+<div class="demo__example"><div class="demo__example-browser"><div class="browser-bar">src/lib.rs</div><a class="btn-demo-example" href="https://github.com/diesel-rs/diesel/tree/v1.4.4/examples/postgres/all_about_inserts/src/lib.rs#L255-L257">View on GitHub</a><pre class="demo__example-snippet"><code class="sql">INSERT INTO "users" ("name", "hair_color")
 VALUES ($1, $2), ($3, $4)
 -- binds: ["Sean", "Black", "Tess", "Brown"]</code></pre></div></div><h3 id="the-returning-clause">The <code>RETURNING</code> Clause</h3>
 
@@ -205,7 +205,7 @@ To get back all of the inserted rows,
 we can call <a href="//docs.diesel.rs/diesel/query_dsl/trait.RunQueryDsl.html#method.get_results"><code>.get_results</code></a> instead of <a href="//docs.diesel.rs/diesel/query_dsl/trait.RunQueryDsl.html#method.execute"><code>.execute</code></a>.</p>
 
 <p>Given this struct:</p>
-<div class="demo__example"><div class="demo__example-browser"><div class="browser-bar">src/lib.rs</div><a class="btn-demo-example" href="https://github.com/diesel-rs/diesel/tree/v1.3.0/examples/postgres/all_about_inserts/src/lib.rs#L37-L44">View on Github</a><pre class="demo__example-snippet"><code class="rust">#[derive(Queryable, PartialEq, Debug)]
+<div class="demo__example"><div class="demo__example-browser"><div class="browser-bar">src/lib.rs</div><a class="btn-demo-example" href="https://github.com/diesel-rs/diesel/tree/v1.4.4/examples/postgres/all_about_inserts/src/lib.rs#L37-L44">View on GitHub</a><pre class="demo__example-snippet"><code class="rust">#[derive(Queryable, PartialEq, Debug)]
 struct User {
     id: i32,
     name: String,
@@ -213,7 +213,7 @@ struct User {
     created_at: SystemTime,
     updated_at: SystemTime,
 }</code></pre></div></div><p>We can use <code>get_results</code> with this test:</p>
-<div class="demo__example"><div class="demo__example-browser"><div class="browser-bar">src/lib.rs</div><a class="btn-demo-example" href="https://github.com/diesel-rs/diesel/tree/v1.3.0/examples/postgres/all_about_inserts/src/lib.rs#L265-L295">View on Github</a><pre class="demo__example-snippet"><code class="rust">use diesel::select;
+<div class="demo__example"><div class="demo__example-browser"><div class="browser-bar">src/lib.rs</div><a class="btn-demo-example" href="https://github.com/diesel-rs/diesel/tree/v1.4.4/examples/postgres/all_about_inserts/src/lib.rs#L265-L295">View on GitHub</a><pre class="demo__example-snippet"><code class="rust">use diesel::select;
 use schema::users::dsl::*;
 
 let now = select(diesel::dsl::now).get_result::&lt;SystemTime&gt;(&conn)?;
@@ -244,7 +244,7 @@ let expected_users = vec![
 assert_eq!(expected_users, inserted_users);</code></pre></div></div><p>To inspect the SQL generated by <code>.get_results</code> or <code>.get_result</code>,
 we will need to call <code>.as_query</code> before passing it to <code>debug_query</code>.
 The query in the last test generates the following SQL:</p>
-<div class="demo__example"><div class="demo__example-browser"><div class="browser-bar">src/lib.rs</div><a class="btn-demo-example" href="https://github.com/diesel-rs/diesel/tree/v1.3.0/examples/postgres/all_about_inserts/src/lib.rs#L306-L309">View on Github</a><pre class="demo__example-snippet"><code class="sql">INSERT INTO "users" ("id", "name")
+<div class="demo__example"><div class="demo__example-browser"><div class="browser-bar">src/lib.rs</div><a class="btn-demo-example" href="https://github.com/diesel-rs/diesel/tree/v1.4.4/examples/postgres/all_about_inserts/src/lib.rs#L306-L309">View on GitHub</a><pre class="demo__example-snippet"><code class="sql">INSERT INTO "users" ("id", "name")
 VALUES ($1, $2), ($3, $4)
 RETURNING "users"."id", "users"."name", "users"."hair_color",
           "users"."created_at", "users"."updated_at"
@@ -258,7 +258,7 @@ by running <code>SELECT diesel_manage_updated_at('users');</code> in a migration
 
 <p>If we expect one row instead of multiple, we can call <code>.get_result</code> instead of
 <code>.get_results</code>.</p>
-<div class="demo__example"><div class="demo__example-browser"><div class="browser-bar">src/lib.rs</div><a class="btn-demo-example" href="https://github.com/diesel-rs/diesel/tree/v1.3.0/examples/postgres/all_about_inserts/src/lib.rs#L317-L335">View on Github</a><pre class="demo__example-snippet"><code class="rust">use diesel::select;
+<div class="demo__example"><div class="demo__example-browser"><div class="browser-bar">src/lib.rs</div><a class="btn-demo-example" href="https://github.com/diesel-rs/diesel/tree/v1.4.4/examples/postgres/all_about_inserts/src/lib.rs#L317-L335">View on GitHub</a><pre class="demo__example-snippet"><code class="rust">use diesel::select;
 use schema::users::dsl::*;
 
 let now = select(diesel::dsl::now).get_result::&lt;SystemTime&gt;(&conn)?;
@@ -275,18 +275,18 @@ let expected_user = User {
     updated_at: now,
 };
 assert_eq!(expected_user, inserted_user);</code></pre></div></div><p>This generates the same SQL as <code>get_results</code>:</p>
-<div class="demo__example"><div class="demo__example-browser"><div class="browser-bar">src/lib.rs</div><a class="btn-demo-example" href="https://github.com/diesel-rs/diesel/tree/v1.3.0/examples/postgres/all_about_inserts/src/lib.rs#L347-L350">View on Github</a><pre class="demo__example-snippet"><code class="sql">INSERT INTO "users" ("id", "name") VALUES ($1, $2)
+<div class="demo__example"><div class="demo__example-browser"><div class="browser-bar">src/lib.rs</div><a class="btn-demo-example" href="https://github.com/diesel-rs/diesel/tree/v1.4.4/examples/postgres/all_about_inserts/src/lib.rs#L347-L350">View on GitHub</a><pre class="demo__example-snippet"><code class="sql">INSERT INTO "users" ("id", "name") VALUES ($1, $2)
 RETURNING "users"."id", "users"."name", "users"."hair_color",
           "users"."created_at", "users"."updated_at"
 -- binds: [3, "Ruby"]</code></pre></div></div><p>Finally, if we only want a single column back, we can call <code>.returning</code> explicitly.
 This code would return the inserted ID:</p>
-<div class="demo__example"><div class="demo__example-browser"><div class="browser-bar">src/lib.rs</div><a class="btn-demo-example" href="https://github.com/diesel-rs/diesel/tree/v1.3.0/examples/postgres/all_about_inserts/src/lib.rs#L355-L360">View on Github</a><pre class="demo__example-snippet"><code class="rust">use schema::users::dsl::*;
+<div class="demo__example"><div class="demo__example-browser"><div class="browser-bar">src/lib.rs</div><a class="btn-demo-example" href="https://github.com/diesel-rs/diesel/tree/v1.4.4/examples/postgres/all_about_inserts/src/lib.rs#L355-L360">View on GitHub</a><pre class="demo__example-snippet"><code class="rust">use schema::users::dsl::*;
 
 insert_into(users)
     .values(name.eq("Ruby"))
     .returning(id)
     .get_result(conn)</code></pre></div></div><p>Which generates the following SQL:</p>
-<div class="demo__example"><div class="demo__example-browser"><div class="browser-bar">src/lib.rs</div><a class="btn-demo-example" href="https://github.com/diesel-rs/diesel/tree/v1.3.0/examples/postgres/all_about_inserts/src/lib.rs#L368-L370">View on Github</a><pre class="demo__example-snippet"><code class="sql">INSERT INTO "users" ("name") VALUES ($1)
+<div class="demo__example"><div class="demo__example-browser"><div class="browser-bar">src/lib.rs</div><a class="btn-demo-example" href="https://github.com/diesel-rs/diesel/tree/v1.4.4/examples/postgres/all_about_inserts/src/lib.rs#L368-L370">View on GitHub</a><pre class="demo__example-snippet"><code class="sql">INSERT INTO "users" ("name") VALUES ($1)
 RETURNING "users"."id"
 -- binds: ["Ruby"]</code></pre></div></div><h3 id="upsert">"Upsert"</h3>
 
@@ -311,13 +311,13 @@ is the argument passed to <code>.values</code>.</p>
 You can find the full code examples for each backend at these links:</p>
 
 <ul>
-  <li><a href="https://github.com/diesel-rs/diesel/tree/v1.3.0/examples/postgres/all_about_inserts">PostgreSQL</a></li>
-  <li><a href="https://github.com/diesel-rs/diesel/tree/v1.3.0/examples/mysql/all_about_inserts">MySQL</a></li>
-  <li><a href="https://github.com/diesel-rs/diesel/tree/v1.3.0/examples/sqlite/all_about_inserts">SQLite</a></li>
+  <li><a href="https://github.com/diesel-rs/diesel/tree/v1.4.4/examples/postgres/all_about_inserts">PostgreSQL</a></li>
+  <li><a href="https://github.com/diesel-rs/diesel/tree/v1.4.4/examples/mysql/all_about_inserts">MySQL</a></li>
+  <li><a href="https://github.com/diesel-rs/diesel/tree/v1.4.4/examples/sqlite/all_about_inserts">SQLite</a></li>
 </ul>
 
 <p><a href="/guides">View More Guides</a></p>
-</div></div></section></main><footer><div class="content-wrapper"><p>Copyright &copy; 2015-2018 Sean Griffin</p></div></footer><script src="https://code.jquery.com/jquery-2.1.1.min.js"></script><script src="../../../assets/javascripts/application.js"></script><script src="../../../assets/javascripts/highlight.pack.js"></script><script src="../../../assets/javascripts/vertical-tabs.js"></script><script>hljs.initHighlightingOnLoad();</script><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+</div></div></section></main><footer><div class="content-wrapper"><p>Copyright &copy; 2015-2020 Sean Griffin</p></div></footer><script src="https://code.jquery.com/jquery-2.1.1.min.js"></script><script src="../../../assets/javascripts/application.js"></script><script src="../../../assets/javascripts/highlight.pack.js"></script><script src="../../../assets/javascripts/vertical-tabs.js"></script><script>hljs.initHighlightingOnLoad();</script><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
 m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
