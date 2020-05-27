@@ -14,17 +14,12 @@ set :layout, "layouts/application"
 set :haml, ugly: true
 
 configure :development do
- activate :livereload
+  activate :livereload
 end
 
 configure :build do
   # Relative assets needed to deploy to Github Pages
   activate :relative_assets
-end
-
-activate :deploy do |deploy|
-  deploy.build_before = true
-  deploy.deploy_method = :git
 end
 
 helpers do
