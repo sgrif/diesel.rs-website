@@ -37,11 +37,11 @@ simple or complex as you need, at 0 cost.</p><div class="demo__example-browser">
   .select(id)
   .order(num.desc())
   .limit(5);
-let downloads = try!(version_downloads
+let downloads = version_downloads
   .filter(date.gt(now - 90.days()))
   .filter(version_id.eq(any(versions)))
   .order(date)
-  .load::&lt;Download&gt;(&conn));</code></pre></div><div class="demo__example-browser"><div class="browser-bar">Executed SQL</div><pre class="demo__example-snippet"><code class="sql">SELECT version_downloads.*
+  .load::&lt;Download&gt;(&conn)?;</code></pre></div><div class="demo__example-browser"><div class="browser-bar">Executed SQL</div><pre class="demo__example-snippet"><code class="sql">SELECT version_downloads.*
   WHERE date > (NOW() - '90 days')
     AND version_id = ANY(
       SELECT id FROM versions
