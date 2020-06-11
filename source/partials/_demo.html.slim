@@ -51,11 +51,11 @@ section.demo
                       .select(id)
                       .order(num.desc())
                       .limit(5);
-                    let downloads = try!(version_downloads
+                    let downloads = version_downloads
                       .filter(date.gt(now - 90.days()))
                       .filter(version_id.eq(any(versions)))
                       .order(date)
-                      .load::&lt;Download&gt;(&conn));
+                      .load::&lt;Download&gt;(&conn)?;
             .demo__example-browser
               .browser-bar Executed SQL
               pre.demo__example-snippet
