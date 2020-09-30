@@ -1,4 +1,4 @@
-## Getting Started
+## Getting Started with us
 
 This site is built using [middleman](https://middlemanapp.com/).
 The content is available here: https://diesel.rs
