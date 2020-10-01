@@ -1,6 +1,5 @@
-## Diesel
-## Getting Started
-
+# Diesel 
+Getting started!
 This site is built using [middleman](https://middlemanapp.com/).
 The content is available here: [Diesel](https://diesel.rs)
 
