@@ -1,6 +1,6 @@
-## Getting Started
+## Getting Started with this new awesome website
 
-This site is built using [middleman](https://middlemanapp.com/).
+This site is built with the help [middleman](https://middlemanapp.com/).
 The content is available here: https://diesel.rs
 
 Running the server:
