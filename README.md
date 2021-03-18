@@ -1,11 +1,17 @@
-## Getting Started
+# diesel.rs
 
-This site is built using [middleman](https://middlemanapp.com/).
+This site is built using [mdBook](https://github.com/rust-lang/mdBook).
 The content is available here: https://diesel.rs
 
-Running the server:
+Install via Cargo:
+
 ```sh
-bundle exec middleman
+cargo install mdbook
+```
+
+Serve on local:
+```sh
+mdbook serve
 ```
 
 Master branch is automatically deployed to Github Pages.
