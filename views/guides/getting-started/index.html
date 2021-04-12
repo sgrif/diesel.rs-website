@@ -183,7 +183,7 @@ fn main() {
         println!("----------\n");
         println!("{}", post.body);
     }
-}</code></pre></div></div><p>The <code>use posts::dsl::*</code> line imports a bunch of aliases so that we can
+}</code></pre></div></div><p>The <code>use diesel_demo::schema::posts::dsl::*;</code> line imports a bunch of aliases so that we can
 say <code>posts</code> instead of <code>posts::table</code>, and <code>published</code> instead of
 <code>posts::published</code>. It's useful when we're only dealing with a single
 table, but that's not always what we want.</p>
