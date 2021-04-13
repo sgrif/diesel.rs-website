@@ -1,4 +1,13 @@
-# Schema in Depth
+---
+lang: en-US
+title: "Schema in Depth"
+---
+
+
+::: demo
+::: content-wrapper
+::: guide-wrapper
+
 
 In this guide we're going to look at what exactly `diesel print-schema`
 and [`table!`] do. For `table!`, we will show a simplified version of the actual code
@@ -271,3 +280,7 @@ pub mod users {
     }
 }
 ```
+
+:::
+:::
+:::

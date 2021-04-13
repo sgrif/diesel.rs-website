@@ -1,4 +1,10 @@
-# Composing Applications with Diesel
+---
+title: "Composing Applications with Diesel"
+lang: en-US
+---
+::: demo
+::: content-wrapper
+::: guide-wrapper
 
 One of the main benefits of using a query builder over raw SQL
 is that you can pull bits of your query out into functions and reuse them.
@@ -20,9 +26,9 @@ Rather than continuously writing
 `canon_crate_name(crates::name).eq("some name")`,
 we can instead pull this out into a function.
 
-src/krate/mod.rs ([view on GitHub][mod-rs-1]):
+::: code-block
 
-[mod-rs-1]: https://github.com/rust-lang/crates.io/blob/b4d49ac32c5561a7a4a0948ce5ba9ada7b8924fb/src/krate/mod.rs
+[src/krate/mod.rs]( https://github.com/rust-lang/crates.io/blob/b4d49ac32c5561a7a4a0948ce5ba9ada7b8924fb/src/krate/mod.rs)
 
 ```rust
 use diesel::dsl::Eq;
@@ -37,12 +43,17 @@ fn with_name(name: &str) -> WithName {
 }
 ```
 
+:::
+
 Now when we want to find a crate by name, we can write
 `crates::table.filter(with_name("foo"))` instead.
 If we want to accept types other than a string,
 we can make the method generic.
 
-src/krate/mod.rs ([view on GitHub][mod-rs-1]):
+
+::: code-block
+
+[src/krate/mod.rs](https://github.com/rust-lang/crates.io/blob/b4d49ac32c5561a7a4a0948ce5ba9ada7b8924fb/src/krate/mod.rs):
 
 ```rust
 use diesel::dsl::Eq;
@@ -59,6 +70,8 @@ where
     canon_crate_name(crates::name).eq(canon_crate_name(name))
 }
 ```
+
+:::
 
 It's up to you whether you make your functions generic,
 or only take a single type.
@@ -78,7 +91,9 @@ If we want to avoid writing this return type,
 or dynamically return a different expression,
 we can box the value instead.
 
-src/krate/mod.rs ([view on GitHub][mod-rs-1]):
+::: code-block
+
+[src/krate/mod.rs](https://github.com/rust-lang/crates.io/blob/b4d49ac32c5561a7a4a0948ce5ba9ada7b8924fb/src/krate/mod.rs)
 
 ```rust
 use diesel::pg::Pg;
@@ -94,6 +109,8 @@ where
     canon_crate_name(crates::name).eq(canon_crate_name(name))
 }
 ```
+
+:::
 
 In order to box an expression, Diesel needs to know three things:
 
@@ -126,7 +143,9 @@ the `Crate` struct doesn't use every column from the `crates` table.
 Because we almost always select a subset of these columns,
 we have an `all` function which selects the columns we need.
 
-src/krate/mod.rs ([view on GitHub][mod-rs-1]):
+::: code-block
+
+[src/krate/mod.rs](https://github.com/rust-lang/crates.io/blob/b4d49ac32c5561a7a4a0948ce5ba9ada7b8924fb/src/krate/mod.rs)
 
 ```rust
 use diesel::dsl::Select;
@@ -154,11 +173,15 @@ impl Crate {
 }
 ```
 
+:::
+
 We also frequently found ourselves writing
 `Crate::all().filter(with_name(crate_name))`.
 We can pull that into a function as well.
 
-src/krate/mod.rs ([view on GitHub][mod-rs-1]):
+::: code-block
+
+[src/krate/mod.rs](https://github.com/rust-lang/crates.io/blob/b4d49ac32c5561a7a4a0948ce5ba9ada7b8924fb/src/krate/mod.rs)
 
 ```rust
 use diesel::dsl::Filter;
@@ -172,10 +195,14 @@ impl Crate {
 }
 ```
 
+:::
+
 And just like with expressions, if we don't want to write the return types,
 or we want to dynamically construct the query differently, we can box the whole query.
 
-src/krate/mod.rs ([view on GitHub][mod-rs-1]):
+::: code-block
+
+[src/krate/mod.rs](https://github.com/rust-lang/crates.io/blob/b4d49ac32c5561a7a4a0948ce5ba9ada7b8924fb/src/krate/mod.rs)
 
 ```rust
 use diesel::expression::{Expression, AsExpression};
@@ -200,6 +227,8 @@ impl Crate {
 }
 ```
 
+:::
+
 Once again, we have to give Diesel some information to box the query:
 
 - The SQL type of the `SELECT` clause
@@ -222,7 +251,9 @@ This allows you to re-use and compose your queries.
 
 For example, if we had written our `by_name` function like this:
 
-src/krate/mod.rs ([view on GitHub][mod-rs-1]):
+::: code-block
+
+[src/krate/mod.rs](https://github.com/rust-lang/crates.io/blob/b4d49ac32c5561a7a4a0948ce5ba9ada7b8924fb/src/krate/mod.rs)
 
 ```rust
 impl Crate {
@@ -234,9 +265,15 @@ impl Crate {
 }
 ```
 
+:::
+
 Then we would never be able to use this query in another context,
 or modify it further. By writing the function as one that returns a query,
 rather than executing it, we can do things like use it as a subselect.
+
+::: code-block
+
+[Example]()
 
 ```rust
 let version_id = versions
@@ -246,8 +283,14 @@ let version_id = versions
     .first(&*conn)?;
 ```
 
+:::
+
 Or use it to do things like get all of its downloads:
 Example
+
+::: code-block
+
+[Example]()
 
 ```rust
 let recent_downloads = Crate::by_name(crate_name)
@@ -257,7 +300,13 @@ let recent_downloads = Crate::by_name(crate_name)
     .get_result(&*conn)?;
 ```
 
+:::
+
 All code in this guide is based on real code from crates.io.
 You can find the source [on GitHub][crates-io]
 
 [crates-io]: https://github.com/rust-lang/crates.io
+
+:::
+:::
+:::

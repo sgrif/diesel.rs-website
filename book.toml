@@ -1,8 +1,0 @@
-[book]
-title = "diesel.rs"
-author = "Diesel Contributors"
-description = "A guide to diesel.rs"
-
-[output.html]
-# Point to the main repo.
-git-repository-url = "https://github.com/diesel-rs/diesel"

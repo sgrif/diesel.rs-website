@@ -1,4 +1,11 @@
-# Getting Started
+---
+title: "Getting Started"
+lang: en-US
+---
+
+::: demo
+::: content-wrapper
+::: guide-wrapper
 
 For this guide, we're going to walk through some simple examples for each of the pieces of CRUD,
 which stands for "Create Read Update Delete". Each step in this guide will build on the previous,
@@ -9,26 +16,33 @@ make sure you have PostgreSQL installed and running.
 
 > A note on Rust versions:
 >
-> Diesel requires Rust 1.24 or later. If you're following along with this guide,
+> Diesel requires Rust 1.31 or later. If you're following along with this guide,
 make sure you're using at least that version of Rust by running `rustup update stable`.
 
 ## Install `diesel_cli`
 
 The first thing we need to do is generate our project.
 
+::: code-block
+
+[Generate a new project]()
+
 ```sh
 cargo new --lib diesel_demo
 cd diesel_demo
 ```
+
+:::
 
 First, let's add Diesel to our dependencies. We're also going to use a tool called
 [`.env`][dotenv] to manage our environment variables for us. We'll add it to our dependencies
 as well.
 
 [dotenv]: https://github.com/dotenv-rs/dotenv
-[toml-1]: https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/getting_started_step_1/Cargo.toml
 
-Cargo.toml ([View on GitHub][toml-1]):
+::: code-block
+
+[Cargo.toml](https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/getting_started_step_1/Cargo.toml)
 
 ```toml
 [dependencies]
@@ -36,17 +50,28 @@ diesel = { version = "1.4.4", features = ["postgres"] }
 dotenv = "0.15.0"
 ```
 
+:::
+
 Diesel provides a separate [CLI] tool to help manage your project. Since it's a standalone binary,
 and doesn't affect your project's code directly, we don't add it to `Cargo.toml`.
 Instead, we just install it on our system.
 
 [CLI]: https://github.com/diesel-rs/diesel/tree/master/diesel_cli
 
+::: code-block
+
+[Install the CLI tool]()
+
 ```sh
 cargo install diesel_cli
 ```
 
-### A note on installing `diesel_cli`
+:::
+
+<aside class = "aside aside--note">
+<header class = "aside__header"> A note on installing `diesel_cli`</header>
+
+::: aside__text
 
 If you run into an error like:
 
@@ -66,6 +91,8 @@ with only PostgreSQL:
 ```sh
 cargo install diesel_cli --no-default-features --features postgres
 ```
+:::
+</aside>
 
 ## Setup Diesel
 
@@ -108,9 +135,9 @@ leave your database schema unchanged.
 
 Next, we'll write the SQL for migrations:
 
-up.sql ([view on GitHub][sqls-1]):
+::: code-block
 
-[sqls-1]: https://github.com/diesel-rs/diesel/tree/v1.4.4/examples/postgres/getting_started_step_1/migrations/20160815133237_create_posts
+[up.sql]( https://github.com/diesel-rs/diesel/tree/v1.4.4/examples/postgres/getting_started_step_1/migrations/20160815133237_create_posts/up.sql)
 
 ```sql
 CREATE TABLE posts (
@@ -121,11 +148,17 @@ CREATE TABLE posts (
 )
 ```
 
-down.sql:
+:::
+
+::: code-block
+
+[down.sql](https://github.com/diesel-rs/diesel/tree/v1.4.4/examples/postgres/getting_started_step_1/migrations/20160815133237_create_posts/down.sql)
 
 ```sql
 DROP TABLE posts
 ```
+
+:::
 
 We can apply our new migration:
 
@@ -140,32 +173,40 @@ rolls back your migration correctly by `redoing` the migration:
 diesel migration redo
 ```
 
-> A Note on Raw SQL in Migrations:
->
-> Since migrations are written in raw SQL, they can contain specific features of the database system you use.
+<aside class = "aside aside--note">
+<header class = "aside__header"> A Note on Raw SQL in Migrations:</header>
+::: aside__text
+Since migrations are written in raw SQL, they can contain specific features of the database system you use.
 For example, the `CREATE TABLE` statement above uses PostgreSQL's `SERIAL` type. If you want to use SQLite instead,
 you need to use `INTEGER` instead.
+:::
+</aside>
 
-> A Note on Using Migrations in Production:
->
-> When preparing your app for use in production, you may want to run your migrations
+<aside class = "aside aside--note">
+<header class = "aside__header">A Note on Using Migrations in Production:</header>
+
+::: aside__text
+When preparing your app for use in production, you may want to run your migrations
 during the application's initialization phase. You may also want to include the migration scripts
 as a part of your code, to avoid having to copy them to your deployment location/image etc.
->
-> The [diesel_migrations] crate provides the `embed_migrations!` macro, allowing you to embed migration scripts
+
+The [diesel_migrations] crate provides the `embed_migrations!` macro, allowing you to embed migration scripts
 in the final binary. Once your code uses it, you can simply include `embedded_migrations::run(&db_conn)`
 at the start of your `main` function to run migrations every time the application starts.
 
 [diesel_migrations]: https://docs.rs/crate/diesel_migrations/
+
+:::
+</aside>
 
 ## Write Rust
 
 OK enough SQL, let's write some Rust. We'll start by writing some code to show the last five published posts.
 The first thing we need to do is establish a database connection.
 
-src/lib.rs ([view on GitHub][lib-rs-1]):
+::: code-block
 
-[lib-rs-1]: https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/getting_started_step_1/src/lib.rs
+[src/lib.rs]( https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/getting_started_step_1/src/lib.rs)
 
 ```rust
 #[macro_use]
@@ -187,19 +228,29 @@ pub fn establish_connection() -> PgConnection {
 }
 ```
 
+:::
+
 We'll also want to create a `Post` struct into which we can read our data, and have diesel generate the names
 we'll use to reference tables and columns in our queries.
 
 We'll add the following lines to the top of `src/lib.rs`:
+
+::: code-block
+
+[src/lib.rs](https://github.com/diesel-rs/diesel/tree/v1.4.4/examples/postgres/getting_started_step_1/src/lib.rs)
 
 ```rust
 pub mod schema;
 pub mod models;
 ```
 
+:::
+
 Next we need to create the two modules that we just declared.
 
-src/models.rs:
+::: code-block
+
+[src/models.rs](https://github.com/diesel-rs/diesel/tree/v1.4.4/examples/postgres/getting_started_step_1/src/models.rs)
 
 ```rust
 #[derive(Queryable)]
@@ -211,6 +262,8 @@ pub struct Post {
 }
 ```
 
+:::
+
 `#[derive(Queryable)]` will generate all of the code needed to load a `Post` struct from a SQL query.
 
 Typically the schema module isn't created by hand, it gets generated by Diesel. When we ran `diesel setup`,
@@ -218,9 +271,10 @@ a file called [diesel.toml] was created which tells Diesel to maintain a file at
 The file should look like this:
 
 [diesel.toml]: https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/getting_started_step_1/diesel.toml
-[schema-rs-1]: https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/getting_started_step_1/src/schema.rs
 
-src/schema.rs ([view on GitHub][schema-rs-1]):
+::: code-block
+
+[src/schema.rs](https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/getting_started_step_1/src/schema.rs)
 
 ```rust
 table! {
@@ -233,6 +287,8 @@ table! {
 }
 ```
 
+:::
+
 The exact output might vary slightly depending on your database, but it should be equivalent.
 
 The [`table!` macro] creates a bunch of code based on the database schema to represent
@@ -242,16 +298,20 @@ Any time we run or revert a migration, this file will get automatically updated.
 
 [`table!` macro]: https://docs.diesel.rs/diesel/macro.table.html
 
-> A Note on Field Order
->
-> Using `#[derive(Queryable)]` assumes that the order of fields on the `Post` struct matches
+<aside class = "aside aside--note">
+<header class = "aside__header"> A Note on Field Order</header>
+
+
+Using `#[derive(Queryable)]` assumes that the order of fields on the `Post` struct matches
 the columns in the `posts` table, so make sure to define them in the order seen in the `schema.rs` file.
+
+</aside>
 
 Let's write the code to actually show us our posts.
 
-[show-posts]: https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/getting_started_step_1/src/bin/show_posts.rs
+::: code-block
 
-src/bin/show_posts.rs ([view on GitHub][show-posts]):
+[src/bin/show_posts.rs](https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/getting_started_step_1/src/bin/show_posts.rs)
 
 ```rust
 extern crate diesel_demo;
@@ -279,6 +339,8 @@ fn main() {
 }
 ```
 
+:::
+
 The use `posts::dsl::*` line imports a bunch of aliases so that we can say `posts`
 instead of `posts::table`, and published instead of `posts::published`. It's useful
 when we're only dealing with a single table, but that's not always what we want.
@@ -294,9 +356,9 @@ The full code for the demo at this point can be found [here][full code].
 Next, let's write some code to create a new post.We'll want a struct to use for inserting
 a new record.
 
-[models-rs-2]: https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/getting_started_step_2/src/models.rs
+::: code-block
 
-src/models.rs ([view on GitHub][models-rs-2]):
+[src/models.rs](https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/getting_started_step_2/src/models.rs)
 
 ```rust
 use super::schema::posts;
@@ -309,11 +371,13 @@ pub struct NewPost<'a> {
 }
 ```
 
+:::
+
 Now let's add a function to save a new post.
 
-[lib-rs-2]: https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/getting_started_step_2/src/lib.rs
+::: code-block
 
-src/lib.rs ([view on GitHub][lib-rs-2]):
+[src/lib.rs](https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/getting_started_step_2/src/lib.rs)
 
 ```rust
 use self::models::{Post, NewPost};
@@ -333,6 +397,8 @@ pub fn create_post<'a>(conn: &PgConnection, title: &'a str, body: &'a str) -> Po
 }
 ```
 
+:::
+
 When we call `.get_result` on an insert or update statement, it automatically adds `RETURNING *`
 to the end of the query, and lets us load it into any struct that implements `Queryable`
 for the right types. Neat!
@@ -344,9 +410,9 @@ at you, that way. :)
 
 Now that we've got everything set up, we can create a little script to write a new post.
 
-[write-post-2]: https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/getting_started_step_2/src/bin/write_post.rs
+::: code-block
 
-src/bin/write_post.rs ([view on GitHub][write-post-2]):
+[src/bin/write_post.rs](https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/getting_started_step_2/src/bin/write_post.rs)
 
 ```rust
 extern crate diesel_demo;
@@ -376,6 +442,8 @@ const EOF: &'static str = "CTRL+D";
 #[cfg(windows)]
 const EOF: &'static str = "CTRL+Z";
 ```
+
+:::
 
 We can run our new script with `cargo run --bin write_post`. Go ahead and write a blog post.
 Get creative! Here was mine:
@@ -411,9 +479,9 @@ point can be found [here][commit-no-2].
 Now that we've got create and read out of the way, update is actually
 relatively simple. Let's jump right into the script:
 
-[publish-post-3]: https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/getting_started_step_3/src/bin/publish_post.rs
+::: code-block
 
-src/bin/publish_post.rs ([view on GitHub][publish-post-3]):
+[src/bin/publish_post.rs](https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/getting_started_step_3/src/bin/publish_post.rs)
 
 ```rust
 extern crate diesel_demo;
@@ -439,7 +507,9 @@ fn main() {
 }
 ```
 
-hat's it! Let's try it out with `cargo run --bin publish_post 1`.
+:::
+
+That's it! Let's try it out with `cargo run --bin publish_post 1`.
 
 ```
  Compiling diesel_demo v0.1.0 (file:///Users/sean/Documents/Projects/open-source/diesel_demo)
@@ -467,9 +537,9 @@ how to delete things. Sometimes we write something we really hate, and
 we don't have time to look up the ID. So let's delete based on the
 title, or even just some words in the title.
 
-[delete-post-3]: https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/getting_started_step_3/src/bin/delete_post.rs
+::: code-block
 
-src/bin/delete_post.rs ([view on GitHub][delete-post-3]):
+[src/bin/delete_post.rs](https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/getting_started_step_3/src/bin/delete_post.rs)
 
 ```rust
 extern crate diesel_demo;
@@ -494,6 +564,8 @@ fn main() {
 }
 ```
 
+:::
+
 We can run the script with `cargo run --bin delete_post` demo (at least with the title I chose).
 Your output should look something like:
 
@@ -510,3 +582,7 @@ The final code for this tutorial can be found [here][final].
 
 [API docs]: ../docs/index.md
 [final]: https://github.com/diesel-rs/diesel/tree/v1.4.4/examples/postgres/getting_started_step_3/
+
+::: 
+:::
+:::

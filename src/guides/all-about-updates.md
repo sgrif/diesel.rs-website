@@ -1,4 +1,11 @@
-# All About Updates
+---
+lang: en-US
+title: "All About Updates"
+---
+
+::: demo
+::: content-wrapper
+::: guide-wrapper
 
 Most applications fall into a category called "CRUD" apps. CRUD stands for
 "Create, Read, Update, Delete". Diesel provides support for all four pieces,
@@ -14,9 +21,9 @@ which types implement it. There are three kinds which implement this trait. The 
 
 If we have a table that looks like this:
 
-src/lib.rs ([view on GitHub][lib-rs-1-1]):
+::: code-block
 
-[lib-rs-1-1]: https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/all_about_updates/src/lib.rs#L12-L21
+[src/lib.rs](https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/all_about_updates/src/lib.rs#L12-L21)
 
 ```rust
 table! {
@@ -30,11 +37,14 @@ table! {
     }
 }
 ```
+
+:::
+
 We could write a query that publishes all posts by doing:
 
-src/lib.rs ([view on GitHub][lib-rs-1-2]):
+::: code-block
 
-[lib-rs-1-2]: https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/all_about_updates/src/lib.rs#L33-L38
+[src/lib.rs](https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/all_about_updates/src/lib.rs#L33-L38)
 
 ```rust
 use posts::dsl::*;
@@ -42,18 +52,23 @@ use posts::dsl::*;
 diesel::update(posts).set(draft.eq(false))
 ```
 
+:::
+
 We can use the [`debug_query`] function to inspect the generated SQL.
 The output you see may slightly differ from this guide, depending on which backend you're using.
 If we run `println!("{}", debug_query::<Pg, _>(&our_query));`, we'll see the following:
 
 [`debug_query`]: https://docs.diesel.rs/diesel/fn.debug_query.html
-[generated-sql]: https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/all_about_updates/src/lib.rs#L40-L48
 
-Generated SQL ([view on GitHub][generated-sql]):
+::: code-block 
+
+[Generated SQL]( https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/all_about_updates/src/lib.rs#L40-L48)
 
 ```sql
 UPDATE "posts" SET "draft" = $1 -- binds: [false]
 ```
+
+:::
 
 This is pretty much one-to-one with the Rust code (the `?` denotes a bound parameter in SQL,
 which will be substituted with `false` here). It's quite rare to want to update an entire table,
@@ -61,9 +76,9 @@ though. So let's look at how we can scope that down. The second kind that you ca
 `update` is any query which has only had `.filter` called on it. We could scope our update to
 only touch posts where `publish_at` is in the past like so:
 
-src/lib.rs ([view on GitHub][lib-rs-2]):
+::: code-block
 
-[lib-rs-2]: https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/all_about_updates/src/lib.rs#L50-L57
+[src/lib.rs]( https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/all_about_updates/src/lib.rs#L50-L57)
 
 ```rust
 use posts::dsl::*;
@@ -73,16 +88,20 @@ let target = posts.filter(publish_at.lt(now));
 diesel::update(target).set(draft.eq(false))
 ```
 
+::: 
+
 That would generate the following SQL:
 
-Generated SQL ([view on GitHub][generated-sql-2]):
+::: code-block
 
-[generated-sql-2]: https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/all_about_updates/src/lib.rs#L59-L71
+[Generated SQL]( https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/all_about_updates/src/lib.rs#L59-L71)
 
 ```sql
 UPDATE `posts` SET `draft` = ?
 WHERE `posts`.`publish_at` < CURRENT_TIMESTAMP
 ```
+
+:::
 
 The most common update queries are just scoped to a single record. So the final kind that
 you can pass to `update` is anything which implements [the `Identifiable` trait].
@@ -93,9 +112,9 @@ It represents any struct which is one-to-one with a row on a database table.
 
 If we wanted a struct that mapped to our posts table, it'd look something like this:
 
-src/lib.rs ([view on GitHub][lib-rs-3]):
+::: code-block
 
-[lib-rs-3]: https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/all_about_updates/src/lib.rs#L23-L31
+[src/lib.rs]( https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/all_about_updates/src/lib.rs#L23-L31)
 
 ```rust
 #[derive(Identifiable)]
@@ -108,6 +127,8 @@ pub struct Post {
 }
 ```
 
+:::
+
 The struct has one field per database column, but what's important for `Identifiable` is
 that it has the `id` field, which is the primary key of our table. Since our struct name is
 just the table name without an `s`, we don't have to provide the table name explicitly.
@@ -119,25 +140,31 @@ which you can do by enabling the `chrono` feature on Diesel.
 
 If we wanted to publish just this post, we could do it like this:
 
-src/lib.rs ([view on GitHub][lib-rs-4]):
 
-[lib-rs-4]: https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/all_about_updates/src/lib.rs#L73-L76
+::: code-block
+
+[src/lib.rs]( https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/all_about_updates/src/lib.rs#L73-L76)
 
 ```rust
 diesel::update(&post).set(posts::draft.eq(false))
 ```
 
+:::
+
 It's important to note that we always pass a reference to the post, not the post itself.
 When we write `update(post)`, that's equivalent to writing `update(posts.find(post.id))`,
 or `update(posts.filter(id.eq(post.id)))`. We can see this in the generated SQL:
 
-Generated SQL ([view on GitHub][generated-sql-3]):
 
-[generated-sql-3]: https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/all_about_updates/src/lib.rs#L78-L93
+::: code-block
+
+[Generated SQL]( https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/all_about_updates/src/lib.rs#L78-L93)
 
 ```sql
 UPDATE `posts` SET `draft` = ? WHERE `posts`.`id` = ?
 ```
+
+:::
 
 Now that we've seen all the ways to specify what we want to update,
 let's look at the different ways to provide the data to update it with.
@@ -145,9 +172,9 @@ We've already seen the first way, which is to pass `column.eq(value)` directly.
 So far we've just been passing Rust values here, but we can actually use any Diesel expression.
 For example, we could increment a column:
 
-src/lib.rs ([view on GitHub][lib-rs-5]):
+::: code-block
 
-[lib-rs-5]: https://github.com/diesel-rs/diesel/tree/v1.4.4/examples/postgres/all_about_updates/src/lib.rs#L95-L100
+[src/lib.rs]( https://github.com/diesel-rs/diesel/tree/v1.4.4/examples/postgres/all_about_updates/src/lib.rs#L95-L100)
 
 ```rust
 use posts::dsl::*;
@@ -155,23 +182,28 @@ use posts::dsl::*;
 diesel::update(posts).set(visit_count.eq(visit_count + 1))
 ```
 
+:::
+
 That would generate this SQL:
 
-Generated SQL ([view on GitHub][generated-sql-4]):
+::: code-block
 
-[generated-sql-4]: https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/all_about_updates/src/lib.rs#L102-L111
+[Generated SQL]( https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/all_about_updates/src/lib.rs#L102-L111)
 
 ```sql
 UPDATE `posts`
 SET `visit_count` = `posts`.`visit_count` + 1
 ```
 
+:::
+
 Assigning values directly is great for small, simple changes.
 If we wanted to update multiple columns this way, we can pass a tuple.
 
-src/lib.rs ([view on GitHub][lib-rs-6]):
 
-[lib-rs-6]: https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/all_about_updates/src/lib.rs#L118-L127
+::: code-block
+
+[src/lib.rs]( https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/all_about_updates/src/lib.rs#L118-L127)
 
 ```rust
 use posts::dsl::*;
@@ -183,15 +215,19 @@ diesel::update(posts)
   ))
 ```
 
+:::
+
 This will generate exactly the SQL you'd expect:
 
-Generated SQL ([view on GitHub][generated-sql-5]):
+::: code-block
 
-[generated-sql-5]: https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/all_about_updates/src/lib.rs#L129-L142
+[Generated SQL]( https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/all_about_updates/src/lib.rs#L129-L142)
 
 ```sql
 UPDATE `posts` SET `title` = ?, `body` = ?
 ```
+
+:::
 
 ## AsChangeset
 
@@ -204,19 +240,21 @@ If we look at the signature of [`.set`], you'll notice that the constraint is fo
 [`.set`]: https://docs.diesel.rs/diesel/query_builder/struct.IncompleteUpdateStatement.html#method.set
 [`AsChangeset`]: https://docs.diesel.rs/diesel/query_builder/trait.AsChangeset.html
 
-src/lib.rs ([view on GitHub][lib-rs-7]):
+::: code-block
 
-[lib-rs-7]: https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/all_about_updates/src/lib.rs#L144-L146
+[src/lib.rs]( https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/all_about_updates/src/lib.rs#L144-L146)
 
 ```rust
 diesel::update(posts::table).set(&post)
 ```
 
+:::
+
 The SQL will set every field present on the `Post` struct except for the primary key.
 
-Generated SQL ([view on GitHub][generated-sql-6]):
+::: code-block
 
-[generated-sql-6]: https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/all_about_updates/src/lib.rs#L148-L179
+[Generated SQL]( https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/all_about_updates/src/lib.rs#L148-L179)
 
 ```sql
 UPDATE `posts` SET
@@ -226,6 +264,8 @@ UPDATE `posts` SET
     `publish_at` = ?,
     `visit_count` = ?
 ```
+
+:::
 
 Changing the primary key of an existing row is almost never something that you want to do,
 so `#[derive(AsChangeset)]` assumes that you want to ignore it. The only way to change
@@ -238,9 +278,9 @@ If the struct has any optional fields on it, these will also have special behavi
 By default, `#[derive(AsChangeset)]` will assume that `None` means that you don't wish
 to assign that field. For example, if we had the following code:
 
-src/lib.rs ([view on GitHub][lib-rs-8]):
+::: code-block
 
-[lib-rs-8]: https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/all_about_updates/src/lib.rs#L181-L195
+[src/lib.rs]( https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/all_about_updates/src/lib.rs#L181-L195)
 
 ```rust
 #[derive(AsChangeset)]
@@ -257,15 +297,19 @@ diesel::update(posts::table)
     })
 ```
 
+:::
+
 That would generate the following SQL:
 
-Generated SQL ([view on GitHub][generated-sql-7]):
+::: code-block
 
-[generated-sql-7]: https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/all_about_updates/src/lib.rs#L197-L216
+[Generated SQL]( https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/all_about_updates/src/lib.rs#L197-L216)
 
 ```sql
 UPDATE `posts` SET `body` = ?
 ```
+
+:::
 
 If you wanted to assign `NULL` instead, you can either specify `#[changeset_options(treat_none_as_null="true")]` on the struct, or you can have the field be of type `Option<Option<T>>`. Diesel doesn't currently provide a way to explicitly assign a field to its default value, though it may be provided in the future.
 
@@ -313,3 +357,7 @@ Like [`get_result`] and [`get_results`], you will need to specify the type you'd
 All of the code for this guide can be found in executable form in [this Diesel example].
 
 [this Diesel example]: https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/all_about_updates/src/lib.rs
+
+:::
+:::
+:::

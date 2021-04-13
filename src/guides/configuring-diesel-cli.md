@@ -1,4 +1,11 @@
-# Configuring Diesel CLI
+---
+title: "Configuring Diesel CLI"
+lang: en-US
+---
+
+::: demo
+::: content-wrapper
+::: guide-wrapper
 
 Diesel CLI is an optional tool Diesel provides to manage your
 database schema. Its main two roles are to run database
@@ -46,7 +53,9 @@ print-schema`. It corresponds to the `--only-tables` and
 `--except-tables` on the command line. Its value should be a map with
 one of those two keys. For example:
 
-diesel.toml:
+::: code-block
+
+[diesel.toml]()
 
 ```toml
 [print_schema]
@@ -57,6 +66,8 @@ filter = { only_tables = ["users", "posts"] }
 # output
 filter = { except_tables = ["comments"] }
 ```
+
+:::
 
 ## The `schema` field
 
@@ -72,13 +83,17 @@ declaration. When set, `diesel print-schema` will behave as if
 `--import-types` were passed. When no value is given, only types from
 `diesel::sql_types` will be imported.
 
-diesel.toml:
+::: code-block
+
+[diesel.toml]()
 
 ```toml
 [print_schema]
 # Add types from `diesel_full_text_search` like `tsvector`
 import_types = ["diesel::sql_types::*", "diesel_full_text_search::types::*"]
 ```
+
+:::
 
 ## The `patch_file` field
 
@@ -97,3 +112,7 @@ context lines, especially if you have set `import_types`.
 
 You can easily generate this file by making the changes you want to
 `schema.rs`, and then running `git diff -U6 > src/schema.patch`.
+
+:::
+:::
+:::

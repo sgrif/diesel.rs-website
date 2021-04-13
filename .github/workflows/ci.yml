@@ -11,16 +11,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - name: Build the book
+    - name: Build the Webpage
       run: |
-        curl -sL https://github.com/rust-lang/mdBook/releases/download/v0.4.7/mdbook-v0.4.7-x86_64-unknown-linux-gnu.tar.gz | tar zx
-        ./mdbook build
+        sudo apt-get update
+        sudo apt-get install -y pandoc python3-pandocfilters make
+        pandoc --version
+        make page
     - name: Deploy
-      if: github.repository == 'sgrif/diesel.rs-website' && github.event_name == 'push'
+      if: github.repository == 'weiznich/diesel.rs-website' && github.event_name == 'push'
       uses: JamesIves/github-pages-deploy-action@4.1.0
       with:
         branch: gh-pages # The branch the action should deploy to.
-        folder: book # The folder the action should deploy.
+        folder: out # The folder the action should deploy.
         clean: true
         clean-exclude: |
           CNAME
