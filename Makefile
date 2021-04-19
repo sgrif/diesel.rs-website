@@ -3,20 +3,13 @@
 	pandoc -t html5 --template=template.html -F code-block-filter.py src/$*.md -o out/$*.html --css ../assets/stylesheets/application.css -s
 
 guides: guides/all-about-updates.html guides/all-about-inserts.html guides/composing-applications.html guides/configuring-diesel-cli.html guides/extending-diesel.html guides/getting-started.html guides/index.html guides/schema-in-depth.html
-	mkdir -p out/guides/all-about-updates
-	mkdir -p out/guides/all-about-inserts
-	mkdir -p out/guides/composing-applications
-	mkdir -p out/guides/configuring-diesel-cli
-	mkdir -p out/guides/extending-diesel
-	mkdir -p out/guides/getting-started
-	mkdir -p out/guides/schema-in-depth
-	ln -sf ../schema-in-depth.html out/guides/schema-in-depth/index.html
-	ln -sf ../getting-started.html out/guides/getting-started/index.html
-	ln -sf ../extending-diesel.html out/guides/extending-diesel/index.html
-	ln -sf ../configuring-diesel-cli.html out/guides/configuring-diesel-cli/index.html
-	ln -sf ../composing-applications.html out/guides/composing-applications/index.html
-	ln -sf ../all-about-inserts.html out/guides/all-about-inserts/index.html
-	ln -sf ../all-about-updates.html out/guides/all-about-updates/index.html
+	cp -r src/guides/all-about-inserts/ out/guides/all-about-inserts/ 
+	cp -r src/guides/all-about-updates/ out/guides/all-about-updates/
+	cp -r src/guides/composing-applications/ out/guides/composing-applications/
+	cp -r src/guides/configuring-diesel-cli/ out/guides/configuring-diesel-cli/
+	cp -r src/guides/extending-diesel/ out/guides/extending-diesel/
+	cp -r src/guides/getting-started/ out/guides/getting-started/
+	cp -r src/guides/schema-in-depth/ out/guides/schema-in-depth/
 
 
 docs: docs/index.html
