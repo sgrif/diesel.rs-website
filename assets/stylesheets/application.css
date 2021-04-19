@@ -1073,3 +1073,7 @@ pre {
 div.guide-wrapper {
   margin-bottom: 70px;
 }
+
+div.vertical-tabs-container {
+  text-align: left;
+}
