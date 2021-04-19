@@ -1,5 +1,6 @@
 ---
 title: "Diesel is a Safe, Extensible ORM and Query Builder for <a href=\"https://www.rust-lang.org/\" target=\"_blank\" class=\"rust-link\">Rust</a>"
+css: assets/stylesheets/application.css 
 include-after: |
     <script src="assets/javascripts/application.js"></script>
     <script type = "text/javascript">
