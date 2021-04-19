@@ -1,6 +1,9 @@
 ---
 lang: en-US
 title: "Schema in Depth"
+css: ../assets/stylesheets/application.css
+include-after: |
+    <script src="../assets/javascripts/application.js"></script>
 ---
 
 

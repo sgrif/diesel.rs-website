@@ -1,6 +1,9 @@
 ---
 title: "Configuring Diesel CLI"
 lang: en-US
+css: ../assets/stylesheets/application.css
+include-after: |
+    <script src="../assets/javascripts/application.js"></script>
 ---
 
 ::: demo

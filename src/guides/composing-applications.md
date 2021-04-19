@@ -1,7 +1,11 @@
 ---
 title: "Composing Applications with Diesel"
 lang: en-US
+css: ../assets/stylesheets/application.css
+include-after: |
+    <script src="../assets/javascripts/application.js"></script>
 ---
+
 ::: demo
 ::: content-wrapper
 ::: guide-wrapper

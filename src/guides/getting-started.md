@@ -1,6 +1,9 @@
 ---
 title: "Getting Started"
 lang: en-US
+css: ../assets/stylesheets/application.css
+include-after: |
+    <script src="../assets/javascripts/application.js"></script>
 ---
 
 ::: demo
@@ -14,10 +17,15 @@ and is meant to be followed along.
 **This guide assumes that you're using PostgreSQL.** Before we start,
 make sure you have PostgreSQL installed and running.
 
-> A note on Rust versions:
->
-> Diesel requires Rust 1.31 or later. If you're following along with this guide,
+<aside class = "aside aside--note">
+<header class = "aside__header">A note on Rust versions:</header>
+
+::: aside__text
+Diesel requires Rust 1.31 or later. If you're following along with this guide,
 make sure you're using at least that version of Rust by running `rustup update stable`.
+
+:::
+</aside>
 
 ## Install `diesel_cli`
 

@@ -1,5 +1,8 @@
 ---
 title: "API Documentation"
+css: ../assets/stylesheets/application.css
+include-after: |
+    <script src="../assets/javascripts/application.js"></script>
 ---
 
 ::: content-wrapper 
