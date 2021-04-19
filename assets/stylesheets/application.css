@@ -1069,3 +1069,7 @@ pre {
   padding: 1.5rem;
   background: #2B303B;
 }
+
+div.guide-wrapper {
+  margin-bottom: 70px;
+}
