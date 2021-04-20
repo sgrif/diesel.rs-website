@@ -309,9 +309,12 @@ Any time we run or revert a migration, this file will get automatically updated.
 <aside class = "aside aside--note">
 <header class = "aside__header"> A Note on Field Order</header>
 
+::: aside__text
 
 Using `#[derive(Queryable)]` assumes that the order of fields on the `Post` struct matches
 the columns in the `posts` table, so make sure to define them in the order seen in the `schema.rs` file.
+
+:::
 
 </aside>
 
