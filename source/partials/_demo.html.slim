@@ -47,7 +47,7 @@ section.demo
               .browser-bar Rust code
               pre.demo__example-snippet
                 code.rust
-                  | let versions = Version::belonging_to(krate)
+                  | let versions = Version::belonging_to(crate)
                       .select(id)
                       .order(num.desc())
                       .limit(5);
