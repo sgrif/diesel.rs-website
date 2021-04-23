@@ -27,7 +27,7 @@ make sure you're using at least that version of Rust by running `rustup update s
 :::
 </aside>
 
-## Install `diesel_cli`
+## Initializing a new project
 
 The first thing we need to do is generate our project.
 
@@ -59,6 +59,8 @@ dotenv = "0.15.0"
 ```
 
 :::
+
+## Installing Diesel CLI
 
 Diesel provides a separate [CLI] tool to help manage your project. Since it's a standalone binary,
 and doesn't affect your project's code directly, we don't add it to `Cargo.toml`.
@@ -102,7 +104,7 @@ cargo install diesel_cli --no-default-features --features postgres
 :::
 </aside>
 
-## Setup Diesel
+## Setup Diesel for your project
 
 We need to tell Diesel where to find our database. We do this by setting the `DATABASE_URL`
 environment variable. On our development machines, we'll likely have multiple projects going,
