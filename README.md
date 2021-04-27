@@ -1,11 +1,11 @@
-## Getting Started
+# diesel.rs
 
-This site is built using [middleman](https://middlemanapp.com/).
+This site is built using [pandoc](https://pandoc.org/).
 The content is available here: https://diesel.rs
 
-Running the server:
+Build locally
 ```sh
-bundle exec middleman
+make page
 ```
 
 Master branch is automatically deployed to Github Pages.
