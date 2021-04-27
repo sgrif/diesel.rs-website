@@ -1,4 +1,91 @@
-<!DOCTYPE html><html><head><meta charset="utf-8" /><meta ,="" content="IE=edge,chrom=1" http-equiv="X-UA-Compatible" /><meta content="width=device-width, initial-scale=1" name="viewport" /><title>Diesel</title><link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic,100" rel="stylesheet" type="text/css" /><link href="https://diesel.rs/" rel="canonical" /><link href="assets/stylesheets/application.css" rel="stylesheet" /><link href="assets/stylesheets/hybrid.css" rel="stylesheet" /></head><body class="index"><header class="main-header"><div class="content-wrapper"><h1><a href="/"><svg class='logo' height='76px' version='1.1' viewBox='0 0 187 76' width='187px' xmlns:sketch='http://www.bohemiancoding.com/sketch/ns' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns='http://www.w3.org/2000/svg'>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Diesel is a Safe, Extensible ORM and Query Builder for Rust</title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  { color: #cccccc; background-color: #303030; }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ffcfaf; } /* Alert */
+code span.an { color: #7f9f7f; font-weight: bold; } /* Annotation */
+code span.at { } /* Attribute */
+code span.bn { color: #dca3a3; } /* BaseN */
+code span.bu { color: #de935f; } /* BuiltIn */
+code span.cf { color: #f0dfaf; } /* ControlFlow */
+code span.ch { color: #dca3a3; } /* Char */
+code span.cn { color: #dca3a3; font-weight: bold; } /* Constant */
+code span.co { color: #7f9f7f; } /* Comment */
+code span.cv { color: #7f9f7f; font-weight: bold; } /* CommentVar */
+code span.do { color: #7f9f7f; } /* Documentation */
+code span.dt { color: #de935f; } /* DataType */
+code span.dv { color: #dcdccc; } /* DecVal */
+code span.er { color: #c3bf9f; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #c0bed1; } /* Float */
+code span.fu { color: #efef8f; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #7f9f7f; font-weight: bold; } /* Information */
+code span.kw { color: #81a2be; } /* Keyword */
+code span.op { color: #f0efd0; } /* Operator */
+code span.ot { color: #efef8f; } /* Other */
+code span.pp { color: #ffcfaf; font-weight: bold; } /* Preprocessor */
+code span.sc { color: #dca3a3; } /* SpecialChar */
+code span.ss { color: #cc9393; } /* SpecialString */
+code span.st { color: #b5bd68; } /* String */
+code span.va { } /* Variable */
+code span.vs { color: #cc9393; } /* VerbatimString */
+code span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="assets/stylesheets/application.css">
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+  <style type="text/css">
+      body {
+          background: linear-gradient(#535379, #c3c3d6);
+          background-repeat: no-repeat;
+          background-attachment: fixed;
+      }
+  </style>
+</head>
+<body>
+    <header class="main-header">
+        <div class="content-wrapper">
+            <h1>
+                <a href="/">
+                    <svg class='logo' height='76px' version='1.1' viewBox='0 0 187 76' width='187px' xmlns:sketch='http://www.bohemiancoding.com/sketch/ns' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns='http://www.w3.org/2000/svg'>
 <g fill-rule='evenodd' fill='none' id='Page-1' sketch:type='MSPage' stroke-width='1' stroke='none'>
 <g id='Desktop-HD' sketch:type='MSArtboardGroup' transform='translate(-119.000000, -30.000000)'>
 <g id='logo' sketch:type='MSLayerGroup' transform='translate(119.000000, 31.000000)'>
@@ -23,116 +110,347 @@
 </g>
 </g>
 </g>
-</svg>
-</a></h1><nav class="header-nav"><ul><li class="nav-item"><a href="/guides">Guides</a></li><li class="nav-item"><a href="/docs">API Docs</a></li></ul></nav></div></header><section class="banner"><div class="content-wrapper"><div class="banner-wrapper"><h2 class="banner__heading">Diesel is a Safe, Extensible ORM and Query Builder for <a href="https://www.rust-lang.org/" target="_blank" class="rust-link">Rust</a></h2><p class="banner__sub-heading">Diesel is the most productive way to interact with databases in Rust because of its safe and composable abstractions over queries.</p><div class="btn-container"><a class="btn btn-primary btn-download" href="/guides/getting-started">Get Started</a><a class="btn btn-secondary" href="https://github.com/diesel-rs/diesel">View on GitHub</a></div></div></div></section><main><section class="feature-list"><div class="content-wrapper"><h3 class="feature-list__heading section-heading">Why did we make Diesel?</h3><div class="feature-list__feature type-safe"><h4 class="feature__heading">Preventing Runtime Errors</h4><p class="feature__description">We don't want to waste time tracking down runtime errors.
-We achieve this by having
-Diesel eliminate the possibility of incorrect database interactions
-at compile time.</p><p></p></div><div class="feature-list__feature performance"><h4 class="feature__heading">Built for Performance</h4><p class="feature__description">Diesel offers a high level query builder and lets you think about your problems in Rust, not SQL.
-Our focus on zero-cost abstractions allows
-Diesel to run your query and load your data even faster than C.</p><p></p></div><div class="feature-list__feature extensible"><h4 class="feature__heading">Productive and Extensible</h4><p class="feature__description">Unlike Active Record and other ORMs, Diesel is designed to be abstracted over.
-Diesel enables you to write reusable code
-and think in terms of your problem domain and not SQL.</p><p></p></div></div></section><section class="demo"><div class="content-wrapper"><h3 class="demo__heading section-heading">See some examples</h3><div class="vertical-tabs-container"><div class="vertical-tabs"><a class="js-vertical-tab vertical-tab is-active" href="javascript:void(0)" rel="tab1">Simple Queries</a><a class="js-vertical-tab vertical-tab" href="javascript:void(0)" rel="tab2">Complex Queries</a><a class="js-vertical-tab vertical-tab" href="javascript:void(0)" rel="tab3">Less Boilerplate</a><a class="js-vertical-tab vertical-tab" href="javascript:void(0)" rel="tab4">Inserting Data</a><a class="js-vertical-tab vertical-tab" href="javascript:void(0)" rel="tab5">Updating Data</a><a class="js-vertical-tab vertical-tab" href="javascript:void(0)" rel="tab6">Ergonomic Raw SQL</a></div><div class="vertical-tab-content-container"><a class="js-vertical-tab-accordion-heading vertical-tab-accordion-heading is-active" href="javascript:void(0)" rel="tab1">Simple Queries</a><div class="js-vertical-tab-content vertical-tab-content" id="tab1"><div class="demo__example"><p class="demo__example-caption">Simple queries are a complete breeze.
-Loading all users from a database:</p><div class="demo__example-browser"><div class="browser-bar">Rust code</div><pre class="demo__example-snippet"><code class="rust">users::table.load(&connection)</code></pre></div><div class="demo__example-browser"><div class="browser-bar">Executed SQL</div><pre class="demo__example-snippet"><code class="sql">SELECT * FROM users;</code></pre></div><p class="demo__example-caption">Loading all the posts for a user:</p><div class="demo__example-browser"><div class="browser-bar">Rust code</div><pre class="demo__example-snippet"><code class="rust">Post::belonging_to(user).load(&connection)</code></pre></div><div class="demo__example-browser"><div class="browser-bar">Executed SQL</div><pre class="demo__example-snippet"><code class="sql">SELECT * FROM posts WHERE user_id = 1;</code></pre></div></div></div><a class="js-vertical-tab-accordion-heading vertical-tab-accordion-heading" href="javascript:void(0)" rel="tab2">Complex Queries</a><div class="js-vertical-tab-content vertical-tab-content" id="tab2"><div class="demo__example"><p class="demo__example-caption">Diesel's powerful query builder helps you construct queries as
-simple or complex as you need, at 0 cost.</p><div class="demo__example-browser"><div class="browser-bar">Rust code</div><pre class="demo__example-snippet"><code class="rust">let versions = Version::belonging_to(krate)
-  .select(id)
-  .order(num.desc())
-  .limit(5);
-let downloads = version_downloads
-  .filter(date.gt(now - 90.days()))
-  .filter(version_id.eq(any(versions)))
-  .order(date)
-  .load::&lt;Download&gt;(&conn)?;</code></pre></div><div class="demo__example-browser"><div class="browser-bar">Executed SQL</div><pre class="demo__example-snippet"><code class="sql">SELECT version_downloads.*
-  WHERE date > (NOW() - '90 days')
-    AND version_id = ANY(
-      SELECT id FROM versions
-        WHERE crate_id = 1
-        ORDER BY num DESC
-        LIMIT 5
-    )
-  ORDER BY date</code></pre></div></div></div><a class="js-vertical-tab-accordion-heading vertical-tab-accordion-heading" href="javascript:void(0)" rel="tab3">Less Boilerplate</a><div class="js-vertical-tab-content vertical-tab-content" id="tab3"><div class="demo__example"><p class="demo__example-caption">Diesel codegen generates boilerplate for you. It lets you focus
-on your business logic, not mapping to and from SQL rows.</p><p class="demo__example-caption">That means you can write this:</p><div class="demo__example-browser"><div class="browser-bar">With Diesel</div><pre class="demo__example-snippet"><code class="rust">#[derive(Queryable)]
-pub struct Download {
-    id: i32,
-    version_id: i32,
-    downloads: i32,
-    counted: i32,
-    date: SystemTime,
-}</code></pre></div><p class="demo__example-caption">Instead of this:</p><div class="demo__example-browser"><div class="browser-bar">Without Diesel</div><pre class="demo__example-snippet"><code class="rust">pub struct Download {
-    id: i32,
-    version_id: i32,
-    downloads: i32,
-    counted: i32,
-    date: SystemTime,
-}
+                    </svg>
+                </a>
+            </h1>
+            <nav class="header-nav">
+                <ul>
+                    <li class="nav-item">
+                        <a href="/guides">Guides</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/docs">API Docs</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <section class = "banner">
+        <div class = "content-wrapper">
+            <div class = "banner-wrapper">
+                <h2 class = "banner__heading">Diesel is a Safe, Extensible ORM and Query Builder for <a href="https://www.rust-lang.org/" target="_blank" class="rust-link">Rust</a></h2>
+            </div>
+        </div>
+    </section>
 
-impl Download {
-    fn from_row(row: &Row) -> Download {
-        Download {
-            id: row.get("id"),
-            version_id: row.get("version_id"),
-            downloads: row.get("downloads"),
-            counted: row.get("counted"),
-            date: row.get("date"),
+<blockquote>
+
+</blockquote>
+<div class="main-page">
+<div class="banner-wrapper">
+<p>Diesel is the most productive way to interact with databases in Rust because of its safe and composable abstractions over queries.</p>
+<div class="btn-container">
+<p><a href="/guides/getting-started" class="btn btn-primary btn-download">Getting Started</a> <a href="https://github.com/diesel-rs/diesel" class="btn btn-secondary">View on GitHub</a></p>
+</div>
+</div>
+<div class="feature-list">
+<div class="content-wrapper">
+<h3 id="why-did-we-make-diesel" class="feature-list__heading section-heading">Why did we make Diesel?</h3>
+<!-- {.feature-list__heading section-heading} -->
+<div class="feature-list__feature type-safe">
+<h4 id="preventing-runtime-errors" class="feature__heading">Preventing Runtime Errors</h4>
+<p>We don’t want to waste time tracking down runtime errors. We achieve this by having Diesel eliminate the possibility of incorrect database interactions at compile time.</p>
+</div>
+<div class="feature-list__feature performance">
+<h4 id="built-for-performance" class="feature__heading">Built for Performance</h4>
+<p>Diesel offers a high level query builder and lets you think about your problems in Rust, not SQL. Our focus on zero-cost abstractions allows Diesel to run your query and load your data even faster than C.</p>
+</div>
+<div class="feature-list__feature extensible">
+<h4 id="productive-and-extensible" class="feature__heading">Productive and Extensible</h4>
+<p>Unlike Active Record and other ORMs, Diesel is designed to be abstracted over. Diesel enables you to write reusable code and think in terms of your problem domain and not SQL.</p>
+</div>
+</div>
+</div>
+<div class="demo">
+<div class="content-wrapper">
+<h3 id="see-some-examples" class="demo__heading section-heading">See some examples</h3>
+<div class="vertical-tabs-container">
+<div class="vertical-tabs">
+<!-- <button class = "js-vertical-tab vertical-tab is-active" onclick = "change_tab(event, 'simple_queries')"> -->
+<!-- Simple Queries -->
+<!-- </button> -->
+<!-- <button class = "js-vertical-tab vertical-tab" on-click = "change_tab(event, 'complex_queries')"> -->
+<!-- Complex Queries -->
+<!-- </button> -->
+<p><a href="javascript::void(0)" class="js-vertical-tab vertical-tab is-active" onclick="change_tab(event, &#39;simple_queries&#39;)">Simple Queries</a> <a href="javascript::void(0)" class="js-vertical-tab vertical-tab" onclick="change_tab(event, &#39;complex_queries&#39;)">Complex Queries</a> <a href="javascript::void(0)" class="js-vertical-tab vertical-tab" onclick="change_tab(event, &#39;less_boilerplate&#39;)">Less Boilerplate</a> <a href="javascript::void(0)" class="js-vertical-tab vertical-tab" onclick="change_tab(event, &#39;inserting_data&#39;)">Inserting Data</a> <a href="javascript::void(0)" class="js-vertical-tab vertical-tab" onclick="change_tab(event, &#39;updating_data&#39;)">Updating Data</a> <a href="javascript::void(0)" class="js-vertical-tab vertical-tab" onclick="change_tab(event, &#39;raw_sql&#39;)">Ergonomic Raw SQL</a></p>
+</div>
+<div class="vertical-tab-content-container">
+<div id="simple_queries" class="js-vertical-tab-content vertical-tab-content" style="display: block;">
+<p>Simple queries are a complete breeze. Loading all users from a database:</p>
+<div class="demo__example">
+<div class="demo__example-browser">
+<div class="browser-bar">
+Rust code
+</div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb1-1" title="1"><span class="pp">users::</span>table.load(&amp;connection)</a></code></pre></div>
+</div>
+</div>
+<div class="demo__example">
+<div class="demo__example-browser">
+<div class="browser-bar">
+Executed SQL
+</div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb2-1" title="1"><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> users;</a></code></pre></div>
+</div>
+</div>
+<p>Loading all the posts for a users:</p>
+<div class="demo__example">
+<div class="demo__example-browser">
+<div class="browser-bar">
+Rust code
+</div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb3-1" title="1"><span class="pp">Post::</span>belonging_to(user).load(&amp;connection)</a></code></pre></div>
+</div>
+</div>
+<div class="demo__example">
+<div class="demo__example-browser">
+<div class="browser-bar">
+Executed SQL
+</div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb4-1" title="1"><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> posts <span class="kw">WHERE</span> user_id <span class="op">=</span> <span class="dv">1</span>;</a></code></pre></div>
+</div>
+</div>
+</div>
+<div id="complex_queries" class="js-vertical-tab-content vertical-tab-content">
+<p>Diesel’s powerful query builder helps you construct queries as simple or complex as as you need, at zero cost.</p>
+<div class="demo__example">
+<div class="demo__example-browser">
+<div class="browser-bar">
+Rust code
+</div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb5-1" title="1"><span class="kw">let</span> versions = <span class="pp">Version::</span>belonging_to(krate)</a>
+<a class="sourceLine" id="cb5-2" title="2">  .select(id)</a>
+<a class="sourceLine" id="cb5-3" title="3">  .order(num.desc())</a>
+<a class="sourceLine" id="cb5-4" title="4">  .limit(<span class="dv">5</span>);</a>
+<a class="sourceLine" id="cb5-5" title="5"><span class="kw">let</span> downloads = version_downloads</a>
+<a class="sourceLine" id="cb5-6" title="6">  .filter(date.gt(now - <span class="dv">90</span>.days()))</a>
+<a class="sourceLine" id="cb5-7" title="7">  .filter(version_id.eq(any(versions)))</a>
+<a class="sourceLine" id="cb5-8" title="8">  .order(date)</a>
+<a class="sourceLine" id="cb5-9" title="9">  .<span class="pp">load::</span>&lt;Download&gt;(&amp;conn)?;</a></code></pre></div>
+</div>
+</div>
+<div class="demo__example">
+<div class="demo__example-browser">
+<div class="browser-bar">
+Executed SQL
+</div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb6-1" title="1"><span class="kw">SELECT</span> version_downloads.<span class="op">*</span></a>
+<a class="sourceLine" id="cb6-2" title="2">  <span class="kw">WHERE</span> <span class="dt">date</span> <span class="op">&gt;</span> (NOW() <span class="op">-</span> <span class="st">&#39;90 days&#39;</span>)</a>
+<a class="sourceLine" id="cb6-3" title="3">    <span class="kw">AND</span> version_id <span class="op">=</span> <span class="kw">ANY</span>(</a>
+<a class="sourceLine" id="cb6-4" title="4">      <span class="kw">SELECT</span> <span class="kw">id</span> <span class="kw">FROM</span> versions</a>
+<a class="sourceLine" id="cb6-5" title="5">        <span class="kw">WHERE</span> crate_id <span class="op">=</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb6-6" title="6">        <span class="kw">ORDER</span> <span class="kw">BY</span> num <span class="kw">DESC</span></a>
+<a class="sourceLine" id="cb6-7" title="7">        <span class="kw">LIMIT</span> <span class="dv">5</span></a>
+<a class="sourceLine" id="cb6-8" title="8">    )</a>
+<a class="sourceLine" id="cb6-9" title="9">  <span class="kw">ORDER</span> <span class="kw">BY</span> <span class="dt">date</span></a></code></pre></div>
+</div>
+</div>
+</div>
+<div id="less_boilerplate" class="js-vertical-tab-content vertical-tab-content">
+<p>Diesel codegen generates boilerplate for you. It lets you focus on your business logic, not mapping to and from SQL rows.</p>
+<p>That means you can write this:</p>
+<div class="demo__example">
+<div class="demo__example-browser">
+<div class="browser-bar">
+With Diesel
+</div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb7-1" title="1"><span class="at">#[</span>derive<span class="at">(</span>Queryable<span class="at">)]</span></a>
+<a class="sourceLine" id="cb7-2" title="2"><span class="kw">pub</span> <span class="kw">struct</span> Download <span class="op">{</span></a>
+<a class="sourceLine" id="cb7-3" title="3">    id: <span class="dt">i32</span>,</a>
+<a class="sourceLine" id="cb7-4" title="4">    version_id: <span class="dt">i32</span>,</a>
+<a class="sourceLine" id="cb7-5" title="5">    downloads: <span class="dt">i32</span>,</a>
+<a class="sourceLine" id="cb7-6" title="6">    counted: <span class="dt">i32</span>,</a>
+<a class="sourceLine" id="cb7-7" title="7">    date: SystemTime,</a>
+<a class="sourceLine" id="cb7-8" title="8"><span class="op">}</span></a></code></pre></div>
+</div>
+</div>
+<p>Instead of this:</p>
+<div class="demo__example">
+<div class="demo__example-browser">
+<div class="browser-bar">
+Without Diesel
+</div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb8-1" title="1"><span class="kw">pub</span> <span class="kw">struct</span> Download <span class="op">{</span></a>
+<a class="sourceLine" id="cb8-2" title="2">    id: <span class="dt">i32</span>,</a>
+<a class="sourceLine" id="cb8-3" title="3">    version_id: <span class="dt">i32</span>,</a>
+<a class="sourceLine" id="cb8-4" title="4">    downloads: <span class="dt">i32</span>,</a>
+<a class="sourceLine" id="cb8-5" title="5">    counted: <span class="dt">i32</span>,</a>
+<a class="sourceLine" id="cb8-6" title="6">    date: SystemTime,</a>
+<a class="sourceLine" id="cb8-7" title="7"><span class="op">}</span></a>
+<a class="sourceLine" id="cb8-8" title="8"></a>
+<a class="sourceLine" id="cb8-9" title="9"><span class="kw">impl</span> Download <span class="op">{</span></a>
+<a class="sourceLine" id="cb8-10" title="10">    <span class="kw">fn</span> from_row(row: &amp;Row) -&gt; Download <span class="op">{</span></a>
+<a class="sourceLine" id="cb8-11" title="11">        Download <span class="op">{</span></a>
+<a class="sourceLine" id="cb8-12" title="12">            id: row.get(<span class="st">&quot;id&quot;</span>),</a>
+<a class="sourceLine" id="cb8-13" title="13">            version_id: row.get(<span class="st">&quot;version_id&quot;</span>),</a>
+<a class="sourceLine" id="cb8-14" title="14">            downloads: row.get(<span class="st">&quot;downloads&quot;</span>),</a>
+<a class="sourceLine" id="cb8-15" title="15">            counted: row.get(<span class="st">&quot;counted&quot;</span>),</a>
+<a class="sourceLine" id="cb8-16" title="16">            date: row.get(<span class="st">&quot;date&quot;</span>),</a>
+<a class="sourceLine" id="cb8-17" title="17">        <span class="op">}</span></a>
+<a class="sourceLine" id="cb8-18" title="18">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb8-19" title="19"><span class="op">}</span></a></code></pre></div>
+</div>
+</div>
+</div>
+<div id="inserting_data" class="js-vertical-tab-content vertical-tab-content">
+<p>It’s not just about reading data. Diesel makes it easy to use structs for new records.</p>
+<div class="demo__example">
+<div class="demo__example-browser">
+<div class="browser-bar">
+Rust code
+</div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb9-1" title="1"><span class="at">#[</span>derive<span class="at">(</span>Insertable<span class="at">)]</span></a>
+<a class="sourceLine" id="cb9-2" title="2"><span class="at">#[</span>table_name<span class="at">=</span><span class="st">&quot;users&quot;</span><span class="at">]</span></a>
+<a class="sourceLine" id="cb9-3" title="3"><span class="kw">struct</span> NewUser&lt;<span class="ot">&#39;a</span>&gt; <span class="op">{</span></a>
+<a class="sourceLine" id="cb9-4" title="4">    name: &amp;<span class="ot">&#39;a</span> <span class="dt">str</span>,</a>
+<a class="sourceLine" id="cb9-5" title="5">    hair_color: <span class="dt">Option</span>&lt;&amp;<span class="ot">&#39;a</span> <span class="dt">str</span>&gt;,</a>
+<a class="sourceLine" id="cb9-6" title="6"><span class="op">}</span></a>
+<a class="sourceLine" id="cb9-7" title="7"></a>
+<a class="sourceLine" id="cb9-8" title="8"><span class="kw">let</span> new_users = <span class="pp">vec!</span><span class="op">[</span></a>
+<a class="sourceLine" id="cb9-9" title="9">    NewUser <span class="op">{</span> name: <span class="st">&quot;Sean&quot;</span>, hair_color: <span class="cn">Some</span>(<span class="st">&quot;Black&quot;</span>) <span class="op">}</span>,</a>
+<a class="sourceLine" id="cb9-10" title="10">    NewUser <span class="op">{</span> name: <span class="st">&quot;Gordon&quot;</span>, hair_color: <span class="cn">None</span> <span class="op">}</span>,</a>
+<a class="sourceLine" id="cb9-11" title="11"><span class="op">]</span>;</a>
+<a class="sourceLine" id="cb9-12" title="12"></a>
+<a class="sourceLine" id="cb9-13" title="13">insert_into(users)</a>
+<a class="sourceLine" id="cb9-14" title="14">    .values(&amp;new_users)</a>
+<a class="sourceLine" id="cb9-15" title="15">    .execute(&amp;connection);</a></code></pre></div>
+</div>
+</div>
+<div class="demo__example">
+<div class="demo__example-browser">
+<div class="browser-bar">
+Executed SQL
+</div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb10-1" title="1"><span class="kw">INSERT</span> <span class="kw">INTO</span> users (name, hair_color) <span class="kw">VALUES</span></a>
+<a class="sourceLine" id="cb10-2" title="2">  (<span class="st">&#39;Sean&#39;</span>, <span class="st">&#39;Black&#39;</span>),</a>
+<a class="sourceLine" id="cb10-3" title="3">  (<span class="st">&#39;Gordon&#39;</span>, <span class="kw">DEFAULT</span>)</a></code></pre></div>
+</div>
+</div>
+<p>If you need data from the rows you inserted, just change <code>execute</code> to <code>get_result</code> or <code>get_results</code>. Diesel will take care of the rest.</p>
+<div class="demo__example">
+<div class="demo__example-browser">
+<div class="browser-bar">
+Rust code
+</div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb11-1" title="1"><span class="kw">let</span> new_users = <span class="pp">vec!</span><span class="op">[</span></a>
+<a class="sourceLine" id="cb11-2" title="2">    NewUser <span class="op">{</span> name: <span class="st">&quot;Sean&quot;</span>, hair_color: <span class="cn">Some</span>(<span class="st">&quot;Black&quot;</span>) <span class="op">}</span>,</a>
+<a class="sourceLine" id="cb11-3" title="3">    NewUser <span class="op">{</span> name: <span class="st">&quot;Gordon&quot;</span>, hair_color: <span class="cn">None</span> <span class="op">}</span>,</a>
+<a class="sourceLine" id="cb11-4" title="4"><span class="op">]</span>;</a>
+<a class="sourceLine" id="cb11-5" title="5"></a>
+<a class="sourceLine" id="cb11-6" title="6"><span class="kw">let</span> inserted_users = insert_into(users)</a>
+<a class="sourceLine" id="cb11-7" title="7">    .values(&amp;new_users)</a>
+<a class="sourceLine" id="cb11-8" title="8">    .<span class="pp">get_results::</span>&lt;User&gt;(&amp;connection);</a></code></pre></div>
+</div>
+</div>
+<div class="demo__example">
+<div class="demo__example-browser">
+<div class="browser-bar">
+Executed SQL
+</div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb12-1" title="1"><span class="kw">INSERT</span> <span class="kw">INTO</span> users (name, hair_color) <span class="kw">VALUES</span></a>
+<a class="sourceLine" id="cb12-2" title="2">  (<span class="st">&#39;Sean&#39;</span>, <span class="st">&#39;Black&#39;</span>),</a>
+<a class="sourceLine" id="cb12-3" title="3">  (<span class="st">&#39;Gordon&#39;</span>, <span class="kw">DEFAULT</span>)</a>
+<a class="sourceLine" id="cb12-4" title="4">  <span class="kw">RETURNING</span> <span class="op">*</span></a></code></pre></div>
+</div>
+</div>
+</div>
+<div id="updating_data" class="js-vertical-tab-content vertical-tab-content">
+<p>Diesel’s codegen can generate several ways to update a row, letting you encapsulate your logic in the way that makes sense for your app.</p>
+<div class="demo__example">
+<div class="demo__example-browser">
+<div class="browser-bar">
+Modifying a struct
+</div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb13-1" title="1">post.published = <span class="cn">true</span>;</a>
+<a class="sourceLine" id="cb13-2" title="2">post.save_changes(&amp;connection);</a></code></pre></div>
+</div>
+</div>
+<div class="demo__example">
+<div class="demo__example-browser">
+<div class="browser-bar">
+One-off batch changes
+</div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb14-1" title="1">update(users.filter(email.like(<span class="st">&quot;%@spammer.com&quot;</span>)))</a>
+<a class="sourceLine" id="cb14-2" title="2">    .set(banned.eq(<span class="cn">true</span>))</a>
+<a class="sourceLine" id="cb14-3" title="3">    .execute(&amp;connection)</a></code></pre></div>
+</div>
+</div>
+<div class="demo__example">
+<div class="demo__example-browser">
+<div class="browser-bar">
+Using a struct for encapsulation
+</div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb15-1" title="1">update(<span class="pp">Settings::</span>belonging_to(current_user))</a>
+<a class="sourceLine" id="cb15-2" title="2">    .set(&amp;settings_form)</a>
+<a class="sourceLine" id="cb15-3" title="3">    .execute(&amp;connection)</a></code></pre></div>
+</div>
+</div>
+</div>
+<div id="raw_sql" class="js-vertical-tab-content vertical-tab-content">
+<p>There will always be certain queries that are just easier to write as raw SQL, or can’t be expressed with the query builder. Even in these cases, Diesel provides an easy to use API for writing raw SQL.</p>
+<div class="demo__example">
+<div class="demo__example-browser">
+<div class="browser-bar">
+Running raw SQL
+</div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb16-1" title="1"><span class="at">#[</span>derive<span class="at">(</span>QueryableByName<span class="at">)]</span></a>
+<a class="sourceLine" id="cb16-2" title="2"><span class="at">#[</span>table_name <span class="at">=</span> <span class="st">&quot;users&quot;</span><span class="at">]</span></a>
+<a class="sourceLine" id="cb16-3" title="3"><span class="kw">struct</span> User <span class="op">{</span></a>
+<a class="sourceLine" id="cb16-4" title="4">    id: <span class="dt">i32</span>,</a>
+<a class="sourceLine" id="cb16-5" title="5">    name: <span class="dt">String</span>,</a>
+<a class="sourceLine" id="cb16-6" title="6">    organization_id: <span class="dt">i32</span>,</a>
+<a class="sourceLine" id="cb16-7" title="7"><span class="op">}</span></a>
+<a class="sourceLine" id="cb16-8" title="8"></a>
+<a class="sourceLine" id="cb16-9" title="9"><span class="co">// Using `include_str!` allows us to keep the SQL in a</span></a>
+<a class="sourceLine" id="cb16-10" title="10"><span class="co">// separate file, where our editor can give us SQL specific</span></a>
+<a class="sourceLine" id="cb16-11" title="11"><span class="co">// syntax highlighting.</span></a>
+<a class="sourceLine" id="cb16-12" title="12">sql_query(<span class="pp">include_str!</span>(<span class="st">&quot;complex_users_by_organization.sql&quot;</span>))</a>
+<a class="sourceLine" id="cb16-13" title="13">    .<span class="pp">bind::</span>&lt;Integer, _&gt;(organization_id)</a>
+<a class="sourceLine" id="cb16-14" title="14">    .<span class="pp">bind::</span>&lt;BigInt, _&gt;(offset)</a>
+<a class="sourceLine" id="cb16-15" title="15">    .<span class="pp">bind::</span>&lt;BigInt, _&gt;(limit)</a>
+<a class="sourceLine" id="cb16-16" title="16">    .<span class="pp">load::</span>&lt;User&gt;(conn)?;</a></code></pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script src="assets/javascripts/application.js"></script>
+<script type = "text/javascript">
+    function change_tab(evt, tab) {
+        // Declare all variables
+        var i, tabcontent, tablinks;
+
+        // Get all elements with class="tabcontent" and hide them
+        tabcontent = document.getElementsByClassName("vertical-tab-content");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
         }
+
+        // Get all elements with class="tablinks" and remove the class "active"
+        tablinks = document.getElementsByClassName("vertical-tab");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" is-active", "");
+        }
+
+        // Show the current tab, and add an "active" class to the link that opened the tab
+        document.getElementById(tab).style.display = "block";
+        evt.currentTarget.className += " is-active";
     }
-}</code></pre></div></div></div><a class="js-vertical-tab-accordion-heading vertical-tab-accordion-heading" href="javascript:void(0)" rel="tab4">Inserting Data</a><div class="js-vertical-tab-content vertical-tab-content" id="tab4"><div class="demo__example"><p class="demo__example-caption">It's not just about reading data. Diesel makes it easy to
-use structs for new records.</p><div class="demo__example-browser"><div class="browser-bar">Rust code</div><pre class="demo__example-snippet"><code class="rust">#[derive(Insertable)]
-#[table_name="users"]
-struct NewUser<'a> {
-    name: &'a str,
-    hair_color: Option<&'a str>,
-}
+</script>
+<footer>
+    <div class="content-wrapper">
+        <p> Find a mistake on this website? Submit an issue or send a pull request
+            <a href = "https://github.com/sgrif/diesel.rs-website">here</a>! </p>
+        <p></p>
+        <br/>
+        <p>Copyright © 2015-2021 The Diesel Core Team</p>
+    </div>
+</footer>
+<script type="text/javascript">
 
-let new_users = vec![
-    NewUser { name: "Sean", hair_color: Some("Black") },
-    NewUser { name: "Gordon", hair_color: None },
-];
-
-insert_into(users)
-    .values(&new_users)
-    .execute(&connection);</code></pre></div><div class="demo__example-browser"><div class="browser-bar">Executed SQL</div><pre class="demo__example-snippet"><code class="sql">INSERT INTO users (name, hair_color) VALUES
-  ('Sean', 'Black'),
-  ('Gordon', DEFAULT)</code></pre></div><p class="demo__example-caption">If you need data from the rows you inserted, just change
-<code>execute</code> to <code>get_result</code> or <code>get_results</code>. Diesel will take
-care of the rest.</p><div class="demo__example-browser"><div class="browser-bar">Rust code</div><pre class="demo__example-snippet"><code class="rust">let new_users = vec![
-    NewUser { name: "Sean", hair_color: Some("Black") },
-    NewUser { name: "Gordon", hair_color: None },
-];
-
-let inserted_users = insert_into(users)
-    .values(&new_users)
-    .get_results::&lt;User&gt;(&connection);</code></pre></div><div class="demo__example-browser"><div class="browser-bar">Executed SQL</div><pre class="demo__example-snippet"><code class="sql">INSERT INTO users (name, hair_color) VALUES
-  ('Sean', 'Black'),
-  ('Gordon', DEFAULT)
-  RETURNING *</code></pre></div></div></div><a class="js-vertical-tab-accordion-heading vertical-tab-accordion-heading" href="javascript:void(0)" rel="tab5">Updating Data</a><div class="js-vertical-tab-content vertical-tab-content" id="tab5"><div class="demo__example"><p class="demo__example-caption">Diesel's codegen can generate several ways to update a row,
-letting you encapsulate your logic in the way that makes sense
-for your app.</p><div class="demo__example-browser"><div class="browser-bar">Modifying a struct</div><pre class="demo__example-snippet"><code class="rust">post.published = true;
-post.save_changes(&connection);</code></pre></div><div class="demo__example-browser"><div class="browser-bar">One-off batch changes</div><pre class="demo__example-snippet"><code class="rust">update(users.filter(email.like("%@spammer.com")))
-    .set(banned.eq(true))
-    .execute(&connection)</code></pre></div><div class="demo__example-browser"><div class="browser-bar">Using a struct for encapsulation</div><pre class="demo__example-snippet"><code class="rust">update(Settings::belonging_to(current_user))
-    .set(&settings_form)
-    .execute(&connection)</code></pre></div></div></div><a class="js-vertical-tab-accordion-heading vertical-tab-accordion-heading" href="javascript:void(0)" rel="tab6">Ergonomic Raw SQL</a><div class="js-vertical-tab-content vertical-tab-content" id="tab6"><div class="demo__example"><p class="demo__example-caption">There will always be certain queries that are just easier
-to write as raw SQL, or can't be expressed with the query builder.
-Even in these cases, Diesel provides an easy to use API for
-writing raw SQL.</p><div class="demo__example-browser"><div class="browser-bar">Running raw SQL</div><pre class="demo__example-snippet"><code class="rust">#[derive(QueryableByName)]
-#[table_name = "users"]
-struct User {
-    id: i32,
-    name: String,
-    organization_id: i32,
-}
-
-// Using `include_str!` allows us to keep the SQL in a
-// separate file, where our editor can give us SQL specific
-// syntax highlighting.
-sql_query(include_str!("complex_users_by_organization.sql"))
-    .bind::&lt;Integer, _&gt;(organization_id)
-    .bind::&lt;BigInt, _&gt;(offset)
-    .bind::&lt;BigInt, _&gt;(limit)
-    .load::&lt;User&gt;(conn)?;</code></pre></div></div></div></div></div></div></section></main><footer><div class="content-wrapper"><p>Copyright &copy; 2015-2020 Sean Griffin</p></div></footer><script src="https://code.jquery.com/jquery-2.1.1.min.js"></script><script src="assets/javascripts/application.js"></script><script src="assets/javascripts/highlight.pack.js"></script><script src="assets/javascripts/vertical-tabs.js"></script><script>hljs.initHighlightingOnLoad();</script><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-ga('create', 'UA-73402127-1', 'auto');
-ga('send', 'pageview');</script></body></html>
+</script>
+</body>
+</html>

@@ -1035,3 +1035,45 @@ footer {
   left: 0; }
   footer p {
     margin: 0; }
+
+div.demo__example-browser {
+  background: #2B303B;
+}
+
+div.sourceCode {
+  margin: 0;
+  background: #2B303B;
+}
+
+pre.sourceCode {
+  margin-bottom: 0 !important;
+}
+
+div.demo__example {
+  margin-bottom: 20px;
+}
+
+a {
+  color: #FFCD57;
+}
+
+div.main-page {
+  text-align: center;
+}
+
+section.content-wrapper {
+  text-align: left;
+}
+
+pre {
+  padding: 1.5rem;
+  background: #2B303B;
+}
+
+div.guide-wrapper {
+  margin-bottom: 70px;
+}
+
+div.vertical-tabs-container {
+  text-align: left;
+}

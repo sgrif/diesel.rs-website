@@ -1,4 +1,84 @@
-<!DOCTYPE html><html><head><meta charset="utf-8" /><meta ,="" content="IE=edge,chrom=1" http-equiv="X-UA-Compatible" /><meta content="width=device-width, initial-scale=1" name="viewport" /><title>Configuring Diesel CLI | Diesel</title><link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic,100" rel="stylesheet" type="text/css" /><link href="https://diesel.rs/views/guides/configuring-diesel-cli/" rel="canonical" /><link href="../../../assets/stylesheets/application.css" rel="stylesheet" /><link href="../../../assets/stylesheets/hybrid.css" rel="stylesheet" /></head><body class="views views_guides views_guides_configuring-diesel-cli views_guides_configuring-diesel-cli_index"><header class="main-header"><div class="content-wrapper"><h1><a href="/"><svg class='logo' height='76px' version='1.1' viewBox='0 0 187 76' width='187px' xmlns:sketch='http://www.bohemiancoding.com/sketch/ns' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns='http://www.w3.org/2000/svg'>
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Configuring Diesel CLI</title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  { color: #cccccc; background-color: #303030; }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ffcfaf; } /* Alert */
+code span.an { color: #7f9f7f; font-weight: bold; } /* Annotation */
+code span.at { } /* Attribute */
+code span.bn { color: #dca3a3; } /* BaseN */
+code span.bu { color: #de935f; } /* BuiltIn */
+code span.cf { color: #f0dfaf; } /* ControlFlow */
+code span.ch { color: #dca3a3; } /* Char */
+code span.cn { color: #dca3a3; font-weight: bold; } /* Constant */
+code span.co { color: #7f9f7f; } /* Comment */
+code span.cv { color: #7f9f7f; font-weight: bold; } /* CommentVar */
+code span.do { color: #7f9f7f; } /* Documentation */
+code span.dt { color: #de935f; } /* DataType */
+code span.dv { color: #dcdccc; } /* DecVal */
+code span.er { color: #c3bf9f; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #c0bed1; } /* Float */
+code span.fu { color: #efef8f; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #7f9f7f; font-weight: bold; } /* Information */
+code span.kw { color: #81a2be; } /* Keyword */
+code span.op { color: #f0efd0; } /* Operator */
+code span.ot { color: #efef8f; } /* Other */
+code span.pp { color: #ffcfaf; font-weight: bold; } /* Preprocessor */
+code span.sc { color: #dca3a3; } /* SpecialChar */
+code span.ss { color: #cc9393; } /* SpecialString */
+code span.st { color: #b5bd68; } /* String */
+code span.va { } /* Variable */
+code span.vs { color: #cc9393; } /* VerbatimString */
+code span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="../assets/stylesheets/application.css">
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+    <header class="main-header">
+        <div class="content-wrapper">
+            <h1>
+                <a href="/">
+                    <svg class='logo' height='76px' version='1.1' viewBox='0 0 187 76' width='187px' xmlns:sketch='http://www.bohemiancoding.com/sketch/ns' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns='http://www.w3.org/2000/svg'>
 <g fill-rule='evenodd' fill='none' id='Page-1' sketch:type='MSPage' stroke-width='1' stroke='none'>
 <g id='Desktop-HD' sketch:type='MSArtboardGroup' transform='translate(-119.000000, -30.000000)'>
 <g id='logo' sketch:type='MSLayerGroup' transform='translate(119.000000, 31.000000)'>
@@ -23,96 +103,91 @@
 </g>
 </g>
 </g>
-</svg>
-</a></h1><nav class="header-nav"><ul><li class="nav-item"><a href="/guides">Guides</a></li><li class="nav-item"><a href="/docs">API Docs</a></li></ul></nav></div></header><section class="banner"><div class="content-wrapper"><div class="banner-wrapper"><h2 class="banner__heading">Configuring Diesel CLI</h2></div></div></section><main><section class="demo"><div class="content-wrapper"><div class="guide-wrapper"><p>Diesel CLI is an optional tool Diesel provides to manage your
-database schema. Its main two roles are to run database
-migrations, and to create a Rust file which represents your
-database schema.</p>
+                    </svg>
+                </a>
+            </h1>
+            <nav class="header-nav">
+                <ul>
+                    <li class="nav-item">
+                        <a href="/guides">Guides</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/docs">API Docs</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <section class = "banner">
+        <div class = "content-wrapper">
+            <div class = "banner-wrapper">
+                <h2 class = "banner__heading">Configuring Diesel CLI</h2>
+            </div>
+        </div>
+    </section>
 
-<p>The behavior of Diesel CLI can be configured through a toml file. By
-default Diesel will look for <code>diesel.toml</code> in the same directory as
-your <code>Cargo.toml</code> file. You can provide a different config file by
-setting the <code>DIESEL_CONFIG_FILE</code> environment variable, or passing
-<code>--config-file</code> on the command line. You can get a basic config file
-with some defaults provided by running <code>diesel setup</code>.</p>
-
-<p>As of Diesel 1.3, the file contains a single section,
-<code>[print_schema]</code>. All fields in this file are optional.</p>
-
+<div class="demo">
+<div class="content-wrapper">
+<div class="guide-wrapper">
+<p>Diesel CLI is an optional tool Diesel provides to manage your database schema. Its main two roles are to run database migrations, and to create a Rust file which represents your database schema.</p>
+<p>The behavior of Diesel CLI can be configured through a toml file. By default Diesel will look for <code>diesel.toml</code> in the same directory as your <code>Cargo.toml</code> file. You can provide a different config file by setting the <code>DIESEL_CONFIG_FILE</code> environment variable, or passing <code>--config-file</code> on the command line. You can get a basic config file with some defaults provided by running <code>diesel setup</code>.</p>
+<p>As of Diesel 1.3, the file contains a single section, <code>[print_schema]</code>. All fields in this file are optional.</p>
 <h2 id="the-file-field">The <code>file</code> field</h2>
-
-<p>This field specifies the file where you want the Rust representation
-of your schema to live. When this field is present, commands which
-modify database schema (such as <code>diesel migration run</code>) will
-automatically run <code>diesel print-schema</code>, and output its results to
-this file.</p>
-
-<p>This means that you can modify your database schema without having to
-worry about running a separate command to update your Rust code. It is
-highly recommended that you use this field, to ensure that the Rust
-representation of your database schema is always in sync with what is
-actually in your database. Typically this is set to <code>src/schema.rs</code>.</p>
-
-<p>Unlike other fields, this doesn't actually modify the behavior of
-<code>diesel print-schema</code>. <code>diesel print-schema</code> will always output your
-schema to stdout, regardless of whether this field is present or not.</p>
-
-<h2 id="the-withdocs-field">The <code>with_docs</code> field</h2>
-
-<p>When this field is set to <code>true</code>, <code>diesel print-schema</code> will act as
-though the <code>--with-docs</code> flag was passed by default. This places a doc
-comment on all tables and columns.</p>
-
+<p>This field specifies the file where you want the Rust representation of your schema to live. When this field is present, commands which modify database schema (such as <code>diesel migration run</code>) will automatically run <code>diesel print-schema</code>, and output its results to this file.</p>
+<p>This means that you can modify your database schema without having to worry about running a separate command to update your Rust code. It is highly recommended that you use this field, to ensure that the Rust representation of your database schema is always in sync with what is actually in your database. Typically this is set to <code>src/schema.rs</code>.</p>
+<p>Unlike other fields, this doesn’t actually modify the behavior of <code>diesel print-schema</code>. <code>diesel print-schema</code> will always output your schema to stdout, regardless of whether this field is present or not.</p>
+<h2 id="the-with_docs-field">The <code>with_docs</code> field</h2>
+<p>When this field is set to <code>true</code>, <code>diesel print-schema</code> will act as though the <code>--with-docs</code> flag was passed by default. This places a doc comment on all tables and columns.</p>
 <h2 id="the-filter-field">The <code>filter</code> field</h2>
+<p>This field specifies which tables should be output by <code>diesel print-schema</code>. It corresponds to the <code>--only-tables</code> and <code>--except-tables</code> on the command line. Its value should be a map with one of those two keys. For example:</p>
+<div class="demo__example">
+<div class="demo__example-browser">
+<div class="browser-bar">
+diesel.toml
+</div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode toml"><code class="sourceCode toml"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">[</span><span class="dt">print_schema</span><span class="kw">]</span></a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="co"># This will cause only the users and posts tables to be output</span></a>
+<a class="sourceLine" id="cb1-3" title="3"><span class="dt">filter</span> <span class="op">=</span> <span class="op">{ </span><span class="dt">only_tables</span><span class="op"> =</span> <span class="op">[</span><span class="st">&quot;users&quot;</span><span class="op">,</span> <span class="st">&quot;posts&quot;</span><span class="op">]</span> <span class="op">}</span></a>
+<a class="sourceLine" id="cb1-4" title="4"></a>
+<a class="sourceLine" id="cb1-5" title="5"><span class="co"># This will cause all tables *except* the comments table to be</span></a>
+<a class="sourceLine" id="cb1-6" title="6"><span class="co"># output</span></a>
+<a class="sourceLine" id="cb1-7" title="7"><span class="dt">filter</span> <span class="op">=</span> <span class="op">{ </span><span class="dt">except_tables</span><span class="op"> =</span> <span class="op">[</span><span class="st">&quot;comments&quot;</span><span class="op">]</span> <span class="op">}</span></a></code></pre></div>
+</div>
+</div>
+<h2 id="the-schema-field">The <code>schema</code> field</h2>
+<p>Specifies which schema to use when searching for tables. When set, <code>diesel print-schema</code> will always behave as though <code>--schema</code> were passed. This field only affects PostgreSQL. If no value is provided, the <code>public</code> schema will be searched.</p>
+<h2 id="the-import_types-field">The <code>import_types</code> field</h2>
+<p>This field adds <code>use</code> statements to the top of every <code>table!</code> declaration. When set, <code>diesel print-schema</code> will behave as if <code>--import-types</code> were passed. When no value is given, only types from <code>diesel::sql_types</code> will be imported.</p>
+<div class="demo__example">
+<div class="demo__example-browser">
+<div class="browser-bar">
+diesel.toml
+</div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode toml"><code class="sourceCode toml"><a class="sourceLine" id="cb2-1" title="1"><span class="kw">[</span><span class="dt">print_schema</span><span class="kw">]</span></a>
+<a class="sourceLine" id="cb2-2" title="2"><span class="co"># Add types from `diesel_full_text_search` like `tsvector`</span></a>
+<a class="sourceLine" id="cb2-3" title="3"><span class="dt">import_types</span> <span class="op">=</span> <span class="op">[</span><span class="st">&quot;diesel::sql_types::*&quot;</span><span class="op">,</span> <span class="st">&quot;diesel_full_text_search::types::*&quot;</span><span class="op">]</span></a></code></pre></div>
+</div>
+</div>
+<h2 id="the-patch_file-field">The <code>patch_file</code> field</h2>
+<p>Specifies a <code>.patch</code> file to be applied to your schema after it is generated. Corresponds to the <code>--patch-file</code> option on the command line. This option requires <code>patch</code> from diffutils to be installed on your system.</p>
+<p>We can’t provide an option for every possible customization to this file that you might want to make. This serves as a general purpose catch-all for schema customizations.</p>
+<p>The file should be a unified diff, which you can generate with <code>diff</code> or <code>git diff</code>. It’s highly recommended that you provide more than 3 context lines, especially if you have set <code>import_types</code>.</p>
+<p>You can easily generate this file by making the changes you want to <code>schema.rs</code>, and then running <code>git diff -U6 &gt; src/schema.patch</code>.</p>
+</div>
+</div>
+</div>
+<script src="../assets/javascripts/application.js"></script>
+<footer>
+    <div class="content-wrapper">
+        <p> Find a mistake on this website? Submit an issue or send a pull request
+            <a href = "https://github.com/sgrif/diesel.rs-website">here</a>! </p>
+        <p></p>
+        <br/>
+        <p>Copyright © 2015-2021 The Diesel Core Team</p>
+    </div>
+</footer>
+<script type="text/javascript">
 
-<p>This field specifies which tables should be output by <code>diesel
-print-schema</code>. It corresponds to the <code>--only-tables</code> and
-<code>--except-tables</code> on the command line. Its value should be a map with
-one of those two keys. For example:</p>
-<div class="demo__example"><div class="demo__example-browser"><div class="browser-bar">diesel.toml</div><pre class="demo__example-snippet"><code class="toml">[print_schema]
-# This will cause only the users and posts tables to be output
-filter = { only_tables = ["users", "posts"] }
-
-# This will cause all tables *except* the comments table to be
-# output
-filter = { except_tables = ["comments"] }</code></pre></div></div><h2 id="the-schema-field">The <code>schema</code> field</h2>
-
-<p>Specifies which schema to use when searching for tables. When set,
-<code>diesel print-schema</code> will always behave as though <code>--schema</code> were
-passed. This field only affects PostgreSQL. If no value is provided,
-the <code>public</code> schema will be searched.</p>
-
-<h2 id="the-importtypes-field">The <code>import_types</code> field</h2>
-
-<p>This field adds <code>use</code> statements to the top of every <code>table!</code>
-declaration. When set, <code>diesel print-schema</code> will behave as if
-<code>--import-types</code> were passed. When no value is given, only types from
-<code>diesel::sql_types</code> will be imported.</p>
-<div class="demo__example"><div class="demo__example-browser"><div class="browser-bar">diesel.toml</div><pre class="demo__example-snippet"><code class="toml">[print_schema]
-# Add types from `diesel_full_text_search` like `tsvector`
-import_types = ["diesel::sql_types::*", "diesel_full_text_search::types::*"]</code></pre></div></div><h2 id="the-patchfile-field">The <code>patch_file</code> field</h2>
-
-<p>Specifies a <code>.patch</code> file to be applied to your schema after it is
-generated. Corresponds to the <code>--patch-file</code> option on the command
-line. This option requires <code>patch</code> from diffutils to be installed on
-your system.</p>
-
-<p>We can't provide an option for every possible customization to this
-file that you might want to make. This serves as a general purpose
-catch-all for schema customizations.</p>
-
-<p>The file should be a unified diff, which you can generate with <code>diff</code>
-or <code>git diff</code>. It's highly recommended that you provide more than 3
-context lines, especially if you have set <code>import_types</code>.</p>
-
-<p>You can easily generate this file by making the changes you want to
-<code>schema.rs</code>, and then running <code>git diff -U6 &gt; src/schema.patch</code>.</p>
-
-<p><a href="/guides">View More Guides</a></p>
-</div></div></section></main><footer><div class="content-wrapper"><p>Copyright &copy; 2015-2020 Sean Griffin</p></div></footer><script src="https://code.jquery.com/jquery-2.1.1.min.js"></script><script src="../../../assets/javascripts/application.js"></script><script src="../../../assets/javascripts/highlight.pack.js"></script><script src="../../../assets/javascripts/vertical-tabs.js"></script><script>hljs.initHighlightingOnLoad();</script><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-ga('create', 'UA-73402127-1', 'auto');
-ga('send', 'pageview');</script></body></html>
+</script>
+</body>
+</html>
