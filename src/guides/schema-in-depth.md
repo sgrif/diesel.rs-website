@@ -23,7 +23,7 @@ This command will establish a database connection, query for a list of all the t
 and their columns, and generate `table!` invocations for each one.
 `diesel print-schema` will skip any table names which start with `__` (a double underscore).
 Diesel can be configured to automatically re-run `diesel print-schema`
-whenever you run migrations. See [Configuring Diesel CLI] for details.
+whenever you run migrations. See [Configuring Diesel CLI](./configuring-diesel-cli.html) for details.
 
 `table!` is where the bulk of the code gets generated. If you wanted to,
 you could see the actual exact code that gets generated
