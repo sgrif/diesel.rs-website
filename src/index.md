@@ -172,7 +172,7 @@ SELECT * FROM posts WHERE user_id = 1;
 ::: {#complex_queries .js-vertical-tab-content .vertical-tab-content}
 
 Diesel's powerful query builder helps you construct queries as simple or complex as
-as you need, at zero cost.
+you need, at zero cost.
 
 ::: code-block
 
