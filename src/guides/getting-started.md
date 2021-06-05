@@ -594,7 +594,7 @@ This barely scratches the surface of what you can do with Diesel, but hopefully 
 has given you a good foundation to build off of. We recommend exploring the [API docs] to see more.
 The final code for this tutorial can be found [here][final].
 
-[API docs]: https://diesel.rs/docs/index
+[API docs]: ../docs/index
 [final]: https://github.com/diesel-rs/diesel/tree/v1.4.4/examples/postgres/getting_started_step_3/
 
 ::: 
