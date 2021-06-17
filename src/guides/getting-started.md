@@ -589,7 +589,7 @@ Your output should look something like:
 Deleted 1 posts
 ```
 
-When we try to run `cargo run --bin show_post`s again, we can see that the post was in fact deleted.
+When we try to run `cargo run --bin show_posts` again, we can see that the post was in fact deleted.
 This barely scratches the surface of what you can do with Diesel, but hopefully this tutorial
 has given you a good foundation to build off of. We recommend exploring the [API docs] to see more.
 The final code for this tutorial can be found [here][final].
