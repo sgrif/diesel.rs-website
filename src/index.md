@@ -145,7 +145,7 @@ SELECT * FROM users;
 ```
 :::
 
-Loading all the posts for a users:
+Loading all the posts for a user:
 
 ::: code-block
 
