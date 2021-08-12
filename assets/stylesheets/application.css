@@ -611,10 +611,11 @@ body {
   color: #fff;
   position: relative;
   min-height: 100%;
-  padding-bottom: 7.8em;
+  padding-bottom: 15em;
   margin: 0; }
   @media screen and (min-width: 40em) {
     body {
+      padding-bottom: 7.8em;
       font-size: 1.125em; }
       body h2 {
         font-size: 2.25em; }
