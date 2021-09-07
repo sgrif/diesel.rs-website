@@ -100,7 +100,7 @@ The query you would want to execute would look like this:
 [Example]()
 
 ```sql
-SELECT *, COUNT(*) OVER () FROM (subselect t) LIMIT $1 OFFSET $1
+SELECT *, COUNT(*) OVER () FROM (subselect t) as paged_query_with LIMIT $1 OFFSET $2
 ```
 
 :::
@@ -132,10 +132,10 @@ where
     fn walk_ast(&self, mut out: AstPass<Pg>) -> QueryResult<()> {
         out.push_sql("SELECT *, COUNT(*) OVER () FROM (");
         self.query.walk_ast(out.reborrow())?;
-        out.push_sql(") LIMIT ");
-        out.push_bind_param::<BigInt, _>(&self.limit())?;
+        out.push_sql(") as paged_query_with LIMIT ");
+        out.push_bind_param::<BigInt, _>(&self.per_page)?;
         out.push_sql(" OFFSET ");
-        out.push_bind_param::<BigInt, _>(&self.offset())?;
+        out.push_bind_param::<BigInt, _>(&self.page)?;
         Ok(())
     }
 }
@@ -154,7 +154,6 @@ If your query is not safe to cache, you *must* call
 `out.unsafe_to_cache_prepared`.
 
 Whenever you implement `QueryFragment`, you also need to implement [`QueryId`].
-We can use the [`impl_query_id!`] macro for this.
 Since this struct represents a full query which can be executed,
 we will implement [`RunQueryDsl`] which adds methods like [`execute`] and [`load`].
 Since this query has a return type,
@@ -174,8 +173,6 @@ we'll implement [`Query`] which states the return type as well.
 [src/pagination.rs]( https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/advanced-blog-cli/src/pagination.rs#L48-L52)
 
 ```rust
-impl_query_id!(Paginated<T>);
-
 impl<T: Query> Query for Paginated<T> {
     type SqlType = (T::SqlType, BigInt);
 }
@@ -212,13 +209,14 @@ impl<T: AsQuery> Paginate for T {}
 
 const DEFAULT_PER_PAGE: i64 = 10;
 
+#[derive(Debug, QueryId)]
 pub struct Paginated<T> {
     query: T,
     page: i64,
     per_page: i64,
 }
 
-impl Paginated<T> {
+impl<T> Paginated<T> {
     pub fn per_page(self, per_page: i64) -> Self {
         Paginated { per_page, ..self }
     }
@@ -234,9 +232,11 @@ Now we can get the third page of a query with 25 elements per page like this:
 [Example]()
 
 ```rust
-users::table
-    .paginate(3)
-    .per_page(25)
+    let results: Vec<(User, i64)> = users::table
+        .paginate(3)
+        .per_page(25)
+        .get_results(&conn)
+        .expect("error");
 ```
 
 :::
@@ -254,15 +254,16 @@ We can write that method.
 
 ```rust
 impl<T> Paginated<T> {
-    fn load_and_count_pages<U>(self, conn: &PgConnection) -> QueryResult<(Vec<U>, i64)
+    fn load_and_count_pages<U>(self, conn: &PgConnection) -> QueryResult<(Vec<U>, i64)>
     where
         Self: LoadQuery<PgConnection, (U, i64)>,
     {
         let per_page = self.per_page;
-        let results = self.load::<(U, i64)>(conn)?;
-        let total = results.get(0).map(|(_, total) total|).unwrap_or(0);
-        let records = results.into_iter().map(|(record, _)| record).collect();
-        let total_pages = (total as f64 / per_page as f64).ceil() as i64;
+        let results: Vec<(U, i64)> = self.load(conn)?;
+        let total = results.get(0).map(|(_, total)| total).unwrap_or(&0);
+        let total = f64::from(*total as i32);
+        let records: Vec<U> = results.into_iter().map(|(record, _)| record).collect();
+        let total_pages = (total / per_page as f64).ceil() as i64;
         Ok((records, total_pages))
     }
 }
