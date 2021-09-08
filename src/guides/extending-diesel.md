@@ -135,7 +135,7 @@ where
         out.push_sql(") as paged_query_with LIMIT ");
         out.push_bind_param::<BigInt, _>(&self.per_page)?;
         out.push_sql(" OFFSET ");
-        out.push_bind_param::<BigInt, _>(&self.page)?;
+        out.push_bind_param::<BigInt, _>(&(self.page * self.per_page))?;
         Ok(())
     }
 }
@@ -154,6 +154,7 @@ If your query is not safe to cache, you *must* call
 `out.unsafe_to_cache_prepared`.
 
 Whenever you implement `QueryFragment`, you also need to implement [`QueryId`].
+- We can use `#[derive(QueryId)]` for this.
 Since this struct represents a full query which can be executed,
 we will implement [`RunQueryDsl`] which adds methods like [`execute`] and [`load`].
 Since this query has a return type,
