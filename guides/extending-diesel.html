@@ -173,7 +173,7 @@ Example
 <div class="browser-bar">
 Example
 </div>
-<div class="sourceCode" id="cb3"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">SELECT</span> <span class="op">*</span>, <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">OVER</span> () <span class="kw">FROM</span> (subselect t) <span class="kw">LIMIT</span> $<span class="dv">1</span> OFFSET $<span class="dv">1</span></a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">SELECT</span> <span class="op">*</span>, <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">OVER</span> () <span class="kw">FROM</span> (subselect t) <span class="kw">as</span> paged_query_with <span class="kw">LIMIT</span> $<span class="dv">1</span> OFFSET $<span class="dv">2</span></a></code></pre></div>
 </div>
 </div>
 <p>However, as of version 1.0, Diesel doesn’t support window functions, or selecting from a subselect. Even if Diesel’s query builder supported those things, this is a case that is easier to reason about in terms of the SQL we want to generate.</p>
@@ -192,30 +192,28 @@ src/pagination.rs
 <a class="sourceLine" id="cb4-5" title="5">    <span class="kw">fn</span> walk_ast(&amp;<span class="kw">self</span>, <span class="kw">mut</span> out: AstPass&lt;Pg&gt;) -&gt; QueryResult&lt;()&gt; <span class="op">{</span></a>
 <a class="sourceLine" id="cb4-6" title="6">        out.push_sql(<span class="st">&quot;SELECT *, COUNT(*) OVER () FROM (&quot;</span>);</a>
 <a class="sourceLine" id="cb4-7" title="7">        <span class="kw">self</span>.query.walk_ast(out.reborrow())?;</a>
-<a class="sourceLine" id="cb4-8" title="8">        out.push_sql(<span class="st">&quot;) LIMIT &quot;</span>);</a>
-<a class="sourceLine" id="cb4-9" title="9">        out.<span class="pp">push_bind_param::</span>&lt;BigInt, _&gt;(&amp;<span class="kw">self</span>.limit())?;</a>
+<a class="sourceLine" id="cb4-8" title="8">        out.push_sql(<span class="st">&quot;) as paged_query_with LIMIT &quot;</span>);</a>
+<a class="sourceLine" id="cb4-9" title="9">        out.<span class="pp">push_bind_param::</span>&lt;BigInt, _&gt;(&amp;<span class="kw">self</span>.per_page)?;</a>
 <a class="sourceLine" id="cb4-10" title="10">        out.push_sql(<span class="st">&quot; OFFSET &quot;</span>);</a>
-<a class="sourceLine" id="cb4-11" title="11">        out.<span class="pp">push_bind_param::</span>&lt;BigInt, _&gt;(&amp;<span class="kw">self</span>.offset())?;</a>
+<a class="sourceLine" id="cb4-11" title="11">        out.<span class="pp">push_bind_param::</span>&lt;BigInt, _&gt;(&amp;(<span class="kw">self</span>.page * <span class="kw">self</span>.per_page))?;</a>
 <a class="sourceLine" id="cb4-12" title="12">        <span class="cn">Ok</span>(())</a>
 <a class="sourceLine" id="cb4-13" title="13">    <span class="op">}</span></a>
 <a class="sourceLine" id="cb4-14" title="14"><span class="op">}</span></a></code></pre></div>
 </div>
 </div>
 <p>For details on what each method does, see the documentation for <a href="https://docs.diesel.rs/diesel/query_builder/struct.AstPass.html"><code>AstPass</code></a>. One important question to ask whenever you implement <code>QueryFragment</code> is whether you are generating a query that is safe to cache. The way to answer this question is by asking “does this struct generate an unlimited number of potential SQL queries”? Typically that is only the case if the body of <code>walk_ast</code> contains a for loop. If your query is not safe to cache, you <em>must</em> call <code>out.unsafe_to_cache_prepared</code>.</p>
-<p>Whenever you implement <code>QueryFragment</code>, you also need to implement <a href="https://docs.diesel.rs/diesel/query_builder/trait.QueryId.html"><code>QueryId</code></a>. We can use the <a href="https://docs.diesel.rs/diesel/macro.impl_query_id.html"><code>impl_query_id!</code></a> macro for this. Since this struct represents a full query which can be executed, we will implement <a href="https://docs.diesel.rs/diesel/query_dsl/trait.RunQueryDsl.html"><code>RunQueryDsl</code></a> which adds methods like <a href="https://docs.diesel.rs/diesel/query_dsl/trait.RunQueryDsl.html#method.execute"><code>execute</code></a> and <a href="https://docs.diesel.rs/diesel/query_dsl/trait.RunQueryDsl.html#method.load"><code>load</code></a>. Since this query has a return type, we’ll implement <a href="https://docs.diesel.rs/diesel/query_builder/trait.Query.html"><code>Query</code></a> which states the return type as well.</p>
+<p>Whenever you implement <code>QueryFragment</code>, you also need to implement <a href="https://docs.diesel.rs/diesel/query_builder/trait.QueryId.html"><code>QueryId</code></a>. - We can use <code>#[derive(QueryId)]</code> for this. Since this struct represents a full query which can be executed, we will implement <a href="https://docs.diesel.rs/diesel/query_dsl/trait.RunQueryDsl.html"><code>RunQueryDsl</code></a> which adds methods like <a href="https://docs.diesel.rs/diesel/query_dsl/trait.RunQueryDsl.html#method.execute"><code>execute</code></a> and <a href="https://docs.diesel.rs/diesel/query_dsl/trait.RunQueryDsl.html#method.load"><code>load</code></a>. Since this query has a return type, we’ll implement <a href="https://docs.diesel.rs/diesel/query_builder/trait.Query.html"><code>Query</code></a> which states the return type as well.</p>
 <div class="demo__example">
 <div class="demo__example-browser">
 <div class="browser-bar">
 src/pagination.rs
 </div>
 <a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/advanced-blog-cli/src/pagination.rs#L48-L52">View on GitHub</a>
-<div class="sourceCode" id="cb5"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb5-1" title="1"><span class="pp">impl_query_id!</span>(Paginated&lt;T&gt;);</a>
-<a class="sourceLine" id="cb5-2" title="2"></a>
-<a class="sourceLine" id="cb5-3" title="3"><span class="kw">impl</span>&lt;T: Query&gt; Query <span class="kw">for</span> Paginated&lt;T&gt; <span class="op">{</span></a>
-<a class="sourceLine" id="cb5-4" title="4">    <span class="kw">type</span> SqlType = (<span class="pp">T::</span>SqlType, BigInt);</a>
-<a class="sourceLine" id="cb5-5" title="5"><span class="op">}</span></a>
-<a class="sourceLine" id="cb5-6" title="6"></a>
-<a class="sourceLine" id="cb5-7" title="7"><span class="kw">impl</span>&lt;T&gt; RunQueryDsl&lt;PgConnection&gt; <span class="kw">for</span> Paginated&lt;T&gt; <span class="op">{}</span></a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb5-1" title="1"><span class="kw">impl</span>&lt;T: Query&gt; Query <span class="kw">for</span> Paginated&lt;T&gt; <span class="op">{</span></a>
+<a class="sourceLine" id="cb5-2" title="2">    <span class="kw">type</span> SqlType = (<span class="pp">T::</span>SqlType, BigInt);</a>
+<a class="sourceLine" id="cb5-3" title="3"><span class="op">}</span></a>
+<a class="sourceLine" id="cb5-4" title="4"></a>
+<a class="sourceLine" id="cb5-5" title="5"><span class="kw">impl</span>&lt;T&gt; RunQueryDsl&lt;PgConnection&gt; <span class="kw">for</span> Paginated&lt;T&gt; <span class="op">{}</span></a></code></pre></div>
 </div>
 </div>
 <p>Now that we’ve implemented all of these things, let’s look at how we would go about constructing this. We’ll want to add a <code>paginate</code> method to all Diesel queries, which specifies which page we’re on, as well as a <code>per_page</code> method which specifies the number of elements per page.</p>
@@ -240,17 +238,18 @@ src/pagination.rs
 <a class="sourceLine" id="cb6-12" title="12"></a>
 <a class="sourceLine" id="cb6-13" title="13"><span class="kw">const</span> DEFAULT_PER_PAGE: <span class="dt">i64</span> = <span class="dv">10</span>;</a>
 <a class="sourceLine" id="cb6-14" title="14"></a>
-<a class="sourceLine" id="cb6-15" title="15"><span class="kw">pub</span> <span class="kw">struct</span> Paginated&lt;T&gt; <span class="op">{</span></a>
-<a class="sourceLine" id="cb6-16" title="16">    query: T,</a>
-<a class="sourceLine" id="cb6-17" title="17">    page: <span class="dt">i64</span>,</a>
-<a class="sourceLine" id="cb6-18" title="18">    per_page: <span class="dt">i64</span>,</a>
-<a class="sourceLine" id="cb6-19" title="19"><span class="op">}</span></a>
-<a class="sourceLine" id="cb6-20" title="20"></a>
-<a class="sourceLine" id="cb6-21" title="21"><span class="kw">impl</span> Paginated&lt;T&gt; <span class="op">{</span></a>
-<a class="sourceLine" id="cb6-22" title="22">    <span class="kw">pub</span> <span class="kw">fn</span> per_page(<span class="kw">self</span>, per_page: <span class="dt">i64</span>) -&gt; <span class="kw">Self</span> <span class="op">{</span></a>
-<a class="sourceLine" id="cb6-23" title="23">        Paginated <span class="op">{</span> per_page, ..<span class="kw">self</span> <span class="op">}</span></a>
-<a class="sourceLine" id="cb6-24" title="24">    <span class="op">}</span></a>
-<a class="sourceLine" id="cb6-25" title="25"><span class="op">}</span></a></code></pre></div>
+<a class="sourceLine" id="cb6-15" title="15"><span class="at">#[</span>derive<span class="at">(</span><span class="bu">Debug</span><span class="at">,</span> QueryId<span class="at">)]</span></a>
+<a class="sourceLine" id="cb6-16" title="16"><span class="kw">pub</span> <span class="kw">struct</span> Paginated&lt;T&gt; <span class="op">{</span></a>
+<a class="sourceLine" id="cb6-17" title="17">    query: T,</a>
+<a class="sourceLine" id="cb6-18" title="18">    page: <span class="dt">i64</span>,</a>
+<a class="sourceLine" id="cb6-19" title="19">    per_page: <span class="dt">i64</span>,</a>
+<a class="sourceLine" id="cb6-20" title="20"><span class="op">}</span></a>
+<a class="sourceLine" id="cb6-21" title="21"></a>
+<a class="sourceLine" id="cb6-22" title="22"><span class="kw">impl</span>&lt;T&gt; Paginated&lt;T&gt; <span class="op">{</span></a>
+<a class="sourceLine" id="cb6-23" title="23">    <span class="kw">pub</span> <span class="kw">fn</span> per_page(<span class="kw">self</span>, per_page: <span class="dt">i64</span>) -&gt; <span class="kw">Self</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb6-24" title="24">        Paginated <span class="op">{</span> per_page, ..<span class="kw">self</span> <span class="op">}</span></a>
+<a class="sourceLine" id="cb6-25" title="25">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb6-26" title="26"><span class="op">}</span></a></code></pre></div>
 </div>
 </div>
 <p>Now we can get the third page of a query with 25 elements per page like this:</p>
@@ -259,9 +258,11 @@ src/pagination.rs
 <div class="browser-bar">
 Example
 </div>
-<div class="sourceCode" id="cb7"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb7-1" title="1"><span class="pp">users::</span>table</a>
-<a class="sourceLine" id="cb7-2" title="2">    .paginate(<span class="dv">3</span>)</a>
-<a class="sourceLine" id="cb7-3" title="3">    .per_page(<span class="dv">25</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb7-1" title="1">    <span class="kw">let</span> results: <span class="dt">Vec</span>&lt;(User, <span class="dt">i64</span>)&gt; = <span class="pp">users::</span>table</a>
+<a class="sourceLine" id="cb7-2" title="2">        .paginate(<span class="dv">3</span>)</a>
+<a class="sourceLine" id="cb7-3" title="3">        .per_page(<span class="dv">25</span>)</a>
+<a class="sourceLine" id="cb7-4" title="4">        .get_results(&amp;conn)</a>
+<a class="sourceLine" id="cb7-5" title="5">        .expect(<span class="st">&quot;error&quot;</span>);</a></code></pre></div>
 </div>
 </div>
 <p>With this code, we could load any query into a <code>Vec&lt;(T, i64)&gt;</code>, but we can do better. When doing pagination, you usually want the records and the total number of pages. We can write that method.</p>
@@ -272,18 +273,19 @@ src/pagination.rs
 </div>
 <a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/advanced-blog-cli/src/pagination.rs#L35-L45">View on GitHub</a>
 <div class="sourceCode" id="cb8"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb8-1" title="1"><span class="kw">impl</span>&lt;T&gt; Paginated&lt;T&gt; <span class="op">{</span></a>
-<a class="sourceLine" id="cb8-2" title="2">    <span class="kw">fn</span> load_and_count_pages&lt;U&gt;(<span class="kw">self</span>, conn: &amp;PgConnection) -&gt; QueryResult&lt;(<span class="dt">Vec</span>&lt;U&gt;, <span class="dt">i64</span>)</a>
+<a class="sourceLine" id="cb8-2" title="2">    <span class="kw">fn</span> load_and_count_pages&lt;U&gt;(<span class="kw">self</span>, conn: &amp;PgConnection) -&gt; QueryResult&lt;(<span class="dt">Vec</span>&lt;U&gt;, <span class="dt">i64</span>)&gt;</a>
 <a class="sourceLine" id="cb8-3" title="3">    <span class="kw">where</span></a>
 <a class="sourceLine" id="cb8-4" title="4">        <span class="kw">Self</span>: LoadQuery&lt;PgConnection, (U, <span class="dt">i64</span>)&gt;,</a>
 <a class="sourceLine" id="cb8-5" title="5">    <span class="op">{</span></a>
 <a class="sourceLine" id="cb8-6" title="6">        <span class="kw">let</span> per_page = <span class="kw">self</span>.per_page;</a>
-<a class="sourceLine" id="cb8-7" title="7">        <span class="kw">let</span> results = <span class="kw">self</span>.<span class="pp">load::</span>&lt;(U, <span class="dt">i64</span>)&gt;(conn)?;</a>
-<a class="sourceLine" id="cb8-8" title="8">        <span class="kw">let</span> total = results.get(<span class="dv">0</span>).map(|(_, total) total|).unwrap_or(<span class="dv">0</span>);</a>
-<a class="sourceLine" id="cb8-9" title="9">        <span class="kw">let</span> records = results.into_iter().map(|(record, _)| record).collect();</a>
-<a class="sourceLine" id="cb8-10" title="10">        <span class="kw">let</span> total_pages = (total <span class="kw">as</span> <span class="dt">f64</span> / per_page <span class="kw">as</span> <span class="dt">f64</span>).ceil() <span class="kw">as</span> <span class="dt">i64</span>;</a>
-<a class="sourceLine" id="cb8-11" title="11">        <span class="cn">Ok</span>((records, total_pages))</a>
-<a class="sourceLine" id="cb8-12" title="12">    <span class="op">}</span></a>
-<a class="sourceLine" id="cb8-13" title="13"><span class="op">}</span></a></code></pre></div>
+<a class="sourceLine" id="cb8-7" title="7">        <span class="kw">let</span> results: <span class="dt">Vec</span>&lt;(U, <span class="dt">i64</span>)&gt; = <span class="kw">self</span>.load(conn)?;</a>
+<a class="sourceLine" id="cb8-8" title="8">        <span class="kw">let</span> total = results.get(<span class="dv">0</span>).map(|(_, total)| total).unwrap_or(&amp;<span class="dv">0</span>);</a>
+<a class="sourceLine" id="cb8-9" title="9">        <span class="kw">let</span> total = <span class="dt">f64</span>::from(*total <span class="kw">as</span> <span class="dt">i32</span>);</a>
+<a class="sourceLine" id="cb8-10" title="10">        <span class="kw">let</span> records: <span class="dt">Vec</span>&lt;U&gt; = results.into_iter().map(|(record, _)| record).collect();</a>
+<a class="sourceLine" id="cb8-11" title="11">        <span class="kw">let</span> total_pages = (total / per_page <span class="kw">as</span> <span class="dt">f64</span>).ceil() <span class="kw">as</span> <span class="dt">i64</span>;</a>
+<a class="sourceLine" id="cb8-12" title="12">        <span class="cn">Ok</span>((records, total_pages))</a>
+<a class="sourceLine" id="cb8-13" title="13">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb8-14" title="14"><span class="op">}</span></a></code></pre></div>
 </div>
 </div>
 <p>This is one of the rare cases where we want to define a function that takes a connection. One benefit of defining the function this way is that if we wanted to support backends other than PostgreSQL, we could have this function execute two queries.</p>
