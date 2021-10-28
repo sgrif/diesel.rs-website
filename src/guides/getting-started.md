@@ -14,7 +14,7 @@ For this guide, we're going to walk through some simple examples for each of the
 which stands for "Create Read Update Delete". Each step in this guide will build on the previous,
 and is meant to be followed along.
 
-**This guide assumes that you're using PostgreSQL.** Before we start,
+**This guide assumes that you're using PostgreSQL.** If you are using some different database (for example SQLite, some examples won't just run as the implemented API might differ). Before we start,
 make sure you have PostgreSQL installed and running.
 
 <aside class = "aside aside--note">
