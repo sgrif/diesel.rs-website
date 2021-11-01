@@ -15,7 +15,7 @@ which stands for "Create Read Update Delete". Each step in this guide will build
 and is meant to be followed along.
 
 **This guide assumes that you're using PostgreSQL.** If you are using some different database (for example SQLite, some examples won't just run as the implemented API might differ). Before we start,
-make sure you have PostgreSQL installed and running.
+make sure you have PostgreSQL installed and running. In the project repository, you may find various [examples](https://github.com/diesel-rs/diesel/tree/master/examples/) for every supported database. 
 
 <aside class = "aside aside--note">
 <header class = "aside__header">A note on Rust versions:</header>
