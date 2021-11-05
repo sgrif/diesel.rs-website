@@ -358,7 +358,7 @@ src/bin/show_posts.rs
 <a class="sourceLine" id="cb18-23" title="23"><span class="op">}</span></a></code></pre></div>
 </div>
 </div>
-<p>The use <code>diesel_demo::schema::posts::dsl::*</code> line imports a bunch of aliases so that we can say <code>posts</code> instead of <code>posts::table</code>, and published instead of <code>posts::published</code>. It’s useful when we’re only dealing with a single table, but that’s not always what we want.</p>
+<p>The use <code>diesel_demo::schema::posts::dsl::*</code> line imports a bunch of aliases so that we can say <code>posts</code> instead of <code>posts::table</code>, and <code>published</code> instead of <code>posts::published</code>. It’s useful when we’re only dealing with a single table, but that’s not always what we want.</p>
 <p>We can run our script with <code>cargo run --bin show_posts</code>. Unfortunately, the results won’t be terribly interesting, as we don’t actually have any posts in the database. Still, we’ve written a decent amount of code, so let’s commit.</p>
 <p>The full code for the demo at this point can be found <a href="https://github.com/diesel-rs/diesel/tree/v1.4.4/examples/postgres/getting_started_step_1/">here</a>.</p>
 <p>Next, let’s write some code to create a new post.We’ll want a struct to use for inserting a new record.</p>
