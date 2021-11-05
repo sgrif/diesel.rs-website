@@ -356,7 +356,7 @@ fn main() {
 
 
 The use `diesel_demo::schema::posts::dsl::*` line imports a bunch of aliases so that we can say `posts`
-instead of `posts::table`, and published instead of `posts::published`. It's useful
+instead of `posts::table`, and `published` instead of `posts::published`. It's useful
 when we're only dealing with a single table, but that's not always what we want.
 
 We can run our script with `cargo run --bin show_posts`. Unfortunately, the results
