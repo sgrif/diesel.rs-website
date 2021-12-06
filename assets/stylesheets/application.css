@@ -914,6 +914,7 @@ body.index {
           font-weight: 400; } }
   .vertical-tabs-container .vertical-tab-content-container {
     background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
     display: block;
     position: relative; }
     @media screen and (min-width: 53.75em) {
@@ -1039,6 +1040,8 @@ footer {
 
 div.demo__example-browser {
   background: #2B303B;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
 }
 
 div.sourceCode {
