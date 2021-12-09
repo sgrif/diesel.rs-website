@@ -93,7 +93,7 @@ clang: error: linker command failed with exit code 1 (use -v to see invocation)
 This means you are missing the client library needed for a database backend
 – `mysqlclient` in this case. You can resolve this issue by either installing the library
 (using the usual way to do this depending on your operating system) or by excluding
-the undesired default library with the `--no-default-features` flag. For more information on installing database backends read the documentation [here](https://github.com/diesel-rs/diesel/blob/master/guide_drafts/backend_installation.md)
+the undesired default library with the `--no-default-features` flag. For more information on installing the required database backends, see the documentation link [here](https://github.com/diesel-rs/diesel/blob/master/guide_drafts/backend_installation.md)
 
 For example, if you only have PostgreSQL installed, you can use this to install `diesel_cli`
 with only PostgreSQL:
