@@ -181,6 +181,13 @@ A note on installing <code>diesel_cli</code>
 <pre><code>note: ld: library not found for -lmysqlclient
 clang: error: linker command failed with exit code 1 (use -v to see invocation)</code></pre>
 <p>This means you are missing the client library needed for a database backend – <code>mysqlclient</code> in this case. You can resolve this issue by either installing the library (using the usual way to do this depending on your operating system) or by excluding the undesired default library with the <code>--no-default-features</code> flag.</p>
+<p>By default diesel depends on the following client libraries:</p>
+<ul>
+<li><a href="https://www.postgresql.org/docs/current/libpq.html"><code>libpq</code></a> for the PostgreSQL backend</li>
+<li><a href="https://dev.mysql.com/doc/c-api/8.0/en/c-api-implementations.html"><code>libmysqlclient</code></a> for the Mysql backend</li>
+<li><a href="https://www.sqlite.org/index.html"><code>libsqlite3</code></a> for the SQlite backend</li>
+</ul>
+<p>If you are not sure on how to install those dependencies please consult the documentation of the corresponding dependency or your distribution package manager.</p>
 <p>For example, if you only have PostgreSQL installed, you can use this to install <code>diesel_cli</code> with only PostgreSQL:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb5-1" title="1"><span class="ex">cargo</span> install diesel_cli --no-default-features --features postgres</a></code></pre></div>
 </div>
