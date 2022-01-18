@@ -44,8 +44,8 @@ we can use `sql_function!` to declare it with the exact signature we're using.
 [Example]()
 
 ```rust
-use diesel::types::{Nullable, Text};
-sql_function!(coalesce, Coalesce, (x: Nullable<Text>, y: Text) -> Text);
+use diesel::sql_types::{Nullable, Text};
+sql_function! { fn coalesce(x: Nullable<Text>, y: Text) -> Text; }
 
 users.select(coalesce(hair_color, "blue"))
 ```
@@ -57,14 +57,8 @@ As this example shows,
 This means that the generated function can take both Diesel expressions,
 and Rust values to be sent with the query.
 
-The macro takes three arguments:
-
-- A function name
-- A type name
-- A type signature
-
-The type signature uses the same syntax as a normal Rust function.
-However, the types given are SQL types,
+The macro takes one argument: a function definition.
+However, the types in the function signature are SQL types,
 not concrete Rust types.
 This is what allows us to pass both columns and Rust strings.
 If we defined this function manually, it would look like this:
@@ -74,19 +68,25 @@ If we defined this function manually, it would look like this:
 [Example]()
 
 ```rust
-fn coalesce<X, Y>(x: X, y: Y) -> Coalesce<X::Expression, Y::Expression>
+pub fn coalesce<X, Y>(x: X, y: Y) -> coalesce::HelperType<X, Y>
 where
     X: AsExpression<Nullable<Text>>,
     Y: AsExpression<Text>,
+{
+    ...
+}
+
+pub(crate) mod coalesce {
+    pub type HelperType<X, Y> = ...;
+}
 ```
 
 :::
 
-The type name given as the second argument is almost never used.
-Instead, a helper type is generated with the same name as the function.
+A helper type is generated with the same name as the function.
 This helper type handles Diesel's argument conversion.
-This lets us write `coalesce<hair_color, &str>`
-instead of `Coalesce<hair_color, Bound<Text, &str>>`.
+This lets us write `coalesce<hair_color, &str>`.
+More information can be found in https://docs.diesel.rs/diesel/macro.sql_function.html
 
 ## Using Custom SQL and How to Extend the Query DSL
 
