@@ -248,6 +248,59 @@ pub fn establish_connection() -> PgConnection {
 
 :::
 
+<aside class = "aside aside--note">
+<header class = "aside__header"> A note on connection pooling using `r2d2`</header>
+
+::: aside__text
+
+If you wish to use a connection pool instead of a single connection object, you may rely on `diesel`'s traits and implementations on top of those in the `r2d2` crate. See below for example usage -- note that although this `establish_connection()` method's return type is different than the above's, you may still used a `PooledConnection<...>` type anywhere a regular `Connection` would do.
+
+Be sure to add the `r2d2` feature to the `diesel` entry in your `Cargo.toml` dependencies section:
+```
+...
+diesel = { version = "1.4.8", features = ["postgres", "r2d2"] }
+```
+
+::: code-block
+
+[src/lib.rs]( https://github.com/diesel-rs/diesel/blob/<TODO>/examples/postgres/getting_started_with_connection_pooling/src/lib.rs)
+
+```rust
+#[macro_use]
+extern crate diesel;
+extern crate dotenv;
+
+use diesel::pg::PgConnection;
+use diesel::prelude::*;
+use diesel::r2d2::ConnectionManager;
+use diesel::r2d2::Pool;
+use diesel::r2d2::PooledConnection;
+use dotenvy::dotenv;
+use std::env;
+
+pub type PostgresPool = Pool<ConnectionManager<PgConnection>>;
+
+pub fn establish_connection() -> PooledConnection<ConnectionManager<PgConnection>> {
+    get_pg_pool().get().unwrap()
+}
+
+pub fn get_pg_pool() -> PostgresPool {
+    dotenv().ok();
+    let url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
+    let manager = ConnectionManager::<PgConnection>::new(url);
+    // Refer to the `r2d2` documentation for more methods to use 
+    // when building a connection pool
+    Pool::builder()
+        .max_size(2)
+        .test_on_check_out(true)
+        .build(manager)
+        .expect("Could not build connection pool")
+}
+```
+
+:::
+</aside>
+
 We'll also want to create a `Post` struct into which we can read our data, and have diesel generate the names
 we'll use to reference tables and columns in our queries.
 
