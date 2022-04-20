@@ -634,7 +634,6 @@ body.index {
   display: table; }
 @media screen and (min-width: 53.75em) {
   .guide-wrapper {
-    float: left;
     display: block; }
   .guide-wrapper:last-child {
       margin-right: 0; } }
