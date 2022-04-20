@@ -635,11 +635,8 @@ body.index {
 @media screen and (min-width: 53.75em) {
   .guide-wrapper {
     float: left;
-    display: block;
-    margin-right: 2.12766%;
-    width: 57.44681%;
-    margin-left: 21.2766%; }
-    .guide-wrapper:last-child {
+    display: block; }
+  .guide-wrapper:last-child {
       margin-right: 0; } }
 .guide-wrapper .demo__example pre {
   margin-bottom: 1.5em; }
