@@ -15,13 +15,13 @@ which stands for "Create Read Update Delete". Each step in this guide will build
 and is meant to be followed along.
 
 **This guide assumes that you're using PostgreSQL.** Before we start,
-make sure you have PostgreSQL installed and running. If you are using some different database, like for example SQLite, some examples won't just run as the implemented API might differ. In the project repository, you may find various [examples](https://github.com/diesel-rs/diesel/tree/1.4.x/examples) for every supported database. 
+make sure you have PostgreSQL installed and running. If you are using some different database, like for example SQLite, some examples won't just run as the implemented API might differ. In the project repository, you may find various [examples](https://github.com/diesel-rs/diesel/tree/2.0.x/examples) for every supported database. 
 
 <aside class = "aside aside--note">
 <header class = "aside__header">A note on Rust versions:</header>
 
 ::: aside__text
-Diesel requires Rust 1.31 or later. If you're following along with this guide,
+Diesel requires Rust 1.54 or later. If you're following along with this guide,
 make sure you're using at least that version of Rust by running `rustup update stable`.
 
 :::
@@ -43,19 +43,19 @@ cd diesel_demo
 :::
 
 First, let's add Diesel to our dependencies. We're also going to use a tool called
-[`.env`][dotenv] to manage our environment variables for us. We'll add it to our dependencies
+[`.env`][dotenvy] to manage our environment variables for us. We'll add it to our dependencies
 as well.
 
-[dotenv]: https://github.com/dotenv-rs/dotenv
+[dotenvy]: https://github.com/allan2/dotenvy
 
 ::: code-block
 
-[Cargo.toml](https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/getting_started_step_1/Cargo.toml)
+[Cargo.toml](https://github.com/diesel-rs/diesel/blob/2.0.x/examples/postgres/getting_started_step_1/Cargo.toml)
 
 ```toml
 [dependencies]
-diesel = { version = "1.4.4", features = ["postgres"] }
-dotenv = "0.15.0"
+diesel = { version = "2.0.0-rc.0", features = ["postgres"] }
+dotenvy = "0.15"
 ```
 
 :::
@@ -155,14 +155,14 @@ Next, we'll write the SQL for migrations:
 
 ::: code-block
 
-[up.sql]( https://github.com/diesel-rs/diesel/tree/v1.4.4/examples/postgres/getting_started_step_1/migrations/20160815133237_create_posts/up.sql)
+[up.sql]( https://github.com/diesel-rs/diesel/tree/2.0.x/examples/postgres/getting_started_step_1/migrations/20160815133237_create_posts/up.sql)
 
 ```sql
 CREATE TABLE posts (
   id SERIAL PRIMARY KEY,
   title VARCHAR NOT NULL,
   body TEXT NOT NULL,
-  published BOOLEAN NOT NULL DEFAULT 'f'
+  published BOOLEAN NOT NULL DEFAULT FALSE
 )
 ```
 
@@ -170,7 +170,7 @@ CREATE TABLE posts (
 
 ::: code-block
 
-[down.sql](https://github.com/diesel-rs/diesel/tree/v1.4.4/examples/postgres/getting_started_step_1/migrations/20160815133237_create_posts/down.sql)
+[down.sql](https://github.com/diesel-rs/diesel/tree/2.0.x/examples/postgres/getting_started_step_1/migrations/20160815133237_create_posts/down.sql)
 
 ```sql
 DROP TABLE posts
@@ -209,10 +209,10 @@ during the application's initialization phase. You may also want to include the 
 as a part of your code, to avoid having to copy them to your deployment location/image etc.
 
 The [diesel_migrations] crate provides the `embed_migrations!` macro, allowing you to embed migration scripts
-in the final binary. Once your code uses it, you can simply include `embedded_migrations::run(&db_conn)`
+in the final binary. Once your code uses it, you can simply include `connection.run_pending_migrations(MIGRATIONS)`
 at the start of your `main` function to run migrations every time the application starts.
 
-[diesel_migrations]: https://docs.rs/crate/diesel_migrations/
+[diesel_migrations]: https://docs.rs/crate/diesel_migrations/2.0.0-rc.0
 
 :::
 </aside>
@@ -224,25 +224,20 @@ The first thing we need to do is establish a database connection.
 
 ::: code-block
 
-[src/lib.rs]( https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/getting_started_step_1/src/lib.rs)
+[src/lib.rs]( https://github.com/diesel-rs/diesel/blob/2.0.x/examples/postgres/getting_started_step_1/src/lib.rs)
 
 ```rust
-#[macro_use]
-extern crate diesel;
-extern crate dotenv;
-
-use diesel::prelude::*;
 use diesel::pg::PgConnection;
-use dotenv::dotenv;
+use diesel::prelude::*;
+use dotenvy::dotenv;
 use std::env;
 
 pub fn establish_connection() -> PgConnection {
     dotenv().ok();
 
-    let database_url = env::var("DATABASE_URL")
-        .expect("DATABASE_URL must be set");
+    let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
     PgConnection::establish(&database_url)
-        .expect(&format!("Error connecting to {}", database_url))
+        .unwrap_or_else(|_| panic!("Error connecting to {}", database_url))
 }
 ```
 
@@ -255,11 +250,11 @@ We'll add the following lines to the top of `src/lib.rs`:
 
 ::: code-block
 
-[src/lib.rs](https://github.com/diesel-rs/diesel/tree/v1.4.4/examples/postgres/getting_started_step_1/src/lib.rs)
+[src/lib.rs](https://github.com/diesel-rs/diesel/tree/2.0.x/examples/postgres/getting_started_step_1/src/lib.rs)
 
 ```rust
-pub mod schema;
 pub mod models;
+pub mod schema;
 ```
 
 :::
@@ -268,9 +263,11 @@ Next we need to create the two modules that we just declared.
 
 ::: code-block
 
-[src/models.rs](https://github.com/diesel-rs/diesel/tree/v1.4.4/examples/postgres/getting_started_step_1/src/models.rs)
+[src/models.rs](https://github.com/diesel-rs/diesel/tree/2.0.x/examples/postgres/getting_started_step_1/src/models.rs)
 
 ```rust
+use diesel::prelude::*;
+
 #[derive(Queryable)]
 pub struct Post {
     pub id: i32,
@@ -288,17 +285,19 @@ Typically the schema module isn't created by hand, it gets generated by Diesel. 
 a file called [diesel.toml] was created which tells Diesel to maintain a file at src/schema.rs for us.
 The file should look like this:
 
-[diesel.toml]: https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/getting_started_step_1/diesel.toml
+[diesel.toml]: https://github.com/diesel-rs/diesel/blob/2.0.x/examples/postgres/getting_started_step_1/diesel.toml
 
 ::: code-block
 
-[src/schema.rs](https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/getting_started_step_1/src/schema.rs)
+[src/schema.rs](https://github.com/diesel-rs/diesel/blob/2.0.x/examples/postgres/getting_started_step_1/src/schema.rs)
 
 ```rust
-table! {
+// @generated automatically by Diesel CLI.
+
+diesel::table! {
     posts (id) {
-        id -> Integer,
-        title -> Text,
+        id -> Int4,
+        title -> Varchar,
         body -> Text,
         published -> Bool,
     }
@@ -314,7 +313,7 @@ all of the tables and columns. We'll see how exactly to use that in the next exa
 
 Any time we run or revert a migration, this file will get automatically updated.
 
-[`table!` macro]: https://docs.diesel.rs/diesel/macro.table.html
+[`table!` macro]: https://docs.diesel.rs/2.0.x/diesel/macro.table.html
 
 <aside class = "aside aside--note">
 <header class = "aside__header"> A Note on Field Order</header>
@@ -332,29 +331,27 @@ Let's write the code to actually show us our posts.
 
 ::: code-block
 
-[src/bin/show_posts.rs](https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/getting_started_step_1/src/bin/show_posts.rs)
+[src/bin/show_posts.rs](https://github.com/diesel-rs/diesel/blob/2.0.x/examples/postgres/getting_started_step_1/src/bin/show_posts.rs)
 
 ```rust
-extern crate diesel_demo;
-extern crate diesel;
-
-use self::diesel_demo::*;
 use self::models::*;
-use self::diesel::prelude::*;
+use diesel::prelude::*;
+use diesel_demo::*;
 
 fn main() {
-    use diesel_demo::schema::posts::dsl::*;
+    use self::schema::posts::dsl::*;
 
-    let connection = establish_connection();
-    let results = posts.filter(published.eq(true))
+    let connection = &mut establish_connection();
+    let results = posts
+        .filter(published.eq(true))
         .limit(5)
-        .load::<Post>(&connection)
+        .load::<Post>(connection)
         .expect("Error loading posts");
 
     println!("Displaying {} posts", results.len());
     for post in results {
         println!("{}", post.title);
-        println!("----------\n");
+        println!("-----------\n");
         println!("{}", post.body);
     }
 }
@@ -363,7 +360,7 @@ fn main() {
 :::
 
 
-The use `diesel_demo::schema::posts::dsl::*` line imports a bunch of aliases so that we can say `posts`
+The use `self::schema::posts::dsl::*` line imports a bunch of aliases so that we can say `posts`
 instead of `posts::table`, and `published` instead of `posts::published`. It's useful
 when we're only dealing with a single table, but that's not always what we want.
 
@@ -373,20 +370,20 @@ Still, we've written a decent amount of code, so let's commit.
 
 The full code for the demo at this point can be found [here][full code].
 
-[full code]: https://github.com/diesel-rs/diesel/tree/v1.4.4/examples/postgres/getting_started_step_1/
+[full code]: https://github.com/diesel-rs/diesel/tree/2.0.x/examples/postgres/getting_started_step_1/
 
-Next, let's write some code to create a new post.We'll want a struct to use for inserting
+Next, let's write some code to create a new post. We'll want a struct to use for inserting
 a new record.
 
 ::: code-block
 
-[src/models.rs](https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/getting_started_step_2/src/models.rs)
+[src/models.rs](https://github.com/diesel-rs/diesel/blob/2.0.x/examples/postgres/getting_started_step_2/src/models.rs)
 
 ```rust
-use super::schema::posts;
+use crate::schema::posts;
 
 #[derive(Insertable)]
-#[table_name="posts"]
+#[diesel(table_name = posts)]
 pub struct NewPost<'a> {
     pub title: &'a str,
     pub body: &'a str,
@@ -399,18 +396,15 @@ Now let's add a function to save a new post.
 
 ::: code-block
 
-[src/lib.rs](https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/getting_started_step_2/src/lib.rs)
+[src/lib.rs](https://github.com/diesel-rs/diesel/blob/2.0.x/examples/postgres/getting_started_step_2/src/lib.rs)
 
 ```rust
-use self::models::{Post, NewPost};
+use self::models::{NewPost, Post};
 
-pub fn create_post<'a>(conn: &PgConnection, title: &'a str, body: &'a str) -> Post {
-    use schema::posts;
+pub fn create_post(conn: &mut PgConnection, title: &str, body: &str) -> Post {
+    use crate::schema::posts;
 
-    let new_post = NewPost {
-        title: title,
-        body: body,
-    };
+    let new_post = NewPost { title, body };
 
     diesel::insert_into(posts::table)
         .values(&new_post)
@@ -434,35 +428,37 @@ Now that we've got everything set up, we can create a little script to write a n
 
 ::: code-block
 
-[src/bin/write_post.rs](https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/getting_started_step_2/src/bin/write_post.rs)
+[src/bin/write_post.rs](https://github.com/diesel-rs/diesel/blob/2.0.x/examples/postgres/getting_started_step_2/src/bin/write_post.rs)
 
 ```rust
-extern crate diesel_demo;
-extern crate diesel;
-
-use self::diesel_demo::*;
+use diesel_demo::*;
 use std::io::{stdin, Read};
 
 fn main() {
-    let connection = establish_connection();
+    let connection = &mut establish_connection();
+
+    let mut title = String::new();
+    let mut body = String::new();
 
     println!("What would you like your title to be?");
-    let mut title = String::new();
     stdin().read_line(&mut title).unwrap();
-    let title = &title[..(title.len() - 1)]; // Drop the newline character
-    println!("\nOk! Let's write {} (Press {} when finished)\n", title, EOF);
-    let mut body = String::new();
+    let title = title.trim_end(); // Remove the trailing newline
+
+    println!(
+        "\nOk! Let's write {} (Press {} when finished)\n",
+        title, EOF
+    );
     stdin().read_to_string(&mut body).unwrap();
 
-    let post = create_post(&connection, title, &body);
+    let post = create_post(connection, title, &body);
     println!("\nSaved draft {} with id {}", title, post.id);
 }
 
 #[cfg(not(windows))]
-const EOF: &'static str = "CTRL+D";
+const EOF: &str = "CTRL+D";
 
 #[cfg(windows)]
-const EOF: &'static str = "CTRL+Z";
+const EOF: &str = "CTRL+Z";
 ```
 
 :::
@@ -496,35 +492,35 @@ But in order to do that, we'll need to look at how to update an
 existing record. First, let's commit. The code for this demo at this
 point can be found [here][commit-no-2].
 
-[commit-no-2]: https://github.com/diesel-rs/diesel/tree/v1.4.4/examples/postgres/getting_started_step_2/
+[commit-no-2]: https://github.com/diesel-rs/diesel/tree/2.0.x/examples/postgres/getting_started_step_2/
 
 Now that we've got create and read out of the way, update is actually
 relatively simple. Let's jump right into the script:
 
 ::: code-block
 
-[src/bin/publish_post.rs](https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/getting_started_step_3/src/bin/publish_post.rs)
+[src/bin/publish_post.rs](https://github.com/diesel-rs/diesel/blob/2.0.x/examples/postgres/getting_started_step_3/src/bin/publish_post.rs)
 
 ```rust
-extern crate diesel_demo;
-extern crate diesel;
-
-use self::diesel::prelude::*;
-use self::diesel_demo::*;
 use self::models::Post;
+use diesel::prelude::*;
+use diesel_demo::*;
 use std::env::args;
 
 fn main() {
-    use diesel_demo::schema::posts::dsl::{posts, published};
+    use self::schema::posts::dsl::{posts, published};
 
-    let id = args().nth(1).expect("publish_post requires a post id")
-        .parse::<i32>().expect("Invalid ID");
-    let connection = establish_connection();
+    let id = args()
+        .nth(1)
+        .expect("publish_post requires a post id")
+        .parse::<i32>()
+        .expect("Invalid ID");
+    let connection = &mut establish_connection();
 
     let post = diesel::update(posts.find(id))
         .set(published.eq(true))
-        .get_result::<Post>(&connection)
-        .expect(&format!("Unable to find post {}", id));
+        .get_result::<Post>(connection)
+        .unwrap();
     println!("Published post {}", post.title);
 }
 ```
@@ -561,25 +557,22 @@ title, or even just some words in the title.
 
 ::: code-block
 
-[src/bin/delete_post.rs](https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/getting_started_step_3/src/bin/delete_post.rs)
+[src/bin/delete_post.rs](https://github.com/diesel-rs/diesel/blob/2.0.x/examples/postgres/getting_started_step_3/src/bin/delete_post.rs)
 
 ```rust
-extern crate diesel_demo;
-extern crate diesel;
-
-use self::diesel::prelude::*;
-use self::diesel_demo::*;
+use diesel::prelude::*;
+use diesel_demo::*;
 use std::env::args;
 
 fn main() {
-    use diesel_demo::schema::posts::dsl::*;
+    use self::schema::posts::dsl::*;
 
     let target = args().nth(1).expect("Expected a target to match against");
     let pattern = format!("%{}%", target);
 
-    let connection = establish_connection();
+    let connection = &mut establish_connection();
     let num_deleted = diesel::delete(posts.filter(title.like(pattern)))
-        .execute(&connection)
+        .execute(connection)
         .expect("Error deleting posts");
 
     println!("Deleted {} posts", num_deleted);
@@ -588,7 +581,7 @@ fn main() {
 
 :::
 
-We can run the script with `cargo run --bin delete_post` demo (at least with the title I chose).
+We can run the script with `cargo run --bin delete_post demo` (at least with the title I chose).
 Your output should look something like:
 
 ```
@@ -602,8 +595,8 @@ This barely scratches the surface of what you can do with Diesel, but hopefully 
 has given you a good foundation to build off of. We recommend exploring the [API docs] to see more.
 The final code for this tutorial can be found [here][final].
 
-[API docs]: ../docs/index
-[final]: https://github.com/diesel-rs/diesel/tree/v1.4.4/examples/postgres/getting_started_step_3/
+[API docs]: https://docs.diesel.rs/2.0.x/diesel/index.html
+[final]: https://github.com/diesel-rs/diesel/tree/2.0.x/examples/postgres/getting_started_step_3/
 
 ::: 
 :::
