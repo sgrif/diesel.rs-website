@@ -16,7 +16,7 @@ In this guide we're going to look at what exactly `diesel print-schema`
 and [`table!`] do. For `table!`, we will show a simplified version of the actual code
 that gets generated, and explain how each piece is relevant to you.
 If you've ever been confused about what exactly is getting generated,
-or what `use schema::posts::dsl::*` means, this is the right place to be. 
+or what `use schema::posts::dsl::*` means, this is the right place to be.
 Another way to get an overview of which types are available where is to open 
 the API documentation of your current crate via `cargo docs --open` and navigate
 to the relevant module there.
