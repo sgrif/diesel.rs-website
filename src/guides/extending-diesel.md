@@ -37,9 +37,7 @@ Consider `COALESCE`.
 This function can take any number of arguments,
 and its return type changes based on whether any arguments are `NOT NULL`.
 While we can't easily represent that in Rust,
-we can use [`sql_function!`] to declare it with the exact signature we're using.
-
-[`sql_function!`]: https://docs.diesel.rs/2.0.x/diesel/expression/functions/macro.sql_function.html
+we can use `sql_function!` to declare it with the exact signature we're using.
 
 ::: code-block
 
@@ -55,7 +53,7 @@ users.select(coalesce(hair_color, "blue"))
 :::
 
 As this example shows,
-[`sql_function!`] converts its argument like other parts of the query builder.
+`sql_function!` converts its argument like other parts of the query builder.
 This means that the generated function can take both Diesel expressions,
 and Rust values to be sent with the query.
 
@@ -88,7 +86,7 @@ pub(crate) mod coalesce {
 A helper type is generated with the same name as the function.
 This helper type handles Diesel's argument conversion.
 This lets us write `coalesce<hair_color, &str>`.
-More information can be found in [the API documentation](https://docs.diesel.rs/2.0.x/diesel/expression/functions/macro.sql_function.html)
+More information can be found in https://docs.diesel.rs/diesel/macro.sql_function.html
 
 ## Using Custom SQL and How to Extend the Query DSL
 
@@ -107,7 +105,7 @@ SELECT *, COUNT(*) OVER () FROM (subselect t) as paged_query_with LIMIT $1 OFFSE
 
 :::
 
-However, as of version 2.0,
+However, as of version 1.0,
 Diesel doesn't support window functions, or selecting from a subselect.
 Even if Diesel's query builder supported those things,
 this is a case that is easier to reason about in terms of the SQL we want to
@@ -119,27 +117,25 @@ Let's assume for the time being that we have a struct `Paginated<T>` already.
 We'll look at the specifics of this struct shortly.
 
 If you are creating a struct where you want to manually define the SQL,
-you will need to implement a trait called [`QueryFragment`].
+you will need to implement a trait called `QueryFragment`.
 The implementation will look like this:
-
-[`QueryFragment`]: https://docs.diesel.rs/2.0.x/diesel/query_builder/trait.QueryFragment.html
 
 ::: code-block
 
-[src/pagination.rs](https://github.com/diesel-rs/diesel/blob/2.0.x/examples/postgres/advanced-blog-cli/src/pagination.rs#L60-L73)
+[src/pagination.rs]( https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/advanced-blog-cli/src/pagination.rs#L54-L68)
 
 ```rust
 impl<T> QueryFragment<Pg> for Paginated<T>
 where
     T: QueryFragment<Pg>,
 {
-    fn walk_ast<'b>(&'b self, mut out: AstPass<'_, 'b, Pg>) -> QueryResult<()> {
+    fn walk_ast(&self, mut out: AstPass<Pg>) -> QueryResult<()> {
         out.push_sql("SELECT *, COUNT(*) OVER () FROM (");
         self.query.walk_ast(out.reborrow())?;
         out.push_sql(") as paged_query_with LIMIT ");
         out.push_bind_param::<BigInt, _>(&self.per_page)?;
         out.push_sql(" OFFSET ");
-        out.push_bind_param::<BigInt, _>(&self.offset)?;
+        out.push_bind_param::<BigInt, _>(&(self.page * self.per_page))?;
         Ok(())
     }
 }
@@ -155,29 +151,27 @@ The way to answer this question is by asking
 "does this struct generate an unlimited number of potential SQL queries"?
 Typically that is only the case if the body of `walk_ast` contains a for loop.
 If your query is not safe to cache, you *must* call
-[`out.unsafe_to_cache_prepared`].
+`out.unsafe_to_cache_prepared`.
 
 Whenever you implement `QueryFragment`, you also need to implement [`QueryId`].
-- We can use [`#[derive(QueryId)]`] for this.
+- We can use `#[derive(QueryId)]` for this.
 Since this struct represents a full query which can be executed,
 we will implement [`RunQueryDsl`] which adds methods like [`execute`] and [`load`].
 Since this query has a return type,
 we'll implement [`Query`] which states the return type as well.
 
-[`QueryId`]: https://docs.diesel.rs/2.0.x/diesel/query_builder/trait.QueryId.html
-[`AstPass`]: https://docs.diesel.rs/2.0.x/diesel/query_builder/struct.AstPass.html
-[`impl_query_id!`]: https://docs.diesel.rs/2.0.x/diesel/macro.impl_query_id.html
-[`RunQueryDsl`]: https://docs.diesel.rs/2.0.x/diesel/query_dsl/trait.RunQueryDsl.html
-[`execute`]: https://docs.diesel.rs/2.0.x/diesel/query_dsl/trait.RunQueryDsl.html#method.execute
-[`load`]: https://docs.diesel.rs/2.0.x/diesel/query_dsl/trait.RunQueryDsl.html#method.load
-[`Query`]: https://docs.diesel.rs/2.0.x/diesel/query_builder/trait.Query.html
-[`#[derive(QueryId)]`]: https://docs.diesel.rs/2.0.x/diesel/query_builder/derive.QueryId.html
-[`out.unsafe_to_cache_prepared`]: https://docs.diesel.rs/2.0.x/diesel/query_builder/struct.AstPass.html#method.unsafe_to_cache_prepared
+[`QueryId`]: https://docs.diesel.rs/diesel/query_builder/trait.QueryId.html
+[`AstPass`]: https://docs.diesel.rs/diesel/query_builder/struct.AstPass.html
+[`impl_query_id!`]: https://docs.diesel.rs/diesel/macro.impl_query_id.html
+[`RunQueryDsl`]: https://docs.diesel.rs/diesel/query_dsl/trait.RunQueryDsl.html
+[`execute`]: https://docs.diesel.rs/diesel/query_dsl/trait.RunQueryDsl.html#method.execute
+[`load`]: https://docs.diesel.rs/diesel/query_dsl/trait.RunQueryDsl.html#method.load
+[`Query`]: https://docs.diesel.rs/diesel/query_builder/trait.Query.html
 
 
 ::: code-block
 
-[src/pagination.rs](https://github.com/diesel-rs/diesel/blob/2.0.x/examples/postgres/advanced-blog-cli/src/pagination.rs#L54-L58)
+[src/pagination.rs]( https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/advanced-blog-cli/src/pagination.rs#L48-L52)
 
 ```rust
 impl<T: Query> Query for Paginated<T> {
@@ -199,41 +193,33 @@ In order to add new methods to existing types, we can use a trait.
 
 ::: code-block
 
-[src/pagination.rs]( https://github.com/diesel-rs/diesel/blob/2.0.x/examples/postgres/advanced-blog-cli/src/pagination.rs#L7-L39)
+[src/pagination.rs]( https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/advanced-blog-cli/src/pagination.rs#L7-L33)
 
 ```rust
-pub trait Paginate: Sized {
-    fn paginate(self, page: i64) -> Paginated<Self>;
-}
-
-impl<T> Paginate for T {
-    fn paginate(self, page: i64) -> Paginated<Self> {
+pub trait Paginate: AsQuery + Sized {
+    fn paginate(self, page: i64) -> Paginated<Self::Query> {
         Paginated {
-            query: self,
-            per_page: DEFAULT_PER_PAGE,
+            query: self.as_query(),
             page,
-            offset: (page - 1) * DEFAULT_PER_PAGE,
-        }
+            per_page: DEFAULT_PER_PAGE,
+         }
     }
 }
 
+impl<T: AsQuery> Paginate for T {}
+
 const DEFAULT_PER_PAGE: i64 = 10;
 
-#[derive(Debug, Clone, Copy, QueryId)]
+#[derive(Debug, QueryId)]
 pub struct Paginated<T> {
     query: T,
     page: i64,
     per_page: i64,
-    offset: i64,
 }
 
 impl<T> Paginated<T> {
     pub fn per_page(self, per_page: i64) -> Self {
-        Paginated {
-            per_page,
-            offset: (self.page - 1) * per_page,
-            ..self
-        }
+        Paginated { per_page, ..self }
     }
 }
 ```
@@ -265,19 +251,20 @@ We can write that method.
 
 ::: code-block
 
-[src/pagination.rs]( https://github.com/diesel-rs/diesel/blob/2.0.x/examples/postgres/advanced-blog-cli/src/pagination.rs#L41-L51)
+[src/pagination.rs]( https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/advanced-blog-cli/src/pagination.rs#L35-L45)
 
 ```rust
 impl<T> Paginated<T> {
-    pub fn load_and_count_pages<'a, U>(self, conn: &mut PgConnection) -> QueryResult<(Vec<U>, i64)>
+    fn load_and_count_pages<U>(self, conn: &PgConnection) -> QueryResult<(Vec<U>, i64)>
     where
-        Self: LoadQuery<'a, PgConnection, (U, i64)>,
+        Self: LoadQuery<PgConnection, (U, i64)>,
     {
         let per_page = self.per_page;
-        let results = self.load::<(U, i64)>(conn)?;
-        let total = results.get(0).map(|x| x.1).unwrap_or(0);
-        let records = results.into_iter().map(|x| x.0).collect();
-        let total_pages = (total as f64 / per_page as f64).ceil() as i64;
+        let results: Vec<(U, i64)> = self.load(conn)?;
+        let total = results.get(0).map(|(_, total)| total).unwrap_or(&0);
+        let total = f64::from(*total as i32);
+        let records: Vec<U> = results.into_iter().map(|(record, _)| record).collect();
+        let total_pages = (total / per_page as f64).ceil() as i64;
         Ok((records, total_pages))
     }
 }
@@ -293,7 +280,7 @@ we could have this function execute two queries.
 
 You can find the full code for this example in [the "advanced blog" example].
 
-[the "advanced blog" example]: https://github.com/diesel-rs/diesel/tree/2.0.x/examples/postgres/advanced-blog-cli
+[the "advanced blog" example]: https://github.com/diesel-rs/diesel/tree/v1.4.4/examples/postgres/advanced-blog-cli
 
 ## Custom Operators
 
@@ -310,12 +297,12 @@ Diesel provides helper macros for defining each of these kinds of operators.
 In fact, Diesel uses these macros to declare nearly all of the operators
 supported by the main crate.
 The macros are
-[`diesel::infix_operator!`], [`diesel::postfix_operator!`] and
-[`diesel::prefix_operator!`].
+[`diesel_infix_operator!`], [`diesel_postfix_operator!`] and
+[`diesel_prefix_operator!`].
 
-[`diesel::infix_operator!`]: https://docs.diesel.rs/2.0.x/diesel/macro.infix_operator.html
-[`diesel::postfix_operator!`]: https://docs.diesel.rs/2.0.x/diesel/macro.postfix_operator.html
-[`diesel::prefix_operator!`]: https://docs.diesel.rs/2.0.x/diesel/macro.prefix_operator.html
+[`diesel_infix_operator!`]: https://docs.diesel.rs/diesel/macro.diesel_infix_operator.html
+[`diesel_postfix_operator!`]: https://docs.diesel.rs/diesel/macro.diesel_postfix_operator.html
+[`diesel_prefix_operator!`]: https://docs.diesel.rs/diesel/macro.diesel_prefix_operator.html
 
 All of these macros have the same signature.
 They take between two and four arguments.
@@ -345,22 +332,22 @@ Let's look at some example usage from Diesel:
 
 ```rust
 // A simple operator. It returns `Bool` and works on all backends.
-diesel::infix_operator!(Eq, " = ");
+diesel_infix_operator!(Eq, " = ");
 
 // Here we've specified the SQL type.
 // Since this operator is only used for ordering, and we don't want it used
 // elsewhere, we've made it `()` which is normally useless.
-diesel::postfix_operator!(Asc, " ASC", ());
+diesel_postfix_operator!(Asc, " ASC", ());
 
 // Concat uses the magic `ReturnBasedOnArgs` return type
 // so it can work with both `Text` and `Nullable<Text>`.
-diesel::infix_operator!(Concat, " || ", ReturnBasedOnArgs);
+diesel_infix_operator!(Concat, " || ", ReturnBasedOnArgs);
 
 // This operator is PG specific, so we specify the backend
-diesel::infix_operator!(IsDistinctFrom, " IS DISTINCT FROM ", backend: Pg);
+diesel_infix_operator!(IsDistinctFrom, " IS DISTINCT FROM ", backend: Pg);
 
 // This operator is PG specific, and we are also specifying the SQL type.
-diesel::postfix_operator!(NullsFirst, " NULLS FIRST", (), backend: Pg);
+diesel_postfix_operator!(NullsFirst, " NULLS FIRST", (), backend: Pg);
 ```
 
 :::
@@ -376,12 +363,12 @@ and many of them specify the return type.
 [src/lib.rs]( https://github.com/diesel-rs/diesel_full_text_search/blob/27b9946831caa8b08177c1818a50cb7f0563c9c0/src/lib.rs#L57-L62)
 
 ```rust
-diesel::infix_operator!(Matches, " @@ ", backend: Pg);
-diesel::infix_operator!(Concat, " || ", TsVector, backend: Pg);
-diesel::infix_operator!(And, " && ", TsQuery, backend: Pg);
-diesel::infix_operator!(Or, " || ", TsQuery, backend: Pg);
-diesel::infix_operator!(Contains, " @> ", backend: Pg);
-diesel::infix_operator!(ContainedBy, " <@ ", backend: Pg);
+diesel_infix_operator!(Matches, " @@ ", backend: Pg);
+diesel_infix_operator!(Concat, " || ", TsVector, backend: Pg);
+diesel_infix_operator!(And, " && ", TsQuery, backend: Pg);
+diesel_infix_operator!(Or, " || ", TsQuery, backend: Pg);
+diesel_infix_operator!(Contains, " @> ", backend: Pg);
+diesel_infix_operator!(ContainedBy, " <@ ", backend: Pg);
 ```
 
 :::
@@ -402,16 +389,12 @@ For example, here's how the `.eq` method gets defined by Diesel.
 
 ::: code-block
 
-[src/expression_methods/global_expression_methods.rs](https://github.com/diesel-rs/diesel/blob/2.0.x/diesel/src/expression_methods/global_expression_methods.rs#L9-L31)
+[src/expression_methods/global_expression_methods.rs]( https://github.com/diesel-rs/diesel/blob/v1.4.4/diesel/src/expression_methods/global_expression_methods.rs)
 
 ```rust
 pub trait ExpressionMethods: Expression + Sized {
-    fn eq<T>(self, other: T) -> dsl::Eq<Self, T>
-    where
-        Self::SqlType: SqlType,
-        T: AsExpression<Self::SqlType>,
-    {
-        Grouped(Eq::new(self, other.as_expression()))
+    fn eq<T: AsExpression<Self::SqlType>>(self, other: T) -> Eq<Self, T::Expression> {
+        Eq::new(self, other.as_expression())
     }
 }
 
@@ -422,50 +405,36 @@ impl<T: Expression> ExpressionMethods for T {}
 
 It's important to note that these methods are where you should put any type
 constraints.
-The structs defined by `diesel::*_operator!` don't know or care about what the
+The structs defined by `diesel_*_operator!` don't know or care about what the
 types of the arguments should be.
 The `=` operator requires that both sides be of the same type,
 so we represent that in the type of `ExpressionMethods::eq`.
 
 You'll also notice that our argument is
-[`AsExpression<Self::SqlType>`],
-not [`Expression<SqlType = Self::SqlType>`].
+`AsExpression<Self::SqlType>`,
+not `Expression<SqlType = Self::SqlType>`.
 This allows Rust values to be passed as well as Diesel expressions.
 For example, we can do `text_col.eq(other_text_col)`,
 or `text_col.eq("Some Rust string")`.
-
-[`AsExpression<Self::SqlType>`]: https://docs.diesel.rs/2.0.x/diesel/expression/trait.AsExpression.html
-[`Expression<SqlType = Self::SqlType>`]: https://docs.diesel.rs/2.0.x/diesel/prelude/trait.Expression.html
 
 If the operator is specific to only one SQL type,
 we can represent that in our trait.
 
 ::: code-block
 
-[src/expression_methods/global_expression_methods.rs](https://github.com/diesel-rs/diesel/blob/master/diesel/src/expression_methods/bool_expression_methods.rs)
+[src/expression_methods/global_expression_methods.rs]( https://github.com/diesel-rs/diesel/blob/v1.4.4/diesel/src/expression_methods/bool_expression_methods.rs)
 
 ```rust
 pub trait BoolExpressionMethods
 where
     Self: Expression<SqlType = Bool> + Sized,
 {
-    fn and<T, ST>(self, other: T) -> dsl::And<Self, T, ST>
-    where
-        Self::SqlType: SqlType,
-        ST: SqlType + TypedExpressionType,
-        T: AsExpression<ST>,
-        And<Self, T::Expression>: Expression,
-    {
-        Grouped(And::new(self, other.as_expression()))
+    fn and<T: AsExpression<Bool>>(self, other: T) -> And<Self, T::Expression> {
+        And::new(self, other.as_expression())
     }
 }
 
-impl<T> BoolExpressionMethods for T
-where
-    T: Expression,
-    T::SqlType: BoolOrNullableBool,
-{
-}
+impl<T: Expression<SqlType = Bool>> BoolExpressionMethods for T {}
 ```
 
 :::
@@ -476,15 +445,13 @@ Here's how `not` is defined in Diesel.
 
 ::: code-block
 
-[src/expression/not.rs](https://github.com/diesel-rs/diesel/blob/master/diesel/src/expression/not.rs#L26-L32)
+[src/expression/not.rs]( https://github.com/diesel-rs/diesel/blob/v1.4.4/diesel/src/expression/not.rs#L27-L29)
 
 ```rust
-pub fn not<T>(expr: T) -> not<T>
-where
-    T: Expression,
-    <T as Expression>::SqlType: BoolOrNullableBool,
+pub fn not<T: AsExpression<Bool>>(expr: T)
+    -> Not<Grouped<T::Expression>>
 {
-    super::operators::Not::new(Grouped(expr))
+    super::operators::Not::new(Grouped(expr.as_expression()))
 }
 ```
 
@@ -505,10 +472,11 @@ Instead, we provide a type that lets you write `Eq<text_col, &str>`.
 
 ::: code-block
 
-[src/expression/helper_types.rs](https://github.com/diesel-rs/diesel/blob/2.0.x/diesel/src/expression/helper_types.rs#L21)
+[src/expression/helper_types.rs]( https://github.com/diesel-rs/diesel/blob/v1.4.4/diesel/src/expression/helper_types.rs#L20)
 
 ```rust
-pub type Eq<Lhs, Rhs> = Grouped<super::operators::Eq<Lhs, AsExpr<Rhs, Lhs>>>;
+pub type Eq<Lhs, Rhs> =
+    super::operators::Eq<Lhs, AsExpr<Rhs, Lhs>>;
 ```
 
 :::
@@ -516,9 +484,9 @@ pub type Eq<Lhs, Rhs> = Grouped<super::operators::Eq<Lhs, AsExpr<Rhs, Lhs>>>;
 For defining these types,
 you'll usually want to make use of [`SqlTypeOf`], [`AsExpr`], and [`AsExprOf`].
 
-[`SqlTypeOf`]: https://docs.diesel.rs/2.0.x/diesel/helper_types/type.SqlTypeOf.html
-[`AsExpr`]: https://docs.diesel.rs/2.0.x/diesel/helper_types/type.AsExpr.html
-[`AsExprOf`]: https://docs.diesel.rs/2.0.x/diesel/helper_types/type.AsExprOf.html
+[`SqlTypeOf`]: https://docs.diesel.rs/diesel/helper_types/type.SqlTypeOf.html
+[`AsExpr`]: https://docs.diesel.rs/diesel/helper_types/type.AsExpr.html
+[`AsExprOf`]: https://docs.diesel.rs/diesel/helper_types/type.AsExprOf.html
 
 
 :::
