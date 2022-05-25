@@ -218,7 +218,7 @@ but it's less verbose than `<<users::table as Table>::AllColumns as Expression>:
 when you need it.
 
 Finally, there is a helper type for referencing boxed queries built from this table.
-This means that instead of writing `diesel::dsl::IntoBoxed<'static, users::table, Pg>` 
+This means that instead of writing `diesel::dsl::IntoBoxed<'static, users::table, Pg>`
 you can instead write `users::BoxedQuery<'static, Pg>`.
 You can optionally specify the SQL type as well if the query has a custom select clause.
 
