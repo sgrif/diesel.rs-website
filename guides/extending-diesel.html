@@ -134,7 +134,7 @@ code span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
 <p>This guide is only going to cover extending the query builder. How to add support for new SQL types will be covered in a future guide.</p>
 <h2 id="sql_function"><code>sql_function!</code></h2>
 <p>The easiest and most common way to extend Diesel’s query builder is by declaring a new SQL function. This can be used for functions defined by your database, or for built-in functions that Diesel doesn’t support out of the box.</p>
-<p>Functions in SQL often have multiple signatures, making them difficult or impossible to represent in Rust. Because of this, Diesel only provides support for a small number of built-in SQL functions. Consider <code>COALESCE</code>. This function can take any number of arguments, and its return type changes based on whether any arguments are <code>NOT NULL</code>. While we can’t easily represent that in Rust, we can use <code>sql_function!</code> to declare it with the exact signature we’re using.</p>
+<p>Functions in SQL often have multiple signatures, making them difficult or impossible to represent in Rust. Because of this, Diesel only provides support for a small number of built-in SQL functions. Consider <code>COALESCE</code>. This function can take any number of arguments, and its return type changes based on whether any arguments are <code>NOT NULL</code>. While we can’t easily represent that in Rust, we can use <a href="https://docs.diesel.rs/2.0.x/diesel/expression/functions/macro.sql_function.html"><code>sql_function!</code></a> to declare it with the exact signature we’re using.</p>
 <div class="demo__example">
 <div class="demo__example-browser">
 <div class="browser-bar">
@@ -146,7 +146,7 @@ Example
 <a class="sourceLine" id="cb1-4" title="4">users.select(coalesce(hair_color, <span class="st">&quot;blue&quot;</span>))</a></code></pre></div>
 </div>
 </div>
-<p>As this example shows, <code>sql_function!</code> converts its argument like other parts of the query builder. This means that the generated function can take both Diesel expressions, and Rust values to be sent with the query.</p>
+<p>As this example shows, <a href="https://docs.diesel.rs/2.0.x/diesel/expression/functions/macro.sql_function.html"><code>sql_function!</code></a> converts its argument like other parts of the query builder. This means that the generated function can take both Diesel expressions, and Rust values to be sent with the query.</p>
 <p>The macro takes one argument: a function definition. However, the types in the function signature are SQL types, not concrete Rust types. This is what allows us to pass both columns and Rust strings. If we defined this function manually, it would look like this:</p>
 <div class="demo__example">
 <div class="demo__example-browser">
@@ -166,7 +166,7 @@ Example
 <a class="sourceLine" id="cb2-11" title="11"><span class="op">}</span></a></code></pre></div>
 </div>
 </div>
-<p>A helper type is generated with the same name as the function. This helper type handles Diesel’s argument conversion. This lets us write <code>coalesce&lt;hair_color, &amp;str&gt;</code>. More information can be found in https://docs.diesel.rs/diesel/macro.sql_function.html</p>
+<p>A helper type is generated with the same name as the function. This helper type handles Diesel’s argument conversion. This lets us write <code>coalesce&lt;hair_color, &amp;str&gt;</code>. More information can be found in <a href="https://docs.diesel.rs/2.0.x/diesel/expression/functions/macro.sql_function.html">the API documentation</a></p>
 <h2 id="using-custom-sql-and-how-to-extend-the-query-dsl">Using Custom SQL and How to Extend the Query DSL</h2>
 <p>Often times it’s useful to encapsulate a common SQL pattern. For example, if you’re doing pagination on your queries, PostgreSQL is capable of loading the total count in a single query. The query you would want to execute would look like this:</p>
 <div class="demo__example">
@@ -177,39 +177,39 @@ Example
 <div class="sourceCode" id="cb3"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">SELECT</span> <span class="op">*</span>, <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">OVER</span> () <span class="kw">FROM</span> (subselect t) <span class="kw">as</span> paged_query_with <span class="kw">LIMIT</span> $<span class="dv">1</span> OFFSET $<span class="dv">2</span></a></code></pre></div>
 </div>
 </div>
-<p>However, as of version 1.0, Diesel doesn’t support window functions, or selecting from a subselect. Even if Diesel’s query builder supported those things, this is a case that is easier to reason about in terms of the SQL we want to generate.</p>
+<p>However, as of version 2.0, Diesel doesn’t support window functions, or selecting from a subselect. Even if Diesel’s query builder supported those things, this is a case that is easier to reason about in terms of the SQL we want to generate.</p>
 <p>Let’s look at how we would go about adding a <code>paginate</code> method to Diesel’s query builder, to generate that query. Let’s assume for the time being that we have a struct <code>Paginated&lt;T&gt;</code> already. We’ll look at the specifics of this struct shortly.</p>
-<p>If you are creating a struct where you want to manually define the SQL, you will need to implement a trait called <code>QueryFragment</code>. The implementation will look like this:</p>
+<p>If you are creating a struct where you want to manually define the SQL, you will need to implement a trait called <a href="https://docs.diesel.rs/2.0.x/diesel/query_builder/trait.QueryFragment.html"><code>QueryFragment</code></a>. The implementation will look like this:</p>
 <div class="demo__example">
 <div class="demo__example-browser">
 <div class="browser-bar">
 src/pagination.rs
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/advanced-blog-cli/src/pagination.rs#L54-L68">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.0.x/examples/postgres/advanced-blog-cli/src/pagination.rs#L60-L73">View on GitHub</a>
 <div class="sourceCode" id="cb4"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb4-1" title="1"><span class="kw">impl</span>&lt;T&gt; QueryFragment&lt;Pg&gt; <span class="kw">for</span> Paginated&lt;T&gt;</a>
 <a class="sourceLine" id="cb4-2" title="2"><span class="kw">where</span></a>
 <a class="sourceLine" id="cb4-3" title="3">    T: QueryFragment&lt;Pg&gt;,</a>
 <a class="sourceLine" id="cb4-4" title="4"><span class="op">{</span></a>
-<a class="sourceLine" id="cb4-5" title="5">    <span class="kw">fn</span> walk_ast(&amp;<span class="kw">self</span>, <span class="kw">mut</span> out: AstPass&lt;Pg&gt;) -&gt; QueryResult&lt;()&gt; <span class="op">{</span></a>
+<a class="sourceLine" id="cb4-5" title="5">    <span class="kw">fn</span> walk_ast&lt;<span class="ot">&#39;b</span>&gt;(&amp;<span class="ot">&#39;b</span> <span class="kw">self</span>, <span class="kw">mut</span> out: AstPass&lt;<span class="ot">&#39;_</span>, <span class="ot">&#39;b</span>, Pg&gt;) -&gt; QueryResult&lt;()&gt; <span class="op">{</span></a>
 <a class="sourceLine" id="cb4-6" title="6">        out.push_sql(<span class="st">&quot;SELECT *, COUNT(*) OVER () FROM (&quot;</span>);</a>
 <a class="sourceLine" id="cb4-7" title="7">        <span class="kw">self</span>.query.walk_ast(out.reborrow())?;</a>
 <a class="sourceLine" id="cb4-8" title="8">        out.push_sql(<span class="st">&quot;) as paged_query_with LIMIT &quot;</span>);</a>
 <a class="sourceLine" id="cb4-9" title="9">        out.<span class="pp">push_bind_param::</span>&lt;BigInt, _&gt;(&amp;<span class="kw">self</span>.per_page)?;</a>
 <a class="sourceLine" id="cb4-10" title="10">        out.push_sql(<span class="st">&quot; OFFSET &quot;</span>);</a>
-<a class="sourceLine" id="cb4-11" title="11">        out.<span class="pp">push_bind_param::</span>&lt;BigInt, _&gt;(&amp;(<span class="kw">self</span>.page * <span class="kw">self</span>.per_page))?;</a>
+<a class="sourceLine" id="cb4-11" title="11">        out.<span class="pp">push_bind_param::</span>&lt;BigInt, _&gt;(&amp;<span class="kw">self</span>.offset)?;</a>
 <a class="sourceLine" id="cb4-12" title="12">        <span class="cn">Ok</span>(())</a>
 <a class="sourceLine" id="cb4-13" title="13">    <span class="op">}</span></a>
 <a class="sourceLine" id="cb4-14" title="14"><span class="op">}</span></a></code></pre></div>
 </div>
 </div>
-<p>For details on what each method does, see the documentation for <a href="https://docs.diesel.rs/diesel/query_builder/struct.AstPass.html"><code>AstPass</code></a>. One important question to ask whenever you implement <code>QueryFragment</code> is whether you are generating a query that is safe to cache. The way to answer this question is by asking “does this struct generate an unlimited number of potential SQL queries”? Typically that is only the case if the body of <code>walk_ast</code> contains a for loop. If your query is not safe to cache, you <em>must</em> call <code>out.unsafe_to_cache_prepared</code>.</p>
-<p>Whenever you implement <code>QueryFragment</code>, you also need to implement <a href="https://docs.diesel.rs/diesel/query_builder/trait.QueryId.html"><code>QueryId</code></a>. - We can use <code>#[derive(QueryId)]</code> for this. Since this struct represents a full query which can be executed, we will implement <a href="https://docs.diesel.rs/diesel/query_dsl/trait.RunQueryDsl.html"><code>RunQueryDsl</code></a> which adds methods like <a href="https://docs.diesel.rs/diesel/query_dsl/trait.RunQueryDsl.html#method.execute"><code>execute</code></a> and <a href="https://docs.diesel.rs/diesel/query_dsl/trait.RunQueryDsl.html#method.load"><code>load</code></a>. Since this query has a return type, we’ll implement <a href="https://docs.diesel.rs/diesel/query_builder/trait.Query.html"><code>Query</code></a> which states the return type as well.</p>
+<p>For details on what each method does, see the documentation for <a href="https://docs.diesel.rs/2.0.x/diesel/query_builder/struct.AstPass.html"><code>AstPass</code></a>. One important question to ask whenever you implement <code>QueryFragment</code> is whether you are generating a query that is safe to cache. The way to answer this question is by asking “does this struct generate an unlimited number of potential SQL queries”? Typically that is only the case if the body of <code>walk_ast</code> contains a for loop. If your query is not safe to cache, you <em>must</em> call <a href="https://docs.diesel.rs/2.0.x/diesel/query_builder/struct.AstPass.html#method.unsafe_to_cache_prepared"><code>out.unsafe_to_cache_prepared</code></a>.</p>
+<p>Whenever you implement <code>QueryFragment</code>, you also need to implement <a href="https://docs.diesel.rs/2.0.x/diesel/query_builder/trait.QueryId.html"><code>QueryId</code></a>. - We can use <a href="https://docs.diesel.rs/2.0.x/diesel/query_builder/derive.QueryId.html"><code>#[derive(QueryId)]</code></a> for this. Since this struct represents a full query which can be executed, we will implement <a href="https://docs.diesel.rs/2.0.x/diesel/query_dsl/trait.RunQueryDsl.html"><code>RunQueryDsl</code></a> which adds methods like <a href="https://docs.diesel.rs/2.0.x/diesel/query_dsl/trait.RunQueryDsl.html#method.execute"><code>execute</code></a> and <a href="https://docs.diesel.rs/2.0.x/diesel/query_dsl/trait.RunQueryDsl.html#method.load"><code>load</code></a>. Since this query has a return type, we’ll implement <a href="https://docs.diesel.rs/2.0.x/diesel/query_builder/trait.Query.html"><code>Query</code></a> which states the return type as well.</p>
 <div class="demo__example">
 <div class="demo__example-browser">
 <div class="browser-bar">
 src/pagination.rs
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/advanced-blog-cli/src/pagination.rs#L48-L52">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.0.x/examples/postgres/advanced-blog-cli/src/pagination.rs#L54-L58">View on GitHub</a>
 <div class="sourceCode" id="cb5"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb5-1" title="1"><span class="kw">impl</span>&lt;T: Query&gt; Query <span class="kw">for</span> Paginated&lt;T&gt; <span class="op">{</span></a>
 <a class="sourceLine" id="cb5-2" title="2">    <span class="kw">type</span> SqlType = (<span class="pp">T::</span>SqlType, BigInt);</a>
 <a class="sourceLine" id="cb5-3" title="3"><span class="op">}</span></a>
@@ -224,33 +224,41 @@ src/pagination.rs
 <div class="browser-bar">
 src/pagination.rs
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/advanced-blog-cli/src/pagination.rs#L7-L33">View on GitHub</a>
-<div class="sourceCode" id="cb6"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb6-1" title="1"><span class="kw">pub</span> <span class="kw">trait</span> Paginate: AsQuery + <span class="bu">Sized</span> <span class="op">{</span></a>
-<a class="sourceLine" id="cb6-2" title="2">    <span class="kw">fn</span> paginate(<span class="kw">self</span>, page: <span class="dt">i64</span>) -&gt; Paginated&lt;<span class="kw">Self</span>::Query&gt; <span class="op">{</span></a>
-<a class="sourceLine" id="cb6-3" title="3">        Paginated <span class="op">{</span></a>
-<a class="sourceLine" id="cb6-4" title="4">            query: <span class="kw">self</span>.as_query(),</a>
-<a class="sourceLine" id="cb6-5" title="5">            page,</a>
-<a class="sourceLine" id="cb6-6" title="6">            per_page: DEFAULT_PER_PAGE,</a>
-<a class="sourceLine" id="cb6-7" title="7">         <span class="op">}</span></a>
-<a class="sourceLine" id="cb6-8" title="8">    <span class="op">}</span></a>
-<a class="sourceLine" id="cb6-9" title="9"><span class="op">}</span></a>
-<a class="sourceLine" id="cb6-10" title="10"></a>
-<a class="sourceLine" id="cb6-11" title="11"><span class="kw">impl</span>&lt;T: AsQuery&gt; Paginate <span class="kw">for</span> T <span class="op">{}</span></a>
-<a class="sourceLine" id="cb6-12" title="12"></a>
-<a class="sourceLine" id="cb6-13" title="13"><span class="kw">const</span> DEFAULT_PER_PAGE: <span class="dt">i64</span> = <span class="dv">10</span>;</a>
-<a class="sourceLine" id="cb6-14" title="14"></a>
-<a class="sourceLine" id="cb6-15" title="15"><span class="at">#[</span>derive<span class="at">(</span><span class="bu">Debug</span><span class="at">,</span> QueryId<span class="at">)]</span></a>
-<a class="sourceLine" id="cb6-16" title="16"><span class="kw">pub</span> <span class="kw">struct</span> Paginated&lt;T&gt; <span class="op">{</span></a>
-<a class="sourceLine" id="cb6-17" title="17">    query: T,</a>
-<a class="sourceLine" id="cb6-18" title="18">    page: <span class="dt">i64</span>,</a>
-<a class="sourceLine" id="cb6-19" title="19">    per_page: <span class="dt">i64</span>,</a>
-<a class="sourceLine" id="cb6-20" title="20"><span class="op">}</span></a>
-<a class="sourceLine" id="cb6-21" title="21"></a>
-<a class="sourceLine" id="cb6-22" title="22"><span class="kw">impl</span>&lt;T&gt; Paginated&lt;T&gt; <span class="op">{</span></a>
-<a class="sourceLine" id="cb6-23" title="23">    <span class="kw">pub</span> <span class="kw">fn</span> per_page(<span class="kw">self</span>, per_page: <span class="dt">i64</span>) -&gt; <span class="kw">Self</span> <span class="op">{</span></a>
-<a class="sourceLine" id="cb6-24" title="24">        Paginated <span class="op">{</span> per_page, ..<span class="kw">self</span> <span class="op">}</span></a>
-<a class="sourceLine" id="cb6-25" title="25">    <span class="op">}</span></a>
-<a class="sourceLine" id="cb6-26" title="26"><span class="op">}</span></a></code></pre></div>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.0.x/examples/postgres/advanced-blog-cli/src/pagination.rs#L7-L39">View on GitHub</a>
+<div class="sourceCode" id="cb6"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb6-1" title="1"><span class="kw">pub</span> <span class="kw">trait</span> Paginate: <span class="bu">Sized</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb6-2" title="2">    <span class="kw">fn</span> paginate(<span class="kw">self</span>, page: <span class="dt">i64</span>) -&gt; Paginated&lt;<span class="kw">Self</span>&gt;;</a>
+<a class="sourceLine" id="cb6-3" title="3"><span class="op">}</span></a>
+<a class="sourceLine" id="cb6-4" title="4"></a>
+<a class="sourceLine" id="cb6-5" title="5"><span class="kw">impl</span>&lt;T&gt; Paginate <span class="kw">for</span> T <span class="op">{</span></a>
+<a class="sourceLine" id="cb6-6" title="6">    <span class="kw">fn</span> paginate(<span class="kw">self</span>, page: <span class="dt">i64</span>) -&gt; Paginated&lt;<span class="kw">Self</span>&gt; <span class="op">{</span></a>
+<a class="sourceLine" id="cb6-7" title="7">        Paginated <span class="op">{</span></a>
+<a class="sourceLine" id="cb6-8" title="8">            query: <span class="kw">self</span>,</a>
+<a class="sourceLine" id="cb6-9" title="9">            per_page: DEFAULT_PER_PAGE,</a>
+<a class="sourceLine" id="cb6-10" title="10">            page,</a>
+<a class="sourceLine" id="cb6-11" title="11">            offset: (page - <span class="dv">1</span>) * DEFAULT_PER_PAGE,</a>
+<a class="sourceLine" id="cb6-12" title="12">        <span class="op">}</span></a>
+<a class="sourceLine" id="cb6-13" title="13">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb6-14" title="14"><span class="op">}</span></a>
+<a class="sourceLine" id="cb6-15" title="15"></a>
+<a class="sourceLine" id="cb6-16" title="16"><span class="kw">const</span> DEFAULT_PER_PAGE: <span class="dt">i64</span> = <span class="dv">10</span>;</a>
+<a class="sourceLine" id="cb6-17" title="17"></a>
+<a class="sourceLine" id="cb6-18" title="18"><span class="at">#[</span>derive<span class="at">(</span><span class="bu">Debug</span><span class="at">,</span> <span class="bu">Clone</span><span class="at">,</span> <span class="bu">Copy</span><span class="at">,</span> QueryId<span class="at">)]</span></a>
+<a class="sourceLine" id="cb6-19" title="19"><span class="kw">pub</span> <span class="kw">struct</span> Paginated&lt;T&gt; <span class="op">{</span></a>
+<a class="sourceLine" id="cb6-20" title="20">    query: T,</a>
+<a class="sourceLine" id="cb6-21" title="21">    page: <span class="dt">i64</span>,</a>
+<a class="sourceLine" id="cb6-22" title="22">    per_page: <span class="dt">i64</span>,</a>
+<a class="sourceLine" id="cb6-23" title="23">    offset: <span class="dt">i64</span>,</a>
+<a class="sourceLine" id="cb6-24" title="24"><span class="op">}</span></a>
+<a class="sourceLine" id="cb6-25" title="25"></a>
+<a class="sourceLine" id="cb6-26" title="26"><span class="kw">impl</span>&lt;T&gt; Paginated&lt;T&gt; <span class="op">{</span></a>
+<a class="sourceLine" id="cb6-27" title="27">    <span class="kw">pub</span> <span class="kw">fn</span> per_page(<span class="kw">self</span>, per_page: <span class="dt">i64</span>) -&gt; <span class="kw">Self</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb6-28" title="28">        Paginated <span class="op">{</span></a>
+<a class="sourceLine" id="cb6-29" title="29">            per_page,</a>
+<a class="sourceLine" id="cb6-30" title="30">            offset: (<span class="kw">self</span>.page - <span class="dv">1</span>) * per_page,</a>
+<a class="sourceLine" id="cb6-31" title="31">            ..<span class="kw">self</span></a>
+<a class="sourceLine" id="cb6-32" title="32">        <span class="op">}</span></a>
+<a class="sourceLine" id="cb6-33" title="33">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb6-34" title="34"><span class="op">}</span></a></code></pre></div>
 </div>
 </div>
 <p>Now we can get the third page of a query with 25 elements per page like this:</p>
@@ -272,25 +280,24 @@ Example
 <div class="browser-bar">
 src/pagination.rs
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/advanced-blog-cli/src/pagination.rs#L35-L45">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.0.x/examples/postgres/advanced-blog-cli/src/pagination.rs#L41-L51">View on GitHub</a>
 <div class="sourceCode" id="cb8"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb8-1" title="1"><span class="kw">impl</span>&lt;T&gt; Paginated&lt;T&gt; <span class="op">{</span></a>
-<a class="sourceLine" id="cb8-2" title="2">    <span class="kw">fn</span> load_and_count_pages&lt;U&gt;(<span class="kw">self</span>, conn: &amp;PgConnection) -&gt; QueryResult&lt;(<span class="dt">Vec</span>&lt;U&gt;, <span class="dt">i64</span>)&gt;</a>
+<a class="sourceLine" id="cb8-2" title="2">    <span class="kw">pub</span> <span class="kw">fn</span> load_and_count_pages&lt;<span class="ot">&#39;a</span>, U&gt;(<span class="kw">self</span>, conn: &amp;<span class="kw">mut</span> PgConnection) -&gt; QueryResult&lt;(<span class="dt">Vec</span>&lt;U&gt;, <span class="dt">i64</span>)&gt;</a>
 <a class="sourceLine" id="cb8-3" title="3">    <span class="kw">where</span></a>
-<a class="sourceLine" id="cb8-4" title="4">        <span class="kw">Self</span>: LoadQuery&lt;PgConnection, (U, <span class="dt">i64</span>)&gt;,</a>
+<a class="sourceLine" id="cb8-4" title="4">        <span class="kw">Self</span>: LoadQuery&lt;<span class="ot">&#39;a</span>, PgConnection, (U, <span class="dt">i64</span>)&gt;,</a>
 <a class="sourceLine" id="cb8-5" title="5">    <span class="op">{</span></a>
 <a class="sourceLine" id="cb8-6" title="6">        <span class="kw">let</span> per_page = <span class="kw">self</span>.per_page;</a>
-<a class="sourceLine" id="cb8-7" title="7">        <span class="kw">let</span> results: <span class="dt">Vec</span>&lt;(U, <span class="dt">i64</span>)&gt; = <span class="kw">self</span>.load(conn)?;</a>
-<a class="sourceLine" id="cb8-8" title="8">        <span class="kw">let</span> total = results.get(<span class="dv">0</span>).map(|(_, total)| total).unwrap_or(&amp;<span class="dv">0</span>);</a>
-<a class="sourceLine" id="cb8-9" title="9">        <span class="kw">let</span> total = <span class="dt">f64</span>::from(*total <span class="kw">as</span> <span class="dt">i32</span>);</a>
-<a class="sourceLine" id="cb8-10" title="10">        <span class="kw">let</span> records: <span class="dt">Vec</span>&lt;U&gt; = results.into_iter().map(|(record, _)| record).collect();</a>
-<a class="sourceLine" id="cb8-11" title="11">        <span class="kw">let</span> total_pages = (total / per_page <span class="kw">as</span> <span class="dt">f64</span>).ceil() <span class="kw">as</span> <span class="dt">i64</span>;</a>
-<a class="sourceLine" id="cb8-12" title="12">        <span class="cn">Ok</span>((records, total_pages))</a>
-<a class="sourceLine" id="cb8-13" title="13">    <span class="op">}</span></a>
-<a class="sourceLine" id="cb8-14" title="14"><span class="op">}</span></a></code></pre></div>
+<a class="sourceLine" id="cb8-7" title="7">        <span class="kw">let</span> results = <span class="kw">self</span>.<span class="pp">load::</span>&lt;(U, <span class="dt">i64</span>)&gt;(conn)?;</a>
+<a class="sourceLine" id="cb8-8" title="8">        <span class="kw">let</span> total = results.get(<span class="dv">0</span>).map(|x| x.<span class="dv">1</span>).unwrap_or(<span class="dv">0</span>);</a>
+<a class="sourceLine" id="cb8-9" title="9">        <span class="kw">let</span> records = results.into_iter().map(|x| x.<span class="dv">0</span>).collect();</a>
+<a class="sourceLine" id="cb8-10" title="10">        <span class="kw">let</span> total_pages = (total <span class="kw">as</span> <span class="dt">f64</span> / per_page <span class="kw">as</span> <span class="dt">f64</span>).ceil() <span class="kw">as</span> <span class="dt">i64</span>;</a>
+<a class="sourceLine" id="cb8-11" title="11">        <span class="cn">Ok</span>((records, total_pages))</a>
+<a class="sourceLine" id="cb8-12" title="12">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb8-13" title="13"><span class="op">}</span></a></code></pre></div>
 </div>
 </div>
 <p>This is one of the rare cases where we want to define a function that takes a connection. One benefit of defining the function this way is that if we wanted to support backends other than PostgreSQL, we could have this function execute two queries.</p>
-<p>You can find the full code for this example in <a href="https://github.com/diesel-rs/diesel/tree/v1.4.4/examples/postgres/advanced-blog-cli">the “advanced blog” example</a>.</p>
+<p>You can find the full code for this example in <a href="https://github.com/diesel-rs/diesel/tree/2.0.x/examples/postgres/advanced-blog-cli">the “advanced blog” example</a>.</p>
 <h2 id="custom-operators">Custom Operators</h2>
 <p>If you’re adding support for a new type to Diesel, or working with a type that has incomplete support, you may wish to add support for the operators associated with that type. The term operator refers to anything that uses one of these syntaxes:</p>
 <ul>
@@ -298,7 +305,7 @@ src/pagination.rs
 <li>Prefix (e.g. <code>OP expr</code>)</li>
 <li>Postfix (e.g. <code>expr OP</code>)</li>
 </ul>
-<p>Diesel provides helper macros for defining each of these kinds of operators. In fact, Diesel uses these macros to declare nearly all of the operators supported by the main crate. The macros are <a href="https://docs.diesel.rs/diesel/macro.diesel_infix_operator.html"><code>diesel_infix_operator!</code></a>, <a href="https://docs.diesel.rs/diesel/macro.diesel_postfix_operator.html"><code>diesel_postfix_operator!</code></a> and <a href="https://docs.diesel.rs/diesel/macro.diesel_prefix_operator.html"><code>diesel_prefix_operator!</code></a>.</p>
+<p>Diesel provides helper macros for defining each of these kinds of operators. In fact, Diesel uses these macros to declare nearly all of the operators supported by the main crate. The macros are <a href="https://docs.diesel.rs/2.0.x/diesel/macro.infix_operator.html"><code>diesel::infix_operator!</code></a>, <a href="https://docs.diesel.rs/2.0.x/diesel/macro.postfix_operator.html"><code>diesel::postfix_operator!</code></a> and <a href="https://docs.diesel.rs/2.0.x/diesel/macro.prefix_operator.html"><code>diesel::prefix_operator!</code></a>.</p>
 <p>All of these macros have the same signature. They take between two and four arguments.</p>
 <p>The first is the name of the struct you want to represent this operator.</p>
 <p>The second is the actual SQL for this operator.</p>
@@ -311,22 +318,22 @@ src/pagination.rs
 Example
 </div>
 <div class="sourceCode" id="cb9"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb9-1" title="1"><span class="co">// A simple operator. It returns `Bool` and works on all backends.</span></a>
-<a class="sourceLine" id="cb9-2" title="2"><span class="pp">diesel_infix_operator!</span>(<span class="bu">Eq</span>, <span class="st">&quot; = &quot;</span>);</a>
+<a class="sourceLine" id="cb9-2" title="2"><span class="pp">diesel::infix_operator!</span>(<span class="bu">Eq</span>, <span class="st">&quot; = &quot;</span>);</a>
 <a class="sourceLine" id="cb9-3" title="3"></a>
 <a class="sourceLine" id="cb9-4" title="4"><span class="co">// Here we&#39;ve specified the SQL type.</span></a>
 <a class="sourceLine" id="cb9-5" title="5"><span class="co">// Since this operator is only used for ordering, and we don&#39;t want it used</span></a>
 <a class="sourceLine" id="cb9-6" title="6"><span class="co">// elsewhere, we&#39;ve made it `()` which is normally useless.</span></a>
-<a class="sourceLine" id="cb9-7" title="7"><span class="pp">diesel_postfix_operator!</span>(Asc, <span class="st">&quot; ASC&quot;</span>, ());</a>
+<a class="sourceLine" id="cb9-7" title="7"><span class="pp">diesel::postfix_operator!</span>(Asc, <span class="st">&quot; ASC&quot;</span>, ());</a>
 <a class="sourceLine" id="cb9-8" title="8"></a>
 <a class="sourceLine" id="cb9-9" title="9"><span class="co">// Concat uses the magic `ReturnBasedOnArgs` return type</span></a>
 <a class="sourceLine" id="cb9-10" title="10"><span class="co">// so it can work with both `Text` and `Nullable&lt;Text&gt;`.</span></a>
-<a class="sourceLine" id="cb9-11" title="11"><span class="pp">diesel_infix_operator!</span>(Concat, <span class="st">&quot; || &quot;</span>, ReturnBasedOnArgs);</a>
+<a class="sourceLine" id="cb9-11" title="11"><span class="pp">diesel::infix_operator!</span>(Concat, <span class="st">&quot; || &quot;</span>, ReturnBasedOnArgs);</a>
 <a class="sourceLine" id="cb9-12" title="12"></a>
 <a class="sourceLine" id="cb9-13" title="13"><span class="co">// This operator is PG specific, so we specify the backend</span></a>
-<a class="sourceLine" id="cb9-14" title="14"><span class="pp">diesel_infix_operator!</span>(IsDistinctFrom, <span class="st">&quot; IS DISTINCT FROM &quot;</span>, backend: Pg);</a>
+<a class="sourceLine" id="cb9-14" title="14"><span class="pp">diesel::infix_operator!</span>(IsDistinctFrom, <span class="st">&quot; IS DISTINCT FROM &quot;</span>, backend: Pg);</a>
 <a class="sourceLine" id="cb9-15" title="15"></a>
 <a class="sourceLine" id="cb9-16" title="16"><span class="co">// This operator is PG specific, and we are also specifying the SQL type.</span></a>
-<a class="sourceLine" id="cb9-17" title="17"><span class="pp">diesel_postfix_operator!</span>(NullsFirst, <span class="st">&quot; NULLS FIRST&quot;</span>, (), backend: Pg);</a></code></pre></div>
+<a class="sourceLine" id="cb9-17" title="17"><span class="pp">diesel::postfix_operator!</span>(NullsFirst, <span class="st">&quot; NULLS FIRST&quot;</span>, (), backend: Pg);</a></code></pre></div>
 </div>
 </div>
 <p>Diesel provides a proof-of-concept crate showing how to add new SQL types called <code>diesel_full_text_search</code>. These are the operators as they are defined in that crate. You’ll notice all of the operators specify the backend, and many of them specify the return type.</p>
@@ -336,12 +343,12 @@ Example
 src/lib.rs
 </div>
 <a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel_full_text_search/blob/27b9946831caa8b08177c1818a50cb7f0563c9c0/src/lib.rs#L57-L62">View on GitHub</a>
-<div class="sourceCode" id="cb10"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb10-1" title="1"><span class="pp">diesel_infix_operator!</span>(Matches, <span class="st">&quot; @@ &quot;</span>, backend: Pg);</a>
-<a class="sourceLine" id="cb10-2" title="2"><span class="pp">diesel_infix_operator!</span>(Concat, <span class="st">&quot; || &quot;</span>, TsVector, backend: Pg);</a>
-<a class="sourceLine" id="cb10-3" title="3"><span class="pp">diesel_infix_operator!</span>(And, <span class="st">&quot; &amp;&amp; &quot;</span>, TsQuery, backend: Pg);</a>
-<a class="sourceLine" id="cb10-4" title="4"><span class="pp">diesel_infix_operator!</span>(Or, <span class="st">&quot; || &quot;</span>, TsQuery, backend: Pg);</a>
-<a class="sourceLine" id="cb10-5" title="5"><span class="pp">diesel_infix_operator!</span>(Contains, <span class="st">&quot; @&gt; &quot;</span>, backend: Pg);</a>
-<a class="sourceLine" id="cb10-6" title="6"><span class="pp">diesel_infix_operator!</span>(ContainedBy, <span class="st">&quot; &lt;@ &quot;</span>, backend: Pg);</a></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb10-1" title="1"><span class="pp">diesel::infix_operator!</span>(Matches, <span class="st">&quot; @@ &quot;</span>, backend: Pg);</a>
+<a class="sourceLine" id="cb10-2" title="2"><span class="pp">diesel::infix_operator!</span>(Concat, <span class="st">&quot; || &quot;</span>, TsVector, backend: Pg);</a>
+<a class="sourceLine" id="cb10-3" title="3"><span class="pp">diesel::infix_operator!</span>(And, <span class="st">&quot; &amp;&amp; &quot;</span>, TsQuery, backend: Pg);</a>
+<a class="sourceLine" id="cb10-4" title="4"><span class="pp">diesel::infix_operator!</span>(Or, <span class="st">&quot; || &quot;</span>, TsQuery, backend: Pg);</a>
+<a class="sourceLine" id="cb10-5" title="5"><span class="pp">diesel::infix_operator!</span>(Contains, <span class="st">&quot; @&gt; &quot;</span>, backend: Pg);</a>
+<a class="sourceLine" id="cb10-6" title="6"><span class="pp">diesel::infix_operator!</span>(ContainedBy, <span class="st">&quot; &lt;@ &quot;</span>, backend: Pg);</a></code></pre></div>
 </div>
 </div>
 <p>However, just declaring the operator by itself isn’t very useful. This creates the types required by Diesel’s query builder, but doesn’t provide anything to help use the operator in real code. The structs created by these macros will have a <code>new</code> method, but that’s not typically how you work with Diesel’s query builder.</p>
@@ -356,35 +363,50 @@ src/lib.rs
 <div class="browser-bar">
 src/expression_methods/global_expression_methods.rs
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/v1.4.4/diesel/src/expression_methods/global_expression_methods.rs">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.0.x/diesel/src/expression_methods/global_expression_methods.rs#L9-L31">View on GitHub</a>
 <div class="sourceCode" id="cb11"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb11-1" title="1"><span class="kw">pub</span> <span class="kw">trait</span> ExpressionMethods: Expression + <span class="bu">Sized</span> <span class="op">{</span></a>
-<a class="sourceLine" id="cb11-2" title="2">    <span class="kw">fn</span> eq&lt;T: AsExpression&lt;<span class="kw">Self</span>::SqlType&gt;&gt;(<span class="kw">self</span>, other: T) -&gt; <span class="bu">Eq</span>&lt;<span class="kw">Self</span>, <span class="pp">T::</span>Expression&gt; <span class="op">{</span></a>
-<a class="sourceLine" id="cb11-3" title="3">        <span class="bu">Eq</span>::new(<span class="kw">self</span>, other.as_expression())</a>
-<a class="sourceLine" id="cb11-4" title="4">    <span class="op">}</span></a>
-<a class="sourceLine" id="cb11-5" title="5"><span class="op">}</span></a>
-<a class="sourceLine" id="cb11-6" title="6"></a>
-<a class="sourceLine" id="cb11-7" title="7"><span class="kw">impl</span>&lt;T: Expression&gt; ExpressionMethods <span class="kw">for</span> T <span class="op">{}</span></a></code></pre></div>
+<a class="sourceLine" id="cb11-2" title="2">    <span class="kw">fn</span> eq&lt;T&gt;(<span class="kw">self</span>, other: T) -&gt; <span class="pp">dsl::</span><span class="bu">Eq</span>&lt;<span class="kw">Self</span>, T&gt;</a>
+<a class="sourceLine" id="cb11-3" title="3">    <span class="kw">where</span></a>
+<a class="sourceLine" id="cb11-4" title="4">        <span class="kw">Self</span>::SqlType: SqlType,</a>
+<a class="sourceLine" id="cb11-5" title="5">        T: AsExpression&lt;<span class="kw">Self</span>::SqlType&gt;,</a>
+<a class="sourceLine" id="cb11-6" title="6">    <span class="op">{</span></a>
+<a class="sourceLine" id="cb11-7" title="7">        Grouped(<span class="bu">Eq</span>::new(<span class="kw">self</span>, other.as_expression()))</a>
+<a class="sourceLine" id="cb11-8" title="8">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb11-9" title="9"><span class="op">}</span></a>
+<a class="sourceLine" id="cb11-10" title="10"></a>
+<a class="sourceLine" id="cb11-11" title="11"><span class="kw">impl</span>&lt;T: Expression&gt; ExpressionMethods <span class="kw">for</span> T <span class="op">{}</span></a></code></pre></div>
 </div>
 </div>
-<p>It’s important to note that these methods are where you should put any type constraints. The structs defined by <code>diesel_*_operator!</code> don’t know or care about what the types of the arguments should be. The <code>=</code> operator requires that both sides be of the same type, so we represent that in the type of <code>ExpressionMethods::eq</code>.</p>
-<p>You’ll also notice that our argument is <code>AsExpression&lt;Self::SqlType&gt;</code>, not <code>Expression&lt;SqlType = Self::SqlType&gt;</code>. This allows Rust values to be passed as well as Diesel expressions. For example, we can do <code>text_col.eq(other_text_col)</code>, or <code>text_col.eq("Some Rust string")</code>.</p>
+<p>It’s important to note that these methods are where you should put any type constraints. The structs defined by <code>diesel::*_operator!</code> don’t know or care about what the types of the arguments should be. The <code>=</code> operator requires that both sides be of the same type, so we represent that in the type of <code>ExpressionMethods::eq</code>.</p>
+<p>You’ll also notice that our argument is <a href="https://docs.diesel.rs/2.0.x/diesel/expression/trait.AsExpression.html"><code>AsExpression&lt;Self::SqlType&gt;</code></a>, not <a href="https://docs.diesel.rs/2.0.x/diesel/prelude/trait.Expression.html"><code>Expression&lt;SqlType = Self::SqlType&gt;</code></a>. This allows Rust values to be passed as well as Diesel expressions. For example, we can do <code>text_col.eq(other_text_col)</code>, or <code>text_col.eq("Some Rust string")</code>.</p>
 <p>If the operator is specific to only one SQL type, we can represent that in our trait.</p>
 <div class="demo__example">
 <div class="demo__example-browser">
 <div class="browser-bar">
 src/expression_methods/global_expression_methods.rs
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/v1.4.4/diesel/src/expression_methods/bool_expression_methods.rs">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/master/diesel/src/expression_methods/bool_expression_methods.rs">View on GitHub</a>
 <div class="sourceCode" id="cb12"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb12-1" title="1"><span class="kw">pub</span> <span class="kw">trait</span> BoolExpressionMethods</a>
 <a class="sourceLine" id="cb12-2" title="2"><span class="kw">where</span></a>
 <a class="sourceLine" id="cb12-3" title="3">    <span class="kw">Self</span>: Expression&lt;SqlType = Bool&gt; + <span class="bu">Sized</span>,</a>
 <a class="sourceLine" id="cb12-4" title="4"><span class="op">{</span></a>
-<a class="sourceLine" id="cb12-5" title="5">    <span class="kw">fn</span> and&lt;T: AsExpression&lt;Bool&gt;&gt;(<span class="kw">self</span>, other: T) -&gt; And&lt;<span class="kw">Self</span>, <span class="pp">T::</span>Expression&gt; <span class="op">{</span></a>
-<a class="sourceLine" id="cb12-6" title="6">        <span class="pp">And::</span>new(<span class="kw">self</span>, other.as_expression())</a>
-<a class="sourceLine" id="cb12-7" title="7">    <span class="op">}</span></a>
-<a class="sourceLine" id="cb12-8" title="8"><span class="op">}</span></a>
-<a class="sourceLine" id="cb12-9" title="9"></a>
-<a class="sourceLine" id="cb12-10" title="10"><span class="kw">impl</span>&lt;T: Expression&lt;SqlType = Bool&gt;&gt; BoolExpressionMethods <span class="kw">for</span> T <span class="op">{}</span></a></code></pre></div>
+<a class="sourceLine" id="cb12-5" title="5">    <span class="kw">fn</span> and&lt;T, ST&gt;(<span class="kw">self</span>, other: T) -&gt; <span class="pp">dsl::</span>And&lt;<span class="kw">Self</span>, T, ST&gt;</a>
+<a class="sourceLine" id="cb12-6" title="6">    <span class="kw">where</span></a>
+<a class="sourceLine" id="cb12-7" title="7">        <span class="kw">Self</span>::SqlType: SqlType,</a>
+<a class="sourceLine" id="cb12-8" title="8">        ST: SqlType + TypedExpressionType,</a>
+<a class="sourceLine" id="cb12-9" title="9">        T: AsExpression&lt;ST&gt;,</a>
+<a class="sourceLine" id="cb12-10" title="10">        And&lt;<span class="kw">Self</span>, <span class="pp">T::</span>Expression&gt;: Expression,</a>
+<a class="sourceLine" id="cb12-11" title="11">    <span class="op">{</span></a>
+<a class="sourceLine" id="cb12-12" title="12">        Grouped(<span class="pp">And::</span>new(<span class="kw">self</span>, other.as_expression()))</a>
+<a class="sourceLine" id="cb12-13" title="13">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb12-14" title="14"><span class="op">}</span></a>
+<a class="sourceLine" id="cb12-15" title="15"></a>
+<a class="sourceLine" id="cb12-16" title="16"><span class="kw">impl</span>&lt;T&gt; BoolExpressionMethods <span class="kw">for</span> T</a>
+<a class="sourceLine" id="cb12-17" title="17"><span class="kw">where</span></a>
+<a class="sourceLine" id="cb12-18" title="18">    T: Expression,</a>
+<a class="sourceLine" id="cb12-19" title="19">    <span class="pp">T::</span>SqlType: BoolOrNullableBool,</a>
+<a class="sourceLine" id="cb12-20" title="20"><span class="op">{</span></a>
+<a class="sourceLine" id="cb12-21" title="21"><span class="op">}</span></a></code></pre></div>
 </div>
 </div>
 <p>Prefix operators are usually defined as bare functions. The code is very similar, but without the trait. Here’s how <code>not</code> is defined in Diesel.</p>
@@ -393,12 +415,14 @@ src/expression_methods/global_expression_methods.rs
 <div class="browser-bar">
 src/expression/not.rs
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/v1.4.4/diesel/src/expression/not.rs#L27-L29">View on GitHub</a>
-<div class="sourceCode" id="cb13"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb13-1" title="1"><span class="kw">pub</span> <span class="kw">fn</span> not&lt;T: AsExpression&lt;Bool&gt;&gt;(expr: T)</a>
-<a class="sourceLine" id="cb13-2" title="2">    -&gt; Not&lt;Grouped&lt;<span class="pp">T::</span>Expression&gt;&gt;</a>
-<a class="sourceLine" id="cb13-3" title="3"><span class="op">{</span></a>
-<a class="sourceLine" id="cb13-4" title="4">    <span class="kw">super</span>::<span class="pp">operators::Not::</span>new(Grouped(expr.as_expression()))</a>
-<a class="sourceLine" id="cb13-5" title="5"><span class="op">}</span></a></code></pre></div>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/master/diesel/src/expression/not.rs#L26-L32">View on GitHub</a>
+<div class="sourceCode" id="cb13"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb13-1" title="1"><span class="kw">pub</span> <span class="kw">fn</span> not&lt;T&gt;(expr: T) -&gt; not&lt;T&gt;</a>
+<a class="sourceLine" id="cb13-2" title="2"><span class="kw">where</span></a>
+<a class="sourceLine" id="cb13-3" title="3">    T: Expression,</a>
+<a class="sourceLine" id="cb13-4" title="4">    &lt;T <span class="kw">as</span> Expression&gt;::SqlType: BoolOrNullableBool,</a>
+<a class="sourceLine" id="cb13-5" title="5"><span class="op">{</span></a>
+<a class="sourceLine" id="cb13-6" title="6">    <span class="kw">super</span>::<span class="pp">operators::Not::</span>new(Grouped(expr))</a>
+<a class="sourceLine" id="cb13-7" title="7"><span class="op">}</span></a></code></pre></div>
 </div>
 </div>
 <p>In this case we’re using <code>Grouped</code> (which is currently undocumented in Diesel and only used internally) to add parenthesis around our argument. This ensures that the operator precedence in SQL matches what’s expected. For example, we would expect <code>not(true.and(false))</code> to return <code>true</code>. However, <code>SELECT NOT TRUE AND FALSE</code> returns <code>FALSE</code>. Diesel does the same thing with <code>.or</code>.</p>
@@ -408,12 +432,11 @@ src/expression/not.rs
 <div class="browser-bar">
 src/expression/helper_types.rs
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/v1.4.4/diesel/src/expression/helper_types.rs#L20">View on GitHub</a>
-<div class="sourceCode" id="cb14"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb14-1" title="1"><span class="kw">pub</span> <span class="kw">type</span> Eq&lt;Lhs, Rhs&gt; =</a>
-<a class="sourceLine" id="cb14-2" title="2">    <span class="kw">super</span>::<span class="pp">operators::</span><span class="bu">Eq</span>&lt;Lhs, AsExpr&lt;Rhs, Lhs&gt;&gt;;</a></code></pre></div>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.0.x/diesel/src/expression/helper_types.rs#L21">View on GitHub</a>
+<div class="sourceCode" id="cb14"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb14-1" title="1"><span class="kw">pub</span> <span class="kw">type</span> Eq&lt;Lhs, Rhs&gt; = Grouped&lt;<span class="kw">super</span>::<span class="pp">operators::</span><span class="bu">Eq</span>&lt;Lhs, AsExpr&lt;Rhs, Lhs&gt;&gt;&gt;;</a></code></pre></div>
 </div>
 </div>
-<p>For defining these types, you’ll usually want to make use of <a href="https://docs.diesel.rs/diesel/helper_types/type.SqlTypeOf.html"><code>SqlTypeOf</code></a>, <a href="https://docs.diesel.rs/diesel/helper_types/type.AsExpr.html"><code>AsExpr</code></a>, and <a href="https://docs.diesel.rs/diesel/helper_types/type.AsExprOf.html"><code>AsExprOf</code></a>.</p>
+<p>For defining these types, you’ll usually want to make use of <a href="https://docs.diesel.rs/2.0.x/diesel/helper_types/type.SqlTypeOf.html"><code>SqlTypeOf</code></a>, <a href="https://docs.diesel.rs/2.0.x/diesel/helper_types/type.AsExpr.html"><code>AsExpr</code></a>, and <a href="https://docs.diesel.rs/2.0.x/diesel/helper_types/type.AsExprOf.html"><code>AsExprOf</code></a>.</p>
 </div>
 </div>
 </div>
