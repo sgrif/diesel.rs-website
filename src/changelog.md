@@ -49,12 +49,12 @@ Increasing the minimal supported Rust version will always be coupled at least wi
 * Added ability to create custom aggregate functions in SQLite.
 
 * Multiple aggregate expressions can now appear together in the same select
-  clause. See [the upgrade notes](#2-0-0-upgrade-non-aggregate) for details.
+  clause. See [the upgrade notes](guides/migration_guide.html#2-0-0-upgrade-non-aggregate) for details.
 
 * `ValidGrouping` has been added to represent whether an expression is valid for
   a given group by clause, and whether or not it's aggregate. It replaces the
   functionality of `NonAggregate`. See [the upgrade
-  notes](#2-0-0-upgrade-non-aggregate) for details.
+  notes](guides/migration_guide.html#2-0-0-upgrade-non-aggregate) for details.
 
 * It is now possible to inspect the type of values returned from the database
   in such a way to support constructing a dynamic value depending on this type.
@@ -125,10 +125,10 @@ Increasing the minimal supported Rust version will always be coupled at least wi
   been changed to allow non-references. Users of this type (e.g. code written
   `&DB::RawValue` or `&<DB as Backend>::RawValue>`) should use
   [`backend::RawValue<DB>`][raw-value-2-0-0] instead. Implementors of `Backend`
-  should check the relevant section of [the migration guide][2-0-migration].
+  should check the relevant section of [the migration guide][guides/migration_guide.html#2-0-0-from-sql].
 
-[backend-2-0-0]: http://docs.diesel.rs/diesel/backend/trait.Backend.html
-[raw-value-2-0-0]: http://docs.diesel.rs/diesel/backend/type.RawValue.html
+[backend-2-0-0]: http://docs.diesel.rs/2.0.x/diesel/backend/trait.Backend.html
+[raw-value-2-0-0]: http://docs.diesel.rs/2.0.x/diesel/backend/type.RawValue.html
 
 * The type metadata for MySQL has been changed to include sign information. If
   you are implementing `HasSqlType` for `Mysql` manually, you may need to adjust
@@ -145,7 +145,7 @@ Increasing the minimal supported Rust version will always be coupled at least wi
 * The handling of mixed aggregate values is more robust. Invalid queries such as
   `.select(max(id) + other_column)` are now correctly rejected, and valid
   queries such as `.select((count_star(), max(other_column)))` are now correctly
-  accepted. For more details, see [the migration guide](2-0-migration).
+  accepted. For more details, see [the migration guide](guides/migration_guide.html#2-0-0-upgrade-non-aggregate).
 
 * `NonAggregate` is now a trait alias for `ValidGrouping<()>` for expressions
   that are not aggregate. On stable this is a normal trait with a blanket impl,
@@ -154,7 +154,7 @@ Increasing the minimal supported Rust version will always be coupled at least wi
 
   Due to language limitations, we cannot make the new trait alias by itself
   represent everything it used to, so in some rare cases code changes may be
-  required. See [the migration guide](2-0-migration) for details.
+  required. See [the migration guide](guides/migration_guide.html#2-0-0-upgrade-non-aggregate) for details.
 
 * Various `__NonExhaustive` variants in different (error-) enums are replaced with
   `#[non_exhaustive]`. If you matched on one of those variants explicitly you need to
@@ -191,7 +191,7 @@ Increasing the minimal supported Rust version will always be coupled at least wi
   cases where you detect a data inconsistency between fields on deserialization
   (that e.g. was supposed to be made impossible by DB `CHECK`s). The `build` function now
   returns a
-  [`diesel::deserialize::Result<Self>`](https://docs.diesel.rs/master/diesel/deserialize/type.Result.html)
+  [`diesel::deserialize::Result<Self>`](https://docs.diesel.rs/2.0.x/diesel/deserialize/type.Result.html)
   instead of a `Self`.
 
 * `TypeMetadata::MetadataLookup` is now `?Sized`.
@@ -203,7 +203,7 @@ Increasing the minimal supported Rust version will always be coupled at least wi
 
 * Diesel's migration framework was rewritten from the ground. Existing migrations continue to 
   be compatible with the rewrite, but code calling into `diesel_migrations` requires an update.
-  See the [migration guide](2-0-migration) for details.
+  See the [migration guide](guides/migration_guide.html#2-0-0-upgrade-migrations) for details.
 
 * `eq_any()` now emits a `= ANY()` expression for the postgresql backend instead of `IN()`
 * `ne_all()` now emits a `!= ALL()` expression for the postgresql backend instead of `NOT IN()`
@@ -279,9 +279,6 @@ Increasing the minimal supported Rust version will always be coupled at least wi
   
 * `diesel::dsl::any` and `diesel::dsl::all` are now deprecated in 
    favour of `ExpressionMethods::eq_any()` and `ExpressionMethods::ne_all()`
-
-
-[2-0-migration]: https://github.com/diesel-rs/diesel/blob/master/guide_drafts/migration_guide.md
 
 ## [1.4.8] - 2021-09-20
 
