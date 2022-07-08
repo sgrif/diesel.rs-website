@@ -46,6 +46,10 @@ Users of the macro are advised to consider `sql_function!` macro.
 
 * [Deprecated usage of `no_arg_sql_function!` macro](#2-0-0-no_arg_sql_function)
 
+Users of `eq_any` on the PostgreSQL backend might hit type rejection error in rare cases.
+
+* [Changed accepted argument to `eq_any()` for the PostgreSQL backend](#2-0-0-changed_eq_any)
+
 Users that update generic Diesel code will also be affected by the following changes:
 
 * [Removing `NonAggregate` in favor of `ValidGrouping`](#2-0-0-upgrade-non-aggregate)
@@ -267,7 +271,16 @@ affects all of the usages of the [`no_arg_sql_function!`] in third party crates.
 
 :::
 
-### Replacement of `NonAggregate` with `ValidGrouping`<a name="2-0-0-upgrade-non-aggregate"></a>
+## Changed accepted argument to `eq_any()` for the PostgreSQL backend <a name="2-0-0-changed_eq_any"></a>
+
+Diesel 2.0 introduces an optimisation that replaces the `IN($1, ..., $n)` expression generated previously by `.eq_any()` with the more optimised `= ANY($1)` which binds the parameter as single array instead of binding each element separately. This improves the performance of large lists and allows us to keep such queries in the prepared statement cache, which enables future performance improvements. Unfortunately not all previously accepted arguments are accepted now. Newly rejected cases include:
+
+* A list of arrays where the `values` variable in `col.eq_any(values)` has the type `Vec<Vec<T>>`
+* Using `.eq_any()` on several columns at one via `(table::col_a, table_col::b).eq_any(values)`
+
+Both cases can be worked around by using boxed queries and repeated chained equality checks.
+
+## Replacement of `NonAggregate` with `ValidGrouping`<a name="2-0-0-upgrade-non-aggregate"></a>
 
 Diesel now fully enforces the aggregation rules, which required us to change the way we represent the aggregation 
 at the type system level. This is used to provide `group_by` support. Diesel's aggregation rules 
