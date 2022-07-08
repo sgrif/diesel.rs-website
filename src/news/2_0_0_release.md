@@ -148,7 +148,7 @@ point where the following things can be provided by third party crates:
 * Alternative query dsl implementations reusing the existing `Connection` infrastructure
 * Custom [`Connection`](https://docs.diesel.rs/2.0.x/diesel/connection/trait.Connection.html#provide-a-new-connection-implementation-for-an-existing-backend) implementations for existing backends
 * Custom [`Connection`](https://docs.diesel.rs/2.0.x/diesel/connection/trait.Connection.html#implement-support-for-an-unsupported-database-system) 
-and [`Backend`](https://docs.diesel.rs/2.0.x/diesel/backend/trait.Backend.html#implementing-a-custom-backend) implementations for previously unsupported backends. Checkout [diesel-oci](https://docs.diesel.rs/2.0.x/diesel/backend/trait.Backend.html#implementing-a-custom-backend) for an example.
+and [`Backend`](https://docs.diesel.rs/2.0.x/diesel/backend/trait.Backend.html#implementing-a-custom-backend) implementations for previously unsupported backends. Checkout [diesel-oci](https://github.com/GiGainfosystems/diesel-oci) for an example.
 
 We encourage our community to try out those features. Especially we would like to see experimentation around:
 
