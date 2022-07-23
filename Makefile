@@ -15,7 +15,7 @@ guides: guides/all-about-updates.html guides/all-about-inserts.html guides/compo
 docs: docs/index.html
 
 page: index.html guides docs
-	cp assets/ out -r
+	cp -R assets out
 
 clean:
 	rm out -r
