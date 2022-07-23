@@ -1,6 +1,6 @@
-%.html:
+%.html: venv
 	mkdir -p out/$(dir $@)
-	pandoc -t html5 --template=template.html -F code-block-filter.py src/$*.md -o out/$*.html -s --syntax-definition=toml.xml --highlight-style=diesel.theme
+	. $(VENV)/activate && pandoc -t html5 --template=template.html -F code-block-filter.py src/$*.md -o out/$*.html -s --syntax-definition=toml.xml --highlight-style=diesel.theme
 
 guides: guides/all-about-updates.html guides/all-about-inserts.html guides/composing-applications.html guides/configuring-diesel-cli.html guides/extending-diesel.html guides/getting-started.html guides/index.html guides/schema-in-depth.html 
 	cp -r src/guides/all-about-inserts/ out/guides/all-about-inserts/ 
@@ -19,3 +19,5 @@ page: index.html guides docs
 
 clean:
 	rm out -r
+
+include Makefile.venv
