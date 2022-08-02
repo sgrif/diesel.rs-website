@@ -412,7 +412,7 @@ pub fn create_post<'a>(conn: &PgConnection, title: &'a str, body: &'a str) -> Po
         body: body,
     };
 
-    diesel::insert_into(posts::table)
+    diesel::insert_into(posts)
         .values(&new_post)
         .get_result(conn)
         .expect("Error saving new post")
