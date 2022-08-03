@@ -1077,3 +1077,7 @@ div.guide-wrapper {
 div.vertical-tabs-container {
   text-align: left;
 }
+
+.content-wrapper > h2 {
+  padding-top: 100px;
+}

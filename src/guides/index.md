@@ -41,5 +41,10 @@ with new functionality.
 
 This guide will cover all available configuration options in `diesel.toml`, and what they do.
 
+#### [Diesel 2.0 migration guide](./migration_guide.html)
+
+This guide contains information about how to resolve breaking changes while updating from Diesel
+1.4.x to Diesel 2.0
+
 :::
 :::
