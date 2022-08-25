@@ -18,7 +18,7 @@ default features enabled using some set of dependencies. Those set of dependenci
 an up to date version of the specific dependency. We check this by using the unstable `-Z minimal-version` cargo flag. 
 Increasing the minimal supported Rust version will always be coupled at least with a minor release.
 
-## [2.0.0] 2022-07-07
+## [2.0.0] 2022-08-29
 
 ### Added
 
@@ -95,6 +95,17 @@ Increasing the minimal supported Rust version will always be coupled at least wi
 * Added support for the usage of slices of references with `belonging_to` from `BelongingToDsl`
 
 * Added support for updating individual array elements `UPDATE table SET array_column[1] = true`
+
+* Adds an `ipnet-address` feature flag, allowing support (de)serializing IP
+  values from the database using types provided by `ipnet`. This feature
+  may be enabled concurrently with the previously existing `network-address`
+  feature.
+
+* We've added support for loading values using libpq's row-by-row mode via
+  the new iterator interface
+
+* Adds `Timestamp`, `Timestamptz` support for appropriate types for `time v0.3.9`.
+  This feature enables using the `time` crate as an alternative to `chrono`.
 
 ### Removed
 
@@ -216,6 +227,12 @@ Increasing the minimal supported Rust version will always be coupled at least wi
   copying the value itself. This is useful for database backends like sqlite where you can directly share a buffer
   with the database. Beside of the changed signature, existing impls of this trait should remain unchanged in almost 
   all cases.
+
+* The `PIPES_AS_CONCAT` sql_mode is no longer set
+by default. This setting requires a modification to MySQL query parsing that is
+not supported by certain systems (such as Vitess). If you are using MySQL and
+executing raw queries with the `||` operator, you will need to rewrite your
+queries or set `PIPES_AS_CONCAT` manually.
 
 ### Fixed
 
