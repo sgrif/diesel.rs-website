@@ -1,5 +1,5 @@
 ---
-title: "Guides to Diesel"
+title: "News"
 lang: en-US
 css: ../assets/stylesheets/application.css
 include-after: |
