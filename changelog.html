@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Change log</title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  { color: #cccccc; background-color: #303030; }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ffcfaf; } /* Alert */
+code span.an { color: #7f9f7f; font-weight: bold; } /* Annotation */
+code span.at { } /* Attribute */
+code span.bn { color: #dca3a3; } /* BaseN */
+code span.bu { color: #de935f; } /* BuiltIn */
+code span.cf { color: #f0dfaf; } /* ControlFlow */
+code span.ch { color: #dca3a3; } /* Char */
+code span.cn { color: #dca3a3; font-weight: bold; } /* Constant */
+code span.co { color: #7f9f7f; } /* Comment */
+code span.cv { color: #7f9f7f; font-weight: bold; } /* CommentVar */
+code span.do { color: #7f9f7f; } /* Documentation */
+code span.dt { color: #de935f; } /* DataType */
+code span.dv { color: #dcdccc; } /* DecVal */
+code span.er { color: #c3bf9f; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #c0bed1; } /* Float */
+code span.fu { color: #efef8f; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #7f9f7f; font-weight: bold; } /* Information */
+code span.kw { color: #81a2be; } /* Keyword */
+code span.op { color: #f0efd0; } /* Operator */
+code span.ot { color: #efef8f; } /* Other */
+code span.pp { color: #ffcfaf; font-weight: bold; } /* Preprocessor */
+code span.sc { color: #dca3a3; } /* SpecialChar */
+code span.ss { color: #cc9393; } /* SpecialString */
+code span.st { color: #b5bd68; } /* String */
+code span.va { } /* Variable */
+code span.vs { color: #cc9393; } /* VerbatimString */
+code span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="../assets/stylesheets/application.css">
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+    <header class="main-header">
+        <div class="content-wrapper">
+            <h1>
+                <a href="/">
+                    <svg class='logo' height='76px' version='1.1' viewBox='0 0 187 76' width='187px' xmlns:sketch='http://www.bohemiancoding.com/sketch/ns' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns='http://www.w3.org/2000/svg'>
+<g fill-rule='evenodd' fill='none' id='Page-1' sketch:type='MSPage' stroke-width='1' stroke='none'>
+<g id='Desktop-HD' sketch:type='MSArtboardGroup' transform='translate(-119.000000, -30.000000)'>
+<g id='logo' sketch:type='MSLayerGroup' transform='translate(119.000000, 31.000000)'>
+<g id='mark' sketch:type='MSShapeGroup' transform='translate(0.130247, 0.315216)'>
+<g id='drop' transform='translate(73.929204, 47.710843)'>
+<path d='M9.7807837,7.73987977 C9.7807837,10.2104926 7.78625402,12.2130607 5.3255584,12.2130607 C2.86486278,12.2130607 0.870333101,10.2104926 0.870333101,7.73987977 C0.870333101,5.26926692 5.3255584,0.395873804 5.3255584,0.395873804 C5.3255584,0.395873804 9.7807837,5.26926692 9.7807837,7.73987977' fill='#FDBD41' id='drop-fill'></path>
+<path d='M9.7807837,7.73987977 C9.7807837,10.2104926 7.78625402,12.2130607 5.3255584,12.2130607 C2.86486278,12.2130607 0.870333101,10.2104926 0.870333101,7.73987977 C0.870333101,5.26926692 5.3255584,0.395873804 5.3255584,0.395873804 C5.3255584,0.395873804 9.7807837,5.26926692 9.7807837,7.73987977 L9.7807837,7.73987977 Z' id='drop-stroke' stroke-width='2.235' stroke='#000000'></path>
+</g>
+<g id='can'>
+<path d='M79.275823,44.6326234 L80.2209163,43.6799527 C80.6090126,43.2880312 80.6090126,42.6541735 80.219415,42.2637594 L74.2643514,36.3027842 C74.0774346,36.1143604 73.8229575,36.0299465 73.5579711,36.0299465 L64.1791025,36.0299465 L64.1791025,39.0447273 L72.1842454,39.0447273 C72.4499825,39.0447273 72.7044595,39.2934467 72.892127,39.4826242 L77.8608104,44.5617761 C78.2511587,44.9544513 78.8854747,45.0260523 79.275823,44.6326234' fill='#FFFFFF' id='nozzle-fill'></path>
+<path d='M79.275823,44.6326234 L80.2209163,43.6799527 C80.6090126,43.2880312 80.6090126,42.6541735 80.219415,42.2637594 L74.2643514,36.3027842 C74.0774346,36.1143604 73.8229575,36.0299465 73.5579711,36.0299465 L64.1791025,36.0299465 L64.1791025,39.0447273 L72.1842454,39.0447273 C72.4499825,39.0447273 72.7044595,39.2934467 72.892127,39.4826242 L77.8608104,44.5617761 C78.2511587,44.9544513 78.8854747,45.0260523 79.275823,44.6326234 L79.275823,44.6326234 Z' id='nozzle-stroke' stroke-width='2' stroke='#000000'></path>
+<path d='M62.9549102,43.5800881 L63.0967868,31.4757433 L66.1257395,32.9755967 C66.3952299,33.123321 66.5626293,33.4082178 66.5596266,33.7164791 L66.495069,41.2926232 C66.4920663,41.6016382 66.320163,41.8835202 66.0476698,42.0259686 L62.9549102,43.5800881 Z' fill='#9B9B9B' id='attachement-fill'></path>
+<path d='M62.9549102,43.5800881 L63.0967868,31.4757433 L66.1257395,32.9755967 C66.3952299,33.123321 66.5626293,33.4082178 66.5596266,33.7164791 L66.495069,41.2926232 C66.4920663,41.6016382 66.320163,41.8835202 66.0476698,42.0259686 L62.9549102,43.5800881 L62.9549102,43.5800881 Z' id='attachment-stroke' stroke-width='2.235' stroke='#000000'></path>
+<path d='M57.3441789,25.3100644 C56.3690588,26.2891144 54.5156551,26.2793164 53.5232696,25.2829314 L38.2891765,9.98744111 C37.2967911,8.99105607 37.3838688,7.22665562 38.3582382,6.24760556 L38.5271389,6.07802415 C39.5022589,5.09972779 41.0936789,5.17886578 42.0860644,6.17525083 L57.3201575,21.4707411 C58.3125429,22.4671261 58.4881997,24.1614329 57.5130796,25.140483 L57.3441789,25.3100644 Z M62.9742024,45.1367701 L63.179886,22.3812049 C63.1783846,21.6380614 62.9066422,20.8843662 62.384176,20.3590407 L43.748798,1.64931119 C41.7662791,-0.341197814 38.467836,-0.295222407 36.485317,1.6952866 L2.35686493,35.9612849 C0.373595307,37.9517939 0.591289551,40.9997372 2.57380851,42.9902462 L30.81776,71.3480279 C32.8002789,73.3385369 35.853253,73.5744435 37.835772,71.5839345 L62.1732378,47.1483826 C62.6994573,46.6200423 62.9764544,45.8844358 62.9742024,45.1367701 L62.9742024,45.1367701 Z' fill='#FF2727' id='red-fill'></path>
+<path d='M62.8151162,44.3834657 L62.8670115,37.9165376 L36.2319575,64.7024784 C35.0391186,65.9020746 33.1054561,65.9020746 31.9126172,64.7024784 L2.35413024,34.9765434 L2.1187213,35.213286 C0.107591965,37.2350519 0.107591965,40.5441526 2.1187213,42.5659185 L30.2985994,70.9054348 C32.3089767,72.9279572 35.599437,72.9279572 37.6098142,70.9054348 L61.9938173,46.3832971 C62.5210431,45.8530846 62.8166204,45.1337807 62.8151162,44.3834657' fill='#9B0000' id='shadow'></path>
+<path d='M57.4628598,25.4292236 C56.4877397,26.4082737 54.5149795,26.2793918 53.522594,25.2830067 L38.2885009,9.98676279 C37.2961155,8.99037774 37.5025496,7.34581483 38.4769191,6.36676477 L38.6458198,6.19718336 C39.6209398,5.218887 41.0930033,5.17818745 42.0853888,6.1745725 L57.3202325,21.4700627 C58.312618,22.4664478 58.6068806,24.2805921 57.6317605,25.2596422 L57.4628598,25.4292236 L57.4628598,25.4292236 Z M63.1199074,22.4400685 C63.1184061,21.6976787 62.7881114,21.0027717 62.2648945,20.4781999 L43.6295166,1.76771671 C41.6469976,-0.222792299 38.5865168,-0.176063197 36.6039979,1.81444581 L2.47554583,36.0804441 C0.492276204,38.0709531 0.472008119,41.1181427 2.45452708,43.1086517 L30.6984785,71.4671871 C32.6809975,73.4576961 35.8533281,73.5745188 37.835847,71.5840098 L62.1733128,47.148458 C62.6995324,46.6201176 62.9757788,45.8837574 62.9742775,45.1368455 L63.1199074,22.4400685 Z' id='black-stroke' stroke-width='2.235' stroke='#000000'></path>
+<path d='M31.379261,48.8214352 C31.6119686,49.0550807 31.8424242,49.195268 32.0683759,49.2404897 C32.2950781,49.2864651 32.5157751,49.2796819 32.7289653,49.2208937 C32.9429062,49.1628591 33.1440857,49.0580955 33.3317531,48.9088638 C33.5194206,48.7588785 33.6845679,48.6134153 33.8264445,48.4702132 L36.9349682,45.3491614 C37.3493379,44.9331217 37.7637077,44.6663136 38.1788281,44.5494908 C38.5924471,44.4319144 38.9812941,44.3934759 39.3438676,44.4319144 C39.7064411,44.4718602 40.0337332,44.5660721 40.3249931,44.7160575 C40.6162529,44.8652891 40.8399525,45.0047227 40.9953412,45.135112 L41.0538934,45.0763238 C40.9240276,44.9195552 40.7814003,44.6994762 40.6267623,44.413072 C40.470623,44.1274215 40.3730359,43.8018252 40.3347518,43.4377904 C40.2957169,43.0737557 40.3475131,42.6705287 40.4901404,42.2281097 C40.632017,41.7864443 40.943545,41.3244291 41.4224723,40.8435716 L44.3756073,37.8785347 C44.530996,37.7225198 44.6826313,37.5506773 44.8327652,37.3622535 C44.9813979,37.173076 45.0849903,36.9718394 45.1427919,36.7570362 C45.2013441,36.5429868 45.2073495,36.3221541 45.1623093,36.0937845 C45.1165184,35.8669222 44.9776445,35.6355378 44.7449369,35.4018923 L43.6962511,34.3482264 L45.8716922,32.1640177 L48.3383932,34.6406601 C48.5590902,34.8622465 48.752763,35.1682468 48.9216637,35.5579072 C49.0898137,35.9475676 49.1866501,36.3703906 49.2129236,36.8256225 C49.2384463,37.2808544 49.1701354,37.7586972 49.0087414,38.2591508 C48.8473474,38.7596044 48.5455781,39.2314176 48.1056856,39.6730829 L44.4529263,43.3405638 C44.1293876,43.6654064 43.9184494,44.0068303 43.8223637,44.3640818 C43.7240259,44.722087 43.6985032,45.0597425 43.744294,45.3785556 C43.7893342,45.6973686 43.8861706,45.9898024 44.0355539,46.2566105 C44.1841865,46.5226649 44.3365725,46.7344532 44.4919611,46.8904681 L42.8022034,48.587036 C42.6468148,48.4310211 42.4358765,48.278021 42.1708901,48.1287893 C41.905153,47.978804 41.6198985,47.8755477 41.3158772,47.8167595 C41.0111053,47.7579713 40.6905692,47.7677693 40.3542692,47.8461536 C40.0172184,47.9237842 39.7004358,48.112208 39.4024199,48.411425 L35.6333068,52.1957286 C35.1934143,52.637394 34.723495,52.9403794 34.2250502,53.1024239 C33.7258548,53.2652221 33.2499301,53.3330546 32.7972762,53.307429 C32.3438717,53.2818034 31.9227459,53.183823 31.5346496,53.0149953 C31.1458027,52.8454138 30.8417814,52.6509605 30.6210845,52.4293741 L28.1543835,49.9527317 L30.3298246,47.7677693 L31.379261,48.8214352 Z' fill='#9B0000' id='Fill-19'></path>
+<path d='M36.07958,26.7010842 C35.8461217,26.466685 35.615666,26.3272514 35.3897144,26.2820297 C35.1622615,26.2360543 34.9423152,26.2428376 34.729125,26.3016258 C34.5151841,26.3596603 34.3147552,26.4636703 34.1270878,26.6136556 C33.9386697,26.7636409 33.767517,26.9158874 33.6121283,27.0719023 L30.6589933,30.0369392 C30.180066,30.5177967 29.7191547,30.8298265 29.2800129,30.9722749 C28.8393697,31.1162307 28.4377613,31.1682356 28.0751878,31.1290435 C27.7126143,31.090605 27.3883249,30.9926247 27.1045718,30.8366098 C26.8185666,30.6805949 26.599371,30.5373928 26.4439823,30.4070035 L26.3854301,30.4657917 C26.5145453,30.6218066 26.6534192,30.8464078 26.8028025,31.1388415 C26.9514351,31.4312753 27.0452688,31.7598864 27.0843037,32.1231675 C27.1233385,32.4879559 27.0843037,32.87837 26.9679499,33.2936561 C26.8508454,33.7096958 26.5858589,34.1264893 26.1714892,34.542529 L23.0629655,37.6628271 C22.9203383,37.8060292 22.7747083,37.9718422 22.6260757,38.160266 C22.4774431,38.3486898 22.3731,38.5506801 22.3152984,38.7654832 C22.2567462,38.9795326 22.2499901,39.2003653 22.295781,39.428735 C22.3408212,39.6555972 22.4804458,39.8869816 22.7139041,40.1206272 L23.7625898,41.1735393 L21.586398,43.3585017 L19.119697,40.8818593 C18.8990001,40.6602729 18.7053273,40.3542727 18.5364266,39.9646122 C18.3682766,39.5749518 18.2706895,39.1521288 18.2451667,38.6968969 C18.2196439,38.241665 18.2872042,37.7638223 18.4493489,37.2633687 C18.6107429,36.7621614 18.9125122,36.2911019 19.3524047,35.8486828 L23.1215178,32.0651329 C23.4195337,31.7659159 23.6064505,31.4471029 23.6852708,31.1094474 C23.7625898,30.771792 23.7723485,30.4499641 23.7137962,30.1432102 C23.655244,29.8379636 23.5516516,29.5515595 23.4030189,29.2855051 C23.2543863,29.018697 23.1087564,28.8144456 22.9661291,28.6712435 L24.6566375,26.9739219 C24.7985141,27.117124 25.0019456,27.2633409 25.2676827,27.4133262 C25.5334199,27.5625578 25.8246797,27.6605382 26.1422131,27.7050062 C26.4597464,27.7517353 26.7960465,27.725356 27.1526146,27.6273756 C27.5076814,27.530149 27.8484855,27.3191143 28.1720242,26.993518 L31.8247835,23.3267909 C32.264676,22.8843718 32.7345953,22.58214 33.2330401,22.4200955 C33.7314848,22.2572974 34.2074095,22.1894648 34.660814,22.2150904 C35.1142186,22.2407161 35.5353444,22.3386965 35.9234406,22.5075242 C36.3115369,22.6771056 36.6163089,22.871559 36.8370058,23.0931453 L39.3037068,25.5697878 L37.1282657,27.7539964 L36.07958,26.7010842 Z' fill='#9B0000' id='Fill-21'></path>
+</g>
+</g>
+<path d='M100.843301,63.5962709 C100.843301,64.1939346 101.179487,64.5301205 101.77715,64.5301205 L108.575575,64.5301205 C109.061177,64.5301205 109.397363,64.3807046 109.733549,64.0445187 L111.003584,62.7744833 C111.33977,62.4382975 111.489186,62.1021116 111.489186,61.6165099 L111.489186,39.0547046 C111.489186,38.5691028 111.33977,38.2329169 111.003584,37.8967311 L109.733549,36.6266957 C109.397363,36.2905099 109.061177,36.1410939 108.575575,36.1410939 L101.77715,36.1410939 C101.179487,36.1410939 100.843301,36.4772798 100.843301,37.0749435 L100.843301,63.5962709 Z M107.156124,61.4670939 L104.429283,61.4670939 L104.429283,39.2041205 L107.156124,39.2041205 L107.903204,39.9512001 L107.903204,60.7200143 L107.156124,61.4670939 Z M122.428469,37.0749435 C122.428469,36.4772798 122.092283,36.1410939 121.494619,36.1410939 L119.776336,36.1410939 C119.178673,36.1410939 118.842487,36.4772798 118.842487,37.0749435 L118.842487,63.5962709 C118.842487,64.1939346 119.178673,64.5301205 119.776336,64.5301205 L121.494619,64.5301205 C122.092283,64.5301205 122.428469,64.1939346 122.428469,63.5962709 L122.428469,37.0749435 Z M138.821434,62.4009435 C138.821434,61.8032798 138.485248,61.4670939 137.887584,61.4670939 L133.479814,61.4670939 L133.479814,51.6803506 L137.140504,51.6803506 C137.738168,51.6803506 138.074354,51.3441647 138.074354,50.746501 L138.074354,49.5511736 C138.074354,48.9535099 137.738168,48.617324 137.140504,48.617324 L133.479814,48.617324 L133.479814,39.2041205 L137.812876,39.2041205 C138.41054,39.2041205 138.746726,38.8679346 138.746726,38.2702709 L138.746726,37.0749435 C138.746726,36.4772798 138.41054,36.1410939 137.812876,36.1410939 L130.827681,36.1410939 C130.230018,36.1410939 129.893832,36.4772798 129.893832,37.0749435 L129.893832,63.5962709 C129.893832,64.1939346 130.230018,64.5301205 130.827681,64.5301205 L137.887584,64.5301205 C138.485248,64.5301205 138.821434,64.1939346 138.821434,63.5962709 L138.821434,62.4009435 Z M155.214398,39.0547046 C155.214398,38.5691028 155.064982,38.2329169 154.728796,37.8967311 L153.458761,36.6266957 C153.122575,36.2905099 152.786389,36.1410939 152.300788,36.1410939 L148.154496,36.1410939 C147.668894,36.1410939 147.332708,36.2905099 146.996522,36.6266957 L145.726487,37.8967311 C145.390301,38.2329169 145.240885,38.5691028 145.240885,39.0547046 L145.240885,48.76674 C145.240885,49.2523417 145.390301,49.5885276 145.726487,49.9247134 L146.996522,51.1947488 C147.332708,51.5309346 147.668894,51.6803506 148.154496,51.6803506 L150.993398,51.6803506 L151.740478,52.4274302 L151.740478,60.7947223 L150.993398,61.5418019 L149.499239,61.5418019 L148.752159,60.7947223 L148.752159,57.2834479 C148.752159,56.6857842 148.415973,56.3495984 147.81831,56.3495984 L146.100027,56.3495984 C145.502363,56.3495984 145.166177,56.6857842 145.166177,57.2834479 L145.166177,61.6165099 C145.166177,62.1021116 145.315593,62.4382975 145.651779,62.7744833 L146.921814,64.0445187 C147.258,64.3807046 147.594186,64.5301205 148.079788,64.5301205 L152.41285,64.5301205 C152.898451,64.5301205 153.234637,64.3807046 153.570823,64.0445187 L154.840858,62.7744833 C155.177044,62.4382975 155.32646,62.1021116 155.32646,61.6165099 L155.32646,51.5309346 C155.32646,51.0453329 155.177044,50.709147 154.840858,50.3729612 L153.570823,49.1029258 C153.234637,48.76674 152.898451,48.617324 152.41285,48.617324 L149.573947,48.617324 L148.826867,47.8702444 L148.826867,39.8764922 L149.573947,39.1294125 L150.881336,39.1294125 L151.628416,39.8764922 L151.628416,43.4251205 C151.628416,44.0227842 151.964602,44.35897 152.562265,44.35897 L154.280549,44.35897 C154.878212,44.35897 155.214398,44.0227842 155.214398,43.4251205 L155.214398,39.0547046 Z M171.383239,62.4009435 C171.383239,61.8032798 171.047053,61.4670939 170.449389,61.4670939 L166.041619,61.4670939 L166.041619,51.6803506 L169.70231,51.6803506 C170.299973,51.6803506 170.636159,51.3441647 170.636159,50.746501 L170.636159,49.5511736 C170.636159,48.9535099 170.299973,48.617324 169.70231,48.617324 L166.041619,48.617324 L166.041619,39.2041205 L170.374681,39.2041205 C170.972345,39.2041205 171.308531,38.8679346 171.308531,38.2702709 L171.308531,37.0749435 C171.308531,36.4772798 170.972345,36.1410939 170.374681,36.1410939 L163.389487,36.1410939 C162.791823,36.1410939 162.455637,36.4772798 162.455637,37.0749435 L162.455637,63.5962709 C162.455637,64.1939346 162.791823,64.5301205 163.389487,64.5301205 L170.449389,64.5301205 C171.047053,64.5301205 171.383239,64.1939346 171.383239,63.5962709 L171.383239,62.4009435 Z M181.874274,61.4670939 L181.874274,37.0749435 C181.874274,36.4772798 181.538088,36.1410939 180.940425,36.1410939 L179.222142,36.1410939 C178.624478,36.1410939 178.288292,36.4772798 178.288292,37.0749435 L178.288292,63.5962709 C178.288292,64.1939346 178.624478,64.5301205 179.222142,64.5301205 L185.684381,64.5301205 C186.282044,64.5301205 186.61823,64.1939346 186.61823,63.5962709 L186.61823,62.4009435 C186.61823,61.8032798 186.282044,61.4670939 185.684381,61.4670939 L181.874274,61.4670939 Z' fill='#FFFFFF' id='DIESEL' sketch:type='MSShapeGroup'></path>
+</g>
+</g>
+</g>
+                    </svg>
+                </a>
+            </h1>
+            <nav class="header-nav">
+                <ul>
+                    <li class="nav-item">
+                      <a href="/news">News</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/guides">Guides</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/docs">API Docs</a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="changelog.html">Changelog</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <section class = "banner">
+        <div class = "content-wrapper">
+            <div class = "banner-wrapper">
+                <h2 class = "banner__heading">Change log</h2>
+            </div>
+        </div>
+    </section>
+
+<div class="demo">
+<div class="content-wrapper">
+<p>All user visible changes to this project will be documented in this file. This project adheres to <a href="http://semver.org/">Semantic Versioning</a>, as described for Rust libraries in <a href="https://github.com/rust-lang/rfcs/blob/master/text/1105-api-evolution.md">RFC #1105</a> For any named minimal supported Rust version we guarantee that it is possible to build Diesel with the default features enabled using some set of dependencies. Those set of dependencies is not necessarily an up to date version of the specific dependency. We check this by using the unstable <code>-Z minimal-version</code> cargo flag. Increasing the minimal supported Rust version will always be coupled at least with a minor release.</p>
+<h2 id="section"><a href="https://github.com/diesel-rs/diesel/compare/v.1.4.0...v2.0.0">2.0.0</a> 2022-08-29</h2>
+<h3 id="added">Added</h3>
+<ul>
+<li><p><code>MysqlConnection::establish</code> is able to initiate an SSL connection while specifying certificate roots. The database URL should contain an <code>ssl_ca</code> parameter with a path pointing to the certificate roots. <a href="https://dev.mysql.com/doc/refman/5.7/en/connection-options.html#option_general_ssl-ca">See docs</a> if desired.</p></li>
+<li><p><code>MysqlConnection::establish</code> is able to initiate an SSL connection. The database URL should contain <code>ssl_mode</code> parameter with a value of the <a href="https://dev.mysql.com/doc/refman/5.7/en/connection-options.html#option_general_ssl-mode">MySQL client command option <code>--ssl-mode</code></a> if desired.</p></li>
+<li><p><code>Connection</code> and <code>SimpleConnection</code> traits are implemented for a broader range of <code>r2d2::PooledConnection&lt;M&gt;</code> types when the <code>r2d2</code> feature is enabled.</p></li>
+<li><p>Added <code>DatabaseErrorKind::ReadOnlyTransaction</code> to allow applications to handle errors caused by writing when only allowed to read.</p></li>
+<li><p>All expression methods can now be called on expressions of nullable types.</p></li>
+<li><p>Added <code>BoxedSqlQuery</code>. This allows users to do a variable amount of <code>.sql</code> or <code>.bind</code> calls without changing the underlying type.</p></li>
+<li><p>Added <code>.sql</code> to <code>SqlQuery</code> and <code>UncheckedBind</code> to allow appending SQL code to an existing query.</p></li>
+<li><p>The <code>MacAddr</code> SQL type can now be used without enabling the <code>network-address</code> feature.</p></li>
+<li><p>Added support for SQLite’s <code>UPSERT</code>. You can use this feature above SQLite version 3.24.0.</p></li>
+<li><p>Added ability to create custom aggregate functions in SQLite.</p></li>
+<li><p>Multiple aggregate expressions can now appear together in the same select clause. See <a href="guides/migration_guide.html#2-0-0-upgrade-non-aggregate">the upgrade notes</a> for details.</p></li>
+<li><p><code>ValidGrouping</code> has been added to represent whether an expression is valid for a given group by clause, and whether or not it’s aggregate. It replaces the functionality of <code>NonAggregate</code>. See <a href="guides/migration_guide.html#2-0-0-upgrade-non-aggregate">the upgrade notes</a> for details.</p></li>
+<li><p>It is now possible to inspect the type of values returned from the database in such a way to support constructing a dynamic value depending on this type.</p></li>
+<li><p>Added a <code>without-deprecated</code> feature that unconditionally disables deprecated items. Use this feature flag to verify that none of your dependencies is setting the <code>with-deprecated</code> flag internally.</p></li>
+<li><p>Added support for PostgreSQL’s <code>SIMILAR TO</code> and <code>NOT SIMILAR TO</code>.</p></li>
+<li><p>Added <code>#[diesel(serialize_as)]</code> analogous to <code>#[diesel(deserialize_as)]</code>. This allows customization of the serialization behaviour of <code>Insertable</code> and <code>AsChangeset</code> structs.</p></li>
+<li><p>Added support for <code>GROUP BY</code> clauses</p></li>
+<li><p>Added support for <code>UNION</code>, <code>UNION ALL</code>, <code>INTERSECT</code>, <code>INTERSECT ALL</code>, <code>EXCEPT</code>, <code>EXCEPT ALL</code> clauses</p></li>
+<li><p>Added the error position for PostgreSQL errors</p></li>
+<li><p>Added ability to create custom collation functions in SQLite.</p></li>
+<li><p>Added support for SQLite’s <code>IS</code> and <code>IS NOT</code>.</p></li>
+<li><p>Add support for HAVING clauses.</p></li>
+<li><p>Added support for SQL functions without arguments for SQLite.</p></li>
+<li><p>Diesel CLI will now generate SQL type definitions for SQL types that are not supported by diesel out of the box. It’s possible to disable this behavior via the <code>generate_missing_sql_type_definitions</code> config option.</p></li>
+<li><p>Added an option to <code>#[derive(Insertable)]</code> that let you insert <code>NULL</code> values instead of <code>DEFAULT</code> values for <code>Option&lt;T&gt;</code></p></li>
+<li><p>Added support for all the derive attributes being inside <code>#[diesel(...)]</code></p></li>
+<li><p>Added support for <code>RETURNING</code> expressions for Sqlite via the <code>returning_clauses_for_sqlite_3_35</code> feature</p></li>
+<li><p>Added support for table aliasing via the <code>alias!</code> macro</p></li>
+<li><p>Added support for the usage of slices of references with <code>belonging_to</code> from <code>BelongingToDsl</code></p></li>
+<li><p>Added support for updating individual array elements <code>UPDATE table SET array_column[1] = true</code></p></li>
+<li><p>Adds an <code>ipnet-address</code> feature flag, allowing support (de)serializing IP values from the database using types provided by <code>ipnet</code>. This feature may be enabled concurrently with the previously existing <code>network-address</code> feature.</p></li>
+<li><p>We’ve added support for loading values using libpq’s row-by-row mode via the new iterator interface</p></li>
+<li><p>Adds <code>Timestamp</code>, <code>Timestamptz</code> support for appropriate types for <code>time v0.3.9</code>. This feature enables using the <code>time</code> crate as an alternative to <code>chrono</code>.</p></li>
+</ul>
+<h3 id="removed">Removed</h3>
+<ul>
+<li>All previously deprecated items have been removed.</li>
+<li>Support for <code>uuid</code> version &lt; 0.7.0 has been removed.</li>
+<li>Support for <code>bigdecimal</code> &lt; 0.0.13 has been removed.</li>
+<li>Support for <code>pq-sys</code> &lt; 0.4.0 has been removed.</li>
+<li>Support for <code>mysqlclient-sys</code> &lt; 0.2.5 has been removed.</li>
+<li>Support for <code>time</code> (0.1) types has been removed.</li>
+<li>Support for <code>chrono</code> &lt; 0.4.19 has been removed.</li>
+<li>The minimal supported version of libsqlite3-sys is now 0.17.2.</li>
+<li>The <code>NonNull</code> trait for sql types has been removed in favour of the new <code>SqlType</code> trait.</li>
+<li><code>no_arg_sql_function!</code> has been deprecated without replacement. [<code>sql_function!</code>][sql-function-2-0-0] can now be used for functions with zero arguments. See [the migration guide][2-0-migration] for more details.</li>
+<li>Support for <code>barrel</code> based migrations has been removed for now. We are happy to add this support back as soon as <code>barrel</code> integrates with our new migration framework.</li>
+<li>The deprecated bash completions command (<code>diesel bash-completions</code>) has been removed. Use <code>diesel completions &lt;shell&gt;</code> instead.</li>
+</ul>
+<h3 id="changed">Changed</h3>
+<ul>
+<li><p>The minimal officially supported rustc version is now 1.56.0</p></li>
+<li><p>Interacting with a database requires a mutable connection.</p></li>
+<li><p>The way <a href="http://docs.diesel.rs/2.0.x/diesel/backend/trait.Backend.html">the <code>Backend</code> trait</a> handles its <code>RawValue</code> type has been changed to allow non-references. Users of this type (e.g. code written <code>&amp;DB::RawValue</code> or <code>&amp;&lt;DB as Backend&gt;::RawValue&gt;</code>) should use <a href="http://docs.diesel.rs/2.0.x/diesel/backend/type.RawValue.html"><code>backend::RawValue&lt;DB&gt;</code></a> instead. Implementors of <code>Backend</code> should check the relevant section of [the migration guide][guides/migration_guide.html#2-0-0-from-sql].</p></li>
+</ul>
+<ul>
+<li><p>The type metadata for MySQL has been changed to include sign information. If you are implementing <code>HasSqlType</code> for <code>Mysql</code> manually, you may need to adjust your implementation to fully use the new unsigned variants in <code>MysqlType</code></p></li>
+<li><p>The <code>RawValue</code> types for the <code>Mysql</code> and <code>Postgresql</code> backend where changed from <code>[u8]</code> to distinct opaque types. If you used the concrete <code>RawValue</code> type somewhere you need to change it to <code>mysql::MysqlValue</code> or <code>pg::PgValue</code>.</p></li>
+<li><p>The <code>uuidv07</code> feature was renamed to <code>uuid</code>, due to the removal of support for older uuid versions</p></li>
+<li><p>Boxed queries (constructed from <code>.into_boxed()</code>) are now <code>Send</code>.</p></li>
+<li><p>The handling of mixed aggregate values is more robust. Invalid queries such as <code>.select(max(id) + other_column)</code> are now correctly rejected, and valid queries such as <code>.select((count_star(), max(other_column)))</code> are now correctly accepted. For more details, see <a href="guides/migration_guide.html#2-0-0-upgrade-non-aggregate">the migration guide</a>.</p></li>
+<li><p><code>NonAggregate</code> is now a trait alias for <code>ValidGrouping&lt;()&gt;</code> for expressions that are not aggregate. On stable this is a normal trait with a blanket impl, but it should never be implemented directly. With the <code>unstable</code> feature, it will use trait aliases which prevent manual implementations.</p>
+<p>Due to language limitations, we cannot make the new trait alias by itself represent everything it used to, so in some rare cases code changes may be required. See <a href="guides/migration_guide.html#2-0-0-upgrade-non-aggregate">the migration guide</a> for details.</p></li>
+<li><p>Various <code>__NonExhaustive</code> variants in different (error-) enums are replaced with <code>#[non_exhaustive]</code>. If you matched on one of those variants explicitly you need to introduce a wild card match instead.</p></li>
+<li><p><code>FromSql::from_sql</code> is changed to construct value from non nullable database values. To construct a rust value for nullable values use the new <code>FromSql::from_nullable_sql</code> method instead.</p></li>
+<li><p>Custom sql types are now required to implement the new <code>SqlType</code> trait. Diesel will automatically create implementations of that trait for all types having a <code>#[derive(SqlType)]</code></p></li>
+<li><p>The workflow for manually implementing support custom types has changed. Implementing <code>FromSqlRow&lt;ST, DB&gt;</code> is not required anymore, as this is now implied by implementing <code>FromSql&lt;ST, DB&gt;</code>. The requirement of implementing <code>Queryable&lt;ST, DB&gt;</code> remains unchanged. For types using <code>#[derive(FromSqlRow)]</code> no changes are required as the derive automatically generates the correct code</p></li>
+<li><p>The structure of our deserialization trait has changed. Loading values from the database requires now that the result type implements <code>FromSqlRow&lt;ST, DB&gt;</code>. Diesel provides wild card implementations for types implementing <code>Queryable&lt;ST, DB&gt;</code> or <code>QueryableByName&lt;DB&gt;</code> so non generic code does not require any change. For generic code you likely need to replace a trait bound on <code>Queryable&lt;ST, DB&gt;</code> with a trait bound on <code>FromSqlRow&lt;ST, DB&gt;</code> and a bound to <code>QueryableByName&lt;DB&gt;</code> with <code>FromSqlRow&lt;Untyped, DB&gt;</code>.</p></li>
+<li><p>CLI flags of <code>only-tables</code> and <code>except-tables</code> are now interpreted as regular expressions. Similarly, <code>only_tabels</code> and <code>except_tables</code> in <code>diesel.toml</code> are treated as regular expressions.</p></li>
+<li><p>Now you can sort column fields by name with the <code>column-sorting</code> option. It can be set to either <code>ordinal_position</code> (default) or <code>name</code>. This ensures stable sorting even if columns are removed and re-added.</p></li>
+<li><p>The <code>Queryable&lt;ST,DB&gt;</code> trait was updated to be made faillible, in order to properly handle cases where you detect a data inconsistency between fields on deserialization (that e.g. was supposed to be made impossible by DB <code>CHECK</code>s). The <code>build</code> function now returns a <a href="https://docs.diesel.rs/2.0.x/diesel/deserialize/type.Result.html"><code>diesel::deserialize::Result&lt;Self&gt;</code></a> instead of a <code>Self</code>.</p></li>
+<li><p><code>TypeMetadata::MetadataLookup</code> is now <code>?Sized</code>.</p></li>
+<li><p>Multiple implementations of <code>Connection&lt;Backend=Pg&gt;</code> are now possible because of the new <code>PgMetadataLookup</code> trait.</p></li>
+<li><p>For the <code>Pg</code> backend, <code>TypeMetadata::MetadataLookup</code> has changed to <code>dyn PgMetadataLookup</code>.</p></li>
+<li><p>Diesel’s migration framework was rewritten from the ground. Existing migrations continue to be compatible with the rewrite, but code calling into <code>diesel_migrations</code> requires an update. See the <a href="guides/migration_guide.html#2-0-0-upgrade-migrations">migration guide</a> for details.</p></li>
+<li><code>eq_any()</code> now emits a <code>= ANY()</code> expression for the postgresql backend instead of <code>IN()</code></li>
+<li><code>ne_all()</code> now emits a <code>!= ALL()</code> expression for the postgresql backend instead of <code>NOT IN()</code></li>
+<li><p>The sqlite backend now uses a single batch insert statement if there are now default values present in the values clause</p></li>
+<li><p>The MySQL connection is using the CLIENT_FOUND_ROWS from now on. This means that updating rows without changing any values will return the number of matched rows (like most other SQL servers do), as opposed to the number of changed rows.</p></li>
+<li><p>The definition of <code>ToSql::to_sql</code> and <code>QueryFragment::walk_ast</code> has changed to allow serializing values without copying the value itself. This is useful for database backends like sqlite where you can directly share a buffer with the database. Beside of the changed signature, existing impls of this trait should remain unchanged in almost all cases.</p></li>
+<li><p>The <code>PIPES_AS_CONCAT</code> sql_mode is no longer set by default. This setting requires a modification to MySQL query parsing that is not supported by certain systems (such as Vitess). If you are using MySQL and executing raw queries with the <code>||</code> operator, you will need to rewrite your queries or set <code>PIPES_AS_CONCAT</code> manually.</p></li>
+</ul>
+<h3 id="fixed">Fixed</h3>
+<ul>
+<li><p>Many types were incorrectly considered non-aggregate when they should not have been. All types in Diesel are now correctly only considered non-aggregate if their parts are.</p></li>
+<li><p>Offset clauses without limit clauses resulted into invalid sql using the mysql or sqlite backend. Both do not support such clauses without a preceding limit clause. For those backend Diesel does now generate a fake limit clause in case no explicit limit clause was given. As consequence of this change generic query code may require additional trait bounds as requested from the compiler. Third party backends are required to explicitly provide <code>QueryFragment</code> impls for <code>LimitOffsetClause&lt;L, O&gt;</code> now.</p></li>
+<li><p>Nullability requirements are now properly enforced for nested joins. Previously, only the rules for the outer-most join were considered. For example, <code>users.left_join(posts).left_join(comments)</code> would allow selecting any columns from <code>posts</code>. That will now fail to compile, and any selections from <code>posts</code> will need to be made explicitly nullable.</p></li>
+<li><p>Diesel CLI will now look for <code>diesel.toml</code> to determine the project root before looking for <code>Cargo.toml</code>.</p></li>
+<li><p>Any relative paths in <code>diesel.toml</code> will now be treated as relative to the project root (the directory containing either <code>diesel.toml</code> or <code>Cargo.toml</code>). They are no longer dependent on the current working directory (for all directories in the same project)</p></li>
+<li><p>The SQLite backend is now configured to interpret URIs. See <a href="https://www.sqlite.org/uri.html">the SQLite URI documentation</a> for additional details.</p></li>
+</ul>
+<ul>
+<li><p>We’ve refactored our type translation layer for Mysql to handle more types now.</p></li>
+<li><p>We’ve refactored our type level representation of nullable values. This allowed us to fix multiple long standing bugs regarding the correct handling of nullable values in some corner cases (#104, #2274)</p></li>
+<li><p>Parenthesis are now inserted around all infix operations provided by diesel’s <code>ExpressionMethods</code> traits</p></li>
+<li><p>Queries containing a <code>distinct on</code> clause check now on compile time that a compatible order clause was set.</p></li>
+<li><p>Implementations of custom SQLite SQL functions now check for panics</p></li>
+<li><p><code>diesel print-schema</code> now generates <code>Array&lt;Nullable&lt;ST&gt;&gt;</code> rather than <code>Array&lt;ST&gt;</code> for Postgres Array types. Existence of <code>NULL</code> values in database arrays would previously result in deserialization errors. Non-nullable arrays are now opt in (by schema patching).</p></li>
+</ul>
+<h3 id="deprecated">Deprecated</h3>
+<ul>
+<li><p>All the diesel derive attributes that are not inside <code>#[diesel(...)]</code></p></li>
+<li><p><code>diesel_(prefix|postfix|infix)_operator!</code> have been deprecated. These macros are now available without the <code>diesel_</code> prefix. With Rust 2018 they can be invoked as <code>diesel::infix_operator!</code> instead.</p></li>
+<li><p><code>diesel::pg::upsert</code> has been deprecated to support upsert queries on more than one backend. Please use <code>diesel::upsert</code> instead.</p></li>
+<li><p><code>diesel::dsl::any</code> and <code>diesel::dsl::all</code> are now deprecated in favour of <code>ExpressionMethods::eq_any()</code> and <code>ExpressionMethods::ne_all()</code></p></li>
+</ul>
+<h2 id="section-1"><a href="https://github.com/diesel-rs/diesel/compare/v1.4.7...v1.4.8">1.4.8</a> - 2021-09-20</h2>
+<h3 id="fixed-1">Fixed</h3>
+<ul>
+<li>Fixed a incompatibly between <code>diesel</code> and <code>diesel_migrations</code> when building both crates with cargos new <code>resolver = "2"</code> enabled. This change ensures compatibility with the upcomming 2021 rust edition.</li>
+</ul>
+<h2 id="section-2"><a href="https://github.com/diesel-rs/diesel/compare/v1.4.6...v1.4.7">1.4.7</a> - 2021-06-08</h2>
+<h3 id="fixed-2">Fixed</h3>
+<ul>
+<li>Updated <code>libsqlite3-sys</code> to allow version 0.22</li>
+<li>Updated <code>ipnetwork</code> to allow version 0.18</li>
+</ul>
+<h2 id="section-3"><a href="https://github.com/diesel-rs/diesel/compare/v1.4.5...v1.4.6">1.4.6</a> - 2021-03-05</h2>
+<h3 id="fixed-3">Fixed</h3>
+<ul>
+<li>Fixed a use-after-free issue in the <code>QueryableByName</code> implementation of our <code>Sqlite</code> backend</li>
+<li>Updated several dependencies</li>
+</ul>
+<h2 id="section-4"><a href="https://github.com/diesel-rs/diesel/compare/v1.4.4...v1.4.5">1.4.5</a> - 2020-06-09</h2>
+<h3 id="fixed-4">Fixed</h3>
+<ul>
+<li>Update several dependencies</li>
+<li>Fixed an issue where transactions that would fail to commit would leave the connection in a broken non-committed non-rolled-back state.</li>
+<li>Fix a bug that result in leaking sockets/file descriptors on failed connection attempts for postgresql</li>
+<li>Fix an incompatibility with newer <code>libmysqlclient</code> versions</li>
+<li>Remove some potential harmful usages of <code>mem::uninitialized</code></li>
+</ul>
+<h2 id="section-5"><a href="https://github.com/diesel-rs/diesel/compare/v1.4.3...v1.4.4">1.4.4</a> - 2020-03-22</h2>
+<h3 id="fixed-5">Fixed</h3>
+<ul>
+<li>Update several dependencies</li>
+<li>Fixed a bug with printing embeded migrations</li>
+</ul>
+<h2 id="section-6"><a href="https://github.com/diesel-rs/diesel/compare/v1.4.2...v1.4.3">1.4.3</a> - 2019-10-11</h2>
+<h3 id="fixed-6">Fixed</h3>
+<ul>
+<li>Updated several dependencies</li>
+<li>Fixed an issue where the postgresql backend exploits implementation defined behaviour</li>
+<li>Fixed issue where rustdoc failed to build the documentation</li>
+<li><code>diesel_derives</code> and <code>diesel_migrations</code> are updated to syn 1.0</li>
+</ul>
+<h2 id="section-7"><a href="https://github.com/diesel-rs/diesel/compare/v1.4.1...v1.4.2">1.4.2</a> - 2019-03-19</h2>
+<h3 id="fixed-7">Fixed</h3>
+<ul>
+<li>Parenthesis are now inserted around all mathematical operations. This means that <code>(2.into_sql() + 3) * 4</code> will correctly evaluate to 20 as expected. Previously we would generate SQL that evaluated to 14. This could even result in runtime errors if multiple types were involved (for example, <code>interval * (integer + 1)</code>)</li>
+</ul>
+<h2 id="section-8"><a href="https://github.com/diesel-rs/diesel/compare/v1.4.0...v1.4.1">1.4.1</a> - 2019-01-24</h2>
+<h3 id="fixed-8">Fixed</h3>
+<ul>
+<li>This release fixes a minor memory safety issue in SQLite. This bug would only occur in an error handling branch that should never occur in practice.</li>
+</ul>
+<h2 id="section-9"><a href="https://github.com/diesel-rs/diesel/compare/v1.3.0...v1.4.0">1.4.0</a> - 2019-01-20</h2>
+<h3 id="fixed-9">Fixed</h3>
+<ul>
+<li><code>embed_migrations!</code> will no longer emit an unused import warning</li>
+<li>Diesel now supports uuid 0.7 by adding the new feature flag <code>uuidv07</code></li>
+</ul>
+<h3 id="added-1">Added</h3>
+<ul>
+<li><p>Diesel CLI can be configured to error if a command would result in changes to your schema file by passing <code>--locked-schema</code>. This is intended for use in CI and production deploys, to ensure that the committed schema file is up to date.</p></li>
+<li><p>A helper trait has been added for implementing <code>ToSql</code> for PG composite types. See <a href="docs.diesel.rs/diesel/serialize/trait.WriteTuple.html"><code>WriteTuple</code></a> for details.</p></li>
+</ul>
+<ul>
+<li><p>Added support for MySQL’s <code>UNSIGNED TINYINT</code></p></li>
+<li><p><code>DatabaseErrorKind::SerializationFailure</code> has been added, corresponding to SQLSTATE code 40001 (A <code>SERIALIZABLE</code> isolation level transaction failed to commit due to a read/write dependency on another transaction). This error is currently only detected on PostgreSQL.</p></li>
+<li><p>Diesel CLI can now generate completions for zsh and fish. See <code>diesel completions --help</code> for details.</p></li>
+<li><p><code>#[belongs_to]</code> can now accept types that are generic over lifetimes (for example, if one of the fields has the type <code>Cow&lt;'a, str&gt;</code>). To define an association to such a type, write <code>#[belongs_to(parent = "User&lt;'_&gt;")]</code></p></li>
+<li><p><code>Nullable&lt;Text&gt;</code> now supports <code>ilike</code> expression on in PostgreSQL.</p></li>
+<li><p><code>diesel_manage_updated_at('table_name')</code> is now available on SQLite. This function can be called in your migrations to create a trigger which automatically sets the <code>updated_at</code> column, unless that column was updated in the query.</p></li>
+</ul>
+<h3 id="changed-1">Changed</h3>
+<ul>
+<li><p>Diesel’s derives now require that <code>extern crate diesel;</code> be at your crate root (e.g. <code>src/lib.rs</code> or <code>src/main.rs</code>)</p></li>
+<li><p><code>Tinyint</code> has been renamed to <code>TinyInt</code> and an alias has been created from <code>Tinyint</code> to <code>TinyInt</code>.</p></li>
+<li><p>The minimal officially supported rustc version is now 1.31.0</p></li>
+</ul>
+<h2 id="section-10"><a href="https://github.com/diesel-rs/diesel/compare/v1.3.2...v1.3.3">1.3.3</a> - 2018-09-12</h2>
+<h3 id="fixed-10">Fixed</h3>
+<ul>
+<li>Fixed an issue that occurred with MySQL 8.0 when calling <code>.execute</code> or <code>.batch_execute</code> with a single query that returned a result set (such as our <code>SELECT 1</code> health check in <code>r2d2</code>).</li>
+</ul>
+<h2 id="section-11"><a href="https://github.com/diesel-rs/diesel/compare/v1.3.1...v1.3.2">1.3.2</a> - 2018-06-13</h2>
+<h3 id="fixed-11">Fixed</h3>
+<ul>
+<li><p>The behavior of unsigned types in MySQL has been corrected to properly set the <code>is_unsigned</code> flag.</p></li>
+<li><p>Fixed an issue with <code>sql_function!</code> when <code>#[sql_name]</code> was used on functions with no return type.</p></li>
+</ul>
+<h2 id="section-12"><a href="https://github.com/diesel-rs/diesel/compare/v1.3.0...v1.3.1">1.3.1</a> - 2018-05-23</h2>
+<h3 id="fixed-12">Fixed</h3>
+<ul>
+<li>Fixed an issue with Diesel CLI’s use of temp files that caused errors on Windows.</li>
+</ul>
+<h2 id="section-13"><a href="https://github.com/diesel-rs/diesel/compare/v1.2.2...v1.3.0">1.3.0</a> - 2018-05-22</h2>
+<h3 id="added-2">Added</h3>
+<ul>
+<li><p>Diesel CLI now supports a configuration file. See diesel.rs/guides/configuring-diesel-cli for details.</p></li>
+<li><p><code>sql_function!</code> now supports generic functions. See <a href="http://docs.diesel.rs/diesel/macro.sql_function.html">the documentation for <code>sql_function!</code></a> for more details.</p></li>
+<li><p><code>sql_function!</code> now supports aggregate functions like <code>sum</code> and <code>max</code>, by annotating them with <code>#[aggregate]</code>. This skips the implementation of <code>NonAggregate</code> for your function. See <a href="http://docs.diesel.rs/diesel/macro.sql_function.html">the documentation for <code>sql_function!</code></a> for more details.</p></li>
+<li><p><code>sql_function!</code> now supports renaming the function by annotating it with <code>#[sql_name = "SOME_FUNCTION"]</code>. This can be used to support functions with multiple signatures such as coalesce, by defining multiple rust functions (with different names) that have the same <code>#[sql_name]</code>.</p></li>
+<li><p>Added <code>sqlite-bundled</code> feature to <code>diesel_cli</code> to make installing on some platforms easier.</p></li>
+<li><p>Custom SQL functions can now be used with SQLite. See <a href="http://docs.diesel.rs/diesel/macro.sql_function.html#use-with-sqlite">the docs</a> for details.</p></li>
+</ul>
+<ul>
+<li><p>All functions and operators provided by Diesel can now be used with numeric operators if the SQL type supports it.</p></li>
+<li><p><code>PgInterval</code> can now be used with <code>-</code>, <code>*</code>, and <code>/</code>.</p></li>
+<li><p><code>Vec&lt;T&gt;</code> is now <code>Insertable</code>. It is no longer required to always place an <code>&amp;</code> in front of <code>.values</code>.</p></li>
+<li><p>Added support for PG tuples. See <a href="http://docs.diesel.rs/diesel/pg/types/sql_types/struct.Record.html"><code>sql_types::Record</code></a> for details.</p></li>
+</ul>
+<ul>
+<li>Added support for a wider range of locking clauses, including <code>FOR SHARE</code>, <code>SKIP LOCKED</code>, <code>NO WAIT</code>, and more. See <a href="http://docs.diesel.rs/diesel/query_dsl/trait.QueryDsl.html#method.for_update"><code>QueryDsl</code></a> for details.</li>
+</ul>
+<h3 id="changed-2">Changed</h3>
+<ul>
+<li><code>sql_function!</code> has been redesigned. The syntax is now <code>sql_function!(fn lower(x: Text) -&gt; Text);</code>. The output of the new syntax is slightly different than what was generated in the past. See <a href="http://docs.diesel.rs/diesel/macro.sql_function.html">the documentation for <code>sql_function!</code></a> for more details.</li>
+</ul>
+<ul>
+<li>Diesel’s minimum supported Rust version is 1.24.0. This was already true, but it is now tested and enforced. Any future changes to our minimum supported version will be listed in this change log.</li>
+</ul>
+<h3 id="fixed-13">Fixed</h3>
+<ul>
+<li><code>diesel print-schema</code> and <code>infer_schema!</code> now properly handle unsigned types in MySQL</li>
+</ul>
+<h3 id="deprecated-1">Deprecated</h3>
+<ul>
+<li><p><code>diesel_infer_schema</code> has been deprecated. <code>diesel print-schema</code> is now the only way to generate database schema. Diesel CLI can be configured to automatically regenerate your schema file when migrations are run. See diesel.rs/guides/configuring-diesel-cli for details.</p></li>
+<li><p>Uses of <code>sql_function!</code> in the form <code>sql_function!(foo, foo_t, (x: Integer))</code> have been deprecated in favor of a new design (listed above). Note: Due to <a href="https://github.com/rust-lang/rust/issues/49912">a bug in Rust</a>, you may not see a deprecation warning from usage of the old form. As always, if you’re concerned about relying on deprecated code, we recommend attempting to build your app with <code>default-features</code> turned off (specifically excluding the <code>with-deprecated</code> feature).</p></li>
+<li><p>The <code>--whitelist</code> and <code>--blacklist</code> options to <code>diesel print-schema</code> have been deprecated and renamed <code>--only-tables</code> and <code>--exclude-tables</code>.</p></li>
+</ul>
+<h2 id="section-14"><a href="https://github.com/diesel-rs/diesel/compare/v1.2.1...v1.2.2">1.2.2</a> - 2018-04-12</h2>
+<h3 id="changed-3">Changed</h3>
+<ul>
+<li>Warnings are now allowed inside the crate. The way we had attempted to deprecate old feature names caused builds to break. We are still not happy with how this deprecation gets communicated, and will revisit it in the future.</li>
+</ul>
+<h2 id="section-15"><a href="https://github.com/diesel-rs/diesel/compare/v1.2.0...v1.2.1">1.2.1</a> - 2018-04-11</h2>
+<h3 id="changed-4">Changed</h3>
+<ul>
+<li>Renamed <code>x32-column-tables</code>, <code>x64-column-tables</code>, and <code>x128-column-tables</code> to <code>32-column-tables</code>, <code>64-column-tables</code>, and <code>128-column-tables</code>. The leading <code>x</code> was due to a bug in crates.io discovered while publishing 1.2.0. The bug has since been fixed.</li>
+</ul>
+<h2 id="section-16"><a href="https://github.com/diesel-rs/diesel/compare/v1.1.2...v1.2.0">1.2.0</a> - 2018-04-06</h2>
+<h3 id="added-3">Added</h3>
+<ul>
+<li><p>Added <code>SqlLiteral::bind()</code>. This is intended to be used for binding values to small SQL fragments. Use <code>sql_query</code> if you are writing full queries.</p></li>
+<li><p>Added support for <code>INSERT INTO table (...) SELECT ...</code> queries. Tables, select select statements, and boxed select statements can now be used just like any other <code>Insertable</code> value.</p></li>
+<li><p>Any insert query written as <code>insert_into(table).values(values)</code> can now be written as <code>values.insert_into(table)</code>. This is particularly useful when inserting from a select statement, as select statements tend to span multiple lines.</p></li>
+<li><p>Diesel’s derives can now produce improved error messages if you are using a nightly compiler, and enable the <code>unstable</code> feature. For the best errors, you should also set <code>RUSTFLAGS="--cfg procmacro2_semver_exempt"</code>.</p></li>
+<li><p>Added support for specifying <code>ISOLATION LEVEL</code>, <code>DEFERRABLE</code>, and <code>READ ONLY</code> on PG transactions. See <a href="http://docs.diesel.rs/diesel/pg/struct.PgConnection.html#method.build_transaction"><code>PgConnection::build_transaction</code></a> for details.</p></li>
+</ul>
+<ul>
+<li>Added support for <code>BEGIN IMMEDIATE</code> and <code>BEGIN EXCLUSIVE</code> on SQLite. See <a href="http://docs.diesel.rs/diesel/sqlite/struct.SqliteConnection.html#method.immediate_transaction"><code>SqliteConnection::immediate_transaction</code></a> and <a href="http://docs.diesel.rs/diesel/sqlite/struct.SqliteConnection.html#method.exclusive_transaction"><code>SqliteConnection::exclusive_transaction</code></a> for details</li>
+</ul>
+<ul>
+<li><p>Tables with more than 56 columns are now supported by enabling the <code>128-column-tables</code> feature.</p></li>
+<li><p>Delete statements can now be boxed. This is useful for conditionally modifying the where clause of a delete statement. See <a href="http://docs.diesel.rs/diesel/query_builder/struct.DeleteStatement.html#method.into_boxed"><code>DeleteStatement::into_boxed</code></a> for details.</p></li>
+</ul>
+<ul>
+<li>Update statements can now be boxed. This is useful for conditionally modifying the where clause of a update statement. See <a href="http://docs.diesel.rs/diesel/query_builder/struct.UpdateStatement.html#method.into_boxed"><code>UpdateStatement::into_boxed</code></a> for details.</li>
+</ul>
+<ul>
+<li><p>Added <code>order_by</code> as an alias for <code>order</code>.</p></li>
+<li><p>Added <code>then_order_by</code>, which appends to an <code>ORDER BY</code> clause rather than replacing it. This is useful with boxed queries to dynamically construct an order by clause containing an unknown number of columns.</p></li>
+<li><p><code>#[derive(Insertable)]</code> can now work on structs with fields that implement <code>Insertable</code> (meaning one field can map to more than one column). Add <code>#[diesel(embed)]</code> to the field to enable this behavior.</p></li>
+<li><p>Queries that treat a subselect as a single value (e.g. <code>foo = (subselect)</code>) are now supported by calling <a href="http://docs.diesel.rs/diesel/query_dsl/trait.QueryDsl.html#method.single_value"><code>.single_value()</code></a>.</p></li>
+<li><p><code>#[derive(Insertable)]</code> implements now <code>Insertable</code> also on the struct itself, not only on references to the struct</p></li>
+</ul>
+<ul>
+<li><p><code>ConnectionError</code> now implements <code>PartialEq</code>.</p></li>
+<li><p>Columns generated by <code>table!</code> now implement <code>Default</code></p></li>
+<li><p><code>#[derive(AsChangeset)]</code> now implements <code>AsChangeset</code> on the struct itself, and not only on a reference to the struct</p></li>
+<li><p>Added support for deserializing <code>Numeric</code> into <code>BigDecimal</code> on SQLite. SQLite has no arbitrary precision type, so the result will still have floating point rounding issues. This is primarily to support things like <code>avg(int_col)</code>, which we define as returning <code>Numeric</code></p></li>
+</ul>
+<h3 id="changed-5">Changed</h3>
+<ul>
+<li><p>The bounds on <code>impl ToSql for Cow&lt;'a, T&gt;</code> have been loosened to no longer require that <code>T::Owned: ToSql</code>.</p></li>
+<li><p><code>32-column-tables</code> are now enabled by default.</p></li>
+</ul>
+<h3 id="deprecated-2">Deprecated</h3>
+<ul>
+<li><p><code>ne_any</code> has been renamed to <code>ne_all</code>.</p></li>
+<li><p>The <code>large-tables</code> feature has been has been renamed to <code>32-column-tables</code>.</p></li>
+<li><p>The <code>huge-tables</code> feature has been renamed to <code>64-column-tables</code>.</p></li>
+<li><p><code>IncompleteUpdateStatement</code> has been removed. Use <code>UpdateStatement</code> instead.</p></li>
+</ul>
+<h3 id="fixed-14">Fixed</h3>
+<ul>
+<li><p><code>diesel database setup</code> now correctly handles database URLs containing query strings</p></li>
+<li><p><code>diesel migration list</code> shows the proper migration order when mixing old and new timestamp formats. (The migrations were always run in the correct order, this only affects the display logic of <code>migration list</code>)</p></li>
+<li><p><code>#[derive(Identifiable)]</code> now correctly associates <code>#[primary_key]</code> with the column name, not field name.</p></li>
+<li><p>Select statements can no longer incorrectly appear in an expression context.</p></li>
+<li><p><code>exists</code> can no longer incorrectly receive values other than select statements.</p></li>
+<li><p><code>MysqlConnection::establish</code> can now properly handle IPv6 addresses wrapped in square brackets.</p></li>
+</ul>
+<h3 id="jokes">Jokes</h3>
+<ul>
+<li>Diesel is now powered by the blockchain because it’s 2018.</li>
+</ul>
+<h2 id="section-17"><a href="https://github.com/diesel-rs/diesel/compare/v1.1.1...v1.1.2">1.1.2</a> - 2018-04-05</h2>
+<ul>
+<li>No changes</li>
+</ul>
+<h2 id="section-18"><a href="https://github.com/diesel-rs/diesel/compare/v1.1.0...v1.1.1">1.1.1</a> - 2018-01-16</h2>
+<h3 id="added-4">Added</h3>
+<ul>
+<li>Added <code>diesel::r2d2::PoolError</code> as an alias for <code>r2d2::Error</code>. Previously this type was inaccessible due to <code>diesel::r2d2::Error</code>.</li>
+</ul>
+<h2 id="section-19"><a href="https://github.com/diesel-rs/diesel/compare/v1.0.0...v1.1.0">1.1.0</a> - 2018-01-15</h2>
+<h3 id="added-5">Added</h3>
+<ul>
+<li><p><code>r2d2-diesel</code> has been merged into Diesel proper. You should no longer rely directly on <code>r2d2-diesel</code> or <code>r2d2</code>. The functionality of both is exposed from <code>diesel::r2d2</code>.</p></li>
+<li><p><code>r2d2::PooledConnection</code> now implements <code>Connection</code>. This means that you should no longer need to write <code>&amp;*connection</code> when using <code>r2d2</code>.</p></li>
+<li><p>The <code>BINARY</code> column type name is now supported for SQLite.</p></li>
+<li><p>The <code>QueryId</code> trait can now be derived.</p></li>
+<li><p><code>FromSqlRow</code> can now be derived for types which implement <code>FromSql</code>.</p></li>
+<li><p><code>AsExpression</code> can now be derived for types which implement <code>ToSql</code>.</p></li>
+<li><p><code>HasSqlType</code>, <code>NotNull</code>, and <code>SingleValue</code> can now be derived with <code>#[derive(SqlType)]</code>. See the docs for those traits for more information.</p></li>
+<li><p>The return type of <code>FromSql</code>, <code>FromSqlRow</code>, and <code>QueryableByName</code> can now be written as <code>deserialize::Result&lt;Self&gt;</code>.</p></li>
+<li><p>The return type of <code>ToSql</code> can now be written as <code>serialize::Result</code>.</p></li>
+<li><p>Added support for SQLite’s <code>INSERT OR IGNORE</code> and MySQL’s <code>INSERT IGNORE</code> via the <code>insert_or_ignore</code> function.</p></li>
+<li><p><code>min</code> and <code>max</code> can now be used with array expressions.</p></li>
+<li><p>Added <code>diesel::dsl::array</code>, which corresponds to a PG <code>ARRAY[]</code> literal.</p></li>
+<li><p>Added the <code>not_none!</code> macro, used by implementations of <code>FromSql</code> which do not expect <code>NULL</code>.</p></li>
+<li><p>Added <code>result::UnexpectedNullError</code>, an <code>Error</code> type indicating that an unexpected <code>NULL</code> was received during deserialization.</p></li>
+<li><p>Added <code>.or_filter</code>, which behaves identically to <code>.filter</code>, but using <code>OR</code> instead of <code>AND</code>.</p></li>
+<li><p><code>helper_types</code> now contains a type for every method defined in <code>expression_methods</code>, and every function in <code>dsl</code>.</p></li>
+<li><p>Added <code>FromSql</code> impls for <code>*const str</code> and <code>*const [u8]</code> everywhere that <code>String</code> and <code>Vec</code> are supported. These impls do not allocate, and are intended for use by other impls which need to parse a string or bytes, and don’t want to allocate. These impls should never be used outside of another <code>FromSql</code> impl.</p></li>
+</ul>
+<h3 id="deprecated-3">Deprecated</h3>
+<ul>
+<li><em>IMPORTANT NOTE</em> Due to <a href="https://github.com/rust-lang/rust/issues/47236">several</a> <a href="https://github.com/rust-lang/rust/issues/47237">bugs</a> in Rust, many of the deprecations in this release may not show a warning. If you want to ensure you are not using any deprecated items, we recommend attempting to compile your code without the <code>with-deprecated</code> feature by adding <code>default-features = false</code> to <code>Cargo.toml</code>.</li>
+</ul>
+<ul>
+<li><p>Deprecated <code>impl_query_id!</code> in favor of <code>#[derive(QueryId)]</code></p></li>
+<li><p>Deprecated specifying a column name as <code>#[column_name(foo)]</code>. <code>#[column_name = "foo"]</code> should be used instead.</p></li>
+<li><p>The <code>types</code> module has been deprecated. It has been split into <code>sql_types</code>, <code>serialize</code>, and <code>deserialize</code>.</p></li>
+<li><p><code>query_source::Queryable</code> and <code>query_source::QueryableByName</code> have been deprecated. These traits have been moved to <code>deserialize</code>.</p></li>
+<li><p><code>backend::TypeMetadata</code> has been deprecated. It has been moved to <code>sql_types</code>.</p></li>
+<li><p><code>types::ToSqlOutput</code> has been deprecated. It has been renamed to <code>serialize::Output</code>.</p></li>
+<li><p><code>helper_types::Not</code> is now <code>helper_types::not</code></p></li>
+</ul>
+<h3 id="fixed-15">Fixed</h3>
+<ul>
+<li><code>infer_schema!</code> generates valid code when run against a database with no tables.</li>
+</ul>
+<h2 id="section-20"><a href="https://github.com/diesel-rs/diesel/compare/v0.99.1...v1.0.0">1.0.0</a> - 2018-01-02</h2>
+<h3 id="added-6">Added</h3>
+<ul>
+<li><p><code>#[derive(QueryableByName)]</code> can now handle structs that have no associated table. If the <code>#[table_name]</code> annotation is left off, you must annotate each field with <code>#[sql_type = "Integer"]</code></p></li>
+<li><p><code>#[derive(QueryableByName)]</code> can now handle embedding other structs. To have a field whose type is a struct which implements <code>QueryableByName</code>, rather than a single column in the query, add the annotation <code>#[diesel(embed)]</code></p></li>
+<li><p>The <code>QueryDsl</code> trait encompasses the majority of the traits that were previously in the <code>query_dsl</code> module.</p></li>
+</ul>
+<h3 id="fixed-16">Fixed</h3>
+<ul>
+<li><p>Executing select statements on SQLite will no longer panic when the database returns <code>SQLITE_BUSY</code></p></li>
+<li><p><code>table!</code>s which use the <code>Datetime</code> type with MySQL will now compile correctly, even without the <code>chrono</code> feature enabled.</p></li>
+<li><p><code>#[derive(QueryableByName)]</code> will now compile correctly when there is a shadowed <code>Result</code> type in scope.</p></li>
+<li><p><code>BoxableExpression</code> can now be used with types that are not <code>'static</code></p></li>
+</ul>
+<h3 id="changed-6">Changed</h3>
+<ul>
+<li><p><code>Connection::test_transaction</code> now requires that the error returned implement <code>Debug</code>.</p></li>
+<li><p><code>query_builder::insert_statement::InsertStatement</code> is now accessed as <code>query_builder::InsertStatement</code></p></li>
+<li><p><code>query_builder::insert_statement::UndecoratedInsertRecord</code> is now accessed as <code>query_builder::UndecoratedInsertRecord</code></p></li>
+<li><p><code>#[derive(QueryableByName)]</code> now requires that the table name be explicitly stated.</p></li>
+<li><p>Most of the traits in <code>query_dsl</code> have been moved to <code>query_dsl::methods</code>. These traits are no longer exported in <code>prelude</code>. This should not affect most apps, as the behavior of these traits is provided by <code>QueryDsl</code>. However, if you were using these traits in <code>where</code> clauses for generic code, you will need to explicitly do <code>use diesel::query_dsl::methods::WhateverDsl</code>. You may also need to use UFCS in these cases.</p></li>
+<li><p>If you have a type which implemented <code>QueryFragment</code> or <code>Query</code>, which you intended to be able to call <code>execute</code> or <code>load</code> on, you will need to manually implement <code>RunQueryDsl</code> for that type. The trait should be unconditionally implemented (no where clause beyond what your type requires), and the body should be empty.</p></li>
+</ul>
+<h3 id="removed-1">Removed</h3>
+<ul>
+<li><p>All deprecated items have been removed.</p></li>
+<li><p><code>LoadDsl</code> and <code>FirstDsl</code> have been removed. Their functionality now lives in <code>LoadQuery</code>.</p></li>
+</ul>
+<h2 id="section-21"><a href="https://github.com/diesel-rs/diesel/compare/v0.99.0...v0.99.1">0.99.1</a> - 2017-12-01</h2>
+<h3 id="changed-7">Changed</h3>
+<ul>
+<li>Diesel CLI now properly restricts its <code>clap</code> dependency. 0.99.0 mistakenly had no upper bound on the version.</li>
+</ul>
+<h2 id="section-22"><a href="https://github.com/diesel-rs/diesel/compare/v0.16.0...v0.99.0">0.99.0</a> - 2017-11-28</h2>
+<h3 id="added-7">Added</h3>
+<ul>
+<li><p>The <code>.for_update()</code> method has been added to select statements, allowing construction of <code>SELECT ... FOR UPDATE</code>.</p></li>
+<li><p>Added <code>insert_into(table).default_values()</code> as a replacement for <code>insert_default_values()</code></p></li>
+<li><p>Added <code>insert_into(table).values(values)</code> as a replacement for <code>insert(values).into(table)</code>.</p></li>
+<li><p>Added support for MySQL’s <code>REPLACE INTO</code> as <code>replace_into(table)</code>.</p></li>
+<li><p>Added <code>replace_into(table).values(values)</code> as a replacement for <code>insert_or_replace(values).into(table)</code>.</p></li>
+<li><p>Added <code>on_conflict_do_nothing</code> on <code>InsertStatement</code> as a replacement for <code>on_conflict_do_nothing</code> on <code>Insertable</code> structs.</p></li>
+<li><p>Added <code>on_conflict</code> on <code>InsertStatement</code> as a replacement for <code>on_conflict</code> on <code>Insertable</code> structs.</p></li>
+<li><p><code>filter</code> can now be called on update and delete statements. This means that instead of <code>update(users.filter(...))</code> you can write <code>update(users).filter(...)</code>. This allows line breaks to more naturally be introduced.</p></li>
+<li><p>Subselects can now reference columns from the outer table. For example, <code>users.filter(exists(posts.filter(user_id.eq(users::id))))</code> will now compile.</p></li>
+<li><p><code>TextExpressionMethods</code> is now implemented for expressions of type <code>Nullable&lt;Text&gt;</code> as well as <code>Text</code>.</p></li>
+<li><p><code>allow_tables_to_appear_in_same_query!</code> can now take more than 2 tables, and is the same as invoking it separately for every combination of those tables.</p></li>
+<li><p>Added <code>sql_query</code>, a new API for dropping to raw SQL that is more pleasant to use than <code>sql</code> for complete queries. The main difference from <code>sql</code> is that you do not need to state the return type, and data is loaded from the query by name rather than by index.</p></li>
+<li><p>Added a way to rename a table in the <code>table!</code> macro with <code>#[sql_name="the_table_name"]</code></p></li>
+<li><p>Added support for PostgreSQL’s <code>DISTINCT ON</code>. See <a href="http://docs.diesel.rs/diesel/query_dsl/trait.DistinctOnDsl.html#tymethod.distinct_on"><code>.distinct_on()</code></a> for more details</p></li>
+</ul>
+<h3 id="changed-8">Changed</h3>
+<ul>
+<li><p>The signatures of <code>QueryId</code>, <code>Column</code>, and <code>FromSqlRow</code> have all changed to use associated constants where appropriate.</p></li>
+<li><p>You will now need to invoke <code>allow_tables_to_appear_in_same_query!</code> any time two tables appear together in the same query, even if there is a <code>joinable!</code> invocation for those tables.</p></li>
+<li><p><code>diesel_codegen</code> should no longer explicitly be used as a dependency. Unless you are using <code>infer_schema!</code> or <code>embed_migrations!</code>, you can simply remove it from your <code>Cargo.toml</code>. All other functionality is now provided by <code>diesel</code> itself.</p></li>
+<li><p>Code using <code>infer_schema!</code> or <code>infer_table_from_schema!</code> must now add <code>diesel_infer_schema</code> to <code>Cargo.toml</code>, and <code>#[macro_use] extern crate diesel_infer_schema</code> to <code>src/lib.rs</code></p></li>
+<li><p>Code using <code>embed_migrations!</code> must now add <code>diesel_migrations</code> to <code>Cargo.toml</code>, and <code>#[macro_use] extern crate diesel_migrations</code> to <code>src/lib.rs</code></p></li>
+<li><p>The <code>migrations</code> module has been moved out of <code>diesel</code> and into <code>diesel_migrations</code></p></li>
+</ul>
+<h3 id="deprecated-4">Deprecated</h3>
+<ul>
+<li><p>Deprecated <code>insert_default_values()</code> in favor of <code>insert_into(table).default_values()</code></p></li>
+<li><p>Deprecated <code>insert(values).into(table)</code> in favor of <code>insert_into(table).values(values)</code>.</p></li>
+<li><p>Deprecated <code>insert_or_replace(values).into(table)</code> in favor of <code>replace_into(table).values(values)</code>.</p></li>
+<li><p>Deprecated <code>.values(x.on_conflict_do_nothing())</code> in favor of <code>.values(x).on_conflict_do_nothing()</code></p></li>
+<li><p>Deprecated <code>.values(x.on_conflict(y, do_nothing()))</code> in favor of <code>.values(x).on_conflict(y).do_nothing()</code></p></li>
+<li><p>Deprecated <code>.values(x.on_conflict(y, do_update().set(z)))</code> in favor of <code>.values(x).on_conflict(y).do_update().set(z)</code></p></li>
+<li><p>Deprecated <code>enable_multi_table_joins</code> in favor of <code>allow_tables_to_appear_in_same_query!</code></p></li>
+<li><p>Deprecated <code>SqlLiteral#bind</code>. <code>sql</code> is intended for use with small fragments of SQL, not complete queries. Writing bind parameters in raw SQL when you are not writing the whole query is error-prone. Use <code>sql_query</code> if you need raw SQL with bind parameters.</p></li>
+</ul>
+<h3 id="removed-2">Removed</h3>
+<ul>
+<li><p><code>IntoInsertStatement</code> and <code>BatchInsertStatement</code> have been removed. It’s unlikely that your application is using these types, but <code>InsertStatement</code> is now the only “insert statement” type.</p></li>
+<li><p><code>Citext</code> as a type alias for <code>Text</code> has been removed. Writing <code>citext_column.eq("foo")</code> would perform a case-sensitive comparison. More fleshed out support will be required.</p></li>
+</ul>
+<h3 id="fixed-17">Fixed</h3>
+<ul>
+<li><p>When using MySQL and SQLite, dates which cannot be represented by <code>chrono</code> (such as <code>0000-00-00</code>) will now properly return an error instead of panicking.</p></li>
+<li><p>MySQL URLs will now properly percent decode the username and password.</p></li>
+<li><p>References to types other than <code>str</code> and slice can now appear on structs which derive <code>Insertable</code> or <code>AsChangeset</code>.</p></li>
+<li><p>Deserializing a date/time/timestamp column into a chrono type on SQLite will now handle any value that is in a format documented as valid for SQLite’s <code>strftime</code> function except for the string <code>'now'</code>.</p></li>
+</ul>
+<h2 id="section-23"><a href="https://github.com/diesel-rs/diesel/compare/v0.15.2...v0.16.0">0.16.0</a> - 2017-08-24</h2>
+<h3 id="added-8">Added</h3>
+<ul>
+<li><p>Added helper types for inner join and left outer join</p></li>
+<li><p><code>diesel::debug_query</code> has been added as a replacement for <code>debug_sql!</code>. This function differs from the macro by allowing you to specify the backend, and will generate the actual query which will be run. The returned value will implement <code>Display</code> and <code>Debug</code> to show the query in different ways</p></li>
+<li><p><code>diesel::pg::PgConnection</code>, <code>diesel::mysql::MysqlConnection</code>, and <code>diesel::sqlite::SqliteConnection</code> are now exported from <code>diesel::prelude</code>. You should no longer need to import these types explicitly.</p></li>
+<li><p>Added support for the Decimal datatype on MySQL, using the <a href="https://crates.io/crates/bigdecimal">BigDecimal crate</a>.</p></li>
+<li><p>Added support for the <a href="https://docs.diesel.rs/diesel/pg/types/sql_types/struct.Range.html">Range</a> type on postgreSQL.</p></li>
+<li><p>Added support for the Datetime type on MySQL.</p></li>
+<li><p>Added support for the Blob type on MySQL.</p></li>
+<li><p><code>infer_schema!</code> will now automatically detect which tables can be joined based on the presence of foreign key constraints.</p></li>
+<li><p>Added support for <code>Add</code> and <code>Sub</code> to timestamp types.</p></li>
+<li><p>Added a way to rename columns in the table macro with <code>#[sql_name="the_column_name"]</code></p></li>
+<li><p>Schema inference now also generates documentation comments for tables and columns. For <code>infer_schema!</code>, this is enabled by default. If you are using Diesel’s CLI tool, pass the new <code>--with-docs</code> parameter: <code>diesel print-schema --with-docs</code>.</p></li>
+<li><p><code>infer_schema!</code> now automatically renames columns that conflict with a Rust keyword by placing a _ at the end of the name. For example, a column called <code>type</code> will be referenced as <code>type_</code> in Rust.</p></li>
+</ul>
+<h3 id="changed-9">Changed</h3>
+<ul>
+<li><p>The deprecated <code>debug_sql!</code> and <code>print_sql!</code> functions will now generate backend specific SQL. (The specific backend they will generate for will be arbitrarily chosen based on the backends enabled).</p></li>
+<li><p><code>#[belongs_to]</code> will no longer generate the code required to join between two tables. You will need to explicitly invoke <code>joinable!</code> instead, unless you are using <code>infer_schema!</code></p></li>
+<li><p>Changed the migration directory name format to <code>%Y-%m-%d-%H%M%S</code>.</p></li>
+<li><p><code>between</code> and <code>not_between</code> now take two arguments, rather than a range.</p></li>
+</ul>
+<h3 id="removed-3">Removed</h3>
+<ul>
+<li><p><code>debug_sql!</code> has been deprecated in favor of <code>diesel::debug_query</code>.</p></li>
+<li><p><code>print_sql!</code> has been deprecated without replacement.</p></li>
+<li><p><code>diesel::backend::Debug</code> has been removed.</p></li>
+</ul>
+<h3 id="fixed-18">Fixed</h3>
+<ul>
+<li><p>Diesel now properly supports joins in the form: <code>grandchild.join(child.join(parent))</code>. Previously only <code>parent.join(child.join(grandchild))</code> would compile.</p></li>
+<li><p>When encoding a <code>BigDecimal</code> on PG, <code>1.0</code> is no longer encoded as if it were <code>1</code>.</p></li>
+</ul>
+<h2 id="section-24"><a href="https://github.com/diesel-rs/diesel/compare/v0.15.1...v0.15.2">0.15.2</a> - 2017-07-28</h2>
+<h3 id="fixed-19">Fixed</h3>
+<ul>
+<li><code>BigDecimal</code> now properly encodes numbers starting with <code>10000</code> on postgres. See <a href="https://github.com/diesel-rs/diesel/issues/1044">issue #1044</a> for details.</li>
+</ul>
+<h2 id="section-25"><a href="https://github.com/diesel-rs/diesel/compare/v0.15.0...v0.15.1">0.15.1</a> - 2017-07-24</h2>
+<ul>
+<li>No changes to public API</li>
+</ul>
+<h2 id="section-26"><a href="https://github.com/diesel-rs/diesel/compare/v0.14.1...v0.15.0">0.15.0</a> - 2017-07-23</h2>
+<h3 id="added-9">Added</h3>
+<ul>
+<li><p>Added support for the PG <code>IS DISTINCT FROM</code> operator</p></li>
+<li><p>The <code>ON</code> clause of a join can now be manually specified. See <a href="https://docs.diesel.rs/diesel/prelude/trait.JoinOnDsl.html#method.on">the docs</a> for details.</p></li>
+</ul>
+<h3 id="changed-10">Changed</h3>
+<ul>
+<li><p>Diesel will now automatically invoke <code>numeric_expr!</code> for your columns in the common cases. You will likely need to delete any manual invocations of this macro.</p></li>
+<li><p><code>Insertable</code> no longer treats all fields as nullable for type checking. What this means for you is that if you had an impl like <code>impl AsExpression&lt;Nullable&lt;SqlType&gt;, DB&gt; for CustomType</code> in your code base, you can remove the <code>Nullable</code> portion (Unless you are using it with fields that are actually nullable)</p></li>
+<li><p>Connections will now explicitly set the session time zone to UTC when the connection is established</p></li>
+</ul>
+<h2 id="section-27"><a href="https://github.com/diesel-rs/diesel/compare/v0.14.0...v0.14.1">0.14.1</a> - 2017-07-10</h2>
+<h3 id="changed-11">Changed</h3>
+<ul>
+<li>The return type of <code>sum</code> and <code>avg</code> is now always considered to be <code>Nullable</code>, as these functions return <code>NULL</code> when against on an empty table.</li>
+</ul>
+<h2 id="section-28"><a href="https://github.com/diesel-rs/diesel/compare/v0.13.0...v0.14.0">0.14.0</a> - 2017-07-04</h2>
+<h3 id="added-10">Added</h3>
+<ul>
+<li>Added support for joining between more than two tables. The query builder can now be used to join between any number of tables in a single query. See the documentation for <a href="https://docs.diesel.rs/diesel/prelude/trait.JoinDsl.html"><code>JoinDsl</code></a> for details</li>
+</ul>
+<ul>
+<li><p>Added support for the <a href="https://www.postgresql.org/docs/9.6/static/datatype-net-types.html">PostgreSQL network types</a> <code>MACADDR</code>.</p></li>
+<li><p>Added support for the Numeric datatypes, using the <a href="https://crates.io/crates/bigdecimal">BigDecimal crate</a>.</p></li>
+<li><p>Added a function which maps to SQL <code>NOT</code>. See <a href="https://docs.diesel.rs/diesel/expression/dsl/fn.not.html">the docs</a> for more details.</p></li>
+<li><p>Added the <a href="https://docs.diesel.rs/diesel/fn.insert_default_values.html"><code>insert_default_values</code></a> function.</p></li>
+</ul>
+<ul>
+<li>Added <code>diesel_prefix_operator!</code> which behaves identically to <code>diesel_postfix_operator!</code> (previously <code>postfix_predicate!</code>), but for operators like <code>NOT</code> which use prefix notation.</li>
+</ul>
+<h3 id="changed-12">Changed</h3>
+<ul>
+<li><p><code>infix_predicate!</code> and <code>infix_expression!</code> have been renamed to <code>diesel_infix_operator!</code>.</p></li>
+<li><p><code>postfix_predicate!</code> and <code>postfix_expression!</code> have been renamed to <code>diesel_postfix_operator!</code>.</p></li>
+<li><p>Trait bounds along the lines of <code>T: LoadDsl&lt;Conn&gt;, U: Queryable&lt;T::SqlType, Conn::Backend&gt;</code> should be changed to <code>T: LoadQuery&lt;Conn, U&gt;</code>.</p></li>
+<li><p>Diesel now uses a migration to set up its timestamp helpers. To generate this migration for your project, run <code>diesel database setup</code>.</p></li>
+</ul>
+<h3 id="removed-4">Removed</h3>
+<ul>
+<li><code>#[has_many]</code> has been removed. Its functionality is now provided by <code>#[belongs_to]</code> on the child struct. If there is no child struct to put <code>#[belongs_to]</code> on, you can invoke <code>joinable!</code> directly instead.</li>
+</ul>
+<h2 id="section-29"><a href="https://github.com/diesel-rs/diesel/compare/v0.12.1...v0.13.0">0.13.0</a> - 2017-05-15</h2>
+<h3 id="added-11">Added</h3>
+<ul>
+<li><p>Added support for chrono types with SQLite.</p></li>
+<li><p>Bind values can now be supplied to queries constructed using raw SQL. See <a href="https://docs.diesel.rs/diesel/expression/sql_literal/struct.SqlLiteral.html#method.bind">the docs</a> for more details.</p></li>
+</ul>
+<ul>
+<li>Added support for the <a href="https://www.postgresql.org/docs/9.6/static/datatype-net-types.html">PostgreSQL network types</a> <code>CIDR</code> and <code>INET</code>.</li>
+</ul>
+<ul>
+<li><p>Added support for <code>ILIKE</code> in PostgreSQL.</p></li>
+<li><p><code>diesel migration list</code> will show all migrations, marking those that have been run.</p></li>
+<li><p><code>diesel migration pending</code> will list any migrations which have not been run.</p></li>
+<li><p>Added support for numeric operations with nullable types.</p></li>
+<li><p>Added <a href="https://docs.diesel.rs/diesel/migrations/fn.any_pending_migrations.html"><code>migrations::any_pending_migrations</code></a>.</p></li>
+</ul>
+<h3 id="fixed-20">Fixed</h3>
+<ul>
+<li><p>Diesel CLI now respects the <code>--migration-dir</code> argument or the <code>MIGRATION_DIRECTORY</code> environment variable for all commands.</p></li>
+<li><p>Diesel CLI now properly escapes the database name.</p></li>
+</ul>
+<h2 id="section-30"><a href="https://github.com/diesel-rs/diesel/compare/v0.12.0...v0.12.1">0.12.1</a> - 2017-05-07</h2>
+<h3 id="changed-13">Changed</h3>
+<ul>
+<li>Locked the chrono dependency to require exactly <code>0.3.0</code> instead of a semver restriction. This restriction is required for the 0.12 line of releases to continue compiling, as the chrono project is including breaking changes in patch releases.</li>
+</ul>
+<h2 id="section-31"><a href="https://github.com/diesel-rs/diesel/compare/v0.11.4...v0.12.0">0.12.0</a> - 2017-03-16</h2>
+<h3 id="added-12">Added</h3>
+<ul>
+<li>Added support for the majority of PG upsert (<code>INSERT ON CONFLICT</code>). We now support specifying the constraint, as well as <code>DO UPDATE</code> in addition to <code>DO NOTHING</code>. See <a href="https://docs.diesel.rs/diesel/pg/upsert/index.html">the module docs</a> for details.</li>
+</ul>
+<ul>
+<li>Added support for the SQL concatenation operator <code>||</code>. See <a href="https://docs.diesel.rs/diesel/expression/expression_methods/text_expression_methods/trait.TextExpressionMethods.html#method.concat">the docs for <code>.concat</code></a> for more details.</li>
+</ul>
+<ul>
+<li>Added support for the PostgreSQL <a href="https://www.postgresql.org/docs/9.6/static/datatype-money.html"><code>Money</code> type</a>.</li>
+</ul>
+<ul>
+<li><p>Diesel CLI: Added <code>db</code> as an alias for <code>database</code>, so you can now write <code>diesel db setup</code> (which is almost 40% faster!).</p></li>
+<li><p>The <code>table!</code> macro now allows you to use types from crates outside of Diesel. You can specify where types should be imported from by doing: <code>table! { use some_modules::*; foo { columns... }</code>. Not specifying any any modules is equivalent to <code>use diesel::types::*;</code>.</p></li>
+</ul>
+<h3 id="fixed-21">Fixed</h3>
+<ul>
+<li><p><code>diesel_codegen</code> will provide a more useful error message when it encounters an unsupported type that contains a space in MySQL.</p></li>
+<li><p><code>#[derive(AsChangeset)]</code> will now respect custom <code>#[primary_key]</code> annotations, and avoid setting those columns.</p></li>
+</ul>
+<h3 id="removed-5">Removed</h3>
+<ul>
+<li><p><code>WithDsl</code> and <code>Aliased</code> have been removed. They were a feature that was actually closer to a cross join than the names implied, and wasn’t fully thought out. The functionality they provided will return as joins are further revamped.</p></li>
+<li><p>The internal use macro <code>select_column_workaround!</code> has been removed. If you were relying on this internal macro, you can simply delete the line that was calling it.</p></li>
+<li><p>Columns from the right side of a left join will now need to have <code>.nullable()</code> explicitly called to be passed to <code>.select</code>. This allows it to compose better with functions that don’t normally take nullable columns (e.g. <code>lower(name).nullable()</code>).</p></li>
+</ul>
+<h2 id="section-32"><a href="https://github.com/diesel-rs/diesel/compare/v0.11.2...v0.11.4">0.11.4</a> - 2017-02-21</h2>
+<h3 id="fixed-22">Fixed</h3>
+<ul>
+<li>Corrected a memory safety violation when using MySQL.</li>
+</ul>
+<h2 id="section-33">0.11.3 - 2017-02-21</h2>
+<ul>
+<li>No changes</li>
+</ul>
+<h2 id="section-34"><a href="https://github.com/diesel-rs/diesel/compare/v0.11.1...v0.11.2">0.11.2</a> - 2017-02-19</h2>
+<h3 id="changed-14">Changed</h3>
+<ul>
+<li><code>pq-sys</code> and <code>mysqlclient-sys</code> will no longer attempt to generate bindings at compile time. Generating the bindings required a bleeding edge version of clang, which caused too many issues.</li>
+</ul>
+<h2 id="section-35"><a href="https://github.com/diesel-rs/diesel/compare/v0.11.0...v0.11.1">0.11.1</a> - 2017-02-17</h2>
+<h3 id="fixed-23">Fixed</h3>
+<ul>
+<li><p><code>.on_conflict_do_nothing()</code> now interacts with slices properly.</p></li>
+<li><p><code>MysqlConnection</code> now implements <code>Send</code>, which is required for connection pooling.</p></li>
+</ul>
+<h2 id="section-36"><a href="https://github.com/diesel-rs/diesel/compare/v0.10.1...v0.11.0">0.11.0</a> - 2017-02-16</h2>
+<h3 id="added-13">Added</h3>
+<ul>
+<li>Added support for MySQL as an additional backend. Diesel CLI will install with MySQL support by default. To enable it for Diesel and Diesel Codegen, add <code>features = ["mysql"]</code> to Cargo.toml. See <a href="https://docs.diesel.rs/diesel/mysql/index.html">the docs</a> for details.</li>
+</ul>
+<ul>
+<li>Added support for PG’s <code>ON CONFLICT DO NOTHING</code> clause. See <a href="https://docs.diesel.rs/diesel/pg/upsert/trait.OnConflictExtension.html#method.on_conflict_do_nothing">the docs</a> for details.</li>
+</ul>
+<ul>
+<li>Queries constructed using <a href="https://docs.rs/diesel/0.11.0/diesel/fn.select.html"><code>diesel::select</code></a> now work properly when <a href="https://docs.rs/diesel/0.11.0/prelude/trait.BoxedDsl.html">boxed</a>.</li>
+</ul>
+<ul>
+<li><p>Arrays containing null are now supported. <code>infer_schema!</code> will never infer an array that contains null, but a <code>table!</code> definition which specifies a type of <code>Array&lt;Nullable&lt;X&gt;&gt;</code> can now be deserialized to <code>Vec&lt;Option&lt;T&gt;&gt;</code></p></li>
+<li><p><a href="https://docs.rs/diesel/0.11.0/diesel/associations/trait.BelongsTo.html"><code>#[belongs_to]</code></a> associations can now be self referential. This will generate the code required for <a href="https://docs.rs/diesel/0.11.0/diesel/prelude/trait.BelongingToDsl.html#tymethod.belonging_to"><code>belonging_to</code></a>, without generating code for performing a join.</p></li>
+</ul>
+<ul>
+<li>Added support for the <code>rust-lang-deprecated/time</code> crate on PostgreSQL. To use it, add <code>features = ["deprecated-time"]</code></li>
+</ul>
+<h3 id="changed-15">Changed</h3>
+<ul>
+<li><p>It is no longer possible to exhaustively match against <code>result::ConnectionError</code>.</p></li>
+<li><p>Updated chrono to version 0.3.</p></li>
+<li><p><a href="https://docs.diesel.rs/diesel/expression/dsl/fn.max.html"><code>max</code></a> and <a href="https://docs.diesel.rs/diesel/expression/dsl/fn.min.html"><code>min</code></a> are now always nullable. The database will return <code>NULL</code> when the table is empty.</p></li>
+</ul>
+<ul>
+<li><a href="https://docs.diesel.rs/diesel/expression/dsl/struct.now.html"><code>now</code></a> can now be used as an expression of type <code>Timestamptz</code>.</li>
+</ul>
+<ul>
+<li><a href="https://docs.diesel.rs/diesel/connection/trait.Connection.html#method.transaction"><code>Connection::transaction</code></a> now returns your error directly instead of wrapping it in <code>TransactionError</code>. It requires that the error implement <code>From&lt;diesel::result::Error&gt;</code></li>
+</ul>
+<ul>
+<li>The way tuples of columns from the right side of left outer joins interact with <code>.select</code> has changed. If you are deserializing into an option of a tuple (instead of a tuple of options), you will need to explicitly call <code>.nullable()</code>. (e.g. <code>.select(users::name, (posts::title, posts::body).nullable())</code>)</li>
+</ul>
+<h3 id="removed-6">Removed</h3>
+<ul>
+<li><code>result::TransactionError</code></li>
+<li><code>result::TransactionResult</code></li>
+</ul>
+<h2 id="section-37"><a href="https://github.com/diesel-rs/diesel/compare/v0.10.0...v0.10.1">0.10.1</a> - 2017-02-08</h2>
+<h3 id="fixed-24">Fixed</h3>
+<ul>
+<li><code>infer_table_from_schema!</code> properly handles table names with a custom schema specified.</li>
+</ul>
+<h3 id="changed-16">Changed</h3>
+<ul>
+<li>Updated uuid to version 0.4.</li>
+</ul>
+<h2 id="section-38"><a href="https://github.com/diesel-rs/diesel/compare/v0.9.1...v0.10.0">0.10.0</a> - 2017-02-02</h2>
+<h3 id="added-14">Added</h3>
+<ul>
+<li>Added support for the PostgreSQL <a href="https://www.postgresql.org/docs/9.6/static/datatype-json.html"><code>json</code> and <code>jsonb</code> types</a>. They can be mapped to/from <code>serde_json::Value</code>. The <code>serde</code> feature must be enabled to use the JSON types.</li>
+</ul>
+<ul>
+<li>Added the <code>print-schema</code> command to Diesel CLI. This command will print the output of the <code>infer_schema!</code> macro. For more information run <code>diesel help print-schema</code>.</li>
+</ul>
+<h3 id="changed-17">Changed</h3>
+<ul>
+<li><p>When possible, we will use deprecation warnings for breaking changes. Deprecated code requires the <code>with-deprecated</code> feature, which is enabled by default.</p></li>
+<li><p>The <code>postgres</code> feature is no longer enabled by default by <code>diesel</code> or <code>diesel_codegen_syntex</code>. Add <code>features = ["postgres"]</code> to your <code>Cargo.toml</code>.</p></li>
+<li><p>The <code>persistable</code> module has been renamed to <code>insertable</code>.</p></li>
+</ul>
+<h3 id="fixed-25">Fixed</h3>
+<ul>
+<li><code>#[derive(Insertable)]</code> allows fields of type <code>Option&lt;T&gt;</code> to be used with columns that are not null if they have a default value.</li>
+</ul>
+<h3 id="removed-7">Removed</h3>
+<ul>
+<li><p><code>diesel_codegen_syntex</code> is no longer supported. <code>diesel_codegen</code> can now be used on stable Rust.</p></li>
+<li><p>Dropped support for Rust 1.14 and earlier</p></li>
+</ul>
+<h2 id="section-39"><a href="https://github.com/diesel-rs/diesel/compare/v0.9.0...v0.9.1">0.9.1</a> - 2016-12-09</h2>
+<h3 id="fixed-26">Fixed</h3>
+<ul>
+<li><p>Added missing impls for loading <code>chrono::NaiveDateTime</code> from a column of type <code>Timestamptz</code></p></li>
+<li><p><code>#[derive(AsChangeset)]</code> no longer assumes that <code>use diesel::prelude::*</code> has been done.</p></li>
+<li><p><code>debug_sql!</code> can now properly be used with types from <code>chrono</code> or <code>std::time</code>.</p></li>
+<li><p>When using PostgreSQL, attempting to get the error message of a query which could not be transmitted to the server (such as a query with greater than 65535 bind parameters) will no longer panic.</p></li>
+</ul>
+<h2 id="section-40"><a href="https://github.com/diesel-rs/diesel/compare/v0.8.2...v0.9.0">0.9.0</a> - 2016-12-08</h2>
+<h3 id="added-15">Added</h3>
+<ul>
+<li><p>Added support for SQL <code>NOT IN</code> using the <code>ne_any</code> method.</p></li>
+<li><p>The <code>table!</code> macro now allows custom schemas to be specified. Example:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb1-1" title="1"><span class="pp">table!</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb1-2" title="2">  schema_1.table_1 <span class="op">{</span></a>
+<a class="sourceLine" id="cb1-3" title="3">    id -&gt; Integer,</a>
+<a class="sourceLine" id="cb1-4" title="4">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb1-5" title="5"><span class="op">}</span></a></code></pre></div>
+<p>The generated module will still be called <code>table_1</code>.</p></li>
+<li><p>The <code>infer_table_from_schema!</code> macro now allows custom schemas to be specified. Example:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb2-1" title="1"><span class="pp">infer_table_from_schema!</span>(<span class="st">&quot;dotenv:DATABASE_URL&quot;</span>, <span class="st">&quot;schema_1.table_1&quot;</span>);</a></code></pre></div></li>
+<li><p>The <code>infer_schema!</code> optionally allows a schema name as the second argument. Any schemas other than <code>public</code> will be wrapped in a module with the same name as the schema. For example, <code>schema_1.table_1</code> would be referenced as <code>schema_1::table_1</code>.</p></li>
+<li><p>Added support for batch insert on SQLite. This means that you can now pass a slice or vector to <a href="https://docs.diesel.rs/diesel/fn.insert.html"><code>diesel::insert</code></a> on all backends.</p></li>
+</ul>
+<ul>
+<li>Added a function for SQL <code>EXISTS</code> expressions. See <a href="https://docs.diesel.rs/diesel/expression/dsl/fn.sql.html"><code>diesel::expression::dsl::exists</code></a> for details.</li>
+</ul>
+<ul>
+<li><code>#[derive(Identifiable)]</code> can be used with structs that have primary keys other than <code>id</code>, as well as structs with composite primary keys. You can now annotate the struct with <code>#[primary_key(nonstandard)]</code> or <code>#[primary_key(foo, bar)]</code>.</li>
+</ul>
+<h3 id="changed-18">Changed</h3>
+<ul>
+<li>All macros with the same name as traits we can derive (e.g. <code>Queryable!</code>) have been renamed to <code>impl_Queryable!</code> or similar.</li>
+</ul>
+<h3 id="fixed-27">Fixed</h3>
+<ul>
+<li><p><code>#[derive(Identifiable)]</code> now works on structs with lifetimes</p></li>
+<li><p>Attempting to insert an empty slice will no longer panic. It does not execute any queries, but the result will indicate that we successfully inserted 0 rows.</p></li>
+<li><p>Attempting to update a record with no changes will no longer generate invalid SQL. The result of attempting to execute the query will still be an error, but but it will be a <code>Error::QueryBuilderError</code>, rather than a database error. This means that it will not abort the current transaction, and can be handled by applications.</p></li>
+<li><p>Calling <code>eq_any</code> or <code>ne_any</code> with an empty array no longer panics. <code>eq_any(vec![])</code> will return no rows. <code>ne_any(vec![])</code> will return all rows.</p></li>
+</ul>
+<h2 id="section-41"><a href="https://github.com/diesel-rs/diesel/compare/v0.8.1...v0.8.2">0.8.2</a> - 2016-11-22</h2>
+<h3 id="changed-19">Changed</h3>
+<ul>
+<li><p>Fixed support for nightlies later than 2016-11-07</p></li>
+<li><p>Removed support for nightlies earlier than 2016-11-07</p></li>
+<li><p>Calls to <code>infer_table_from_schema!</code> will need to be wrapped in a module if called more than once. This change is to work around further limitations of the Macros 1.1 system. Example:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">mod</span> infer_users <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-2" title="2">    <span class="pp">infer_table_from_schema!</span>(<span class="st">&quot;dotenv:DATABASE_URL&quot;</span>, <span class="st">&quot;users&quot;</span>);</a>
+<a class="sourceLine" id="cb3-3" title="3"><span class="op">}</span></a>
+<a class="sourceLine" id="cb3-4" title="4"><span class="kw">pub</span> <span class="kw">use</span> <span class="kw">self</span>::<span class="pp">infer_users::</span>*;</a></code></pre></div></li>
+</ul>
+<h2 id="section-42"><a href="https://github.com/diesel-rs/diesel/compare/v0.8.0...v0.8.1">0.8.1</a> - 2016-11-01</h2>
+<h3 id="added-16">Added</h3>
+<ul>
+<li>SQLite date and time columns can be deserialized to/from strings.</li>
+</ul>
+<h3 id="fixed-28">Fixed</h3>
+<ul>
+<li>Fixed an issue with <code>diesel_codegen</code> on nightlies &gt;= 2016-10-20</li>
+</ul>
+<h2 id="section-43"><a href="https://github.com/diesel-rs/diesel/compare/v0.7.2...v0.8.0">0.8.0</a> - 2016-10-10</h2>
+<h3 id="added-17">Added</h3>
+<ul>
+<li><p>Added partial support for composite primary keys.</p></li>
+<li><p>Added support for PostgreSQL <code>NULLS FIRST</code> and <code>NULLS LAST</code> when sorting. See https://docs.diesel.rs/diesel/prelude/trait.SortExpressionMethods.html for details.</p></li>
+<li><p>Added support for the <code>timestamp with time zone</code> type in PostgreSQL (referred to as <code>diesel::types::Timestamptz</code>)</p></li>
+<li><p>Diesel CLI can now generate bash completion. See <a href="https://github.com/diesel-rs/diesel/blob/b1a0d9901f0f2a8c8d530ccba8173b57f332b891/diesel_cli/README.md#bash-completion">the readme</a> for details.</p></li>
+<li><p><code>infer_schema!</code> and <code>infer_table_from_schema!</code> can now take <code>"env:foo"</code> instead of <code>env!("foo")</code> and <code>"dotenv:foo"</code> instead of <code>dotenv!("foo")</code>. The use of <code>dotenv</code> requires the <code>dotenv</code> feature on <code>diesel_codegen</code>, which is included by default. Using <code>env!</code> and <code>dotenv!</code> will no longer work with <code>diesel_codegen</code>. They continue to work with <code>diesel_codegen_syntex</code>, but that crate will be deprecated when Macros 1.1 is in the beta channel for Rust.</p></li>
+</ul>
+<h3 id="changed-20">Changed</h3>
+<ul>
+<li><p>Structs annotated with <code>#[has_many]</code> or <code>#[belongs_to]</code> now require <code>#[derive(Associations)]</code>. This is to allow them to work with Macros 1.1.</p></li>
+<li><p><code>embed_migrations!</code> now resolves paths relative to <code>Cargo.toml</code> instead of the file the macro was called from. This change is required to allow this macro to work with Macros 1.1.</p></li>
+</ul>
+<h3 id="fixed-29">Fixed</h3>
+<ul>
+<li><code>diesel migrations run</code> will now respect migration directories overridden by command line argument or environment variable</li>
+<li>The <code>infer_schema!</code> macro will no longer fetch views alongside with tables. This was a source of trouble for people that had created views or are using any extension that automatically creates views (e.g. PostGIS)</li>
+</ul>
+<h3 id="changed-21">Changed</h3>
+<ul>
+<li><code>#[changeset_for(foo)]</code> should now be written as <code>#[derive(AsChangeset)] #[table_name="foo"]</code>. If you were specifying <code>treat_none_as_null = "true"</code>, you should additionally have <code>#[changeset_options(treat_none_as_null = "true")]</code>.</li>
+<li><code>#[insertable_into(foo)]</code> should now be written as <code>#[derive(Insertable)] #[table_name="foo"]</code>.</li>
+</ul>
+<h2 id="section-44"><a href="https://github.com/diesel-rs/diesel/compare/v0.7.1...v0.7.2">0.7.2</a> - 2016-08-20</h2>
+<ul>
+<li>Updated nightly version and syntex support.</li>
+</ul>
+<h2 id="section-45"><a href="https://github.com/diesel-rs/diesel/compare/v0.7.0...v0.7.1">0.7.1</a> - 2016-08-11</h2>
+<h3 id="changed-22">Changed</h3>
+<ul>
+<li>The <code>Copy</code> constraint has been removed from <code>Identifiable::Id</code>, and <code>Identifiable#id</code> now returns <code>&amp;Identifiable::Id</code>.</li>
+</ul>
+<h3 id="fixed-30">Fixed</h3>
+<ul>
+<li><code>#[belongs_to]</code> now respects the <code>foreign_key</code> option when using <code>diesel_codegen</code> or <code>diesel_codegen_syntex</code>.</li>
+</ul>
+<h2 id="section-46"><a href="https://github.com/diesel-rs/diesel/compare/v0.6.1...v0.7.0">0.7.0</a> - 2016-08-01</h2>
+<h3 id="added-18">Added</h3>
+<ul>
+<li><p>The initial APIs have been added in the form of <code>#[has_many]</code> and <code>#[belongs_to]</code>. See <a href="https://docs.diesel.rs/diesel/associations/index.html">the module documentation</a> for more information.</p></li>
+<li><p>The <code>Insertable!</code> macro can now be used instead of <code>#[insertable_into]</code> for those wishing to avoid syntax extensions from <code>diesel_codegen</code>. See https://docs.diesel.rs/diesel/macro.Insertable!.html for details.</p></li>
+<li><p>The <code>Queryable!</code> macro can now be used instead of <code>#[derive(Queryable)]</code> for those wishing to avoid syntax extensions from <code>diesel_codegen</code>. See https://docs.diesel.rs/diesel/macro.Queryable!.html for details.</p></li>
+<li><p>The <code>Identifiable!</code> macro can now be used instead of <code>#[derive(Identifiable)]</code> for those wishing to avoid syntax extensions from <code>diesel_codegen</code>. See https://docs.diesel.rs/diesel/macro.Identifiable!.html for details.</p></li>
+<li><p>The <code>AsChangeset!</code> macro can now be used instead of <code>#[changeset_for(table)]</code> for those wishing to avoid syntax extensions from <code>diesel_codegen</code>. See https://docs.diesel.rs/diesel/macro.AsChangeset!.html for details.</p></li>
+<li><p>Added support for the PostgreSQL <code>ALL</code> operator. See https://docs.diesel.rs/diesel/pg/expression/dsl/fn.all.html for details.</p></li>
+<li><p>Added support for <code>RETURNING</code> expressions in <code>DELETE</code> statements. Implicitly these queries will use <code>RETURNING *</code>.</p></li>
+</ul>
+<h3 id="changed-23">Changed</h3>
+<ul>
+<li><p>Diesel now targets <code>nightly-2016-07-07</code>. Future releases will update to a newer nightly version on the date that Rust releases.</p></li>
+<li><p><code>diesel_codegen</code> has been split into two crates. <code>diesel_codegen</code> and <code>diesel_codegen_syntex</code>. See <a href="https://github.com/diesel-rs/diesel/commit/36b8801bf5e9594443743e6a7c62e29d3dce36b7">this commit</a> for migration information.</p></li>
+<li><p>Most structs that implement <code>Queryable</code> will now also need <code>#[derive(Identifiable)]</code>.</p></li>
+<li><p><code>infer_schema!</code> on SQLite now accepts a larger range of type names</p></li>
+<li><p><code>types::VarChar</code> is now an alias for <code>types::Text</code>. Most code should be unaffected by this. PG array columns are treated slightly differently, however. If you are using <code>varchar[]</code>, you should switch to <code>text[]</code> instead.</p></li>
+<li><p>Struct fields annotated with <code>#[column_name="name"]</code> should be changed to <code>#[column_name(name)]</code>.</p></li>
+<li><p>The structure of <code>DatabaseError</code> has changed to hold more information. See https://docs.diesel.rs/diesel/result/enum.Error.html and https://docs.diesel.rs/diesel/result/trait.DatabaseErrorInformation.html for more information</p></li>
+<li><p>Structs which implement <code>Identifiable</code> can now be passed to <code>update</code> and <code>delete</code>. This means you can now write <code>delete(&amp;user).execute(&amp;connection)</code> instead of <code>delete(users.find(user.id)).execute(&amp;connection)</code></p></li>
+</ul>
+<h3 id="fixed-31">Fixed</h3>
+<ul>
+<li><code>&amp;&amp;[T]</code> can now be used in queries. This allows using slices with things like <code>#[insertable_into]</code>.</li>
+</ul>
+<h2 id="section-47"><a href="https://github.com/diesel-rs/diesel/compare/v0.6.0...v0.6.1">0.6.1</a> 2016-04-14</h2>
+<h3 id="added-19">Added</h3>
+<ul>
+<li>Added the <code>escape</code> method to <code>Like</code> and <code>NotLike</code>, to specify the escape character used in the pattern. See <a href="https://docs.diesel.rs/diesel/expression/expression_methods/escape_expression_methods/trait.EscapeExpressionMethods.html">EscapeExpressionMethods</a> for details.</li>
+</ul>
+<h3 id="fixed-32">Fixed</h3>
+<ul>
+<li><p><code>diesel_codegen</code> and <code>diesel_cli</code> now properly rely on Diesel 0.6.0. The restriction to 0.5.0 was an oversight.</p></li>
+<li><p><code>infer_schema!</code> now properly excludes metadata tables on SQLite.</p></li>
+<li><p><code>infer_schema!</code> now properly maps types on SQLite.</p></li>
+</ul>
+<h2 id="section-48"><a href="https://github.com/diesel-rs/diesel/compare/v0.5.4...v0.6.0">0.6.0</a> 2016-04-12</h2>
+<h3 id="added-20">Added</h3>
+<ul>
+<li><p>Queries can now be boxed using the <code>into_boxed()</code> method. This is useful for conditionally modifying queries without changing the type. See <a href="https://docs.diesel.rs/diesel/prelude/trait.BoxedDsl.html">BoxedDsl</a> for more details.</p></li>
+<li><p><code>infer_schema!</code> is now supported for use with SQLite3.</p></li>
+<li><p>The maximum table size can be increased to 52 by enabling the <code>huge-tables</code> feature. This feature will substantially increase compile times.</p></li>
+<li><p>The <code>DISTINCT</code> keyword can now be added to queries via the <code>distinct()</code> method.</p></li>
+<li><p><code>SqliteConnection</code> now implements <code>Send</code></p></li>
+</ul>
+<h3 id="changed-24">Changed</h3>
+<ul>
+<li><p><code>diesel::result::Error</code> now implements <code>Send</code> and <code>Sync</code>. This required a change in the return type of <code>ToSql</code> and <code>FromSql</code> to have those bounds as well.</p></li>
+<li><p>It is no longer possible to pass an owned value to <code>diesel::insert</code>. <code>insert</code> will now give a more helpful error message when you accidentally try to pass an owned value instead of a reference.</p></li>
+</ul>
+<h3 id="fixed-33">Fixed</h3>
+<ul>
+<li><p><code>#[insertable_into]</code> can now be used with structs that have lifetimes with names other than <code>'a'</code>.</p></li>
+<li><p>Tables with a single column now properly return a single element tuple. E.g. if the column was of type integer, then <code>users::all_columns</code> is now <code>(id,)</code> and not <code>id</code>.</p></li>
+<li><p><code>infer_schema!</code> can now work with tables that have a primary key other than <code>id</code>.</p></li>
+</ul>
+<h3 id="removed-8">Removed</h3>
+<ul>
+<li>Removed the <code>no select</code> option for the <code>table!</code> macro. This was a niche feature that didn’t fit with Diesel’s philosophies. You can write a function that calls <code>select</code> for you if you need this functionality.</li>
+</ul>
+<h2 id="section-49"><a href="https://github.com/diesel-rs/diesel/compare/v0.5.3...v0.5.4">0.5.4</a> 2016-03-23</h2>
+<ul>
+<li>Updated <code>diesel_codegen</code> to allow syntex versions up to 0.30.0.</li>
+</ul>
+<h2 id="section-50"><a href="https://github.com/diesel-rs/diesel/compare/v0.5.2...v0.5.3">0.5.3</a> 2016-03-12</h2>
+<h3 id="added-21">Added</h3>
+<ul>
+<li><p>Added helper function <code>diesel_manage_updated_at('TABLE_NAME')</code> to postgres upon database setup. This function sets up a trigger on the specified table that automatically updates the <code>updated_at</code> column to the <code>current_timestamp</code> for each affected row in <code>UPDATE</code> statements.</p></li>
+<li><p>Added support for explicit <code>RETURNING</code> expressions in <code>INSERT</code> and <code>UPDATE</code> queries. Implicitly these queries will still use <code>RETURNING *</code>.</p></li>
+</ul>
+<h3 id="fixed-34">Fixed</h3>
+<ul>
+<li>Updated to work on nightly from early March</li>
+</ul>
+<h2 id="section-51"><a href="https://github.com/diesel-rs/diesel/compare/v0.5.1...v0.5.2">0.5.2</a> 2016-02-27</h2>
+<ul>
+<li>Updated to work on nightly from late February</li>
+</ul>
+<h2 id="section-52"><a href="https://github.com/diesel-rs/diesel/compare/v0.5.0...v0.5.1">0.5.1</a> 2016-02-11</h2>
+<ul>
+<li>Diesel CLI no longer has a hard dependency on SQLite and PostgreSQL. It assumes both by default, but if you need to install on a system that doesn’t have one or the other, you can install it with <code>cargo install diesel_cli --no-default-features --features postgres</code> or <code>cargo install diesel_cli --no-default-features --features sqlite</code></li>
+</ul>
+<h2 id="section-53"><a href="https://github.com/diesel-rs/diesel/compare/v0.4.1...v0.5.0">0.5.0</a> 2016-02-05</h2>
+<h3 id="added-22">Added</h3>
+<ul>
+<li><p>Added support for SQLite. Diesel still uses postgres by default. To use SQLite instead, add <code>default-features = false, features = ["sqlite"]</code> to your Cargo.toml. You’ll also want to add <code>default-features = false, features = ["sqlite"]</code> to <code>diesel_codegen</code>. Since SQLite is a much more limited database, it does not support our full set of features. You can use SQLite and PostgreSQL in the same project if you desire.</p></li>
+<li><p>Added support for mapping <code>types::Timestamp</code>, <code>types::Date</code>, and <code>types::Time</code> to/from <code>chrono::NaiveDateTime</code>, <code>chrono::NaiveDate</code>, and <code>chrono::NaiveTime</code>. Add <code>features = ["chrono"]</code> to enable.</p></li>
+<li><p>Added a <code>treat_none_as_null</code> option to <code>changeset_for</code>. When set to <code>true</code>, a model will set a field to <code>Null</code> when an optional struct field is <code>None</code>, instead of skipping the field entirely. The default value of the option is <code>false</code>, as we think the current behavior is a much more common use case.</p></li>
+<li><p>Added <code>Expression#nullable()</code>, to allow comparisons of not null columns with nullable ones when required.</p></li>
+<li><p>Added <code>sum</code> and <code>avg</code> functions.</p></li>
+<li><p>Added the <code>diesel setup</code>, <code>diesel database setup</code>, and <code>diesel database reset</code> commands to the CLI.</p></li>
+<li><p>Added support for SQL <code>IN</code> statements through the <code>eq_any</code> method.</p></li>
+<li><p>Added a top level <code>select</code> function for select statements with no from clause. This is primarily intended to be used for testing Diesel itself, but it has been added to the public API as it will likely be useful for third party crates in the future. <code>select(foo).from(bar)</code> might be a supported API in the future as an alternative to <code>bar.select(foo)</code>.</p></li>
+<li><p>Added <code>expression::dsl::sql</code> as a helper function for constructing <code>SqlLiteral</code> nodes. This is primarily intended to be used for testing Diesel itself, but is part of the public API as an escape hatch if our query builder DSL proves inadequate for a specific case. Use of this function in any production code is discouraged as it is inherently unsafe and avoids real type checking.</p></li>
+</ul>
+<h3 id="changed-25">Changed</h3>
+<ul>
+<li><p>Moved most of our top level trait exports into a prelude module, and re-exported our CRUD functions from the top level. <code>diesel::query_builder::update</code> and friends are now <code>diesel::update</code>, and you will get them by default if you import <code>diesel::*</code>. For a less aggressive glob, you can import <code>diesel::prelude::*</code>, which will only export our traits.</p></li>
+<li><p><code>Connection</code> is now a trait instead of a struct. The struct that was previously known as <code>Connection</code> can be found at <code>diesel::pg::PgConnection</code>.</p></li>
+<li><p>Rename both the <code>#[derive(Queriable)]</code> attribute and the <code>Queriable</code> trait to use the correct spelling <code>Queryable</code>.</p></li>
+<li><p><code>load</code> and <code>get_results</code> now return a <code>Vec&lt;Model&gt;</code> instead of an iterator.</p></li>
+<li><p>Replaced <code>Connection#find(source, id)</code> with <code>source.find(id).first(&amp;connection)</code>.</p></li>
+<li><p>The <code>debug_sql!</code> macro now uses ` for identifier quoting, and <code>?</code> for bind parameters, which is closer to a “generic” backend. The previous behavior had no identifier quoting, and used PG specific bind params.</p></li>
+<li><p>Many user facing types are now generic over the backend. This includes, but is not limited to <code>Queryable</code> and <code>Changeset</code>. This change should not have much impact, as most impls will have been generated by diesel_codegen, and that API has not changed.</p></li>
+<li><p>The mostly internal <code>NativeSqlType</code> has been removed. It now requires a known backend. <code>fn&lt;T&gt; foo() where T: NativeSqlType</code> is now <code>fn&lt;T, DB&gt; foo() where DB: HasSqlType&lt;T&gt;</code></p></li>
+</ul>
+<h3 id="removed-9">Removed</h3>
+<ul>
+<li><code>Connection#query_sql</code> and <code>Connection#query_sql_params</code> have been removed. These methods were not part of the public API, and were only meant to be used for testing Diesel itself. However, they were technically callable from any crate, so the removal has been noted here. Their usage can be replaced with bare <code>select</code> and <code>expression::dsl::sql</code>.</li>
+</ul>
+<h2 id="section-54"><a href="https://github.com/diesel-rs/diesel/compare/v0.4.0...v0.4.1">0.4.1</a> 2016-01-11</h2>
+<h3 id="changed-26">Changed</h3>
+<ul>
+<li><p>Diesel CLI will no longer output notices about <code>__diesel_schema_migrations</code> already existing.</p></li>
+<li><p>Relicensed under MIT/Apache dual</p></li>
+</ul>
+<h2 id="section-55"><a href="https://github.com/diesel-rs/diesel/compare/v0.3.0...v0.4.0">0.4.0</a> 2016-01-08</h2>
+<h3 id="added-23">Added</h3>
+<ul>
+<li><p>Added Diesel CLI, a tool for managing your schema. See <a href="https://github.com/diesel-rs/diesel/blob/v0.4.0/README.md#database-migrations">the readme</a> for more information.</p></li>
+<li><p>Add the ability for diesel to maintain your schema for you automatically. See the <a href="https://docs.diesel.rs/diesel/migrations/index.html">migrations</a> module for individual methods.</p></li>
+<li><p>Add DebugQueryBuilder to build sql without requiring a connection.</p></li>
+<li><p>Add print_sql! and debug_sql! macros to print out and return sql strings from QueryFragments.</p></li>
+</ul>
+<h3 id="fixed-35">Fixed</h3>
+<ul>
+<li><p><code>#[changeset_for]</code> can now be used with structs containing a <code>Vec</code>. Fixes <a href="https://github.com/diesel-rs/diesel/issues/63">#63</a>.</p></li>
+<li><p>No longer generate invalid SQL when an optional update field is not the first field on a changeset. Fixes <a href="https://github.com/diesel-rs/diesel/issues/68">#68</a>.</p></li>
+<li><p><code>#[changeset_for]</code> can now be used with structs containing only a single field other than <code>id</code>. Fixes <a href="https://github.com/diesel-rs/diesel/issues/66">#66</a>.</p></li>
+<li><p><code>infer_schema!</code> properly works with array columns. Fixes <a href="https://github.com/diesel-rs/diesel/issues/65">#65</a>.</p></li>
+</ul>
+<h2 id="section-56"><a href="https://github.com/diesel-rs/diesel/compare/v0.2.0...v0.3.0">0.3.0</a> 2015-12-04</h2>
+<h3 id="changed-27">Changed</h3>
+<ul>
+<li><p><code>#[changeset_for(table)]</code> now treats <code>Option</code> fields as an optional update. Previously a field with <code>None</code> for the value would insert <code>NULL</code> into the database field. It now does not update the field if the value is <code>None</code>.</p></li>
+<li><p><code>.save_changes</code> (generated by <code>#[changeset_for]</code>) now returns a new struct, rather than mutating <code>self</code>. The returned struct can be any type that implements <code>Queryable</code> for the right SQL type</p></li>
+</ul>
+<h3 id="fixed-36">Fixed</h3>
+<ul>
+<li><p><code>#[derive(Queryable)]</code> now allows generic parameters on the struct.</p></li>
+<li><p>Table definitions can now support up to 26 columns. Because this increases our compile time by 3x, <code>features = ["large-tables"]</code> is needed to support table definitions above 16 columns.</p></li>
+</ul>
+<h3 id="added-24">Added</h3>
+<ul>
+<li><p>Quickcheck is now an optional dependency. When <code>features = ["quickcheck"]</code> is added to <code>Cargo.toml</code>, you’ll gain <code>Arbitrary</code> implementations for everything in <code>diesel::data_types</code>.</p></li>
+<li><p>Added support for the SQL <code>MIN</code> function.</p></li>
+<li><p>Added support for the <code>Numeric</code> data type. Since there is no Big Decimal type in the standard library, a dumb struct has been provided which mirrors what Postgres provides, which can be converted into whatever crate you are using.</p></li>
+<li><p>Timestamp columns can now be used with <code>std::time::SystemTime</code> when compiled with <code>--features unstable</code></p></li>
+<li><p>Implemented <code>Send</code> on <code>Connection</code> (required for R2D2 support)</p></li>
+<li><p>Added <code>infer_schema!</code> and <code>infer_table_from_schema!</code>. Both macros take a database URL, and will invoke <code>table!</code> for you automatically based on the schema. <code>infer_schema!</code> queries for the table names, while <code>infer_table_from_schema!</code> takes a table name as the second argument.</p></li>
+</ul>
+<h2 id="section-57"><a href="https://github.com/diesel-rs/diesel/compare/v0.1.0...v0.2.0">0.2.0</a> - 2015-11-30</h2>
+<h3 id="added-25">Added</h3>
+<ul>
+<li><p>Added an <code>execute</code> method to <code>QueryFragment</code>, which is intended to replace <code>Connection#execute_returning_count</code>. The old method still exists for use under the hood, but has been hidden from docs and is not considered public API.</p></li>
+<li><p>Added <code>get_result</code> and <code>get_results</code>, which work similarly to <code>load</code> and <code>first</code>, but are intended to make code read better when working with commands like <code>create</code> and <code>update</code>. In the future, <code>get_result</code> may also check that only a single row was affected.</p></li>
+<li><p>Added <a href="https://docs.diesel.rs/diesel/fn.insert.html"><code>insert</code></a>, which mirrors the pattern of <code>update</code> and <code>delete</code>.</p></li>
+</ul>
+<h3 id="changed-28">Changed</h3>
+<ul>
+<li><p>Added a hidden <code>__Nonexhaustive</code> variant to <code>result::Error</code>. This is not intended to be something you can exhaustively match on, but I do want people to be able to check for specific cases, so <code>Box&lt;std::error::Error&gt;</code> is not an option.</p></li>
+<li><p><code>query_one</code>, <code>find</code>, and <code>first</code> now assume a single row is returned. For cases where you actually expect 0 or 1 rows to be returned, the <code>optional</code> method has been added to the result, in case having a <code>Result&lt;Option&lt;T&gt;&gt;</code> is more idiomatic than checking for <code>Err(NotFound)</code>.</p></li>
+</ul>
+<h3 id="deprecated-5">Deprecated</h3>
+<ul>
+<li><code>Connection#insert</code> and <code>Connection#insert_returning_count</code> have been deprecated in favor of <a href="https://docs.diesel.rs/diesel/fn.insert.html"><code>insert</code></a></li>
+</ul>
+<h2 id="section-58">0.1.0 - 2015-11-29</h2>
+<ul>
+<li>Initial release</li>
+</ul>
+</div>
+</div>
+<script src="../assets/javascripts/application.js"></script>
+<footer>
+    <div class="content-wrapper">
+        <p> Find a mistake on this website? Submit an issue or send a pull request
+            <a href = "https://github.com/sgrif/diesel.rs-website">here</a>! </p>
+        <p></p>
+        <br/>
+        <p>Copyright © 2015-2022 The Diesel Core Team</p>
+    </div>
+</footer>
+<script type="text/javascript">
+
+</script>
+</body>
+</html>

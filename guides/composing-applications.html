@@ -109,10 +109,16 @@ code span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
             <nav class="header-nav">
                 <ul>
                     <li class="nav-item">
+                      <a href="/news">News</a>
+                    </li>
+                    <li class="nav-item">
                         <a href="/guides">Guides</a>
                     </li>
                     <li class="nav-item">
                         <a href="/docs">API Docs</a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="changelog.html">Changelog</a>
                     </li>
                 </ul>
             </nav>
@@ -139,15 +145,17 @@ src/krate/mod.rs
 </div>
 <a class = "btn-demo-example" href = "https://github.com/rust-lang/crates.io/blob/b4d49ac32c5561a7a4a0948ce5ba9ada7b8924fb/src/krate/mod.rs">View on GitHub</a>
 <div class="sourceCode" id="cb1"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">use</span> <span class="pp">diesel::dsl::</span><span class="bu">Eq</span>;</a>
-<a class="sourceLine" id="cb1-2" title="2"><span class="kw">use</span> <span class="pp">diesel::types::</span>Text;</a>
-<a class="sourceLine" id="cb1-3" title="3"></a>
-<a class="sourceLine" id="cb1-4" title="4"><span class="pp">sql_function!</span>(canon_crate_name, CanonCrateName, (x: Text) -&gt; Text);</a>
-<a class="sourceLine" id="cb1-5" title="5"></a>
-<a class="sourceLine" id="cb1-6" title="6"><span class="kw">type</span> WithName&lt;<span class="ot">&#39;a</span>&gt; = <span class="bu">Eq</span>&lt;canon_crate_name&lt;<span class="pp">crates::</span>name&gt;, canon_crate_name&lt;&amp;<span class="ot">&#39;a</span> <span class="dt">str</span>&gt;&gt;;</a>
-<a class="sourceLine" id="cb1-7" title="7"></a>
-<a class="sourceLine" id="cb1-8" title="8"><span class="kw">fn</span> with_name(name: &amp;<span class="dt">str</span>) -&gt; WithName <span class="op">{</span></a>
-<a class="sourceLine" id="cb1-9" title="9">    canon_crate_name(<span class="pp">crates::</span>name).eq(canon_crate_name(name))</a>
-<a class="sourceLine" id="cb1-10" title="10"><span class="op">}</span></a></code></pre></div>
+<a class="sourceLine" id="cb1-2" title="2"><span class="kw">use</span> <span class="pp">diesel::prelude::</span>sql_function;</a>
+<a class="sourceLine" id="cb1-3" title="3"><span class="kw">use</span> <span class="pp">diesel::sql_types::</span>Text;</a>
+<a class="sourceLine" id="cb1-4" title="4"></a>
+<a class="sourceLine" id="cb1-5" title="5"><span class="pp">sql_function!</span>(<span class="kw">fn</span> canon_crate_name(x: Text) -&gt; Text);</a>
+<a class="sourceLine" id="cb1-6" title="6"></a>
+<a class="sourceLine" id="cb1-7" title="7"><span class="kw">type</span> WithName&lt;<span class="ot">&#39;a</span>&gt; =</a>
+<a class="sourceLine" id="cb1-8" title="8">    <span class="bu">Eq</span>&lt;<span class="pp">canon_crate_name::</span>HelperType&lt;<span class="pp">crates::</span>name&gt;, <span class="pp">canon_crate_name::</span>HelperType&lt;&amp;<span class="ot">&#39;a</span> <span class="dt">str</span>&gt;&gt;;</a>
+<a class="sourceLine" id="cb1-9" title="9"></a>
+<a class="sourceLine" id="cb1-10" title="10"><span class="kw">fn</span> with_name(name: &amp;<span class="dt">str</span>) -&gt; WithName <span class="op">{</span></a>
+<a class="sourceLine" id="cb1-11" title="11">    canon_crate_name(<span class="pp">crates::</span>name).eq(canon_crate_name(name))</a>
+<a class="sourceLine" id="cb1-12" title="12"><span class="op">}</span></a></code></pre></div>
 </div>
 </div>
 <p>Now when we want to find a crate by name, we can write <code>crates::table.filter(with_name("foo"))</code> instead. If we want to accept types other than a string, we can make the method generic.</p>
@@ -158,22 +166,23 @@ src/krate/mod.rs
 </div>
 <a class = "btn-demo-example" href = "https://github.com/rust-lang/crates.io/blob/b4d49ac32c5561a7a4a0948ce5ba9ada7b8924fb/src/krate/mod.rs">View on GitHub</a>
 <div class="sourceCode" id="cb2"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb2-1" title="1"><span class="kw">use</span> <span class="pp">diesel::dsl::</span><span class="bu">Eq</span>;</a>
-<a class="sourceLine" id="cb2-2" title="2"><span class="kw">use</span> <span class="pp">diesel::types::</span>Text;</a>
-<a class="sourceLine" id="cb2-3" title="3"></a>
-<a class="sourceLine" id="cb2-4" title="4"><span class="pp">sql_function!</span>(canon_crate_name, CanonCrateName, (x: Text) -&gt; Text);</a>
-<a class="sourceLine" id="cb2-5" title="5"></a>
-<a class="sourceLine" id="cb2-6" title="6"><span class="kw">type</span> WithName&lt;T&gt; = <span class="bu">Eq</span>&lt;canon_crate_name&lt;<span class="pp">crates::</span>name&gt;, canon_crate_name&lt;T&gt;&gt;;</a>
-<a class="sourceLine" id="cb2-7" title="7"></a>
-<a class="sourceLine" id="cb2-8" title="8"><span class="kw">fn</span> with_name&lt;T&gt;(name: T) -&gt; WithName&lt;T&gt;</a>
-<a class="sourceLine" id="cb2-9" title="9"><span class="kw">where</span></a>
-<a class="sourceLine" id="cb2-10" title="10">    T: AsExpression&lt;Text&gt;,</a>
-<a class="sourceLine" id="cb2-11" title="11"><span class="op">{</span></a>
-<a class="sourceLine" id="cb2-12" title="12">    canon_crate_name(<span class="pp">crates::</span>name).eq(canon_crate_name(name))</a>
-<a class="sourceLine" id="cb2-13" title="13"><span class="op">}</span></a></code></pre></div>
+<a class="sourceLine" id="cb2-2" title="2"><span class="kw">use</span> <span class="pp">diesel::prelude::</span>sql_function;</a>
+<a class="sourceLine" id="cb2-3" title="3"><span class="kw">use</span> <span class="pp">diesel::sql_types::</span>Text;</a>
+<a class="sourceLine" id="cb2-4" title="4"></a>
+<a class="sourceLine" id="cb2-5" title="5"><span class="pp">sql_function!</span>(<span class="kw">fn</span> canon_crate_name(x: Text) -&gt; Text);</a>
+<a class="sourceLine" id="cb2-6" title="6"></a>
+<a class="sourceLine" id="cb2-7" title="7"><span class="kw">type</span> WithName&lt;T&gt; = <span class="bu">Eq</span>&lt;<span class="pp">canon_crate_name::</span>HelperType&lt;<span class="pp">crates::</span>name&gt;, <span class="pp">canon_crate_name::</span>HelperType&lt;T&gt;&gt;;</a>
+<a class="sourceLine" id="cb2-8" title="8"></a>
+<a class="sourceLine" id="cb2-9" title="9"><span class="kw">fn</span> with_name&lt;T&gt;(name: T) -&gt; WithName&lt;T&gt;</a>
+<a class="sourceLine" id="cb2-10" title="10"><span class="kw">where</span></a>
+<a class="sourceLine" id="cb2-11" title="11">    T: AsExpression&lt;Text&gt;,</a>
+<a class="sourceLine" id="cb2-12" title="12"><span class="op">{</span></a>
+<a class="sourceLine" id="cb2-13" title="13">    canon_crate_name(<span class="pp">crates::</span>name).eq(canon_crate_name(name))</a>
+<a class="sourceLine" id="cb2-14" title="14"><span class="op">}</span></a></code></pre></div>
 </div>
 </div>
 <p>It’s up to you whether you make your functions generic, or only take a single type. We recommend only making these functions generic if it’s actually needed, since it requires additional bounds in your <code>where</code> clause. The bounds you need might not be clear, unless you are familiar with Diesel’s lower levels.</p>
-<p>In these examples, we are using helper types from <code>diesel::dsl</code> to write the return type explicitly. Nearly every method in Diesel has a helper type like this. The first type parameter is the method receiver (the thing before the <code>.</code>). The remaining type parameters are the arguments to the method. If we want to avoid writing this return type, or dynamically return a different expression, we can box the value instead.</p>
+<p>In these examples, we are using helper types from <a href="https://docs.diesel.rs/2.0.x/diesel/dsl/index.html"><code>diesel::dsl</code></a> to write the return type explicitly. Nearly every method in Diesel has a helper type like this. The first type parameter is the method receiver (the thing before the <code>.</code>). The remaining type parameters are the arguments to the method. If we want to avoid writing this return type, or dynamically return a different expression, we can box the value instead.</p>
 <div class="demo__example">
 <div class="demo__example-browser">
 <div class="browser-bar">
@@ -181,20 +190,21 @@ src/krate/mod.rs
 </div>
 <a class = "btn-demo-example" href = "https://github.com/rust-lang/crates.io/blob/b4d49ac32c5561a7a4a0948ce5ba9ada7b8924fb/src/krate/mod.rs">View on GitHub</a>
 <div class="sourceCode" id="cb3"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">use</span> <span class="pp">diesel::pg::</span>Pg;</a>
-<a class="sourceLine" id="cb3-2" title="2"><span class="kw">use</span> <span class="pp">diesel::types::</span>Text;</a>
-<a class="sourceLine" id="cb3-3" title="3"></a>
-<a class="sourceLine" id="cb3-4" title="4"><span class="pp">sql_function!</span>(canon_crate_name, CanonCrateName, (x: Text) -&gt; Text);</a>
-<a class="sourceLine" id="cb3-5" title="5"></a>
-<a class="sourceLine" id="cb3-6" title="6"><span class="kw">fn</span> with_name&lt;<span class="ot">&#39;a</span>, T&gt;(name: T) -&gt; <span class="dt">Box</span>&lt;BoxableExpression&lt;<span class="pp">crates::</span>table, Pg, SqlType = Bool&gt; + <span class="ot">&#39;a</span>&gt;</a>
-<a class="sourceLine" id="cb3-7" title="7"><span class="kw">where</span></a>
-<a class="sourceLine" id="cb3-8" title="8">    T: AsExpression&lt;Text&gt;,</a>
-<a class="sourceLine" id="cb3-9" title="9">    <span class="pp">T::</span>Expression: BoxableExpression&lt;<span class="pp">crates::</span>table, Pg&gt;,</a>
-<a class="sourceLine" id="cb3-10" title="10"><span class="op">{</span></a>
-<a class="sourceLine" id="cb3-11" title="11">    canon_crate_name(<span class="pp">crates::</span>name).eq(canon_crate_name(name))</a>
-<a class="sourceLine" id="cb3-12" title="12"><span class="op">}</span></a></code></pre></div>
+<a class="sourceLine" id="cb3-2" title="2"><span class="kw">use</span> <span class="pp">diesel::prelude::</span>sql_function;</a>
+<a class="sourceLine" id="cb3-3" title="3"><span class="kw">use</span> <span class="pp">diesel::sql_types::</span>Text;</a>
+<a class="sourceLine" id="cb3-4" title="4"></a>
+<a class="sourceLine" id="cb3-5" title="5"><span class="pp">sql_function!</span>(<span class="kw">fn</span> canon_crate_name(x: Text) -&gt; Text);</a>
+<a class="sourceLine" id="cb3-6" title="6"></a>
+<a class="sourceLine" id="cb3-7" title="7"><span class="kw">fn</span> with_name&lt;<span class="ot">&#39;a</span>, T&gt;(name: T) -&gt; <span class="dt">Box</span>&lt;BoxableExpression&lt;<span class="pp">crates::</span>table, Pg, SqlType = Bool&gt; + <span class="ot">&#39;a</span>&gt;</a>
+<a class="sourceLine" id="cb3-8" title="8"><span class="kw">where</span></a>
+<a class="sourceLine" id="cb3-9" title="9">    T: AsExpression&lt;Text&gt;,</a>
+<a class="sourceLine" id="cb3-10" title="10">    <span class="pp">T::</span>Expression: BoxableExpression&lt;<span class="pp">crates::</span>table, Pg&gt;,</a>
+<a class="sourceLine" id="cb3-11" title="11"><span class="op">{</span></a>
+<a class="sourceLine" id="cb3-12" title="12">    canon_crate_name(<span class="pp">crates::</span>name).eq(canon_crate_name(name))</a>
+<a class="sourceLine" id="cb3-13" title="13"><span class="op">}</span></a></code></pre></div>
 </div>
 </div>
-<p>In order to box an expression, Diesel needs to know three things:</p>
+<p>In order to use <a href="https://docs.diesel.rs/2.0.x/diesel/expression/trait.BoxableExpression.html"><code>BoxableExpression</code></a>, Diesel needs to know three things:</p>
 <ul>
 <li>The table you intend to use it on</li>
 <li>The backend you plan to execute it against</li>
@@ -210,29 +220,28 @@ src/krate/mod.rs
 src/krate/mod.rs
 </div>
 <a class = "btn-demo-example" href = "https://github.com/rust-lang/crates.io/blob/b4d49ac32c5561a7a4a0948ce5ba9ada7b8924fb/src/krate/mod.rs">View on GitHub</a>
-<div class="sourceCode" id="cb4"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb4-1" title="1"><span class="kw">use</span> <span class="pp">diesel::dsl::</span>Select;</a>
-<a class="sourceLine" id="cb4-2" title="2"></a>
-<a class="sourceLine" id="cb4-3" title="3"><span class="kw">type</span> AllColumns = (</a>
-<a class="sourceLine" id="cb4-4" title="4">    <span class="pp">crates::</span>id,</a>
-<a class="sourceLine" id="cb4-5" title="5">    <span class="pp">crates::</span>name,</a>
-<a class="sourceLine" id="cb4-6" title="6">    <span class="pp">crates::</span>updated_at,</a>
-<a class="sourceLine" id="cb4-7" title="7">    <span class="pp">crates::</span>created_at,</a>
-<a class="sourceLine" id="cb4-8" title="8">);</a>
-<a class="sourceLine" id="cb4-9" title="9"></a>
-<a class="sourceLine" id="cb4-10" title="10"><span class="kw">const</span> ALL_COLUMNS: AllColumns = (</a>
-<a class="sourceLine" id="cb4-11" title="11">    <span class="pp">crates::</span>id,</a>
-<a class="sourceLine" id="cb4-12" title="12">    <span class="pp">crates::</span>name,</a>
-<a class="sourceLine" id="cb4-13" title="13">    <span class="pp">crates::</span>updated_at,</a>
-<a class="sourceLine" id="cb4-14" title="14">    <span class="pp">crates::</span>created_at,</a>
-<a class="sourceLine" id="cb4-15" title="15">);</a>
-<a class="sourceLine" id="cb4-16" title="16"></a>
-<a class="sourceLine" id="cb4-17" title="17"><span class="kw">type</span> All = Select&lt;<span class="pp">crates::</span>table, AllColumns&gt;;</a>
-<a class="sourceLine" id="cb4-18" title="18"></a>
-<a class="sourceLine" id="cb4-19" title="19"><span class="kw">impl</span> Crate <span class="op">{</span></a>
-<a class="sourceLine" id="cb4-20" title="20">    <span class="kw">pub</span> <span class="kw">fn</span> all() -&gt; All <span class="op">{</span></a>
-<a class="sourceLine" id="cb4-21" title="21">        <span class="pp">crates::</span>table.select(ALL_COLUMNS)</a>
-<a class="sourceLine" id="cb4-22" title="22">    <span class="op">}</span></a>
-<a class="sourceLine" id="cb4-23" title="23"><span class="op">}</span></a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb4-1" title="1"><span class="kw">use</span> <span class="pp">diesel::backend::</span>Backend;</a>
+<a class="sourceLine" id="cb4-2" title="2"><span class="kw">use</span> <span class="pp">diesel::dsl::</span><span class="op">{</span>AsSelect, Select<span class="op">}</span>;</a>
+<a class="sourceLine" id="cb4-3" title="3"></a>
+<a class="sourceLine" id="cb4-4" title="4"><span class="at">#[</span>derive<span class="at">(</span>Selectable<span class="at">,</span> Queryable<span class="at">)]</span></a>
+<a class="sourceLine" id="cb4-5" title="5"><span class="at">#[</span>diesel<span class="at">(</span>table_name <span class="at">=</span> crates<span class="at">)]</span></a>
+<a class="sourceLine" id="cb4-6" title="6"><span class="kw">struct</span> Crate <span class="op">{</span></a>
+<a class="sourceLine" id="cb4-7" title="7">    id: <span class="dt">i32</span>,</a>
+<a class="sourceLine" id="cb4-8" title="8">    name: <span class="dt">String</span>,</a>
+<a class="sourceLine" id="cb4-9" title="9">    updated_at: NaiveDateTime,</a>
+<a class="sourceLine" id="cb4-10" title="10">    created_at: NaiveDateTime,</a>
+<a class="sourceLine" id="cb4-11" title="11"><span class="op">}</span></a>
+<a class="sourceLine" id="cb4-12" title="12"></a>
+<a class="sourceLine" id="cb4-13" title="13"><span class="kw">type</span> All&lt;DB&gt; = Select&lt;<span class="pp">crates::</span>table, AsSelect&lt;Crate, DB&gt;&gt;;</a>
+<a class="sourceLine" id="cb4-14" title="14"></a>
+<a class="sourceLine" id="cb4-15" title="15"><span class="kw">impl</span> Crate <span class="op">{</span></a>
+<a class="sourceLine" id="cb4-16" title="16">    <span class="kw">pub</span> <span class="kw">fn</span> all&lt;DB&gt;() -&gt; All&lt;DB&gt;</a>
+<a class="sourceLine" id="cb4-17" title="17">    <span class="kw">where</span></a>
+<a class="sourceLine" id="cb4-18" title="18">        DB: Backend,</a>
+<a class="sourceLine" id="cb4-19" title="19">    <span class="op">{</span></a>
+<a class="sourceLine" id="cb4-20" title="20">        <span class="pp">crates::</span>table.select(<span class="pp">Crate::</span>as_select())</a>
+<a class="sourceLine" id="cb4-21" title="21">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb4-22" title="22"><span class="op">}</span></a></code></pre></div>
 </div>
 </div>
 <p>We also frequently found ourselves writing <code>Crate::all().filter(with_name(crate_name))</code>. We can pull that into a function as well.</p>
@@ -244,10 +253,10 @@ src/krate/mod.rs
 <a class = "btn-demo-example" href = "https://github.com/rust-lang/crates.io/blob/b4d49ac32c5561a7a4a0948ce5ba9ada7b8924fb/src/krate/mod.rs">View on GitHub</a>
 <div class="sourceCode" id="cb5"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb5-1" title="1"><span class="kw">use</span> <span class="pp">diesel::dsl::</span>Filter;</a>
 <a class="sourceLine" id="cb5-2" title="2"></a>
-<a class="sourceLine" id="cb5-3" title="3"><span class="kw">type</span> ByName&lt;T&gt; = Filter&lt;All, WithName&lt;T&gt;&gt;;</a>
+<a class="sourceLine" id="cb5-3" title="3"><span class="kw">type</span> ByName&lt;T, DB&gt; = Filter&lt;All&lt;DB&gt;, WithName&lt;T&gt;&gt;;</a>
 <a class="sourceLine" id="cb5-4" title="4"></a>
 <a class="sourceLine" id="cb5-5" title="5"><span class="kw">impl</span> Crate <span class="op">{</span></a>
-<a class="sourceLine" id="cb5-6" title="6">    <span class="kw">fn</span> by_name&lt;T&gt;(name: T) -&gt; ByName&lt;T&gt; <span class="op">{</span></a>
+<a class="sourceLine" id="cb5-6" title="6">    <span class="kw">fn</span> by_name&lt;T, DB&gt;(name: T) -&gt; ByName&lt;T, DB&gt; <span class="op">{</span></a>
 <a class="sourceLine" id="cb5-7" title="7">        <span class="kw">Self</span>::all().filter(with_name(name))</a>
 <a class="sourceLine" id="cb5-8" title="8">    <span class="op">}</span></a>
 <a class="sourceLine" id="cb5-9" title="9"><span class="op">}</span></a></code></pre></div>
@@ -262,24 +271,25 @@ src/krate/mod.rs
 <a class = "btn-demo-example" href = "https://github.com/rust-lang/crates.io/blob/b4d49ac32c5561a7a4a0948ce5ba9ada7b8924fb/src/krate/mod.rs">View on GitHub</a>
 <div class="sourceCode" id="cb6"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb6-1" title="1"><span class="kw">use</span> <span class="pp">diesel::expression::</span><span class="op">{</span>Expression, AsExpression<span class="op">}</span>;</a>
 <a class="sourceLine" id="cb6-2" title="2"><span class="kw">use</span> <span class="pp">diesel::pg::</span>Pg;</a>
-<a class="sourceLine" id="cb6-3" title="3"><span class="kw">use</span> <span class="pp">diesel::types::</span>Text;</a>
-<a class="sourceLine" id="cb6-4" title="4"></a>
-<a class="sourceLine" id="cb6-5" title="5"><span class="kw">type</span> SqlType = &lt;AllColumns <span class="kw">as</span> Expression&gt;::SqlType;</a>
-<a class="sourceLine" id="cb6-6" title="6"><span class="kw">type</span> BoxedQuery&lt;<span class="ot">&#39;a</span>&gt; = <span class="pp">crates::</span>BoxedQuery&lt;<span class="ot">&#39;a</span>, Pg, SqlType&gt;;</a>
-<a class="sourceLine" id="cb6-7" title="7"></a>
-<a class="sourceLine" id="cb6-8" title="8"><span class="kw">impl</span> Crate <span class="op">{</span></a>
-<a class="sourceLine" id="cb6-9" title="9">    <span class="kw">fn</span> all() -&gt; BoxedQuery&lt;<span class="ot">&#39;static</span>&gt; <span class="op">{</span></a>
-<a class="sourceLine" id="cb6-10" title="10">        <span class="pp">crates::</span>table().select(ALL_COLUMNS).into_boxed()</a>
-<a class="sourceLine" id="cb6-11" title="11">    <span class="op">}</span></a>
-<a class="sourceLine" id="cb6-12" title="12"></a>
-<a class="sourceLine" id="cb6-13" title="13">    <span class="kw">fn</span> by_name&lt;<span class="ot">&#39;a</span>, T&gt;(name: T) -&gt; BoxedQuery&lt;<span class="ot">&#39;a</span>&gt;</a>
-<a class="sourceLine" id="cb6-14" title="14">    <span class="kw">where</span></a>
-<a class="sourceLine" id="cb6-15" title="15">        T: AsExpression&lt;Text&gt;,</a>
-<a class="sourceLine" id="cb6-16" title="16">        <span class="pp">T::</span>Expression: BoxableExpression&lt;<span class="pp">crates::</span>table, Pg&gt;,</a>
-<a class="sourceLine" id="cb6-17" title="17">    <span class="op">{</span></a>
-<a class="sourceLine" id="cb6-18" title="18">        <span class="kw">Self</span>::all().filter(by_name(name))</a>
-<a class="sourceLine" id="cb6-19" title="19">    <span class="op">}</span></a>
-<a class="sourceLine" id="cb6-20" title="20"><span class="op">}</span></a></code></pre></div>
+<a class="sourceLine" id="cb6-3" title="3"><span class="kw">use</span> <span class="pp">diesel::sql_types::</span>Text;</a>
+<a class="sourceLine" id="cb6-4" title="4"><span class="kw">use</span> <span class="pp">diesel::dsl::</span><span class="op">{</span>SqlTypeOf, AsSelect<span class="op">}</span>;</a>
+<a class="sourceLine" id="cb6-5" title="5"></a>
+<a class="sourceLine" id="cb6-6" title="6"><span class="kw">type</span> SqlType = SqlTypeOf&lt;AsSelect&lt;Crate, Pg&gt;&gt;;</a>
+<a class="sourceLine" id="cb6-7" title="7"><span class="kw">type</span> BoxedQuery&lt;<span class="ot">&#39;a</span>&gt; = <span class="pp">crates::</span>BoxedQuery&lt;<span class="ot">&#39;a</span>, Pg, SqlType&gt;;</a>
+<a class="sourceLine" id="cb6-8" title="8"></a>
+<a class="sourceLine" id="cb6-9" title="9"><span class="kw">impl</span> Crate <span class="op">{</span></a>
+<a class="sourceLine" id="cb6-10" title="10">    <span class="kw">fn</span> all() -&gt; BoxedQuery&lt;<span class="ot">&#39;static</span>&gt; <span class="op">{</span></a>
+<a class="sourceLine" id="cb6-11" title="11">        <span class="pp">crates::</span>table.select(<span class="pp">Crate::</span>as_select()).into_boxed()</a>
+<a class="sourceLine" id="cb6-12" title="12">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb6-13" title="13"></a>
+<a class="sourceLine" id="cb6-14" title="14">    <span class="kw">fn</span> by_name&lt;<span class="ot">&#39;a</span>, T&gt;(name: T) -&gt; BoxedQuery&lt;<span class="ot">&#39;a</span>&gt;</a>
+<a class="sourceLine" id="cb6-15" title="15">    <span class="kw">where</span></a>
+<a class="sourceLine" id="cb6-16" title="16">        T: AsExpression&lt;Text&gt;,</a>
+<a class="sourceLine" id="cb6-17" title="17">        <span class="pp">T::</span>Expression: BoxableExpression&lt;<span class="pp">crates::</span>table, Pg&gt;,</a>
+<a class="sourceLine" id="cb6-18" title="18">    <span class="op">{</span></a>
+<a class="sourceLine" id="cb6-19" title="19">        <span class="kw">Self</span>::all().filter(by_name(name))</a>
+<a class="sourceLine" id="cb6-20" title="20">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb6-21" title="21"><span class="op">}</span></a></code></pre></div>
 </div>
 </div>
 <p>Once again, we have to give Diesel some information to box the query:</p>
@@ -298,7 +308,7 @@ src/krate/mod.rs
 </div>
 <a class = "btn-demo-example" href = "https://github.com/rust-lang/crates.io/blob/b4d49ac32c5561a7a4a0948ce5ba9ada7b8924fb/src/krate/mod.rs">View on GitHub</a>
 <div class="sourceCode" id="cb7"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb7-1" title="1"><span class="kw">impl</span> Crate <span class="op">{</span></a>
-<a class="sourceLine" id="cb7-2" title="2">    <span class="kw">fn</span> by_name(name: &amp;<span class="dt">str</span>, conn: &amp;PgConnection) -&gt; QueryResult&lt;<span class="kw">Self</span>&gt; <span class="op">{</span></a>
+<a class="sourceLine" id="cb7-2" title="2">    <span class="kw">fn</span> by_name(name: &amp;<span class="dt">str</span>, conn: &amp;<span class="kw">mut</span> PgConnection) -&gt; QueryResult&lt;<span class="kw">Self</span>&gt; <span class="op">{</span></a>
 <a class="sourceLine" id="cb7-3" title="3">        <span class="kw">Self</span>::all()</a>
 <a class="sourceLine" id="cb7-4" title="4">            .filter(with_name(name))</a>
 <a class="sourceLine" id="cb7-5" title="5">            .first(conn)</a>
@@ -316,7 +326,7 @@ Example
 <a class="sourceLine" id="cb8-2" title="2">    .select(id)</a>
 <a class="sourceLine" id="cb8-3" title="3">    .filter(crate_id.eq_any(<span class="pp">Crate::</span>by_name(crate_name).select(<span class="pp">crates::</span>id)))</a>
 <a class="sourceLine" id="cb8-4" title="4">    .filter(num.eq(version))</a>
-<a class="sourceLine" id="cb8-5" title="5">    .first(&amp;*conn)?;</a></code></pre></div>
+<a class="sourceLine" id="cb8-5" title="5">    .first(conn)?;</a></code></pre></div>
 </div>
 </div>
 <p>Or use it to do things like get all of its downloads: Example</p>
@@ -329,7 +339,7 @@ Example
 <a class="sourceLine" id="cb9-2" title="2">    .inner_join(<span class="pp">crate_downloads::</span>table)</a>
 <a class="sourceLine" id="cb9-3" title="3">    .filter(<span class="pp">CrateDownload::</span>is_recent())</a>
 <a class="sourceLine" id="cb9-4" title="4">    .select(sum(<span class="pp">crate_downloads::</span>downloads))</a>
-<a class="sourceLine" id="cb9-5" title="5">    .get_result(&amp;*conn)?;</a></code></pre></div>
+<a class="sourceLine" id="cb9-5" title="5">    .get_result(conn)?;</a></code></pre></div>
 </div>
 </div>
 <p>All code in this guide is based on real code from crates.io. You can find the source <a href="https://github.com/rust-lang/crates.io">on GitHub</a></p>

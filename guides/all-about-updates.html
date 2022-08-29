@@ -109,10 +109,16 @@ code span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
             <nav class="header-nav">
                 <ul>
                     <li class="nav-item">
+                      <a href="/news">News</a>
+                    </li>
+                    <li class="nav-item">
                         <a href="/guides">Guides</a>
                     </li>
                     <li class="nav-item">
                         <a href="/docs">API Docs</a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="changelog.html">Changelog</a>
                     </li>
                 </ul>
             </nav>
@@ -131,14 +137,14 @@ code span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
 <div class="guide-wrapper">
 <p>Most applications fall into a category called “CRUD” apps. CRUD stands for “Create, Read, Update, Delete”. Diesel provides support for all four pieces, but in this guide we’re going to look at all the different ways to go about updating records.</p>
 <p>An update statement is constructed by calling <code>diesel::update(target).set(changes)</code>. The resulting statement is then run by calling either <code>execute</code>, <code>get_result</code>, or <code>get_results</code>.</p>
-<p>If you look at the documentation for <a href="https://docs.diesel.rs/diesel/fn.update.html"><code>update</code></a>, you’ll notice that the type of the argument is any type <code>T</code> which implements <code>IntoUpdateTarget</code>. You don’t need to worry about what this trait does, but it is important to know which types implement it. There are three kinds which implement this trait. The first is tables.</p>
+<p>If you look at the documentation for <a href="https://docs.diesel.rs/2.0.x/diesel/fn.update.html"><code>update</code></a>, you’ll notice that the type of the argument is any type <code>T</code> which implements <code>IntoUpdateTarget</code>. You don’t need to worry about what this trait does, but it is important to know which types implement it. There are three kinds which implement this trait. The first is tables.</p>
 <p>If we have a table that looks like this:</p>
 <div class="demo__example">
 <div class="demo__example-browser">
 <div class="browser-bar">
 src/lib.rs
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/all_about_updates/src/lib.rs#L12-L21">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.0.x/examples/postgres/all_about_updates/src/lib.rs#L9-L18">View on GitHub</a>
 <div class="sourceCode" id="cb1"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb1-1" title="1"><span class="pp">table!</span> <span class="op">{</span></a>
 <a class="sourceLine" id="cb1-2" title="2">    posts <span class="op">{</span></a>
 <a class="sourceLine" id="cb1-3" title="3">        id -&gt; BigInt,</a>
@@ -157,19 +163,19 @@ src/lib.rs
 <div class="browser-bar">
 src/lib.rs
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/all_about_updates/src/lib.rs#L33-L38">View on GitHub</a>
-<div class="sourceCode" id="cb2"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb2-1" title="1"><span class="kw">use</span> <span class="pp">posts::dsl::</span>*;</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.0.x/examples/postgres/all_about_updates/src/lib.rs#L30-L34">View on GitHub</a>
+<div class="sourceCode" id="cb2"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb2-1" title="1"><span class="kw">use</span> <span class="kw">crate</span>::<span class="pp">posts::dsl::</span>*;</a>
 <a class="sourceLine" id="cb2-2" title="2"></a>
-<a class="sourceLine" id="cb2-3" title="3"><span class="pp">diesel::</span>update(posts).set(draft.eq(<span class="cn">false</span>))</a></code></pre></div>
+<a class="sourceLine" id="cb2-3" title="3"><span class="pp">diesel::</span>update(posts).set(draft.eq(<span class="cn">false</span>)).execute(conn)</a></code></pre></div>
 </div>
 </div>
-<p>We can use the <a href="https://docs.diesel.rs/diesel/fn.debug_query.html"><code>debug_query</code></a> function to inspect the generated SQL. The output you see may slightly differ from this guide, depending on which backend you’re using. If we run <code>println!("{}", debug_query::&lt;Pg, _&gt;(&amp;our_query));</code>, we’ll see the following:</p>
+<p>We can use the <a href="https://docs.diesel.rs/2.0.x/diesel/fn.debug_query.html"><code>debug_query</code></a> function to inspect the generated SQL. The output you see may slightly differ from this guide, depending on which backend you’re using. If we run <code>println!("{}", debug_query::&lt;Pg, _&gt;(&amp;our_query));</code>, we’ll see the following:</p>
 <div class="demo__example">
 <div class="demo__example-browser">
 <div class="browser-bar">
 Generated SQL
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/all_about_updates/src/lib.rs#L40-L48">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.0.x/examples/postgres/all_about_updates/src/lib.rs#L36-L44">View on GitHub</a>
 <div class="sourceCode" id="cb3"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">UPDATE</span> <span class="ot">&quot;posts&quot;</span> <span class="kw">SET</span> <span class="ot">&quot;draft&quot;</span> <span class="op">=</span> $<span class="dv">1</span> <span class="co">-- binds: [false]</span></a></code></pre></div>
 </div>
 </div>
@@ -179,12 +185,14 @@ Generated SQL
 <div class="browser-bar">
 src/lib.rs
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/all_about_updates/src/lib.rs#L50-L57">View on GitHub</a>
-<div class="sourceCode" id="cb4"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb4-1" title="1"><span class="kw">use</span> <span class="pp">posts::dsl::</span>*;</a>
-<a class="sourceLine" id="cb4-2" title="2"><span class="kw">use</span> <span class="pp">diesel::expression::dsl::</span>now;</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.0.x/examples/postgres/all_about_updates/src/lib.rs#L46-L54">View on GitHub</a>
+<div class="sourceCode" id="cb4"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb4-1" title="1"><span class="kw">use</span> <span class="kw">crate</span>::<span class="pp">posts::dsl::</span>*;</a>
+<a class="sourceLine" id="cb4-2" title="2"><span class="kw">use</span> <span class="pp">diesel::dsl::</span>now;</a>
 <a class="sourceLine" id="cb4-3" title="3"></a>
-<a class="sourceLine" id="cb4-4" title="4"><span class="kw">let</span> target = posts.filter(publish_at.lt(now));</a>
-<a class="sourceLine" id="cb4-5" title="5"><span class="pp">diesel::</span>update(target).set(draft.eq(<span class="cn">false</span>))</a></code></pre></div>
+<a class="sourceLine" id="cb4-4" title="4"><span class="pp">diesel::</span>update(posts)</a>
+<a class="sourceLine" id="cb4-5" title="5">    .filter(publish_at.lt(now))</a>
+<a class="sourceLine" id="cb4-6" title="6">    .set(draft.eq(<span class="cn">false</span>))</a>
+<a class="sourceLine" id="cb4-7" title="7">    .execute(conn)</a></code></pre></div>
 </div>
 </div>
 <p>That would generate the following SQL:</p>
@@ -193,27 +201,27 @@ src/lib.rs
 <div class="browser-bar">
 Generated SQL
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/all_about_updates/src/lib.rs#L59-L71">View on GitHub</a>
-<div class="sourceCode" id="cb5"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb5-1" title="1"><span class="kw">UPDATE</span> `posts` <span class="kw">SET</span> `draft` <span class="op">=</span> ?</a>
-<a class="sourceLine" id="cb5-2" title="2"><span class="kw">WHERE</span> `posts`.`publish_at` <span class="op">&lt;</span> <span class="fu">CURRENT_TIMESTAMP</span></a></code></pre></div>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.0.x/examples/postgres/all_about_updates/src/lib.rs#L56-L70">View on GitHub</a>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb5-1" title="1"><span class="kw">UPDATE</span> <span class="ot">&quot;posts&quot;</span> <span class="kw">SET</span> <span class="ot">&quot;draft&quot;</span> <span class="op">=</span> $<span class="dv">1</span> <span class="kw">WHERE</span> (<span class="ot">&quot;posts&quot;</span>.<span class="ot">&quot;publish_at&quot;</span> <span class="op">&lt;</span> <span class="fu">CURRENT_TIMESTAMP</span>) <span class="co">-- binds: [false]</span></a></code></pre></div>
 </div>
 </div>
-<p>The most common update queries are just scoped to a single record. So the final kind that you can pass to <code>update</code> is anything which implements <a href="https://docs.diesel.rs/diesel/associations/trait.Identifiable.html">the <code>Identifiable</code> trait</a>. <code>Identifiable</code> gets implemented by putting <code>#[derive(Identifiable)]</code> on a struct. It represents any struct which is one-to-one with a row on a database table. Importantly, and unlike <code>Queryable</code>, the <code>Identifiable</code> trait requires that the schema generated by the <code>table!</code> macro be in scope, or the compilation will fail with E0433, noting <code>Use of undeclared type or module (your_tablename)</code>.</p>
+<p>The most common update queries are just scoped to a single record. So the final kind that you can pass to <code>update</code> is anything which implements <a href="https://docs.diesel.rs/2.0.x/diesel/associations/trait.Identifiable.html">the <code>Identifiable</code> trait</a>. <code>Identifiable</code> gets implemented by putting <code>#[derive(Identifiable)]</code> on a struct. It represents any struct which is one-to-one with a row on a database table. Importantly, and unlike <code>Queryable</code>, the <code>Identifiable</code> trait requires that the schema generated by the <code>table!</code> macro be in scope, or the compilation will fail with E0433, noting <code>Use of undeclared type or module (your_tablename)</code>.</p>
 <p>If we wanted a struct that mapped to our posts table, it’d look something like this:</p>
 <div class="demo__example">
 <div class="demo__example-browser">
 <div class="browser-bar">
 src/lib.rs
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/all_about_updates/src/lib.rs#L23-L31">View on GitHub</a>
-<div class="sourceCode" id="cb6"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb6-1" title="1"><span class="at">#[</span>derive<span class="at">(</span>Identifiable<span class="at">)]</span></a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.0.x/examples/postgres/all_about_updates/src/lib.rs#L20-L28">View on GitHub</a>
+<div class="sourceCode" id="cb6"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb6-1" title="1"><span class="at">#[</span>derive<span class="at">(</span>Queryable<span class="at">,</span> Identifiable<span class="at">,</span> AsChangeset<span class="at">)]</span></a>
 <a class="sourceLine" id="cb6-2" title="2"><span class="kw">pub</span> <span class="kw">struct</span> Post <span class="op">{</span></a>
-<a class="sourceLine" id="cb6-3" title="3">    <span class="kw">pub</span> id: <span class="dt">i32</span>,</a>
+<a class="sourceLine" id="cb6-3" title="3">    <span class="kw">pub</span> id: <span class="dt">i64</span>,</a>
 <a class="sourceLine" id="cb6-4" title="4">    <span class="kw">pub</span> title: <span class="dt">String</span>,</a>
 <a class="sourceLine" id="cb6-5" title="5">    <span class="kw">pub</span> body: <span class="dt">String</span>,</a>
 <a class="sourceLine" id="cb6-6" title="6">    <span class="kw">pub</span> draft: <span class="dt">bool</span>,</a>
 <a class="sourceLine" id="cb6-7" title="7">    <span class="kw">pub</span> publish_at: SystemTime,</a>
-<a class="sourceLine" id="cb6-8" title="8"><span class="op">}</span></a></code></pre></div>
+<a class="sourceLine" id="cb6-8" title="8">    <span class="kw">pub</span> visit_count: <span class="dt">i32</span>,</a>
+<a class="sourceLine" id="cb6-9" title="9"><span class="op">}</span></a></code></pre></div>
 </div>
 </div>
 <p>The struct has one field per database column, but what’s important for <code>Identifiable</code> is that it has the <code>id</code> field, which is the primary key of our table. Since our struct name is just the table name without an <code>s</code>, we don’t have to provide the table name explicitly. If our struct were named something different, or if pluralizing it was more complex than putting an <code>s</code> on the end, we would have to specify the table name by adding <code>#[table_name="posts"]</code>. We’re using <code>SystemTime</code> here since it’s in the standard library, but in a real application we’d probably want to use a more full-featured type like one from <code>chrono</code>, which you can do by enabling the <code>chrono</code> feature on Diesel.</p>
@@ -223,8 +231,10 @@ src/lib.rs
 <div class="browser-bar">
 src/lib.rs
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/all_about_updates/src/lib.rs#L73-L76">View on GitHub</a>
-<div class="sourceCode" id="cb7"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb7-1" title="1"><span class="pp">diesel::</span>update(&amp;post).set(<span class="pp">posts::</span>draft.eq(<span class="cn">false</span>))</a></code></pre></div>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.0.x/examples/postgres/all_about_updates/src/lib.rs#L72-L76">View on GitHub</a>
+<div class="sourceCode" id="cb7"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb7-1" title="1"><span class="pp">diesel::</span>update(post)</a>
+<a class="sourceLine" id="cb7-2" title="2">    .set(<span class="pp">posts::</span>draft.eq(<span class="cn">false</span>))</a>
+<a class="sourceLine" id="cb7-3" title="3">    .execute(conn)</a></code></pre></div>
 </div>
 </div>
 <p>It’s important to note that we always pass a reference to the post, not the post itself. When we write <code>update(post)</code>, that’s equivalent to writing <code>update(posts.find(post.id))</code>, or <code>update(posts.filter(id.eq(post.id)))</code>. We can see this in the generated SQL:</p>
@@ -233,8 +243,8 @@ src/lib.rs
 <div class="browser-bar">
 Generated SQL
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/all_about_updates/src/lib.rs#L78-L93">View on GitHub</a>
-<div class="sourceCode" id="cb8"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb8-1" title="1"><span class="kw">UPDATE</span> `posts` <span class="kw">SET</span> `draft` <span class="op">=</span> ? <span class="kw">WHERE</span> `posts`.`id` <span class="op">=</span> ?</a></code></pre></div>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.0.x/examples/postgres/all_about_updates/src/lib.rs#L78-L93">View on GitHub</a>
+<div class="sourceCode" id="cb8"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb8-1" title="1"><span class="kw">UPDATE</span> <span class="ot">&quot;posts&quot;</span> <span class="kw">SET</span> <span class="ot">&quot;draft&quot;</span> <span class="op">=</span> $<span class="dv">1</span> <span class="kw">WHERE</span> (<span class="ot">&quot;posts&quot;</span>.<span class="ot">&quot;id&quot;</span> <span class="op">=</span> $<span class="dv">2</span>) <span class="co">-- binds: [false, 1]</span></a></code></pre></div>
 </div>
 </div>
 <p>Now that we’ve seen all the ways to specify what we want to update, let’s look at the different ways to provide the data to update it with. We’ve already seen the first way, which is to pass <code>column.eq(value)</code> directly. So far we’ve just been passing Rust values here, but we can actually use any Diesel expression. For example, we could increment a column:</p>
@@ -243,10 +253,12 @@ Generated SQL
 <div class="browser-bar">
 src/lib.rs
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/tree/v1.4.4/examples/postgres/all_about_updates/src/lib.rs#L95-L100">View on GitHub</a>
-<div class="sourceCode" id="cb9"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb9-1" title="1"><span class="kw">use</span> <span class="pp">posts::dsl::</span>*;</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/tree/2.0.x/examples/postgres/all_about_updates/src/lib.rs#L95-L101">View on GitHub</a>
+<div class="sourceCode" id="cb9"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb9-1" title="1"><span class="kw">use</span> <span class="kw">crate</span>::<span class="pp">posts::dsl::</span>*;</a>
 <a class="sourceLine" id="cb9-2" title="2"></a>
-<a class="sourceLine" id="cb9-3" title="3"><span class="pp">diesel::</span>update(posts).set(visit_count.eq(visit_count + <span class="dv">1</span>))</a></code></pre></div>
+<a class="sourceLine" id="cb9-3" title="3"><span class="pp">diesel::</span>update(posts)</a>
+<a class="sourceLine" id="cb9-4" title="4">    .set(visit_count.eq(visit_count + <span class="dv">1</span>))</a>
+<a class="sourceLine" id="cb9-5" title="5">    .execute(conn)</a></code></pre></div>
 </div>
 </div>
 <p>That would generate this SQL:</p>
@@ -255,9 +267,8 @@ src/lib.rs
 <div class="browser-bar">
 Generated SQL
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/all_about_updates/src/lib.rs#L102-L111">View on GitHub</a>
-<div class="sourceCode" id="cb10"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb10-1" title="1"><span class="kw">UPDATE</span> `posts`</a>
-<a class="sourceLine" id="cb10-2" title="2"><span class="kw">SET</span> `visit_count` <span class="op">=</span> `posts`.`visit_count` <span class="op">+</span> <span class="dv">1</span></a></code></pre></div>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.0.x/examples/postgres/all_about_updates/src/lib.rs#L103-L113">View on GitHub</a>
+<div class="sourceCode" id="cb10"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb10-1" title="1"><span class="kw">UPDATE</span> <span class="ot">&quot;posts&quot;</span> <span class="kw">SET</span> <span class="ot">&quot;visit_count&quot;</span> <span class="op">=</span> (<span class="ot">&quot;posts&quot;</span>.<span class="ot">&quot;visit_count&quot;</span> <span class="op">+</span> $<span class="dv">1</span>) <span class="co">-- binds: [1]</span></a></code></pre></div>
 </div>
 </div>
 <p>Assigning values directly is great for small, simple changes. If we wanted to update multiple columns this way, we can pass a tuple.</p>
@@ -266,14 +277,15 @@ Generated SQL
 <div class="browser-bar">
 src/lib.rs
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/all_about_updates/src/lib.rs#L118-L127">View on GitHub</a>
-<div class="sourceCode" id="cb11"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb11-1" title="1"><span class="kw">use</span> <span class="pp">posts::dsl::</span>*;</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.0.x/examples/postgres/all_about_updates/src/lib.rs#L115-L124">View on GitHub</a>
+<div class="sourceCode" id="cb11"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb11-1" title="1"><span class="kw">use</span> <span class="kw">crate</span>::<span class="pp">posts::dsl::</span>*;</a>
 <a class="sourceLine" id="cb11-2" title="2"></a>
 <a class="sourceLine" id="cb11-3" title="3"><span class="pp">diesel::</span>update(posts)</a>
-<a class="sourceLine" id="cb11-4" title="4">  .set((</a>
-<a class="sourceLine" id="cb11-5" title="5">      title.eq(<span class="st">&quot;[REDACTED]&quot;</span>),</a>
-<a class="sourceLine" id="cb11-6" title="6">      body.eq(<span class="st">&quot;This post has been classified&quot;</span>),</a>
-<a class="sourceLine" id="cb11-7" title="7">  ))</a></code></pre></div>
+<a class="sourceLine" id="cb11-4" title="4">    .set((</a>
+<a class="sourceLine" id="cb11-5" title="5">        title.eq(<span class="st">&quot;[REDACTED]&quot;</span>),</a>
+<a class="sourceLine" id="cb11-6" title="6">        body.eq(<span class="st">&quot;This post has been classified&quot;</span>),</a>
+<a class="sourceLine" id="cb11-7" title="7">    ))</a>
+<a class="sourceLine" id="cb11-8" title="8">    .execute(conn)</a></code></pre></div>
 </div>
 </div>
 <p>This will generate exactly the SQL you’d expect:</p>
@@ -282,19 +294,19 @@ src/lib.rs
 <div class="browser-bar">
 Generated SQL
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/all_about_updates/src/lib.rs#L129-L142">View on GitHub</a>
-<div class="sourceCode" id="cb12"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb12-1" title="1"><span class="kw">UPDATE</span> `posts` <span class="kw">SET</span> `title` <span class="op">=</span> ?, `body` <span class="op">=</span> ?</a></code></pre></div>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.0.x/examples/postgres/all_about_updates/src/lib.rs#L126-L139">View on GitHub</a>
+<div class="sourceCode" id="cb12"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb12-1" title="1"><span class="kw">UPDATE</span> <span class="ot">&quot;posts&quot;</span> <span class="kw">SET</span> <span class="ot">&quot;title&quot;</span> <span class="op">=</span> $<span class="dv">1</span>, <span class="ot">&quot;body&quot;</span> <span class="op">=</span> $<span class="dv">2</span> <span class="co">-- binds: [&quot;[REDACTED]&quot;, &quot;This post has been classified&quot;]</span></a></code></pre></div>
 </div>
 </div>
 <h2 id="aschangeset">AsChangeset</h2>
-<p>While it’s nice to have the ability to update columns directly like this, it can quickly get cumbersome when dealing with forms that have more than a handful of fields. If we look at the signature of <a href="https://docs.diesel.rs/diesel/query_builder/struct.IncompleteUpdateStatement.html#method.set"><code>.set</code></a>, you’ll notice that the constraint is for a trait called <a href="https://docs.diesel.rs/diesel/query_builder/trait.AsChangeset.html"><code>AsChangeset</code></a>. This is another trait that <code>diesel</code> can derive for us. We can add <code>#[derive(AsChangeset)]</code> to our <code>Post</code> struct, which will let us pass a <code>&amp;Post</code> to <code>set</code>.</p>
+<p>While it’s nice to have the ability to update columns directly like this, it can quickly get cumbersome when dealing with forms that have more than a handful of fields. If we look at the signature of <a href="https://docs.diesel.rs/2.0.x/diesel/query_builder/struct.UpdateStatement.html#method.set"><code>.set</code></a>, you’ll notice that the constraint is for a trait called <a href="https://docs.diesel.rs/2.0.x/diesel/query_builder/trait.AsChangeset.html"><code>AsChangeset</code></a>. This is another trait that <code>diesel</code> can derive for us. We can add <code>#[derive(AsChangeset)]</code> to our <code>Post</code> struct, which will let us pass a <code>&amp;Post</code> to <code>set</code>.</p>
 <div class="demo__example">
 <div class="demo__example-browser">
 <div class="browser-bar">
 src/lib.rs
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/all_about_updates/src/lib.rs#L144-L146">View on GitHub</a>
-<div class="sourceCode" id="cb13"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb13-1" title="1"><span class="pp">diesel::</span>update(<span class="pp">posts::</span>table).set(&amp;post)</a></code></pre></div>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.0.x/examples/postgres/all_about_updates/src/lib.rs#L141-L143">View on GitHub</a>
+<div class="sourceCode" id="cb13"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb13-1" title="1"><span class="pp">diesel::</span>update(<span class="pp">posts::</span>table).set(post).execute(conn)</a></code></pre></div>
 </div>
 </div>
 <p>The SQL will set every field present on the <code>Post</code> struct except for the primary key.</p>
@@ -303,13 +315,8 @@ src/lib.rs
 <div class="browser-bar">
 Generated SQL
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/all_about_updates/src/lib.rs#L148-L179">View on GitHub</a>
-<div class="sourceCode" id="cb14"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb14-1" title="1"><span class="kw">UPDATE</span> `posts` <span class="kw">SET</span></a>
-<a class="sourceLine" id="cb14-2" title="2">    `title` <span class="op">=</span> ?,</a>
-<a class="sourceLine" id="cb14-3" title="3">    `body` <span class="op">=</span> ?,</a>
-<a class="sourceLine" id="cb14-4" title="4">    `draft` <span class="op">=</span> ?,</a>
-<a class="sourceLine" id="cb14-5" title="5">    `publish_at` <span class="op">=</span> ?,</a>
-<a class="sourceLine" id="cb14-6" title="6">    `visit_count` <span class="op">=</span> ?</a></code></pre></div>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.0.x/examples/postgres/all_about_updates/src/lib.rs#L145-L176">View on GitHub</a>
+<div class="sourceCode" id="cb14"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb14-1" title="1"><span class="kw">UPDATE</span> <span class="ot">&quot;posts&quot;</span> <span class="kw">SET</span> <span class="ot">&quot;title&quot;</span> <span class="op">=</span> $<span class="dv">1</span>, <span class="ot">&quot;body&quot;</span> <span class="op">=</span> $<span class="dv">2</span>, <span class="ot">&quot;draft&quot;</span> <span class="op">=</span> $<span class="dv">3</span>, <span class="ot">&quot;publish_at&quot;</span> <span class="op">=</span> $<span class="dv">4</span>, <span class="ot">&quot;visit_count&quot;</span> <span class="op">=</span> $<span class="dv">5</span> <span class="co">-- binds: [&quot;&quot;, &quot;&quot;, false, now, 0]</span></a></code></pre></div>
 </div>
 </div>
 <p>Changing the primary key of an existing row is almost never something that you want to do, so <code>#[derive(AsChangeset)]</code> assumes that you want to ignore it. The only way to change the primary key is to explicitly do it with <code>.set(id.eq(new_id))</code>. However, note that <code>#[derive(AsChangeset)]</code> doesn’t have the information from your table definition. If the primary key is something other than <code>id</code>, you’ll need to put <code>#[primary_key(your_primary_key)]</code> on the struct as well.</p>
@@ -319,9 +326,9 @@ Generated SQL
 <div class="browser-bar">
 src/lib.rs
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/all_about_updates/src/lib.rs#L181-L195">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.0.x/examples/postgres/all_about_updates/src/lib.rs#L178-L192">View on GitHub</a>
 <div class="sourceCode" id="cb15"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb15-1" title="1"><span class="at">#[</span>derive<span class="at">(</span>AsChangeset<span class="at">)]</span></a>
-<a class="sourceLine" id="cb15-2" title="2"><span class="at">#[</span>table_name<span class="at">=</span><span class="st">&quot;posts&quot;</span><span class="at">]</span></a>
+<a class="sourceLine" id="cb15-2" title="2"><span class="at">#[</span>diesel<span class="at">(</span>table_name <span class="at">=</span> posts<span class="at">)]</span></a>
 <a class="sourceLine" id="cb15-3" title="3"><span class="kw">struct</span> PostForm&lt;<span class="ot">&#39;a</span>&gt; <span class="op">{</span></a>
 <a class="sourceLine" id="cb15-4" title="4">    title: <span class="dt">Option</span>&lt;&amp;<span class="ot">&#39;a</span> <span class="dt">str</span>&gt;,</a>
 <a class="sourceLine" id="cb15-5" title="5">    body: <span class="dt">Option</span>&lt;&amp;<span class="ot">&#39;a</span> <span class="dt">str</span>&gt;,</a>
@@ -331,7 +338,8 @@ src/lib.rs
 <a class="sourceLine" id="cb15-9" title="9">    .set(&amp;PostForm <span class="op">{</span></a>
 <a class="sourceLine" id="cb15-10" title="10">        title: <span class="cn">None</span>,</a>
 <a class="sourceLine" id="cb15-11" title="11">        body: <span class="cn">Some</span>(<span class="st">&quot;My new post&quot;</span>),</a>
-<a class="sourceLine" id="cb15-12" title="12">    <span class="op">}</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb15-12" title="12">    <span class="op">}</span>)</a>
+<a class="sourceLine" id="cb15-13" title="13">    .execute(conn)</a></code></pre></div>
 </div>
 </div>
 <p>That would generate the following SQL:</p>
@@ -340,19 +348,19 @@ src/lib.rs
 <div class="browser-bar">
 Generated SQL
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/all_about_updates/src/lib.rs#L197-L216">View on GitHub</a>
-<div class="sourceCode" id="cb16"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb16-1" title="1"><span class="kw">UPDATE</span> `posts` <span class="kw">SET</span> `body` <span class="op">=</span> ?</a></code></pre></div>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.0.x/examples/postgres/all_about_updates/src/lib.rs#L194-L213">View on GitHub</a>
+<div class="sourceCode" id="cb16"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb16-1" title="1"><span class="kw">UPDATE</span> <span class="ot">&quot;posts&quot;</span> <span class="kw">SET</span> <span class="ot">&quot;body&quot;</span> <span class="op">=</span> $<span class="dv">1</span> <span class="co">-- binds: [&quot;My new post&quot;]</span></a></code></pre></div>
 </div>
 </div>
 <p>If you wanted to assign <code>NULL</code> instead, you can either specify <code>#[changeset_options(treat_none_as_null="true")]</code> on the struct, or you can have the field be of type <code>Option&lt;Option&lt;T&gt;&gt;</code>. Diesel doesn’t currently provide a way to explicitly assign a field to its default value, though it may be provided in the future.</p>
-<p>If you are using PostgreSQL, all of these options will work with <code>INSERT ON CONFLICT DO UPDATE</code> as well. See the <a href="https://docs.diesel.rs/diesel/pg/upsert/index.html">upsert docs</a> for more details.</p>
+<p>If you are using PostgreSQL or SQLite, all of these options will work with <code>INSERT ON CONFLICT DO UPDATE</code> as well. See the <a href="https://docs.diesel.rs/2.0.x/diesel/upsert/index.html">upsert docs</a> for more details.</p>
 <h2 id="executing-your-query">Executing your query</h2>
 <p>Once you’ve constructed your query, we need to actually execute it. There are several different methods to do this, depending on what type you’d like back.</p>
-<p>The simplest method for running your query is <a href="https://docs.diesel.rs/diesel/query_dsl/trait.RunQueryDsl.html#tymethod.execute"><code>execute</code></a>. This method will run your query, and return the number of rows that were affected. This is the method you should use if you simply want to ensure that the query executed successfully, and don’t care about getting anything back from the database.</p>
-<p>For queries where you do want to get data back from the database, we need to use <a href="https://docs.diesel.rs/diesel/query_dsl/trait.RunQueryDsl.html#method.get_result"><code>get_result</code></a> or <a href="https://docs.diesel.rs/diesel/query_dsl/trait.RunQueryDsl.html#method.get_results"><code>get_results</code></a>. If you haven’t explicitly called <a href="https://docs.diesel.rs/diesel/query_builder/update_statement/struct.UpdateStatement.html#method.returning"><code>returning</code></a>, these methods will return all of the columns on the table. Similar to <a href="https://docs.diesel.rs/diesel/query_dsl/trait.RunQueryDsl.html#method.load"><code>load</code></a> on a select statement, you will need to specify the type you’d like to deserialize to (either a tuple or a struct with <code>#[derive(Queryable)]</code>). You should use <a href="https://docs.diesel.rs/diesel/query_dsl/trait.RunQueryDsl.html#method.get_results"><code>get_results</code></a> when you are expecting more than one record back. If you are only expecting a single record, you can call <a href="https://docs.diesel.rs/diesel/query_dsl/trait.RunQueryDsl.html#method.get_result"><code>get_result</code></a> instead.</p>
-<p>It should be noted that receiving 0 rows from <a href="https://docs.diesel.rs/diesel/query_dsl/trait.RunQueryDsl.html#method.get_result"><code>get_result</code></a> is considered an error condition by default. If you want to get back 0 or 1 row (e.g. have a return type of <code>QueryResult&lt;Option&lt;T&gt;&gt;</code>), then you will need to call <code>.get_result(...).optional()</code>.</p>
-<p>Finally, if your struct has both <code>#[derive(AsChangeset)]</code> and <code>#[derive(Identifiable)]</code>, you will be able to use the <a href="https://docs.diesel.rs/diesel/query_dsl/trait.SaveChangesDsl.html#method.save_changes"><code>save_changes</code></a> method. Unlike the other methods mentioned in this guide, you do not explicitly build a query when using <a href="https://docs.diesel.rs/diesel/query_dsl/trait.SaveChangesDsl.html#method.save_changes"><code>save_changes</code></a>. Doing <code>foo.save_changes(&amp;conn)</code> is equivalent to doing <code>diesel::update(&amp;foo).set(&amp;foo).get_result(&amp;conn)</code>. Like <a href="https://docs.diesel.rs/diesel/query_dsl/trait.RunQueryDsl.html#method.get_result"><code>get_result</code></a> and <a href="https://docs.diesel.rs/diesel/query_dsl/trait.RunQueryDsl.html#method.get_results"><code>get_results</code></a>, you will need to specify the type you’d like to get back.</p>
-<p>All of the code for this guide can be found in executable form in <a href="https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/all_about_updates/src/lib.rs">this Diesel example</a>.</p>
+<p>The simplest method for running your query is <a href="https://docs.diesel.rs/2.0.x/diesel/query_dsl/trait.RunQueryDsl.html#tymethod.execute"><code>execute</code></a>. This method will run your query, and return the number of rows that were affected. This is the method you should use if you simply want to ensure that the query executed successfully, and don’t care about getting anything back from the database.</p>
+<p>For queries where you do want to get data back from the database, we need to use <a href="https://docs.diesel.rs/2.0.x/diesel/query_dsl/trait.RunQueryDsl.html#method.get_result"><code>get_result</code></a> or <a href="https://docs.diesel.rs/2.0.x/diesel/query_dsl/trait.RunQueryDsl.html#method.get_results"><code>get_results</code></a>. If you haven’t explicitly called <a href="https://docs.diesel.rs/2.0.x/diesel/query_builder/update_statement/struct.UpdateStatement.html#method.returning"><code>returning</code></a>, these methods will return all of the columns on the table. Similar to <a href="https://docs.diesel.rs/2.0.x/diesel/query_dsl/trait.RunQueryDsl.html#method.load"><code>load</code></a> on a select statement, you will need to specify the type you’d like to deserialize to (either a tuple or a struct with <code>#[derive(Queryable)]</code>). You should use <a href="https://docs.diesel.rs/2.0.x/diesel/query_dsl/trait.RunQueryDsl.html#method.get_results"><code>get_results</code></a> when you are expecting more than one record back. If you are only expecting a single record, you can call <a href="https://docs.diesel.rs/2.0.x/diesel/query_dsl/trait.RunQueryDsl.html#method.get_result"><code>get_result</code></a> instead.</p>
+<p>It should be noted that receiving 0 rows from <a href="https://docs.diesel.rs/2.0.x/diesel/query_dsl/trait.RunQueryDsl.html#method.get_result"><code>get_result</code></a> is considered an error condition by default. If you want to get back 0 or 1 row (e.g. have a return type of <code>QueryResult&lt;Option&lt;T&gt;&gt;</code>), then you will need to call <code>.get_result(...).optional()</code>.</p>
+<p>Finally, if your struct has both <code>#[derive(AsChangeset)]</code> and <code>#[derive(Identifiable)]</code>, you will be able to use the <a href="https://docs.diesel.rs/2.0.x/diesel/query_dsl/trait.SaveChangesDsl.html#method.save_changes"><code>save_changes</code></a> method. Unlike the other methods mentioned in this guide, you do not explicitly build a query when using <a href="https://docs.diesel.rs/2.0.x/diesel/query_dsl/trait.SaveChangesDsl.html#method.save_changes"><code>save_changes</code></a>. Doing <code>foo.save_changes(&amp;conn)</code> is equivalent to doing <code>diesel::update(&amp;foo).set(&amp;foo).get_result(&amp;conn)</code>. Like <a href="https://docs.diesel.rs/2.0.x/diesel/query_dsl/trait.RunQueryDsl.html#method.get_result"><code>get_result</code></a> and <a href="https://docs.diesel.rs/2.0.x/diesel/query_dsl/trait.RunQueryDsl.html#method.get_results"><code>get_results</code></a>, you will need to specify the type you’d like to get back.</p>
+<p>All of the code for this guide can be found in executable form in <a href="https://github.com/diesel-rs/diesel/blob/2.0.x/examples/postgres/all_about_updates/src/lib.rs">this Diesel example</a>.</p>
 </div>
 </div>
 </div>

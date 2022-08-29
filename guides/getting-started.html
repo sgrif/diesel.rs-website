@@ -109,10 +109,16 @@ code span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
             <nav class="header-nav">
                 <ul>
                     <li class="nav-item">
+                      <a href="/news">News</a>
+                    </li>
+                    <li class="nav-item">
                         <a href="/guides">Guides</a>
                     </li>
                     <li class="nav-item">
                         <a href="/docs">API Docs</a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="changelog.html">Changelog</a>
                     </li>
                 </ul>
             </nav>
@@ -130,13 +136,13 @@ code span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
 <div class="content-wrapper">
 <div class="guide-wrapper">
 <p>For this guide, we’re going to walk through some simple examples for each of the pieces of CRUD, which stands for “Create Read Update Delete”. Each step in this guide will build on the previous, and is meant to be followed along.</p>
-<p><strong>This guide assumes that you’re using PostgreSQL.</strong> Before we start, make sure you have PostgreSQL installed and running. If you are using some different database, like for example SQLite, some examples won’t just run as the implemented API might differ. In the project repository, you may find various <a href="https://github.com/diesel-rs/diesel/tree/1.4.x/examples">examples</a> for every supported database.</p>
+<p><strong>This guide assumes that you’re using PostgreSQL.</strong> Before we start, make sure you have PostgreSQL installed and running. If you are using some different database, like for example SQLite, some examples won’t just run as the implemented API might differ. In the project repository, you may find various <a href="https://github.com/diesel-rs/diesel/tree/2.0.x/examples">examples</a> for every supported database.</p>
 <aside class="aside aside--note">
 <header class="aside__header">
 A note on Rust versions:
 </header>
 <div class="aside__text">
-<p>Diesel requires Rust 1.31 or later. If you’re following along with this guide, make sure you’re using at least that version of Rust by running <code>rustup update stable</code>.</p>
+<p>Diesel requires Rust 1.54 or later. If you’re following along with this guide, make sure you’re using at least that version of Rust by running <code>rustup update stable</code>.</p>
 </div>
 </aside>
 <h2 id="initializing-a-new-project">Initializing a new project</h2>
@@ -150,16 +156,16 @@ Generate a new project
 <a class="sourceLine" id="cb1-2" title="2"><span class="bu">cd</span> diesel_demo</a></code></pre></div>
 </div>
 </div>
-<p>First, let’s add Diesel to our dependencies. We’re also going to use a tool called <a href="https://github.com/dotenv-rs/dotenv"><code>.env</code></a> to manage our environment variables for us. We’ll add it to our dependencies as well.</p>
+<p>First, let’s add Diesel to our dependencies. We’re also going to use a tool called <a href="https://github.com/allan2/dotenvy"><code>.env</code></a> to manage our environment variables for us. We’ll add it to our dependencies as well.</p>
 <div class="demo__example">
 <div class="demo__example-browser">
 <div class="browser-bar">
 Cargo.toml
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/getting_started_step_1/Cargo.toml">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.0.x/examples/postgres/getting_started_step_1/Cargo.toml">View on GitHub</a>
 <div class="sourceCode" id="cb2"><pre class="sourceCode toml"><code class="sourceCode toml"><a class="sourceLine" id="cb2-1" title="1"><span class="kw">[</span><span class="dt">dependencies</span><span class="kw">]</span></a>
-<a class="sourceLine" id="cb2-2" title="2"><span class="dt">diesel</span> <span class="op">=</span> <span class="op">{ </span><span class="dt">version</span><span class="op"> =</span> <span class="st">&quot;1.4.4&quot;</span><span class="op">, </span><span class="dt">features</span><span class="op"> =</span> <span class="op">[</span><span class="st">&quot;postgres&quot;</span><span class="op">]</span> <span class="op">}</span></a>
-<a class="sourceLine" id="cb2-3" title="3"><span class="dt">dotenv</span> <span class="op">=</span> <span class="st">&quot;0.15.0&quot;</span></a></code></pre></div>
+<a class="sourceLine" id="cb2-2" title="2"><span class="dt">diesel</span> <span class="op">=</span> <span class="op">{ </span><span class="dt">version</span><span class="op"> =</span> <span class="st">&quot;2.0.0-rc.0&quot;</span><span class="op">, </span><span class="dt">features</span><span class="op"> =</span> <span class="op">[</span><span class="st">&quot;postgres&quot;</span><span class="op">]</span> <span class="op">}</span></a>
+<a class="sourceLine" id="cb2-3" title="3"><span class="dt">dotenvy</span> <span class="op">=</span> <span class="st">&quot;0.15&quot;</span></a></code></pre></div>
 </div>
 </div>
 <h2 id="installing-diesel-cli">Installing Diesel CLI</h2>
@@ -210,12 +216,12 @@ Creating migrations/20160815133237_create_posts/down.sql</code></pre>
 <div class="browser-bar">
 up.sql
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/tree/v1.4.4/examples/postgres/getting_started_step_1/migrations/20160815133237_create_posts/up.sql">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/tree/2.0.x/examples/postgres/getting_started_step_1/migrations/20160815133237_create_posts/up.sql">View on GitHub</a>
 <div class="sourceCode" id="cb10"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb10-1" title="1"><span class="kw">CREATE</span> <span class="kw">TABLE</span> posts (</a>
 <a class="sourceLine" id="cb10-2" title="2">  <span class="kw">id</span> SERIAL <span class="kw">PRIMARY</span> <span class="kw">KEY</span>,</a>
 <a class="sourceLine" id="cb10-3" title="3">  title <span class="dt">VARCHAR</span> <span class="kw">NOT</span> <span class="kw">NULL</span>,</a>
 <a class="sourceLine" id="cb10-4" title="4">  <span class="kw">body</span> TEXT <span class="kw">NOT</span> <span class="kw">NULL</span>,</a>
-<a class="sourceLine" id="cb10-5" title="5">  published <span class="dt">BOOLEAN</span> <span class="kw">NOT</span> <span class="kw">NULL</span> <span class="kw">DEFAULT</span> <span class="st">&#39;f&#39;</span></a>
+<a class="sourceLine" id="cb10-5" title="5">  published <span class="dt">BOOLEAN</span> <span class="kw">NOT</span> <span class="kw">NULL</span> <span class="kw">DEFAULT</span> <span class="kw">FALSE</span></a>
 <a class="sourceLine" id="cb10-6" title="6">)</a></code></pre></div>
 </div>
 </div>
@@ -224,7 +230,7 @@ up.sql
 <div class="browser-bar">
 down.sql
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/tree/v1.4.4/examples/postgres/getting_started_step_1/migrations/20160815133237_create_posts/down.sql">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/tree/2.0.x/examples/postgres/getting_started_step_1/migrations/20160815133237_create_posts/down.sql">View on GitHub</a>
 <div class="sourceCode" id="cb11"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb11-1" title="1"><span class="kw">DROP</span> <span class="kw">TABLE</span> posts</a></code></pre></div>
 </div>
 </div>
@@ -246,7 +252,7 @@ A Note on Using Migrations in Production:
 </header>
 <div class="aside__text">
 <p>When preparing your app for use in production, you may want to run your migrations during the application’s initialization phase. You may also want to include the migration scripts as a part of your code, to avoid having to copy them to your deployment location/image etc.</p>
-<p>The <a href="https://docs.rs/crate/diesel_migrations/">diesel_migrations</a> crate provides the <code>embed_migrations!</code> macro, allowing you to embed migration scripts in the final binary. Once your code uses it, you can simply include <code>embedded_migrations::run(&amp;db_conn)</code> at the start of your <code>main</code> function to run migrations every time the application starts.</p>
+<p>The <a href="https://docs.rs/crate/diesel_migrations/2.0.0-rc.0">diesel_migrations</a> crate provides the <code>embed_migrations!</code> macro, allowing you to embed migration scripts in the final binary. Once your code uses it, you can simply include <code>connection.run_pending_migrations(MIGRATIONS)</code> at the start of your <code>main</code> function to run migrations every time the application starts.</p>
 </div>
 </aside>
 <h2 id="write-rust">Write Rust</h2>
@@ -256,24 +262,19 @@ A Note on Using Migrations in Production:
 <div class="browser-bar">
 src/lib.rs
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/getting_started_step_1/src/lib.rs">View on GitHub</a>
-<div class="sourceCode" id="cb14"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb14-1" title="1"><span class="at">#[</span>macro_use<span class="at">]</span></a>
-<a class="sourceLine" id="cb14-2" title="2"><span class="kw">extern</span> <span class="kw">crate</span> diesel;</a>
-<a class="sourceLine" id="cb14-3" title="3"><span class="kw">extern</span> <span class="kw">crate</span> dotenv;</a>
-<a class="sourceLine" id="cb14-4" title="4"></a>
-<a class="sourceLine" id="cb14-5" title="5"><span class="kw">use</span> <span class="pp">diesel::prelude::</span>*;</a>
-<a class="sourceLine" id="cb14-6" title="6"><span class="kw">use</span> <span class="pp">diesel::pg::</span>PgConnection;</a>
-<a class="sourceLine" id="cb14-7" title="7"><span class="kw">use</span> <span class="pp">dotenv::</span>dotenv;</a>
-<a class="sourceLine" id="cb14-8" title="8"><span class="kw">use</span> <span class="pp">std::</span>env;</a>
-<a class="sourceLine" id="cb14-9" title="9"></a>
-<a class="sourceLine" id="cb14-10" title="10"><span class="kw">pub</span> <span class="kw">fn</span> establish_connection() -&gt; PgConnection <span class="op">{</span></a>
-<a class="sourceLine" id="cb14-11" title="11">    dotenv().ok();</a>
-<a class="sourceLine" id="cb14-12" title="12"></a>
-<a class="sourceLine" id="cb14-13" title="13">    <span class="kw">let</span> database_url = <span class="pp">env::</span>var(<span class="st">&quot;DATABASE_URL&quot;</span>)</a>
-<a class="sourceLine" id="cb14-14" title="14">        .expect(<span class="st">&quot;DATABASE_URL must be set&quot;</span>);</a>
-<a class="sourceLine" id="cb14-15" title="15">    <span class="pp">PgConnection::</span>establish(&amp;database_url)</a>
-<a class="sourceLine" id="cb14-16" title="16">        .expect(&amp;<span class="pp">format!</span>(<span class="st">&quot;Error connecting to {}&quot;</span>, database_url))</a>
-<a class="sourceLine" id="cb14-17" title="17"><span class="op">}</span></a></code></pre></div>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.0.x/examples/postgres/getting_started_step_1/src/lib.rs">View on GitHub</a>
+<div class="sourceCode" id="cb14"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb14-1" title="1"><span class="kw">use</span> <span class="pp">diesel::pg::</span>PgConnection;</a>
+<a class="sourceLine" id="cb14-2" title="2"><span class="kw">use</span> <span class="pp">diesel::prelude::</span>*;</a>
+<a class="sourceLine" id="cb14-3" title="3"><span class="kw">use</span> <span class="pp">dotenvy::</span>dotenv;</a>
+<a class="sourceLine" id="cb14-4" title="4"><span class="kw">use</span> <span class="pp">std::</span>env;</a>
+<a class="sourceLine" id="cb14-5" title="5"></a>
+<a class="sourceLine" id="cb14-6" title="6"><span class="kw">pub</span> <span class="kw">fn</span> establish_connection() -&gt; PgConnection <span class="op">{</span></a>
+<a class="sourceLine" id="cb14-7" title="7">    dotenv().ok();</a>
+<a class="sourceLine" id="cb14-8" title="8"></a>
+<a class="sourceLine" id="cb14-9" title="9">    <span class="kw">let</span> database_url = <span class="pp">env::</span>var(<span class="st">&quot;DATABASE_URL&quot;</span>).expect(<span class="st">&quot;DATABASE_URL must be set&quot;</span>);</a>
+<a class="sourceLine" id="cb14-10" title="10">    <span class="pp">PgConnection::</span>establish(&amp;database_url)</a>
+<a class="sourceLine" id="cb14-11" title="11">        .unwrap_or_else(|_| <span class="pp">panic!</span>(<span class="st">&quot;Error connecting to {}&quot;</span>, database_url))</a>
+<a class="sourceLine" id="cb14-12" title="12"><span class="op">}</span></a></code></pre></div>
 </div>
 </div>
 <p>We’ll also want to create a <code>Post</code> struct into which we can read our data, and have diesel generate the names we’ll use to reference tables and columns in our queries.</p>
@@ -283,9 +284,9 @@ src/lib.rs
 <div class="browser-bar">
 src/lib.rs
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/tree/v1.4.4/examples/postgres/getting_started_step_1/src/lib.rs">View on GitHub</a>
-<div class="sourceCode" id="cb15"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb15-1" title="1"><span class="kw">pub</span> <span class="kw">mod</span> schema;</a>
-<a class="sourceLine" id="cb15-2" title="2"><span class="kw">pub</span> <span class="kw">mod</span> models;</a></code></pre></div>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/tree/2.0.x/examples/postgres/getting_started_step_1/src/lib.rs">View on GitHub</a>
+<div class="sourceCode" id="cb15"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb15-1" title="1"><span class="kw">pub</span> <span class="kw">mod</span> models;</a>
+<a class="sourceLine" id="cb15-2" title="2"><span class="kw">pub</span> <span class="kw">mod</span> schema;</a></code></pre></div>
 </div>
 </div>
 <p>Next we need to create the two modules that we just declared.</p>
@@ -294,36 +295,40 @@ src/lib.rs
 <div class="browser-bar">
 src/models.rs
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/tree/v1.4.4/examples/postgres/getting_started_step_1/src/models.rs">View on GitHub</a>
-<div class="sourceCode" id="cb16"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb16-1" title="1"><span class="at">#[</span>derive<span class="at">(</span>Queryable<span class="at">)]</span></a>
-<a class="sourceLine" id="cb16-2" title="2"><span class="kw">pub</span> <span class="kw">struct</span> Post <span class="op">{</span></a>
-<a class="sourceLine" id="cb16-3" title="3">    <span class="kw">pub</span> id: <span class="dt">i32</span>,</a>
-<a class="sourceLine" id="cb16-4" title="4">    <span class="kw">pub</span> title: <span class="dt">String</span>,</a>
-<a class="sourceLine" id="cb16-5" title="5">    <span class="kw">pub</span> body: <span class="dt">String</span>,</a>
-<a class="sourceLine" id="cb16-6" title="6">    <span class="kw">pub</span> published: <span class="dt">bool</span>,</a>
-<a class="sourceLine" id="cb16-7" title="7"><span class="op">}</span></a></code></pre></div>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/tree/2.0.x/examples/postgres/getting_started_step_1/src/models.rs">View on GitHub</a>
+<div class="sourceCode" id="cb16"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb16-1" title="1"><span class="kw">use</span> <span class="pp">diesel::prelude::</span>*;</a>
+<a class="sourceLine" id="cb16-2" title="2"></a>
+<a class="sourceLine" id="cb16-3" title="3"><span class="at">#[</span>derive<span class="at">(</span>Queryable<span class="at">)]</span></a>
+<a class="sourceLine" id="cb16-4" title="4"><span class="kw">pub</span> <span class="kw">struct</span> Post <span class="op">{</span></a>
+<a class="sourceLine" id="cb16-5" title="5">    <span class="kw">pub</span> id: <span class="dt">i32</span>,</a>
+<a class="sourceLine" id="cb16-6" title="6">    <span class="kw">pub</span> title: <span class="dt">String</span>,</a>
+<a class="sourceLine" id="cb16-7" title="7">    <span class="kw">pub</span> body: <span class="dt">String</span>,</a>
+<a class="sourceLine" id="cb16-8" title="8">    <span class="kw">pub</span> published: <span class="dt">bool</span>,</a>
+<a class="sourceLine" id="cb16-9" title="9"><span class="op">}</span></a></code></pre></div>
 </div>
 </div>
 <p><code>#[derive(Queryable)]</code> will generate all of the code needed to load a <code>Post</code> struct from a SQL query.</p>
-<p>Typically the schema module isn’t created by hand, it gets generated by Diesel. When we ran <code>diesel setup</code>, a file called <a href="https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/getting_started_step_1/diesel.toml">diesel.toml</a> was created which tells Diesel to maintain a file at src/schema.rs for us. The file should look like this:</p>
+<p>Typically the schema module isn’t created by hand, it gets generated by Diesel. When we ran <code>diesel setup</code>, a file called <a href="https://github.com/diesel-rs/diesel/blob/2.0.x/examples/postgres/getting_started_step_1/diesel.toml">diesel.toml</a> was created which tells Diesel to maintain a file at src/schema.rs for us. The file should look like this:</p>
 <div class="demo__example">
 <div class="demo__example-browser">
 <div class="browser-bar">
 src/schema.rs
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/getting_started_step_1/src/schema.rs">View on GitHub</a>
-<div class="sourceCode" id="cb17"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb17-1" title="1"><span class="pp">table!</span> <span class="op">{</span></a>
-<a class="sourceLine" id="cb17-2" title="2">    posts (id) <span class="op">{</span></a>
-<a class="sourceLine" id="cb17-3" title="3">        id -&gt; Integer,</a>
-<a class="sourceLine" id="cb17-4" title="4">        title -&gt; Text,</a>
-<a class="sourceLine" id="cb17-5" title="5">        body -&gt; Text,</a>
-<a class="sourceLine" id="cb17-6" title="6">        published -&gt; Bool,</a>
-<a class="sourceLine" id="cb17-7" title="7">    <span class="op">}</span></a>
-<a class="sourceLine" id="cb17-8" title="8"><span class="op">}</span></a></code></pre></div>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.0.x/examples/postgres/getting_started_step_1/src/schema.rs">View on GitHub</a>
+<div class="sourceCode" id="cb17"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb17-1" title="1"><span class="co">// @generated automatically by Diesel CLI.</span></a>
+<a class="sourceLine" id="cb17-2" title="2"></a>
+<a class="sourceLine" id="cb17-3" title="3"><span class="pp">diesel::table!</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb17-4" title="4">    posts (id) <span class="op">{</span></a>
+<a class="sourceLine" id="cb17-5" title="5">        id -&gt; Int4,</a>
+<a class="sourceLine" id="cb17-6" title="6">        title -&gt; Varchar,</a>
+<a class="sourceLine" id="cb17-7" title="7">        body -&gt; Text,</a>
+<a class="sourceLine" id="cb17-8" title="8">        published -&gt; Bool,</a>
+<a class="sourceLine" id="cb17-9" title="9">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb17-10" title="10"><span class="op">}</span></a></code></pre></div>
 </div>
 </div>
 <p>The exact output might vary slightly depending on your database, but it should be equivalent.</p>
-<p>The <a href="https://docs.diesel.rs/diesel/macro.table.html"><code>table!</code> macro</a> creates a bunch of code based on the database schema to represent all of the tables and columns. We’ll see how exactly to use that in the next example.</p>
+<p>The <a href="https://docs.diesel.rs/2.0.x/diesel/macro.table.html"><code>table!</code> macro</a> creates a bunch of code based on the database schema to represent all of the tables and columns. We’ll see how exactly to use that in the next example.</p>
 <p>Any time we run or revert a migration, this file will get automatically updated.</p>
 <aside class="aside aside--note">
 <header class="aside__header">
@@ -339,46 +344,44 @@ A Note on Field Order
 <div class="browser-bar">
 src/bin/show_posts.rs
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/getting_started_step_1/src/bin/show_posts.rs">View on GitHub</a>
-<div class="sourceCode" id="cb18"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb18-1" title="1"><span class="kw">extern</span> <span class="kw">crate</span> diesel_demo;</a>
-<a class="sourceLine" id="cb18-2" title="2"><span class="kw">extern</span> <span class="kw">crate</span> diesel;</a>
-<a class="sourceLine" id="cb18-3" title="3"></a>
-<a class="sourceLine" id="cb18-4" title="4"><span class="kw">use</span> <span class="kw">self</span>::<span class="pp">diesel_demo::</span>*;</a>
-<a class="sourceLine" id="cb18-5" title="5"><span class="kw">use</span> <span class="kw">self</span>::<span class="pp">models::</span>*;</a>
-<a class="sourceLine" id="cb18-6" title="6"><span class="kw">use</span> <span class="kw">self</span>::<span class="pp">diesel::prelude::</span>*;</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.0.x/examples/postgres/getting_started_step_1/src/bin/show_posts.rs">View on GitHub</a>
+<div class="sourceCode" id="cb18"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb18-1" title="1"><span class="kw">use</span> <span class="kw">self</span>::<span class="pp">models::</span>*;</a>
+<a class="sourceLine" id="cb18-2" title="2"><span class="kw">use</span> <span class="pp">diesel::prelude::</span>*;</a>
+<a class="sourceLine" id="cb18-3" title="3"><span class="kw">use</span> <span class="pp">diesel_demo::</span>*;</a>
+<a class="sourceLine" id="cb18-4" title="4"></a>
+<a class="sourceLine" id="cb18-5" title="5"><span class="kw">fn</span> main() <span class="op">{</span></a>
+<a class="sourceLine" id="cb18-6" title="6">    <span class="kw">use</span> <span class="kw">self</span>::<span class="pp">schema::posts::dsl::</span>*;</a>
 <a class="sourceLine" id="cb18-7" title="7"></a>
-<a class="sourceLine" id="cb18-8" title="8"><span class="kw">fn</span> main() <span class="op">{</span></a>
-<a class="sourceLine" id="cb18-9" title="9">    <span class="kw">use</span> <span class="pp">diesel_demo::schema::posts::dsl::</span>*;</a>
-<a class="sourceLine" id="cb18-10" title="10"></a>
-<a class="sourceLine" id="cb18-11" title="11">    <span class="kw">let</span> connection = establish_connection();</a>
-<a class="sourceLine" id="cb18-12" title="12">    <span class="kw">let</span> results = posts.filter(published.eq(<span class="cn">true</span>))</a>
-<a class="sourceLine" id="cb18-13" title="13">        .limit(<span class="dv">5</span>)</a>
-<a class="sourceLine" id="cb18-14" title="14">        .<span class="pp">load::</span>&lt;Post&gt;(&amp;connection)</a>
-<a class="sourceLine" id="cb18-15" title="15">        .expect(<span class="st">&quot;Error loading posts&quot;</span>);</a>
-<a class="sourceLine" id="cb18-16" title="16"></a>
-<a class="sourceLine" id="cb18-17" title="17">    <span class="pp">println!</span>(<span class="st">&quot;Displaying {} posts&quot;</span>, results.len());</a>
-<a class="sourceLine" id="cb18-18" title="18">    <span class="kw">for</span> post <span class="kw">in</span> results <span class="op">{</span></a>
-<a class="sourceLine" id="cb18-19" title="19">        <span class="pp">println!</span>(<span class="st">&quot;{}&quot;</span>, post.title);</a>
-<a class="sourceLine" id="cb18-20" title="20">        <span class="pp">println!</span>(<span class="st">&quot;----------</span><span class="sc">\n</span><span class="st">&quot;</span>);</a>
-<a class="sourceLine" id="cb18-21" title="21">        <span class="pp">println!</span>(<span class="st">&quot;{}&quot;</span>, post.body);</a>
-<a class="sourceLine" id="cb18-22" title="22">    <span class="op">}</span></a>
-<a class="sourceLine" id="cb18-23" title="23"><span class="op">}</span></a></code></pre></div>
+<a class="sourceLine" id="cb18-8" title="8">    <span class="kw">let</span> connection = &amp;<span class="kw">mut</span> establish_connection();</a>
+<a class="sourceLine" id="cb18-9" title="9">    <span class="kw">let</span> results = posts</a>
+<a class="sourceLine" id="cb18-10" title="10">        .filter(published.eq(<span class="cn">true</span>))</a>
+<a class="sourceLine" id="cb18-11" title="11">        .limit(<span class="dv">5</span>)</a>
+<a class="sourceLine" id="cb18-12" title="12">        .<span class="pp">load::</span>&lt;Post&gt;(connection)</a>
+<a class="sourceLine" id="cb18-13" title="13">        .expect(<span class="st">&quot;Error loading posts&quot;</span>);</a>
+<a class="sourceLine" id="cb18-14" title="14"></a>
+<a class="sourceLine" id="cb18-15" title="15">    <span class="pp">println!</span>(<span class="st">&quot;Displaying {} posts&quot;</span>, results.len());</a>
+<a class="sourceLine" id="cb18-16" title="16">    <span class="kw">for</span> post <span class="kw">in</span> results <span class="op">{</span></a>
+<a class="sourceLine" id="cb18-17" title="17">        <span class="pp">println!</span>(<span class="st">&quot;{}&quot;</span>, post.title);</a>
+<a class="sourceLine" id="cb18-18" title="18">        <span class="pp">println!</span>(<span class="st">&quot;-----------</span><span class="sc">\n</span><span class="st">&quot;</span>);</a>
+<a class="sourceLine" id="cb18-19" title="19">        <span class="pp">println!</span>(<span class="st">&quot;{}&quot;</span>, post.body);</a>
+<a class="sourceLine" id="cb18-20" title="20">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb18-21" title="21"><span class="op">}</span></a></code></pre></div>
 </div>
 </div>
-<p>The use <code>diesel_demo::schema::posts::dsl::*</code> line imports a bunch of aliases so that we can say <code>posts</code> instead of <code>posts::table</code>, and <code>published</code> instead of <code>posts::published</code>. It’s useful when we’re only dealing with a single table, but that’s not always what we want.</p>
+<p>The use <code>self::schema::posts::dsl::*</code> line imports a bunch of aliases so that we can say <code>posts</code> instead of <code>posts::table</code>, and <code>published</code> instead of <code>posts::published</code>. It’s useful when we’re only dealing with a single table, but that’s not always what we want.</p>
 <p>We can run our script with <code>cargo run --bin show_posts</code>. Unfortunately, the results won’t be terribly interesting, as we don’t actually have any posts in the database. Still, we’ve written a decent amount of code, so let’s commit.</p>
-<p>The full code for the demo at this point can be found <a href="https://github.com/diesel-rs/diesel/tree/v1.4.4/examples/postgres/getting_started_step_1/">here</a>.</p>
-<p>Next, let’s write some code to create a new post.We’ll want a struct to use for inserting a new record.</p>
+<p>The full code for the demo at this point can be found <a href="https://github.com/diesel-rs/diesel/tree/2.0.x/examples/postgres/getting_started_step_1/">here</a>.</p>
+<p>Next, let’s write some code to create a new post. We’ll want a struct to use for inserting a new record.</p>
 <div class="demo__example">
 <div class="demo__example-browser">
 <div class="browser-bar">
 src/models.rs
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/getting_started_step_2/src/models.rs">View on GitHub</a>
-<div class="sourceCode" id="cb19"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb19-1" title="1"><span class="kw">use</span> <span class="kw">super</span>::<span class="pp">schema::</span>posts;</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.0.x/examples/postgres/getting_started_step_2/src/models.rs">View on GitHub</a>
+<div class="sourceCode" id="cb19"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb19-1" title="1"><span class="kw">use</span> <span class="kw">crate</span>::<span class="pp">schema::</span>posts;</a>
 <a class="sourceLine" id="cb19-2" title="2"></a>
 <a class="sourceLine" id="cb19-3" title="3"><span class="at">#[</span>derive<span class="at">(</span>Insertable<span class="at">)]</span></a>
-<a class="sourceLine" id="cb19-4" title="4"><span class="at">#[</span>table_name<span class="at">=</span><span class="st">&quot;posts&quot;</span><span class="at">]</span></a>
+<a class="sourceLine" id="cb19-4" title="4"><span class="at">#[</span>diesel<span class="at">(</span>table_name <span class="at">=</span> posts<span class="at">)]</span></a>
 <a class="sourceLine" id="cb19-5" title="5"><span class="kw">pub</span> <span class="kw">struct</span> NewPost&lt;<span class="ot">&#39;a</span>&gt; <span class="op">{</span></a>
 <a class="sourceLine" id="cb19-6" title="6">    <span class="kw">pub</span> title: &amp;<span class="ot">&#39;a</span> <span class="dt">str</span>,</a>
 <a class="sourceLine" id="cb19-7" title="7">    <span class="kw">pub</span> body: &amp;<span class="ot">&#39;a</span> <span class="dt">str</span>,</a>
@@ -391,22 +394,19 @@ src/models.rs
 <div class="browser-bar">
 src/lib.rs
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/getting_started_step_2/src/lib.rs">View on GitHub</a>
-<div class="sourceCode" id="cb20"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb20-1" title="1"><span class="kw">use</span> <span class="kw">self</span>::<span class="pp">models::</span><span class="op">{</span>Post, NewPost<span class="op">}</span>;</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.0.x/examples/postgres/getting_started_step_2/src/lib.rs">View on GitHub</a>
+<div class="sourceCode" id="cb20"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb20-1" title="1"><span class="kw">use</span> <span class="kw">self</span>::<span class="pp">models::</span><span class="op">{</span>NewPost, Post<span class="op">}</span>;</a>
 <a class="sourceLine" id="cb20-2" title="2"></a>
-<a class="sourceLine" id="cb20-3" title="3"><span class="kw">pub</span> <span class="kw">fn</span> create_post&lt;<span class="ot">&#39;a</span>&gt;(conn: &amp;PgConnection, title: &amp;<span class="ot">&#39;a</span> <span class="dt">str</span>, body: &amp;<span class="ot">&#39;a</span> <span class="dt">str</span>) -&gt; Post <span class="op">{</span></a>
-<a class="sourceLine" id="cb20-4" title="4">    <span class="kw">use</span> <span class="pp">schema::</span>posts;</a>
+<a class="sourceLine" id="cb20-3" title="3"><span class="kw">pub</span> <span class="kw">fn</span> create_post(conn: &amp;<span class="kw">mut</span> PgConnection, title: &amp;<span class="dt">str</span>, body: &amp;<span class="dt">str</span>) -&gt; Post <span class="op">{</span></a>
+<a class="sourceLine" id="cb20-4" title="4">    <span class="kw">use</span> <span class="kw">crate</span>::<span class="pp">schema::</span>posts;</a>
 <a class="sourceLine" id="cb20-5" title="5"></a>
-<a class="sourceLine" id="cb20-6" title="6">    <span class="kw">let</span> new_post = NewPost <span class="op">{</span></a>
-<a class="sourceLine" id="cb20-7" title="7">        title: title,</a>
-<a class="sourceLine" id="cb20-8" title="8">        body: body,</a>
-<a class="sourceLine" id="cb20-9" title="9">    <span class="op">}</span>;</a>
-<a class="sourceLine" id="cb20-10" title="10"></a>
-<a class="sourceLine" id="cb20-11" title="11">    <span class="pp">diesel::</span>insert_into(<span class="pp">posts::</span>table)</a>
-<a class="sourceLine" id="cb20-12" title="12">        .values(&amp;new_post)</a>
-<a class="sourceLine" id="cb20-13" title="13">        .get_result(conn)</a>
-<a class="sourceLine" id="cb20-14" title="14">        .expect(<span class="st">&quot;Error saving new post&quot;</span>)</a>
-<a class="sourceLine" id="cb20-15" title="15"><span class="op">}</span></a></code></pre></div>
+<a class="sourceLine" id="cb20-6" title="6">    <span class="kw">let</span> new_post = NewPost <span class="op">{</span> title, body <span class="op">}</span>;</a>
+<a class="sourceLine" id="cb20-7" title="7"></a>
+<a class="sourceLine" id="cb20-8" title="8">    <span class="pp">diesel::</span>insert_into(<span class="pp">posts::</span>table)</a>
+<a class="sourceLine" id="cb20-9" title="9">        .values(&amp;new_post)</a>
+<a class="sourceLine" id="cb20-10" title="10">        .get_result(conn)</a>
+<a class="sourceLine" id="cb20-11" title="11">        .expect(<span class="st">&quot;Error saving new post&quot;</span>)</a>
+<a class="sourceLine" id="cb20-12" title="12"><span class="op">}</span></a></code></pre></div>
 </div>
 </div>
 <p>When we call <code>.get_result</code> on an insert or update statement, it automatically adds <code>RETURNING *</code> to the end of the query, and lets us load it into any struct that implements <code>Queryable</code> for the right types. Neat!</p>
@@ -417,33 +417,35 @@ src/lib.rs
 <div class="browser-bar">
 src/bin/write_post.rs
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/getting_started_step_2/src/bin/write_post.rs">View on GitHub</a>
-<div class="sourceCode" id="cb21"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb21-1" title="1"><span class="kw">extern</span> <span class="kw">crate</span> diesel_demo;</a>
-<a class="sourceLine" id="cb21-2" title="2"><span class="kw">extern</span> <span class="kw">crate</span> diesel;</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.0.x/examples/postgres/getting_started_step_2/src/bin/write_post.rs">View on GitHub</a>
+<div class="sourceCode" id="cb21"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb21-1" title="1"><span class="kw">use</span> <span class="pp">diesel_demo::</span>*;</a>
+<a class="sourceLine" id="cb21-2" title="2"><span class="kw">use</span> <span class="pp">std::io::</span><span class="op">{</span>stdin, Read<span class="op">}</span>;</a>
 <a class="sourceLine" id="cb21-3" title="3"></a>
-<a class="sourceLine" id="cb21-4" title="4"><span class="kw">use</span> <span class="kw">self</span>::<span class="pp">diesel_demo::</span>*;</a>
-<a class="sourceLine" id="cb21-5" title="5"><span class="kw">use</span> <span class="pp">std::io::</span><span class="op">{</span>stdin, Read<span class="op">}</span>;</a>
+<a class="sourceLine" id="cb21-4" title="4"><span class="kw">fn</span> main() <span class="op">{</span></a>
+<a class="sourceLine" id="cb21-5" title="5">    <span class="kw">let</span> connection = &amp;<span class="kw">mut</span> establish_connection();</a>
 <a class="sourceLine" id="cb21-6" title="6"></a>
-<a class="sourceLine" id="cb21-7" title="7"><span class="kw">fn</span> main() <span class="op">{</span></a>
-<a class="sourceLine" id="cb21-8" title="8">    <span class="kw">let</span> connection = establish_connection();</a>
+<a class="sourceLine" id="cb21-7" title="7">    <span class="kw">let</span> <span class="kw">mut</span> title = <span class="dt">String</span>::new();</a>
+<a class="sourceLine" id="cb21-8" title="8">    <span class="kw">let</span> <span class="kw">mut</span> body = <span class="dt">String</span>::new();</a>
 <a class="sourceLine" id="cb21-9" title="9"></a>
 <a class="sourceLine" id="cb21-10" title="10">    <span class="pp">println!</span>(<span class="st">&quot;What would you like your title to be?&quot;</span>);</a>
-<a class="sourceLine" id="cb21-11" title="11">    <span class="kw">let</span> <span class="kw">mut</span> title = <span class="dt">String</span>::new();</a>
-<a class="sourceLine" id="cb21-12" title="12">    stdin().read_line(&amp;<span class="kw">mut</span> title).unwrap();</a>
-<a class="sourceLine" id="cb21-13" title="13">    <span class="kw">let</span> title = &amp;title<span class="op">[</span>..(title.len() - <span class="dv">1</span>)<span class="op">]</span>; <span class="co">// Drop the newline character</span></a>
-<a class="sourceLine" id="cb21-14" title="14">    <span class="pp">println!</span>(<span class="st">&quot;</span><span class="sc">\n</span><span class="st">Ok! Let&#39;s write {} (Press {} when finished)</span><span class="sc">\n</span><span class="st">&quot;</span>, title, <span class="cn">EOF</span>);</a>
-<a class="sourceLine" id="cb21-15" title="15">    <span class="kw">let</span> <span class="kw">mut</span> body = <span class="dt">String</span>::new();</a>
-<a class="sourceLine" id="cb21-16" title="16">    stdin().read_to_string(&amp;<span class="kw">mut</span> body).unwrap();</a>
-<a class="sourceLine" id="cb21-17" title="17"></a>
-<a class="sourceLine" id="cb21-18" title="18">    <span class="kw">let</span> post = create_post(&amp;connection, title, &amp;body);</a>
-<a class="sourceLine" id="cb21-19" title="19">    <span class="pp">println!</span>(<span class="st">&quot;</span><span class="sc">\n</span><span class="st">Saved draft {} with id {}&quot;</span>, title, post.id);</a>
-<a class="sourceLine" id="cb21-20" title="20"><span class="op">}</span></a>
-<a class="sourceLine" id="cb21-21" title="21"></a>
-<a class="sourceLine" id="cb21-22" title="22"><span class="at">#[</span>cfg<span class="at">(</span>not<span class="at">(</span>windows<span class="at">))]</span></a>
-<a class="sourceLine" id="cb21-23" title="23"><span class="kw">const</span> <span class="cn">EOF</span>: &amp;<span class="ot">&#39;static</span> <span class="dt">str</span> = <span class="st">&quot;CTRL+D&quot;</span>;</a>
-<a class="sourceLine" id="cb21-24" title="24"></a>
-<a class="sourceLine" id="cb21-25" title="25"><span class="at">#[</span>cfg<span class="at">(</span>windows<span class="at">)]</span></a>
-<a class="sourceLine" id="cb21-26" title="26"><span class="kw">const</span> <span class="cn">EOF</span>: &amp;<span class="ot">&#39;static</span> <span class="dt">str</span> = <span class="st">&quot;CTRL+Z&quot;</span>;</a></code></pre></div>
+<a class="sourceLine" id="cb21-11" title="11">    stdin().read_line(&amp;<span class="kw">mut</span> title).unwrap();</a>
+<a class="sourceLine" id="cb21-12" title="12">    <span class="kw">let</span> title = title.trim_end(); <span class="co">// Remove the trailing newline</span></a>
+<a class="sourceLine" id="cb21-13" title="13"></a>
+<a class="sourceLine" id="cb21-14" title="14">    <span class="pp">println!</span>(</a>
+<a class="sourceLine" id="cb21-15" title="15">        <span class="st">&quot;</span><span class="sc">\n</span><span class="st">Ok! Let&#39;s write {} (Press {} when finished)</span><span class="sc">\n</span><span class="st">&quot;</span>,</a>
+<a class="sourceLine" id="cb21-16" title="16">        title, <span class="cn">EOF</span></a>
+<a class="sourceLine" id="cb21-17" title="17">    );</a>
+<a class="sourceLine" id="cb21-18" title="18">    stdin().read_to_string(&amp;<span class="kw">mut</span> body).unwrap();</a>
+<a class="sourceLine" id="cb21-19" title="19"></a>
+<a class="sourceLine" id="cb21-20" title="20">    <span class="kw">let</span> post = create_post(connection, title, &amp;body);</a>
+<a class="sourceLine" id="cb21-21" title="21">    <span class="pp">println!</span>(<span class="st">&quot;</span><span class="sc">\n</span><span class="st">Saved draft {} with id {}&quot;</span>, title, post.id);</a>
+<a class="sourceLine" id="cb21-22" title="22"><span class="op">}</span></a>
+<a class="sourceLine" id="cb21-23" title="23"></a>
+<a class="sourceLine" id="cb21-24" title="24"><span class="at">#[</span>cfg<span class="at">(</span>not<span class="at">(</span>windows<span class="at">))]</span></a>
+<a class="sourceLine" id="cb21-25" title="25"><span class="kw">const</span> <span class="cn">EOF</span>: &amp;<span class="dt">str</span> = <span class="st">&quot;CTRL+D&quot;</span>;</a>
+<a class="sourceLine" id="cb21-26" title="26"></a>
+<a class="sourceLine" id="cb21-27" title="27"><span class="at">#[</span>cfg<span class="at">(</span>windows<span class="at">)]</span></a>
+<a class="sourceLine" id="cb21-28" title="28"><span class="kw">const</span> <span class="cn">EOF</span>: &amp;<span class="dt">str</span> = <span class="st">&quot;CTRL+Z&quot;</span>;</a></code></pre></div>
 </div>
 </div>
 <p>We can run our new script with <code>cargo run --bin write_post</code>. Go ahead and write a blog post. Get creative! Here was mine:</p>
@@ -462,33 +464,33 @@ Plus I don&#39;t really like the Rust web frameworks out there. We might make a
 new one, soon.
 
 Saved draft Diesel demo with id 1</code></pre>
-<p>Unfortunately, running <code>show_posts</code> still won’t display our new post, because we saved it as a draft. If we look back to the code in <code>show_posts</code>, we added <code>.filter(published.eq(true))</code>, and we had <code>published</code> default to false in our migration. We need to publish it! But in order to do that, we’ll need to look at how to update an existing record. First, let’s commit. The code for this demo at this point can be found <a href="https://github.com/diesel-rs/diesel/tree/v1.4.4/examples/postgres/getting_started_step_2/">here</a>.</p>
+<p>Unfortunately, running <code>show_posts</code> still won’t display our new post, because we saved it as a draft. If we look back to the code in <code>show_posts</code>, we added <code>.filter(published.eq(true))</code>, and we had <code>published</code> default to false in our migration. We need to publish it! But in order to do that, we’ll need to look at how to update an existing record. First, let’s commit. The code for this demo at this point can be found <a href="https://github.com/diesel-rs/diesel/tree/2.0.x/examples/postgres/getting_started_step_2/">here</a>.</p>
 <p>Now that we’ve got create and read out of the way, update is actually relatively simple. Let’s jump right into the script:</p>
 <div class="demo__example">
 <div class="demo__example-browser">
 <div class="browser-bar">
 src/bin/publish_post.rs
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/getting_started_step_3/src/bin/publish_post.rs">View on GitHub</a>
-<div class="sourceCode" id="cb23"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb23-1" title="1"><span class="kw">extern</span> <span class="kw">crate</span> diesel_demo;</a>
-<a class="sourceLine" id="cb23-2" title="2"><span class="kw">extern</span> <span class="kw">crate</span> diesel;</a>
-<a class="sourceLine" id="cb23-3" title="3"></a>
-<a class="sourceLine" id="cb23-4" title="4"><span class="kw">use</span> <span class="kw">self</span>::<span class="pp">diesel::prelude::</span>*;</a>
-<a class="sourceLine" id="cb23-5" title="5"><span class="kw">use</span> <span class="kw">self</span>::<span class="pp">diesel_demo::</span>*;</a>
-<a class="sourceLine" id="cb23-6" title="6"><span class="kw">use</span> <span class="kw">self</span>::<span class="pp">models::</span>Post;</a>
-<a class="sourceLine" id="cb23-7" title="7"><span class="kw">use</span> <span class="pp">std::env::</span>args;</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.0.x/examples/postgres/getting_started_step_3/src/bin/publish_post.rs">View on GitHub</a>
+<div class="sourceCode" id="cb23"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb23-1" title="1"><span class="kw">use</span> <span class="kw">self</span>::<span class="pp">models::</span>Post;</a>
+<a class="sourceLine" id="cb23-2" title="2"><span class="kw">use</span> <span class="pp">diesel::prelude::</span>*;</a>
+<a class="sourceLine" id="cb23-3" title="3"><span class="kw">use</span> <span class="pp">diesel_demo::</span>*;</a>
+<a class="sourceLine" id="cb23-4" title="4"><span class="kw">use</span> <span class="pp">std::env::</span>args;</a>
+<a class="sourceLine" id="cb23-5" title="5"></a>
+<a class="sourceLine" id="cb23-6" title="6"><span class="kw">fn</span> main() <span class="op">{</span></a>
+<a class="sourceLine" id="cb23-7" title="7">    <span class="kw">use</span> <span class="kw">self</span>::<span class="pp">schema::posts::dsl::</span><span class="op">{</span>posts, published<span class="op">}</span>;</a>
 <a class="sourceLine" id="cb23-8" title="8"></a>
-<a class="sourceLine" id="cb23-9" title="9"><span class="kw">fn</span> main() <span class="op">{</span></a>
-<a class="sourceLine" id="cb23-10" title="10">    <span class="kw">use</span> <span class="pp">diesel_demo::schema::posts::dsl::</span><span class="op">{</span>posts, published<span class="op">}</span>;</a>
-<a class="sourceLine" id="cb23-11" title="11"></a>
-<a class="sourceLine" id="cb23-12" title="12">    <span class="kw">let</span> id = args().nth(<span class="dv">1</span>).expect(<span class="st">&quot;publish_post requires a post id&quot;</span>)</a>
-<a class="sourceLine" id="cb23-13" title="13">        .<span class="pp">parse::</span>&lt;<span class="dt">i32</span>&gt;().expect(<span class="st">&quot;Invalid ID&quot;</span>);</a>
-<a class="sourceLine" id="cb23-14" title="14">    <span class="kw">let</span> connection = establish_connection();</a>
+<a class="sourceLine" id="cb23-9" title="9">    <span class="kw">let</span> id = args()</a>
+<a class="sourceLine" id="cb23-10" title="10">        .nth(<span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb23-11" title="11">        .expect(<span class="st">&quot;publish_post requires a post id&quot;</span>)</a>
+<a class="sourceLine" id="cb23-12" title="12">        .<span class="pp">parse::</span>&lt;<span class="dt">i32</span>&gt;()</a>
+<a class="sourceLine" id="cb23-13" title="13">        .expect(<span class="st">&quot;Invalid ID&quot;</span>);</a>
+<a class="sourceLine" id="cb23-14" title="14">    <span class="kw">let</span> connection = &amp;<span class="kw">mut</span> establish_connection();</a>
 <a class="sourceLine" id="cb23-15" title="15"></a>
 <a class="sourceLine" id="cb23-16" title="16">    <span class="kw">let</span> post = <span class="pp">diesel::</span>update(posts.find(id))</a>
 <a class="sourceLine" id="cb23-17" title="17">        .set(published.eq(<span class="cn">true</span>))</a>
-<a class="sourceLine" id="cb23-18" title="18">        .<span class="pp">get_result::</span>&lt;Post&gt;(&amp;connection)</a>
-<a class="sourceLine" id="cb23-19" title="19">        .expect(&amp;<span class="pp">format!</span>(<span class="st">&quot;Unable to find post {}&quot;</span>, id));</a>
+<a class="sourceLine" id="cb23-18" title="18">        .<span class="pp">get_result::</span>&lt;Post&gt;(connection)</a>
+<a class="sourceLine" id="cb23-19" title="19">        .unwrap();</a>
 <a class="sourceLine" id="cb23-20" title="20">    <span class="pp">println!</span>(<span class="st">&quot;Published post {}&quot;</span>, post.title);</a>
 <a class="sourceLine" id="cb23-21" title="21"><span class="op">}</span></a></code></pre></div>
 </div>
@@ -514,34 +516,31 @@ new one, soon.</code></pre>
 <div class="browser-bar">
 src/bin/delete_post.rs
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/v1.4.4/examples/postgres/getting_started_step_3/src/bin/delete_post.rs">View on GitHub</a>
-<div class="sourceCode" id="cb26"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb26-1" title="1"><span class="kw">extern</span> <span class="kw">crate</span> diesel_demo;</a>
-<a class="sourceLine" id="cb26-2" title="2"><span class="kw">extern</span> <span class="kw">crate</span> diesel;</a>
-<a class="sourceLine" id="cb26-3" title="3"></a>
-<a class="sourceLine" id="cb26-4" title="4"><span class="kw">use</span> <span class="kw">self</span>::<span class="pp">diesel::prelude::</span>*;</a>
-<a class="sourceLine" id="cb26-5" title="5"><span class="kw">use</span> <span class="kw">self</span>::<span class="pp">diesel_demo::</span>*;</a>
-<a class="sourceLine" id="cb26-6" title="6"><span class="kw">use</span> <span class="pp">std::env::</span>args;</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.0.x/examples/postgres/getting_started_step_3/src/bin/delete_post.rs">View on GitHub</a>
+<div class="sourceCode" id="cb26"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb26-1" title="1"><span class="kw">use</span> <span class="pp">diesel::prelude::</span>*;</a>
+<a class="sourceLine" id="cb26-2" title="2"><span class="kw">use</span> <span class="pp">diesel_demo::</span>*;</a>
+<a class="sourceLine" id="cb26-3" title="3"><span class="kw">use</span> <span class="pp">std::env::</span>args;</a>
+<a class="sourceLine" id="cb26-4" title="4"></a>
+<a class="sourceLine" id="cb26-5" title="5"><span class="kw">fn</span> main() <span class="op">{</span></a>
+<a class="sourceLine" id="cb26-6" title="6">    <span class="kw">use</span> <span class="kw">self</span>::<span class="pp">schema::posts::dsl::</span>*;</a>
 <a class="sourceLine" id="cb26-7" title="7"></a>
-<a class="sourceLine" id="cb26-8" title="8"><span class="kw">fn</span> main() <span class="op">{</span></a>
-<a class="sourceLine" id="cb26-9" title="9">    <span class="kw">use</span> <span class="pp">diesel_demo::schema::posts::dsl::</span>*;</a>
+<a class="sourceLine" id="cb26-8" title="8">    <span class="kw">let</span> target = args().nth(<span class="dv">1</span>).expect(<span class="st">&quot;Expected a target to match against&quot;</span>);</a>
+<a class="sourceLine" id="cb26-9" title="9">    <span class="kw">let</span> pattern = <span class="pp">format!</span>(<span class="st">&quot;%{}%&quot;</span>, target);</a>
 <a class="sourceLine" id="cb26-10" title="10"></a>
-<a class="sourceLine" id="cb26-11" title="11">    <span class="kw">let</span> target = args().nth(<span class="dv">1</span>).expect(<span class="st">&quot;Expected a target to match against&quot;</span>);</a>
-<a class="sourceLine" id="cb26-12" title="12">    <span class="kw">let</span> pattern = <span class="pp">format!</span>(<span class="st">&quot;%{}%&quot;</span>, target);</a>
-<a class="sourceLine" id="cb26-13" title="13"></a>
-<a class="sourceLine" id="cb26-14" title="14">    <span class="kw">let</span> connection = establish_connection();</a>
-<a class="sourceLine" id="cb26-15" title="15">    <span class="kw">let</span> num_deleted = <span class="pp">diesel::</span>delete(posts.filter(title.like(pattern)))</a>
-<a class="sourceLine" id="cb26-16" title="16">        .execute(&amp;connection)</a>
-<a class="sourceLine" id="cb26-17" title="17">        .expect(<span class="st">&quot;Error deleting posts&quot;</span>);</a>
-<a class="sourceLine" id="cb26-18" title="18"></a>
-<a class="sourceLine" id="cb26-19" title="19">    <span class="pp">println!</span>(<span class="st">&quot;Deleted {} posts&quot;</span>, num_deleted);</a>
-<a class="sourceLine" id="cb26-20" title="20"><span class="op">}</span></a></code></pre></div>
+<a class="sourceLine" id="cb26-11" title="11">    <span class="kw">let</span> connection = &amp;<span class="kw">mut</span> establish_connection();</a>
+<a class="sourceLine" id="cb26-12" title="12">    <span class="kw">let</span> num_deleted = <span class="pp">diesel::</span>delete(posts.filter(title.like(pattern)))</a>
+<a class="sourceLine" id="cb26-13" title="13">        .execute(connection)</a>
+<a class="sourceLine" id="cb26-14" title="14">        .expect(<span class="st">&quot;Error deleting posts&quot;</span>);</a>
+<a class="sourceLine" id="cb26-15" title="15"></a>
+<a class="sourceLine" id="cb26-16" title="16">    <span class="pp">println!</span>(<span class="st">&quot;Deleted {} posts&quot;</span>, num_deleted);</a>
+<a class="sourceLine" id="cb26-17" title="17"><span class="op">}</span></a></code></pre></div>
 </div>
 </div>
-<p>We can run the script with <code>cargo run --bin delete_post</code> demo (at least with the title I chose). Your output should look something like:</p>
+<p>We can run the script with <code>cargo run --bin delete_post demo</code> (at least with the title I chose). Your output should look something like:</p>
 <pre><code>   Compiling diesel_demo v0.1.0 (file:///Users/sean/Documents/Projects/open-source/diesel_demo)
      Running `target/debug/delete_post demo`
 Deleted 1 posts</code></pre>
-<p>When we try to run <code>cargo run --bin show_posts</code> again, we can see that the post was in fact deleted. This barely scratches the surface of what you can do with Diesel, but hopefully this tutorial has given you a good foundation to build off of. We recommend exploring the <a href="../docs/index">API docs</a> to see more. The final code for this tutorial can be found <a href="https://github.com/diesel-rs/diesel/tree/v1.4.4/examples/postgres/getting_started_step_3/">here</a>.</p>
+<p>When we try to run <code>cargo run --bin show_posts</code> again, we can see that the post was in fact deleted. This barely scratches the surface of what you can do with Diesel, but hopefully this tutorial has given you a good foundation to build off of. We recommend exploring the <a href="https://docs.diesel.rs/2.0.x/diesel/index.html">API docs</a> to see more. The final code for this tutorial can be found <a href="https://github.com/diesel-rs/diesel/tree/2.0.x/examples/postgres/getting_started_step_3/">here</a>.</p>
 </div>
 </div>
 </div>
