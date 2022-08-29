@@ -21,7 +21,7 @@ make sure you have PostgreSQL installed and running. If you are using some diffe
 <header class = "aside__header">A note on Rust versions:</header>
 
 ::: aside__text
-Diesel requires Rust 1.54 or later. If you're following along with this guide,
+Diesel requires Rust 1.56 or later. If you're following along with this guide,
 make sure you're using at least that version of Rust by running `rustup update stable`.
 
 :::
