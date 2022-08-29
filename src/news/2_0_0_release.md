@@ -178,7 +178,8 @@ diesel core team.
 
 Thank you to everyone who helped make this release happen through sponsoring, bug reports, and discussion on GitHub and Gitter. While we don't have a way to collect stats on that form of contribution, it's greatly appreciated.
 
-In addition to the Diesel core team, 134 people contributed code to this release. A huge thank you to:
+In addition to the Diesel core team, 141 people contributed code to this release. A huge thank you to:
+
 
 * Alessandro Menezes
 * Alexander 'z33ky' Hirsch
@@ -199,6 +200,7 @@ In addition to the Diesel core team, 134 people contributed code to this release
 * Caroline Glassberg-Powell
 * Cassie Jones
 * Chenxi Yuan
+* Chris Eckhardt
 * Chris Hanks
 * Chris Maddox
 * Chris West (Faux)
@@ -212,6 +214,7 @@ In addition to the Diesel core team, 134 people contributed code to this release
 * Diggory Blake
 * Dmitriy Pleshevskiy
 * Dusty Mabe
+* DrVilepis
 * EclipsedSolari
 * Emile Fugulin
 * Emm
@@ -224,6 +227,7 @@ In addition to the Diesel core team, 134 people contributed code to this release
 * Grégory Obanos
 * Hal Gentz
 * Han Xu
+* Heliozoa
 * Henk van der Laan
 * Henry Boisdequin
 * Hirokazu Hata
@@ -231,8 +235,10 @@ In addition to the Diesel core team, 134 people contributed code to this release
 * Igor Raits
 * Ivan Tham
 * JR Heard
+* Jean SIMARD
 * Jeremy Stucki
 * Jiří Sejkora
+* jigaoqiang
 * Joel Parker Henderson
 * John Brandt
 * Jonas Platte
@@ -253,6 +259,7 @@ In addition to the Diesel core team, 134 people contributed code to this release
 * Marc-Stefan Cassola
 * Martell Malone
 * Martijn Groeneveldt
+* Martin Nordholts
 * Matthew Kuo
 * Matthieu Guillemot
 * Mcat12
@@ -310,10 +317,12 @@ In addition to the Diesel core team, 134 people contributed code to this release
 * telios
 * theredfish
 * zoewithabang
+* Zhenhui Xie
 * Émile Fugulin
 * κeen
 * 二手掉包工程师
 * 棒棒彬_Binboy
+
 
 :::
 :::
