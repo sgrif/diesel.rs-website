@@ -36,11 +36,13 @@ we can instead pull this out into a function.
 
 ```rust
 use diesel::dsl::Eq;
-use diesel::types::Text;
+use diesel::prelude::sql_function;
+use diesel::sql_types::Text;
 
-sql_function!(canon_crate_name, CanonCrateName, (x: Text) -> Text);
+sql_function!(fn canon_crate_name(x: Text) -> Text);
 
-type WithName<'a> = Eq<canon_crate_name<crates::name>, canon_crate_name<&'a str>>;
+type WithName<'a> =
+    Eq<canon_crate_name::HelperType<crates::name>, canon_crate_name::HelperType<&'a str>>;
 
 fn with_name(name: &str) -> WithName {
     canon_crate_name(crates::name).eq(canon_crate_name(name))
@@ -61,11 +63,12 @@ we can make the method generic.
 
 ```rust
 use diesel::dsl::Eq;
-use diesel::types::Text;
+use diesel::prelude::sql_function;
+use diesel::sql_types::Text;
 
-sql_function!(canon_crate_name, CanonCrateName, (x: Text) -> Text);
+sql_function!(fn canon_crate_name(x: Text) -> Text);
 
-type WithName<T> = Eq<canon_crate_name<crates::name>, canon_crate_name<T>>;
+type WithName<T> = Eq<canon_crate_name::HelperType<crates::name>, canon_crate_name::HelperType<T>>;
 
 fn with_name<T>(name: T) -> WithName<T>
 where
@@ -85,7 +88,7 @@ The bounds you need might not be clear,
 unless you are familiar with Diesel's lower levels.
 
 In these examples,
-we are using helper types from `diesel::dsl`
+we are using helper types from [`diesel::dsl`]
 to write the return type explicitly.
 Nearly every method in Diesel has a helper type like this.
 The first type parameter is the method receiver
@@ -95,15 +98,18 @@ If we want to avoid writing this return type,
 or dynamically return a different expression,
 we can box the value instead.
 
+[`diesel::dsl`]: https://docs.diesel.rs/2.0.x/diesel/dsl/index.html
+
 ::: code-block
 
 [src/krate/mod.rs](https://github.com/rust-lang/crates.io/blob/b4d49ac32c5561a7a4a0948ce5ba9ada7b8924fb/src/krate/mod.rs)
 
 ```rust
 use diesel::pg::Pg;
-use diesel::types::Text;
+use diesel::prelude::sql_function;
+use diesel::sql_types::Text;
 
-sql_function!(canon_crate_name, CanonCrateName, (x: Text) -> Text);
+sql_function!(fn canon_crate_name(x: Text) -> Text);
 
 fn with_name<'a, T>(name: T) -> Box<BoxableExpression<crates::table, Pg, SqlType = Bool> + 'a>
 where
@@ -116,7 +122,7 @@ where
 
 :::
 
-In order to box an expression, Diesel needs to know three things:
+In order to use [`BoxableExpression`], Diesel needs to know three things:
 
 - The table you intend to use it on
 - The backend you plan to execute it against
@@ -140,6 +146,8 @@ clause given.
 You cannot use a boxed expression for `crates::table` with an inner join to
 another table.
 
+[`BoxableExpression`]: https://docs.diesel.rs/2.0.x/diesel/expression/trait.BoxableExpression.html
+
 In addition to extracting expressions,
 you can also pull out entire queries into functions.
 Going back to crates.io,
@@ -152,27 +160,26 @@ we have an `all` function which selects the columns we need.
 [src/krate/mod.rs](https://github.com/rust-lang/crates.io/blob/b4d49ac32c5561a7a4a0948ce5ba9ada7b8924fb/src/krate/mod.rs)
 
 ```rust
-use diesel::dsl::Select;
+use diesel::backend::Backend;
+use diesel::dsl::{AsSelect, Select};
 
-type AllColumns = (
-    crates::id,
-    crates::name,
-    crates::updated_at,
-    crates::created_at,
-);
+#[derive(Selectable, Queryable)]
+#[diesel(table_name = crates)]
+struct Crate {
+    id: i32,
+    name: String,
+    updated_at: NaiveDateTime,
+    created_at: NaiveDateTime,
+}
 
-const ALL_COLUMNS: AllColumns = (
-    crates::id,
-    crates::name,
-    crates::updated_at,
-    crates::created_at,
-);
-
-type All = Select<crates::table, AllColumns>;
+type All<DB> = Select<crates::table, AsSelect<Crate, DB>>;
 
 impl Crate {
-    pub fn all() -> All {
-        crates::table.select(ALL_COLUMNS)
+    pub fn all<DB>() -> All<DB>
+    where
+        DB: Backend,
+    {
+        crates::table.select(Crate::as_select())
     }
 }
 ```
@@ -190,10 +197,10 @@ We can pull that into a function as well.
 ```rust
 use diesel::dsl::Filter;
 
-type ByName<T> = Filter<All, WithName<T>>;
+type ByName<T, DB> = Filter<All<DB>, WithName<T>>;
 
 impl Crate {
-    fn by_name<T>(name: T) -> ByName<T> {
+    fn by_name<T, DB>(name: T) -> ByName<T, DB> {
         Self::all().filter(with_name(name))
     }
 }
@@ -211,14 +218,15 @@ or we want to dynamically construct the query differently, we can box the whole 
 ```rust
 use diesel::expression::{Expression, AsExpression};
 use diesel::pg::Pg;
-use diesel::types::Text;
+use diesel::sql_types::Text;
+use diesel::dsl::{SqlTypeOf, AsSelect};
 
-type SqlType = <AllColumns as Expression>::SqlType;
+type SqlType = SqlTypeOf<AsSelect<Crate, Pg>>;
 type BoxedQuery<'a> = crates::BoxedQuery<'a, Pg, SqlType>;
 
 impl Crate {
     fn all() -> BoxedQuery<'static> {
-        crates::table().select(ALL_COLUMNS).into_boxed()
+        crates::table.select(Crate::as_select()).into_boxed()
     }
 
     fn by_name<'a, T>(name: T) -> BoxedQuery<'a>
@@ -261,7 +269,7 @@ For example, if we had written our `by_name` function like this:
 
 ```rust
 impl Crate {
-    fn by_name(name: &str, conn: &PgConnection) -> QueryResult<Self> {
+    fn by_name(name: &str, conn: &mut PgConnection) -> QueryResult<Self> {
         Self::all()
             .filter(with_name(name))
             .first(conn)
@@ -284,7 +292,7 @@ let version_id = versions
     .select(id)
     .filter(crate_id.eq_any(Crate::by_name(crate_name).select(crates::id)))
     .filter(num.eq(version))
-    .first(&*conn)?;
+    .first(conn)?;
 ```
 
 :::
@@ -301,7 +309,7 @@ let recent_downloads = Crate::by_name(crate_name)
     .inner_join(crate_downloads::table)
     .filter(CrateDownload::is_recent())
     .select(sum(crate_downloads::downloads))
-    .get_result(&*conn)?;
+    .get_result(conn)?;
 ```
 
 :::
