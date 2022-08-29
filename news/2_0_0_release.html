@@ -240,6 +240,45 @@ Example
 <h2 id="input-for-future-roadmap">Input for Future Roadmap</h2>
 <p>With the release of Diesel 2.0 the planing for our next releases start. Hopefully they will not take as long as Diesel 2.0. We are looking for input on which features are wanted by our community. Please open a discussion thread with your idea in our <a href="https://github.com/diesel-rs/diesel/discussions/categories/ideas">discussion forum</a>.</p>
 <p>Weiznich will work on improving error messages for trait heavy crates based on a Rust Foundation Project Grant. This work will hopefully improve error messages for Diesel as well. If you are aware of bad error messages please submit a minimal example <a href="https://github.com/weiznich/rust-foundation-community-grant">here</a>.</p>
+<h2 id="update-considerations">Update considerations</h2>
+<p>Diesel 2.0 introduces substantial changes to Diesel’s inner workings. In some cases this impacts code written using Diesel 1.4.x. This document outlines notable changes and presents potential update strategies. We recommend to start the upgrade by removing the usage of all items that are marked as deprecated in Diesel 1.4.x.</p>
+<p>Any code base migrating from Diesel 1.4.x to Diesel 2.0 is expected to be affected at least by the following changes:</p>
+<ul>
+<li><a href="/guides/migration_guide.html#2-0-0-mutable-connection">Diesel now requires a mutable reference to the connection</a></li>
+<li><a href="/guides/migration_guide.html#2-0-0-derive-attributes">Changed derive attributes</a></li>
+</ul>
+<p>Users of <code>diesel_migration</code> are additionally affected by the following change:</p>
+<ul>
+<li><a href="/guides/migration_guide.html#2-0-0-upgrade-migrations"><code>diesel_migration</code> rewrite</a></li>
+</ul>
+<p>Users of <code>BoxableExpression</code> might be affected by the following change:</p>
+<ul>
+<li><a href="/guides/migration_guide.html#2-0-0-nullability-ops">Changed nullability of operators</a></li>
+</ul>
+<p>Users of tables containing a column of the type <code>Array&lt;T&gt;</code> are affected by the following change:</p>
+<ul>
+<li><a href="/guides/migration_guide.html#2-0-0-nullability-of-array-elements">Changed nullability of array elemetns</a></li>
+</ul>
+<p>Users that implement support for their SQL types or type mappings are affected by the following changes:</p>
+<ul>
+<li><a href="/guides/migration_guide.html#2-0-0-custom-type-implementation">Changed required traits for custom SQL types</a></li>
+<li><a href="/guides/migration_guide.html#2-0-0-to-sql">Changed <code>ToSql</code> implementations</a></li>
+<li><a href="/guides/migration_guide.html#2-0-0-from-sql">Changed <code>FromSql</code> implementations</a></li>
+</ul>
+<p><code>no_arg_sql_function!</code> macro is now pending deprecation. Users of the macro are advised to consider <code>sql_function!</code> macro.</p>
+<ul>
+<li><a href="/guides/migration_guide.html#2-0-0-no_arg_sql_function">Deprecated usage of <code>no_arg_sql_function!</code> macro</a></li>
+</ul>
+<p>Users of <code>eq_any</code> on the PostgreSQL backend might hit type rejection error in rare cases.</p>
+<ul>
+<li><a href="/guides/migration_guide.html#2-0-0-changed_eq_any">Changed accepted argument to <code>eq_any()</code> for the PostgreSQL backend</a></li>
+</ul>
+<p>Users that update generic Diesel code will also be affected by the following changes:</p>
+<ul>
+<li><a href="/guides/migration_guide.html#2-0-0-upgrade-non-aggregate">Removing <code>NonAggregate</code> in favor of <code>ValidGrouping</code></a></li>
+<li><a href="/guides/migration_guide.html#2-0-0-generic-changes">Changed generic bounds</a></li>
+</ul>
+<p>Additionally this release contains many changes for users that implemented a custom backend/connection. We do not provide explicit migration steps but we encourage users to reach out with questions pertaining to these changes.</p>
 <h2 id="thanks">Thanks</h2>
 <p>As part of this release we would like to welcome <span class="citation" data-cites="Ten0">@Ten0</span> as part of the diesel core team.</p>
 <p>Thank you to everyone who helped make this release happen through sponsoring, bug reports, and discussion on GitHub and Gitter. While we don’t have a way to collect stats on that form of contribution, it’s greatly appreciated.</p>
