@@ -24,7 +24,6 @@ This release contains the following parts:
 * diesel_derives 2.0.0
 * diesel_migrations 2.0.0
 * diesel_cli 2.0.0
-* diesel_full_text_search
 * diesel_dynamic_schema 0.2.0
 
 Support the development of Diesel by [sponsoring our work on GitHub](https://github.com/diesel-rs/diesel)
