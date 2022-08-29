@@ -16,7 +16,7 @@ This document outlines notable changes and presents potential update strategies.
 We recommend to start the upgrade by removing the usage of all items that 
 are marked as deprecated in Diesel 1.4.x.
 
-Any code base using migrating to Diesel 2.0 is expected to be affected at least by 
+Any code base migrating to Diesel 2.0 is expected to be affected at least by 
 the following changes:
 
 * [Diesel now requires a mutable reference to the connection](#2-0-0-mutable-connection)

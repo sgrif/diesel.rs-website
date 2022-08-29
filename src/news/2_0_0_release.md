@@ -170,6 +170,56 @@ With the release of Diesel 2.0 the planing for our next releases start. Hopefull
 Weiznich will work on improving error messages for trait heavy crates based on a Rust Foundation Project Grant. This work will hopefully improve error messages for Diesel as well. If you are aware of bad error messages please submit a
 minimal example [here](https://github.com/weiznich/rust-foundation-community-grant).
 
+## Update considerations
+
+Diesel 2.0 introduces substantial changes to Diesel's inner workings. 
+In some cases this impacts code written using Diesel 1.4.x. 
+This document outlines notable changes and presents potential update strategies. 
+We recommend to start the upgrade by removing the usage of all items that 
+are marked as deprecated in Diesel 1.4.x.
+
+Any code base migrating from Diesel 1.4.x to Diesel 2.0 is expected to be affected at least by 
+the following changes:
+
+* [Diesel now requires a mutable reference to the connection](/guides/migration_guide.html#2-0-0-mutable-connection)
+* [Changed derive attributes](/guides/migration_guide.html#2-0-0-derive-attributes)
+
+Users of `diesel_migration` are additionally affected by the following change:
+
+* [`diesel_migration` rewrite](/guides/migration_guide.html#2-0-0-upgrade-migrations)
+
+Users of `BoxableExpression` might be affected by the following change:
+
+* [Changed nullability of operators](/guides/migration_guide.html#2-0-0-nullability-ops)
+
+Users of tables containing a column of the type `Array<T>` are affected by the following change:
+
+* [Changed nullability of array elemetns](/guides/migration_guide.html#2-0-0-nullability-of-array-elements)
+
+Users that implement support for their SQL types or type mappings are affected 
+by the following changes:
+
+* [Changed required traits for custom SQL types](/guides/migration_guide.html#2-0-0-custom-type-implementation)
+* [Changed `ToSql` implementations](/guides/migration_guide.html#2-0-0-to-sql)
+* [Changed `FromSql` implementations](/guides/migration_guide.html#2-0-0-from-sql)
+
+`no_arg_sql_function!` macro is now pending deprecation.
+Users of the macro are advised to consider `sql_function!` macro.
+
+* [Deprecated usage of `no_arg_sql_function!` macro](/guides/migration_guide.html#2-0-0-no_arg_sql_function)
+
+Users of `eq_any` on the PostgreSQL backend might hit type rejection error in rare cases.
+
+* [Changed accepted argument to `eq_any()` for the PostgreSQL backend](/guides/migration_guide.html#2-0-0-changed_eq_any)
+
+Users that update generic Diesel code will also be affected by the following changes:
+
+* [Removing `NonAggregate` in favor of `ValidGrouping`](/guides/migration_guide.html#2-0-0-upgrade-non-aggregate)
+* [Changed generic bounds](/guides/migration_guide.html#2-0-0-generic-changes)
+
+Additionally this release contains many changes for users that implemented a custom backend/connection.
+We do not provide explicit migration steps but we encourage users to reach out with questions pertaining to these changes. 
+
 ## Thanks
 
 As part of this release we would like to welcome @Ten0 as part of the
