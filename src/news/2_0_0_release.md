@@ -62,7 +62,7 @@ This means queries like the following one will just work.
 
 As this is the case for all other Diesel built-in query dsl, this construct is fully checked at compile time. This means Diesel
 will ensure that the `GROUP BY` clause is valid for the current query and it will also ensure that expressions appearing inside
-of your `SELECT` clause will match the aggregation rules provided by the current `GROUP BY` clause. Checkout the documentation of [`QueryDsl::group_by`](https://docs.diesel.rs/2.0.x/diesel/prelude/trait.QueryDsl.html#method.group_by)) for examples.
+of your `SELECT` clause will match the aggregation rules provided by the current `GROUP BY` clause. Checkout the documentation of [`QueryDsl::group_by`](https://docs.diesel.rs/2.0.x/diesel/prelude/trait.QueryDsl.html#method.group_by) for examples.
 
 ### Support for table aliasing
 
