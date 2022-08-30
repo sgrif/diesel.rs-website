@@ -10,8 +10,6 @@ include-after: |
 ::: content-wrapper
 ::: guide-wrapper
 
-This release marks the first release candidate for the upcoming Diesel 2.0 Release.
-
 Diesel 2.0.0 contains the contributions of more than 130 people. More than 1700 commits were submitted
 over a span of 3 years.
 
