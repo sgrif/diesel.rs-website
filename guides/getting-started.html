@@ -164,7 +164,7 @@ Cargo.toml
 </div>
 <a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.0.x/examples/postgres/getting_started_step_1/Cargo.toml">View on GitHub</a>
 <div class="sourceCode" id="cb2"><pre class="sourceCode toml"><code class="sourceCode toml"><a class="sourceLine" id="cb2-1" title="1"><span class="kw">[</span><span class="dt">dependencies</span><span class="kw">]</span></a>
-<a class="sourceLine" id="cb2-2" title="2"><span class="dt">diesel</span> <span class="op">=</span> <span class="op">{ </span><span class="dt">version</span><span class="op"> =</span> <span class="st">&quot;2.0.0-rc.0&quot;</span><span class="op">, </span><span class="dt">features</span><span class="op"> =</span> <span class="op">[</span><span class="st">&quot;postgres&quot;</span><span class="op">]</span> <span class="op">}</span></a>
+<a class="sourceLine" id="cb2-2" title="2"><span class="dt">diesel</span> <span class="op">=</span> <span class="op">{ </span><span class="dt">version</span><span class="op"> =</span> <span class="st">&quot;2.0.0&quot;</span><span class="op">, </span><span class="dt">features</span><span class="op"> =</span> <span class="op">[</span><span class="st">&quot;postgres&quot;</span><span class="op">]</span> <span class="op">}</span></a>
 <a class="sourceLine" id="cb2-3" title="3"><span class="dt">dotenvy</span> <span class="op">=</span> <span class="st">&quot;0.15&quot;</span></a></code></pre></div>
 </div>
 </div>
@@ -252,7 +252,7 @@ A Note on Using Migrations in Production:
 </header>
 <div class="aside__text">
 <p>When preparing your app for use in production, you may want to run your migrations during the application’s initialization phase. You may also want to include the migration scripts as a part of your code, to avoid having to copy them to your deployment location/image etc.</p>
-<p>The <a href="https://docs.rs/crate/diesel_migrations/2.0.0-rc.0">diesel_migrations</a> crate provides the <code>embed_migrations!</code> macro, allowing you to embed migration scripts in the final binary. Once your code uses it, you can simply include <code>connection.run_pending_migrations(MIGRATIONS)</code> at the start of your <code>main</code> function to run migrations every time the application starts.</p>
+<p>The <a href="https://docs.rs/crate/diesel_migrations/2.0.0">diesel_migrations</a> crate provides the <code>embed_migrations!</code> macro, allowing you to embed migration scripts in the final binary. Once your code uses it, you can simply include <code>connection.run_pending_migrations(MIGRATIONS)</code> at the start of your <code>main</code> function to run migrations every time the application starts.</p>
 </div>
 </aside>
 <h2 id="write-rust">Write Rust</h2>
