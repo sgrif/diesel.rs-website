@@ -54,7 +54,7 @@ as well.
 
 ```toml
 [dependencies]
-diesel = { version = "2.0.0-rc.0", features = ["postgres"] }
+diesel = { version = "2.0.0", features = ["postgres"] }
 dotenvy = "0.15"
 ```
 
@@ -212,7 +212,7 @@ The [diesel_migrations] crate provides the `embed_migrations!` macro, allowing y
 in the final binary. Once your code uses it, you can simply include `connection.run_pending_migrations(MIGRATIONS)`
 at the start of your `main` function to run migrations every time the application starts.
 
-[diesel_migrations]: https://docs.rs/crate/diesel_migrations/2.0.0-rc.0
+[diesel_migrations]: https://docs.rs/crate/diesel_migrations/2.0.0
 
 :::
 </aside>
