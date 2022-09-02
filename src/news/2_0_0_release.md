@@ -35,7 +35,7 @@ As a highlight Diesel 2.0.0 adds support for the following features:
 * Support for defining select clauses via a corresponding type
 * Support for `UNION`/`INTERSECT` queries
 
-In addition to the highlighted features Diesel 2.0.0 fixes several in our type level SQL representation such that it now correctly handles the following cases:
+In addition to the highlighted features Diesel 2.0.0 fixes several issues in our type level SQL representation such that it now correctly handles the following cases:
 
 * Mixed nested `LEFT JOINS` and `INNER JOINS`
 * Chaining mixed nullable expressions via `AND`, `OR` and similar operators
