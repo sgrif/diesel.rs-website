@@ -131,7 +131,7 @@ Simple queries are a complete breeze. Loading all users from a database:
 [Rust code]()
 
 ```rust
-users::table.load(&connection)
+users::table.load(&mut connection)
 ```
 
 :::
@@ -152,7 +152,7 @@ Loading all the posts for a user:
 [Rust code]()
 
 ``` rust
-Post::belonging_to(user).load(&connection)
+Post::belonging_to(user).load(&mut connection)
 ```
 
 :::
@@ -187,7 +187,7 @@ let downloads = version_downloads
   .filter(date.gt(now - 90.days()))
   .filter(version_id.eq(any(versions)))
   .order(date)
-  .load::<Download>(&conn)?;
+  .load::<Download>(&mut conn)?;
 ```
 
 :::
@@ -287,7 +287,7 @@ let new_users = vec![
 
 insert_into(users)
     .values(&new_users)
-    .execute(&connection);
+    .execute(&mut connection);
 ```
 :::
 
@@ -316,7 +316,7 @@ let new_users = vec![
 
 let inserted_users = insert_into(users)
     .values(&new_users)
-    .get_results::<User>(&connection);
+    .get_results::<User>(&mut connection);
 ```
 :::
 
@@ -346,7 +346,7 @@ Diesel's codegen can generate several ways to update a row, letting you encapsul
 
 ```rust
 post.published = true;
-post.save_changes(&connection);
+post.save_changes(&mut connection);
 ```
 
 :::
@@ -358,7 +358,7 @@ post.save_changes(&connection);
 ```rust
 update(users.filter(email.like("%@spammer.com")))
     .set(banned.eq(true))
-    .execute(&connection)
+    .execute(&mut connection)
 ```
 :::
 
@@ -369,7 +369,7 @@ update(users.filter(email.like("%@spammer.com")))
 ```rust
 update(Settings::belonging_to(current_user))
     .set(&settings_form)
-    .execute(&connection)
+    .execute(&mut connection)
 ```
 
 :::
@@ -400,7 +400,7 @@ sql_query(include_str!("complex_users_by_organization.sql"))
     .bind::<Integer, _>(organization_id)
     .bind::<BigInt, _>(offset)
     .bind::<BigInt, _>(limit)
-    .load::<User>(conn)?;
+    .load::<User>(&mut conn)?;
 ```
 
 :::
