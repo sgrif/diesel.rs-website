@@ -188,7 +188,7 @@ code span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
 <div class="browser-bar">
 Rust code
 </div>
-<div class="sourceCode" id="cb1"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb1-1" title="1"><span class="pp">users::</span>table.load(&amp;connection)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb1-1" title="1"><span class="pp">users::</span>table.load(&amp;<span class="kw">mut</span> connection)</a></code></pre></div>
 </div>
 </div>
 <div class="demo__example">
@@ -205,7 +205,7 @@ Executed SQL
 <div class="browser-bar">
 Rust code
 </div>
-<div class="sourceCode" id="cb3"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb3-1" title="1"><span class="pp">Post::</span>belonging_to(user).load(&amp;connection)</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb3-1" title="1"><span class="pp">Post::</span>belonging_to(user).load(&amp;<span class="kw">mut</span> connection)</a></code></pre></div>
 </div>
 </div>
 <div class="demo__example">
@@ -232,7 +232,7 @@ Rust code
 <a class="sourceLine" id="cb5-6" title="6">  .filter(date.gt(now - <span class="dv">90</span>.days()))</a>
 <a class="sourceLine" id="cb5-7" title="7">  .filter(version_id.eq(any(versions)))</a>
 <a class="sourceLine" id="cb5-8" title="8">  .order(date)</a>
-<a class="sourceLine" id="cb5-9" title="9">  .<span class="pp">load::</span>&lt;Download&gt;(&amp;conn)?;</a></code></pre></div>
+<a class="sourceLine" id="cb5-9" title="9">  .<span class="pp">load::</span>&lt;Download&gt;(&amp;<span class="kw">mut</span> conn)?;</a></code></pre></div>
 </div>
 </div>
 <div class="demo__example">
@@ -319,7 +319,7 @@ Rust code
 <a class="sourceLine" id="cb9-12" title="12"></a>
 <a class="sourceLine" id="cb9-13" title="13">insert_into(users)</a>
 <a class="sourceLine" id="cb9-14" title="14">    .values(&amp;new_users)</a>
-<a class="sourceLine" id="cb9-15" title="15">    .execute(&amp;connection);</a></code></pre></div>
+<a class="sourceLine" id="cb9-15" title="15">    .execute(&amp;<span class="kw">mut</span> connection);</a></code></pre></div>
 </div>
 </div>
 <div class="demo__example">
@@ -345,7 +345,7 @@ Rust code
 <a class="sourceLine" id="cb11-5" title="5"></a>
 <a class="sourceLine" id="cb11-6" title="6"><span class="kw">let</span> inserted_users = insert_into(users)</a>
 <a class="sourceLine" id="cb11-7" title="7">    .values(&amp;new_users)</a>
-<a class="sourceLine" id="cb11-8" title="8">    .<span class="pp">get_results::</span>&lt;User&gt;(&amp;connection);</a></code></pre></div>
+<a class="sourceLine" id="cb11-8" title="8">    .<span class="pp">get_results::</span>&lt;User&gt;(&amp;<span class="kw">mut</span> connection);</a></code></pre></div>
 </div>
 </div>
 <div class="demo__example">
@@ -368,7 +368,7 @@ Executed SQL
 Modifying a struct
 </div>
 <div class="sourceCode" id="cb13"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb13-1" title="1">post.published = <span class="cn">true</span>;</a>
-<a class="sourceLine" id="cb13-2" title="2">post.save_changes(&amp;connection);</a></code></pre></div>
+<a class="sourceLine" id="cb13-2" title="2">post.save_changes(&amp;<span class="kw">mut</span> connection);</a></code></pre></div>
 </div>
 </div>
 <div class="demo__example">
@@ -378,7 +378,7 @@ One-off batch changes
 </div>
 <div class="sourceCode" id="cb14"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb14-1" title="1">update(users.filter(email.like(<span class="st">&quot;%@spammer.com&quot;</span>)))</a>
 <a class="sourceLine" id="cb14-2" title="2">    .set(banned.eq(<span class="cn">true</span>))</a>
-<a class="sourceLine" id="cb14-3" title="3">    .execute(&amp;connection)</a></code></pre></div>
+<a class="sourceLine" id="cb14-3" title="3">    .execute(&amp;<span class="kw">mut</span> connection)</a></code></pre></div>
 </div>
 </div>
 <div class="demo__example">
@@ -388,7 +388,7 @@ Using a struct for encapsulation
 </div>
 <div class="sourceCode" id="cb15"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb15-1" title="1">update(<span class="pp">Settings::</span>belonging_to(current_user))</a>
 <a class="sourceLine" id="cb15-2" title="2">    .set(&amp;settings_form)</a>
-<a class="sourceLine" id="cb15-3" title="3">    .execute(&amp;connection)</a></code></pre></div>
+<a class="sourceLine" id="cb15-3" title="3">    .execute(&amp;<span class="kw">mut</span> connection)</a></code></pre></div>
 </div>
 </div>
 </div>
@@ -414,7 +414,7 @@ Running raw SQL
 <a class="sourceLine" id="cb16-13" title="13">    .<span class="pp">bind::</span>&lt;Integer, _&gt;(organization_id)</a>
 <a class="sourceLine" id="cb16-14" title="14">    .<span class="pp">bind::</span>&lt;BigInt, _&gt;(offset)</a>
 <a class="sourceLine" id="cb16-15" title="15">    .<span class="pp">bind::</span>&lt;BigInt, _&gt;(limit)</a>
-<a class="sourceLine" id="cb16-16" title="16">    .<span class="pp">load::</span>&lt;User&gt;(conn)?;</a></code></pre></div>
+<a class="sourceLine" id="cb16-16" title="16">    .<span class="pp">load::</span>&lt;User&gt;(&amp;<span class="kw">mut</span> conn)?;</a></code></pre></div>
 </div>
 </div>
 </div>
