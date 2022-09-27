@@ -219,7 +219,7 @@ Change
 </div>
 <div class="sourceCode" id="cb3"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">pub</span> <span class="kw">const</span> MIGRATIONS: EmbeddedMigrations = <span class="pp">embed_migrations!</span>();</a>
 <a class="sourceLine" id="cb3-2" title="2"></a>
-<a class="sourceLine" id="cb3-3" title="3"><span class="kw">fn</span> run_migration(conn: &amp;PgConnection) <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-3" title="3"><span class="kw">fn</span> run_migration(conn: &amp;<span class="kw">mut</span> PgConnection) <span class="op">{</span></a>
 <a class="sourceLine" id="cb3-4" title="4">    conn.run_pending_migrations(MIGRATIONS).unwrap();</a>
 <a class="sourceLine" id="cb3-5" title="5"><span class="op">}</span></a></code></pre></div>
 </div>
