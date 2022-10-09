@@ -73,7 +73,7 @@ UPDATE "posts" SET "draft" = $1 -- binds: [false]
 
 :::
 
-This is pretty much one-to-one with the Rust code (the `?` denotes a bound parameter in SQL,
+This is pretty much one-to-one with the Rust code (the `$1` denotes a bound parameter in SQL,
 which will be substituted with `false` here). It's quite rare to want to update an entire table,
 though. So let's look at how we can scope that down. The second kind that you can pass to
 `update` is any query which has only had `.filter` called on it. We could scope our update to
