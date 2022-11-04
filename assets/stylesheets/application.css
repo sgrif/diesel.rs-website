@@ -1082,3 +1082,13 @@ div.vertical-tabs-container {
 .content-wrapper > h2 {
   padding-top: 100px;
 }
+
+.community-project {
+  background-color: #2B303B33;
+  padding: 0.75em;
+  margin-bottom: 1.5em;
+}
+
+.community-project > p {
+  margin-bottom: 0;
+}
