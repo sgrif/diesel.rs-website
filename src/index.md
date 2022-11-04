@@ -420,7 +420,7 @@ Generate rust structs & query functions from diesel schema files.
 
 :::
 
-Something missing? Submitting an issue [here](https://github.com/sgrif/diesel.rs-website).
+Something missing? Submit an issue [here](https://github.com/sgrif/diesel.rs-website).
 
 :::
 
