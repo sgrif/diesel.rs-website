@@ -118,6 +118,7 @@ and think in terms of your problem domain and not SQL.
 [Updating Data](javascript::void(0)){.js-vertical-tab .vertical-tab
 onclick="change_tab(event, 'updating_data')"}
 [Ergonomic Raw SQL](javascript::void(0)){.js-vertical-tab .vertical-tab onclick="change_tab(event, 'raw_sql')"}
+[Community Projects](javascript::void(0)){.js-vertical-tab .vertical-tab onclick="change_tab(event, 'community_projects')"}
 
 :::
 
@@ -404,6 +405,22 @@ sql_query(include_str!("complex_users_by_organization.sql"))
 ```
 
 :::
+
+:::
+
+::: {#community_projects .js-vertical-tab-content .vertical-tab-content}
+
+The community has made some utilities to help make diesel even easier to work with!
+
+::: {.community-project}
+
+#### [`dsync`](https://github.com/Wulf/dsync) <a style="float:right" href="https://crates.io/crates/dsync"><img src="https://img.shields.io/crates/v/dsync.svg?style=for-the-badge" height="18" alt="License: MIT OR Apache-2.0" /></a>
+
+Generate rust structs & query functions from diesel schema files.
+
+:::
+
+Something missing? Submit an issue [here](https://github.com/sgrif/diesel.rs-website).
 
 :::
 
