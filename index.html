@@ -178,7 +178,7 @@ code span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
 <!-- <button class = "js-vertical-tab vertical-tab" on-click = "change_tab(event, 'complex_queries')"> -->
 <!-- Complex Queries -->
 <!-- </button> -->
-<p><a href="javascript::void(0)" class="js-vertical-tab vertical-tab is-active" onclick="change_tab(event, &#39;simple_queries&#39;)">Simple Queries</a> <a href="javascript::void(0)" class="js-vertical-tab vertical-tab" onclick="change_tab(event, &#39;complex_queries&#39;)">Complex Queries</a> <a href="javascript::void(0)" class="js-vertical-tab vertical-tab" onclick="change_tab(event, &#39;less_boilerplate&#39;)">Less Boilerplate</a> <a href="javascript::void(0)" class="js-vertical-tab vertical-tab" onclick="change_tab(event, &#39;inserting_data&#39;)">Inserting Data</a> <a href="javascript::void(0)" class="js-vertical-tab vertical-tab" onclick="change_tab(event, &#39;updating_data&#39;)">Updating Data</a> <a href="javascript::void(0)" class="js-vertical-tab vertical-tab" onclick="change_tab(event, &#39;raw_sql&#39;)">Ergonomic Raw SQL</a></p>
+<p><a href="javascript::void(0)" class="js-vertical-tab vertical-tab is-active" onclick="change_tab(event, &#39;simple_queries&#39;)">Simple Queries</a> <a href="javascript::void(0)" class="js-vertical-tab vertical-tab" onclick="change_tab(event, &#39;complex_queries&#39;)">Complex Queries</a> <a href="javascript::void(0)" class="js-vertical-tab vertical-tab" onclick="change_tab(event, &#39;less_boilerplate&#39;)">Less Boilerplate</a> <a href="javascript::void(0)" class="js-vertical-tab vertical-tab" onclick="change_tab(event, &#39;inserting_data&#39;)">Inserting Data</a> <a href="javascript::void(0)" class="js-vertical-tab vertical-tab" onclick="change_tab(event, &#39;updating_data&#39;)">Updating Data</a> <a href="javascript::void(0)" class="js-vertical-tab vertical-tab" onclick="change_tab(event, &#39;raw_sql&#39;)">Ergonomic Raw SQL</a> <a href="javascript::void(0)" class="js-vertical-tab vertical-tab" onclick="change_tab(event, &#39;community_projects&#39;)">Community Projects</a></p>
 </div>
 <div class="vertical-tab-content-container">
 <div id="simple_queries" class="js-vertical-tab-content vertical-tab-content" style="display: block;">
@@ -417,6 +417,14 @@ Running raw SQL
 <a class="sourceLine" id="cb16-16" title="16">    .<span class="pp">load::</span>&lt;User&gt;(&amp;<span class="kw">mut</span> conn)?;</a></code></pre></div>
 </div>
 </div>
+</div>
+<div id="community_projects" class="js-vertical-tab-content vertical-tab-content">
+<p>The community has made some utilities to help make diesel even easier to work with!</p>
+<div class="community-project">
+<h4 id="dsync"><a href="https://github.com/Wulf/dsync"><code>dsync</code></a> <a style="float:right" href="https://crates.io/crates/dsync"><img src="https://img.shields.io/crates/v/dsync.svg?style=for-the-badge" height="18" alt="License: MIT OR Apache-2.0" /></a></h4>
+<p>Generate rust structs &amp; query functions from diesel schema files.</p>
+</div>
+<p>Something missing? Submit an issue <a href="https://github.com/sgrif/diesel.rs-website">here</a>.</p>
 </div>
 </div>
 </div>
