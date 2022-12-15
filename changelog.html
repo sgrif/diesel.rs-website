@@ -7,26 +7,27 @@
   <title>Change log</title>
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(title);
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
+    border: none; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -36,7 +37,7 @@ pre.numberSource { margin-left: 3em;  padding-left: 4px; }
 div.sourceCode
   { color: #cccccc; background-color: #303030; }
 @media screen {
-a.sourceLine::before { text-decoration: underline; }
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ffcfaf; } /* Alert */
 code span.an { color: #7f9f7f; font-weight: bold; } /* Annotation */
@@ -213,8 +214,8 @@ code span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
 <li><p>Multiple implementations of <code>Connection&lt;Backend=Pg&gt;</code> are now possible because of the new <code>PgMetadataLookup</code> trait.</p></li>
 <li><p>For the <code>Pg</code> backend, <code>TypeMetadata::MetadataLookup</code> has changed to <code>dyn PgMetadataLookup</code>.</p></li>
 <li><p>Diesel’s migration framework was rewritten from the ground. Existing migrations continue to be compatible with the rewrite, but code calling into <code>diesel_migrations</code> requires an update. See the <a href="guides/migration_guide.html#2-0-0-upgrade-migrations">migration guide</a> for details.</p></li>
-<li><code>eq_any()</code> now emits a <code>= ANY()</code> expression for the postgresql backend instead of <code>IN()</code></li>
-<li><code>ne_all()</code> now emits a <code>!= ALL()</code> expression for the postgresql backend instead of <code>NOT IN()</code></li>
+<li><p><code>eq_any()</code> now emits a <code>= ANY()</code> expression for the postgresql backend instead of <code>IN()</code></p></li>
+<li><p><code>ne_all()</code> now emits a <code>!= ALL()</code> expression for the postgresql backend instead of <code>NOT IN()</code></p></li>
 <li><p>The sqlite backend now uses a single batch insert statement if there are now default values present in the values clause</p></li>
 <li><p>The MySQL connection is using the CLIENT_FOUND_ROWS from now on. This means that updating rows without changing any values will return the number of matched rows (like most other SQL servers do), as opposed to the number of changed rows.</p></li>
 <li><p>The definition of <code>ToSql::to_sql</code> and <code>QueryFragment::walk_ast</code> has changed to allow serializing values without copying the value itself. This is useful for database backends like sqlite where you can directly share a buffer with the database. Beside of the changed signature, existing impls of this trait should remain unchanged in almost all cases.</p></li>
@@ -287,7 +288,7 @@ code span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
 <h2 id="section-7"><a href="https://github.com/diesel-rs/diesel/compare/v1.4.1...v1.4.2">1.4.2</a> - 2019-03-19</h2>
 <h3 id="fixed-7">Fixed</h3>
 <ul>
-<li>Parenthesis are now inserted around all mathematical operations. This means that <code>(2.into_sql() + 3) * 4</code> will correctly evaluate to 20 as expected. Previously we would generate SQL that evaluated to 14. This could even result in runtime errors if multiple types were involved (for example, <code>interval * (integer + 1)</code>)</li>
+<li>Parenthesis are now inserted around all mathematical operations. This means that <code>(2.into_sql() + 3) * 4</code> will correctly evaluate to 20 as expected. Previously we would generate SQL that evaluated to 14. This could even result in runtime errors if multiple types were involved (for example, <code>interval *   (integer + 1)</code>)</li>
 </ul>
 <h2 id="section-8"><a href="https://github.com/diesel-rs/diesel/compare/v1.4.0...v1.4.1">1.4.1</a> - 2019-01-24</h2>
 <h3 id="fixed-8">Fixed</h3>
@@ -308,7 +309,7 @@ code span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
 <ul>
 <li><p>Added support for MySQL’s <code>UNSIGNED TINYINT</code></p></li>
 <li><p><code>DatabaseErrorKind::SerializationFailure</code> has been added, corresponding to SQLSTATE code 40001 (A <code>SERIALIZABLE</code> isolation level transaction failed to commit due to a read/write dependency on another transaction). This error is currently only detected on PostgreSQL.</p></li>
-<li><p>Diesel CLI can now generate completions for zsh and fish. See <code>diesel completions --help</code> for details.</p></li>
+<li><p>Diesel CLI can now generate completions for zsh and fish. See <code>diesel   completions --help</code> for details.</p></li>
 <li><p><code>#[belongs_to]</code> can now accept types that are generic over lifetimes (for example, if one of the fields has the type <code>Cow&lt;'a, str&gt;</code>). To define an association to such a type, write <code>#[belongs_to(parent = "User&lt;'_&gt;")]</code></p></li>
 <li><p><code>Nullable&lt;Text&gt;</code> now supports <code>ilike</code> expression on in PostgreSQL.</p></li>
 <li><p><code>diesel_manage_updated_at('table_name')</code> is now available on SQLite. This function can be called in your migrations to create a trigger which automatically sets the <code>updated_at</code> column, unless that column was updated in the query.</p></li>
@@ -356,7 +357,7 @@ code span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
 </ul>
 <h3 id="changed-2">Changed</h3>
 <ul>
-<li><code>sql_function!</code> has been redesigned. The syntax is now <code>sql_function!(fn lower(x: Text) -&gt; Text);</code>. The output of the new syntax is slightly different than what was generated in the past. See <a href="http://docs.diesel.rs/diesel/macro.sql_function.html">the documentation for <code>sql_function!</code></a> for more details.</li>
+<li><code>sql_function!</code> has been redesigned. The syntax is now <code>sql_function!(fn   lower(x: Text) -&gt; Text);</code>. The output of the new syntax is slightly different than what was generated in the past. See <a href="http://docs.diesel.rs/diesel/macro.sql_function.html">the documentation for <code>sql_function!</code></a> for more details.</li>
 </ul>
 <ul>
 <li>Diesel’s minimum supported Rust version is 1.24.0. This was already true, but it is now tested and enforced. Any future changes to our minimum supported version will be listed in this change log.</li>
@@ -474,7 +475,7 @@ code span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
 </ul>
 <ul>
 <li><p>Deprecated <code>impl_query_id!</code> in favor of <code>#[derive(QueryId)]</code></p></li>
-<li><p>Deprecated specifying a column name as <code>#[column_name(foo)]</code>. <code>#[column_name = "foo"]</code> should be used instead.</p></li>
+<li><p>Deprecated specifying a column name as <code>#[column_name(foo)]</code>. <code>#[column_name =   "foo"]</code> should be used instead.</p></li>
 <li><p>The <code>types</code> module has been deprecated. It has been split into <code>sql_types</code>, <code>serialize</code>, and <code>deserialize</code>.</p></li>
 <li><p><code>query_source::Queryable</code> and <code>query_source::QueryableByName</code> have been deprecated. These traits have been moved to <code>deserialize</code>.</p></li>
 <li><p><code>backend::TypeMetadata</code> has been deprecated. It has been moved to <code>sql_types</code>.</p></li>
@@ -541,7 +542,7 @@ code span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
 <li><p>The signatures of <code>QueryId</code>, <code>Column</code>, and <code>FromSqlRow</code> have all changed to use associated constants where appropriate.</p></li>
 <li><p>You will now need to invoke <code>allow_tables_to_appear_in_same_query!</code> any time two tables appear together in the same query, even if there is a <code>joinable!</code> invocation for those tables.</p></li>
 <li><p><code>diesel_codegen</code> should no longer explicitly be used as a dependency. Unless you are using <code>infer_schema!</code> or <code>embed_migrations!</code>, you can simply remove it from your <code>Cargo.toml</code>. All other functionality is now provided by <code>diesel</code> itself.</p></li>
-<li><p>Code using <code>infer_schema!</code> or <code>infer_table_from_schema!</code> must now add <code>diesel_infer_schema</code> to <code>Cargo.toml</code>, and <code>#[macro_use] extern crate diesel_infer_schema</code> to <code>src/lib.rs</code></p></li>
+<li><p>Code using <code>infer_schema!</code> or <code>infer_table_from_schema!</code> must now add <code>diesel_infer_schema</code> to <code>Cargo.toml</code>, and <code>#[macro_use] extern crate   diesel_infer_schema</code> to <code>src/lib.rs</code></p></li>
 <li><p>Code using <code>embed_migrations!</code> must now add <code>diesel_migrations</code> to <code>Cargo.toml</code>, and <code>#[macro_use] extern crate diesel_migrations</code> to <code>src/lib.rs</code></p></li>
 <li><p>The <code>migrations</code> module has been moved out of <code>diesel</code> and into <code>diesel_migrations</code></p></li>
 </ul>
@@ -620,7 +621,7 @@ code span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
 <h3 id="changed-10">Changed</h3>
 <ul>
 <li><p>Diesel will now automatically invoke <code>numeric_expr!</code> for your columns in the common cases. You will likely need to delete any manual invocations of this macro.</p></li>
-<li><p><code>Insertable</code> no longer treats all fields as nullable for type checking. What this means for you is that if you had an impl like <code>impl AsExpression&lt;Nullable&lt;SqlType&gt;, DB&gt; for CustomType</code> in your code base, you can remove the <code>Nullable</code> portion (Unless you are using it with fields that are actually nullable)</p></li>
+<li><p><code>Insertable</code> no longer treats all fields as nullable for type checking. What this means for you is that if you had an impl like <code>impl   AsExpression&lt;Nullable&lt;SqlType&gt;, DB&gt; for CustomType</code> in your code base, you can remove the <code>Nullable</code> portion (Unless you are using it with fields that are actually nullable)</p></li>
 <li><p>Connections will now explicitly set the session time zone to UTC when the connection is established</p></li>
 </ul>
 <h2 id="section-27"><a href="https://github.com/diesel-rs/diesel/compare/v0.14.0...v0.14.1">0.14.1</a> - 2017-07-10</h2>
@@ -646,7 +647,7 @@ code span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
 <ul>
 <li><p><code>infix_predicate!</code> and <code>infix_expression!</code> have been renamed to <code>diesel_infix_operator!</code>.</p></li>
 <li><p><code>postfix_predicate!</code> and <code>postfix_expression!</code> have been renamed to <code>diesel_postfix_operator!</code>.</p></li>
-<li><p>Trait bounds along the lines of <code>T: LoadDsl&lt;Conn&gt;, U: Queryable&lt;T::SqlType, Conn::Backend&gt;</code> should be changed to <code>T: LoadQuery&lt;Conn, U&gt;</code>.</p></li>
+<li><p>Trait bounds along the lines of <code>T: LoadDsl&lt;Conn&gt;, U: Queryable&lt;T::SqlType,   Conn::Backend&gt;</code> should be changed to <code>T: LoadQuery&lt;Conn, U&gt;</code>.</p></li>
 <li><p>Diesel now uses a migration to set up its timestamp helpers. To generate this migration for your project, run <code>diesel database setup</code>.</p></li>
 </ul>
 <h3 id="removed-4">Removed</h3>
@@ -682,7 +683,7 @@ code span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
 <h2 id="section-31"><a href="https://github.com/diesel-rs/diesel/compare/v0.11.4...v0.12.0">0.12.0</a> - 2017-03-16</h2>
 <h3 id="added-12">Added</h3>
 <ul>
-<li>Added support for the majority of PG upsert (<code>INSERT ON CONFLICT</code>). We now support specifying the constraint, as well as <code>DO UPDATE</code> in addition to <code>DO NOTHING</code>. See <a href="https://docs.diesel.rs/diesel/pg/upsert/index.html">the module docs</a> for details.</li>
+<li>Added support for the majority of PG upsert (<code>INSERT ON CONFLICT</code>). We now support specifying the constraint, as well as <code>DO UPDATE</code> in addition to <code>DO   NOTHING</code>. See <a href="https://docs.diesel.rs/diesel/pg/upsert/index.html">the module docs</a> for details.</li>
 </ul>
 <ul>
 <li>Added support for the SQL concatenation operator <code>||</code>. See <a href="https://docs.diesel.rs/diesel/expression/expression_methods/text_expression_methods/trait.TextExpressionMethods.html#method.concat">the docs for <code>.concat</code></a> for more details.</li>
@@ -692,7 +693,7 @@ code span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
 </ul>
 <ul>
 <li><p>Diesel CLI: Added <code>db</code> as an alias for <code>database</code>, so you can now write <code>diesel db setup</code> (which is almost 40% faster!).</p></li>
-<li><p>The <code>table!</code> macro now allows you to use types from crates outside of Diesel. You can specify where types should be imported from by doing: <code>table! { use some_modules::*; foo { columns... }</code>. Not specifying any any modules is equivalent to <code>use diesel::types::*;</code>.</p></li>
+<li><p>The <code>table!</code> macro now allows you to use types from crates outside of Diesel. You can specify where types should be imported from by doing: <code>table! { use   some_modules::*; foo { columns... }</code>. Not specifying any any modules is equivalent to <code>use diesel::types::*;</code>.</p></li>
 </ul>
 <h3 id="fixed-21">Fixed</h3>
 <ul>
@@ -756,7 +757,7 @@ code span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
 <li><a href="https://docs.diesel.rs/diesel/connection/trait.Connection.html#method.transaction"><code>Connection::transaction</code></a> now returns your error directly instead of wrapping it in <code>TransactionError</code>. It requires that the error implement <code>From&lt;diesel::result::Error&gt;</code></li>
 </ul>
 <ul>
-<li>The way tuples of columns from the right side of left outer joins interact with <code>.select</code> has changed. If you are deserializing into an option of a tuple (instead of a tuple of options), you will need to explicitly call <code>.nullable()</code>. (e.g. <code>.select(users::name, (posts::title, posts::body).nullable())</code>)</li>
+<li>The way tuples of columns from the right side of left outer joins interact with <code>.select</code> has changed. If you are deserializing into an option of a tuple (instead of a tuple of options), you will need to explicitly call <code>.nullable()</code>. (e.g. <code>.select(users::name, (posts::title,   posts::body).nullable())</code>)</li>
 </ul>
 <h3 id="removed-6">Removed</h3>
 <ul>
@@ -778,7 +779,7 @@ code span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
 <li>Added support for the PostgreSQL <a href="https://www.postgresql.org/docs/9.6/static/datatype-json.html"><code>json</code> and <code>jsonb</code> types</a>. They can be mapped to/from <code>serde_json::Value</code>. The <code>serde</code> feature must be enabled to use the JSON types.</li>
 </ul>
 <ul>
-<li>Added the <code>print-schema</code> command to Diesel CLI. This command will print the output of the <code>infer_schema!</code> macro. For more information run <code>diesel help print-schema</code>.</li>
+<li>Added the <code>print-schema</code> command to Diesel CLI. This command will print the output of the <code>infer_schema!</code> macro. For more information run <code>diesel help   print-schema</code>.</li>
 </ul>
 <h3 id="changed-17">Changed</h3>
 <ul>
@@ -808,14 +809,14 @@ code span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
 <ul>
 <li><p>Added support for SQL <code>NOT IN</code> using the <code>ne_any</code> method.</p></li>
 <li><p>The <code>table!</code> macro now allows custom schemas to be specified. Example:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb1-1" title="1"><span class="pp">table!</span> <span class="op">{</span></a>
-<a class="sourceLine" id="cb1-2" title="2">  schema_1.table_1 <span class="op">{</span></a>
-<a class="sourceLine" id="cb1-3" title="3">    id -&gt; Integer,</a>
-<a class="sourceLine" id="cb1-4" title="4">  <span class="op">}</span></a>
-<a class="sourceLine" id="cb1-5" title="5"><span class="op">}</span></a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="pp">table!</span> <span class="op">{</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a>  schema_1<span class="op">.</span>table_1 <span class="op">{</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a>    id <span class="op">-&gt;</span> Integer<span class="op">,</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a>  <span class="op">}</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true"></a><span class="op">}</span></span></code></pre></div>
 <p>The generated module will still be called <code>table_1</code>.</p></li>
 <li><p>The <code>infer_table_from_schema!</code> macro now allows custom schemas to be specified. Example:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb2-1" title="1"><span class="pp">infer_table_from_schema!</span>(<span class="st">&quot;dotenv:DATABASE_URL&quot;</span>, <span class="st">&quot;schema_1.table_1&quot;</span>);</a></code></pre></div></li>
+<div class="sourceCode" id="cb2"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="pp">infer_table_from_schema!</span>(<span class="st">&quot;dotenv:DATABASE_URL&quot;</span><span class="op">,</span> <span class="st">&quot;schema_1.table_1&quot;</span>)<span class="op">;</span></span></code></pre></div></li>
 <li><p>The <code>infer_schema!</code> optionally allows a schema name as the second argument. Any schemas other than <code>public</code> will be wrapped in a module with the same name as the schema. For example, <code>schema_1.table_1</code> would be referenced as <code>schema_1::table_1</code>.</p></li>
 <li><p>Added support for batch insert on SQLite. This means that you can now pass a slice or vector to <a href="https://docs.diesel.rs/diesel/fn.insert.html"><code>diesel::insert</code></a> on all backends.</p></li>
 </ul>
@@ -823,7 +824,7 @@ code span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
 <li>Added a function for SQL <code>EXISTS</code> expressions. See <a href="https://docs.diesel.rs/diesel/expression/dsl/fn.sql.html"><code>diesel::expression::dsl::exists</code></a> for details.</li>
 </ul>
 <ul>
-<li><code>#[derive(Identifiable)]</code> can be used with structs that have primary keys other than <code>id</code>, as well as structs with composite primary keys. You can now annotate the struct with <code>#[primary_key(nonstandard)]</code> or <code>#[primary_key(foo, bar)]</code>.</li>
+<li><code>#[derive(Identifiable)]</code> can be used with structs that have primary keys other than <code>id</code>, as well as structs with composite primary keys. You can now annotate the struct with <code>#[primary_key(nonstandard)]</code> or <code>#[primary_key(foo,   bar)]</code>.</li>
 </ul>
 <h3 id="changed-18">Changed</h3>
 <ul>
@@ -842,10 +843,10 @@ code span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
 <li><p>Fixed support for nightlies later than 2016-11-07</p></li>
 <li><p>Removed support for nightlies earlier than 2016-11-07</p></li>
 <li><p>Calls to <code>infer_table_from_schema!</code> will need to be wrapped in a module if called more than once. This change is to work around further limitations of the Macros 1.1 system. Example:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">mod</span> infer_users <span class="op">{</span></a>
-<a class="sourceLine" id="cb3-2" title="2">    <span class="pp">infer_table_from_schema!</span>(<span class="st">&quot;dotenv:DATABASE_URL&quot;</span>, <span class="st">&quot;users&quot;</span>);</a>
-<a class="sourceLine" id="cb3-3" title="3"><span class="op">}</span></a>
-<a class="sourceLine" id="cb3-4" title="4"><span class="kw">pub</span> <span class="kw">use</span> <span class="kw">self</span>::<span class="pp">infer_users::</span>*;</a></code></pre></div></li>
+<div class="sourceCode" id="cb3"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="kw">mod</span> infer_users <span class="op">{</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>    <span class="pp">infer_table_from_schema!</span>(<span class="st">&quot;dotenv:DATABASE_URL&quot;</span><span class="op">,</span> <span class="st">&quot;users&quot;</span>)<span class="op">;</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a><span class="op">}</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true"></a><span class="kw">pub</span> <span class="kw">use</span> <span class="kw">self</span><span class="pp">::infer_users::</span><span class="op">*;</span></span></code></pre></div></li>
 </ul>
 <h2 id="section-42"><a href="https://github.com/diesel-rs/diesel/compare/v0.8.0...v0.8.1">0.8.1</a> - 2016-11-01</h2>
 <h3 id="added-16">Added</h3>
@@ -974,17 +975,17 @@ code span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
 </ul>
 <h2 id="section-52"><a href="https://github.com/diesel-rs/diesel/compare/v0.5.0...v0.5.1">0.5.1</a> 2016-02-11</h2>
 <ul>
-<li>Diesel CLI no longer has a hard dependency on SQLite and PostgreSQL. It assumes both by default, but if you need to install on a system that doesn’t have one or the other, you can install it with <code>cargo install diesel_cli --no-default-features --features postgres</code> or <code>cargo install diesel_cli --no-default-features --features sqlite</code></li>
+<li>Diesel CLI no longer has a hard dependency on SQLite and PostgreSQL. It assumes both by default, but if you need to install on a system that doesn’t have one or the other, you can install it with <code>cargo install diesel_cli   --no-default-features --features postgres</code> or <code>cargo install diesel_cli   --no-default-features --features sqlite</code></li>
 </ul>
 <h2 id="section-53"><a href="https://github.com/diesel-rs/diesel/compare/v0.4.1...v0.5.0">0.5.0</a> 2016-02-05</h2>
 <h3 id="added-22">Added</h3>
 <ul>
-<li><p>Added support for SQLite. Diesel still uses postgres by default. To use SQLite instead, add <code>default-features = false, features = ["sqlite"]</code> to your Cargo.toml. You’ll also want to add <code>default-features = false, features = ["sqlite"]</code> to <code>diesel_codegen</code>. Since SQLite is a much more limited database, it does not support our full set of features. You can use SQLite and PostgreSQL in the same project if you desire.</p></li>
+<li><p>Added support for SQLite. Diesel still uses postgres by default. To use SQLite instead, add <code>default-features = false, features = ["sqlite"]</code> to your Cargo.toml. You’ll also want to add <code>default-features = false, features =   ["sqlite"]</code> to <code>diesel_codegen</code>. Since SQLite is a much more limited database, it does not support our full set of features. You can use SQLite and PostgreSQL in the same project if you desire.</p></li>
 <li><p>Added support for mapping <code>types::Timestamp</code>, <code>types::Date</code>, and <code>types::Time</code> to/from <code>chrono::NaiveDateTime</code>, <code>chrono::NaiveDate</code>, and <code>chrono::NaiveTime</code>. Add <code>features = ["chrono"]</code> to enable.</p></li>
 <li><p>Added a <code>treat_none_as_null</code> option to <code>changeset_for</code>. When set to <code>true</code>, a model will set a field to <code>Null</code> when an optional struct field is <code>None</code>, instead of skipping the field entirely. The default value of the option is <code>false</code>, as we think the current behavior is a much more common use case.</p></li>
 <li><p>Added <code>Expression#nullable()</code>, to allow comparisons of not null columns with nullable ones when required.</p></li>
 <li><p>Added <code>sum</code> and <code>avg</code> functions.</p></li>
-<li><p>Added the <code>diesel setup</code>, <code>diesel database setup</code>, and <code>diesel database reset</code> commands to the CLI.</p></li>
+<li><p>Added the <code>diesel setup</code>, <code>diesel database setup</code>, and <code>diesel database   reset</code> commands to the CLI.</p></li>
 <li><p>Added support for SQL <code>IN</code> statements through the <code>eq_any</code> method.</p></li>
 <li><p>Added a top level <code>select</code> function for select statements with no from clause. This is primarily intended to be used for testing Diesel itself, but it has been added to the public API as it will likely be useful for third party crates in the future. <code>select(foo).from(bar)</code> might be a supported API in the future as an alternative to <code>bar.select(foo)</code>.</p></li>
 <li><p>Added <code>expression::dsl::sql</code> as a helper function for constructing <code>SqlLiteral</code> nodes. This is primarily intended to be used for testing Diesel itself, but is part of the public API as an escape hatch if our query builder DSL proves inadequate for a specific case. Use of this function in any production code is discouraged as it is inherently unsafe and avoids real type checking.</p></li>
@@ -998,7 +999,7 @@ code span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
 <li><p>Replaced <code>Connection#find(source, id)</code> with <code>source.find(id).first(&amp;connection)</code>.</p></li>
 <li><p>The <code>debug_sql!</code> macro now uses ` for identifier quoting, and <code>?</code> for bind parameters, which is closer to a “generic” backend. The previous behavior had no identifier quoting, and used PG specific bind params.</p></li>
 <li><p>Many user facing types are now generic over the backend. This includes, but is not limited to <code>Queryable</code> and <code>Changeset</code>. This change should not have much impact, as most impls will have been generated by diesel_codegen, and that API has not changed.</p></li>
-<li><p>The mostly internal <code>NativeSqlType</code> has been removed. It now requires a known backend. <code>fn&lt;T&gt; foo() where T: NativeSqlType</code> is now <code>fn&lt;T, DB&gt; foo() where DB: HasSqlType&lt;T&gt;</code></p></li>
+<li><p>The mostly internal <code>NativeSqlType</code> has been removed. It now requires a known backend. <code>fn&lt;T&gt; foo() where T: NativeSqlType</code> is now <code>fn&lt;T, DB&gt; foo() where   DB: HasSqlType&lt;T&gt;</code></p></li>
 </ul>
 <h3 id="removed-9">Removed</h3>
 <ul>

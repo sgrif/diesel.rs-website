@@ -7,26 +7,27 @@
   <title>Diesel 2.0 migration guide</title>
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(title);
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
+    border: none; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -36,7 +37,7 @@ pre.numberSource { margin-left: 3em;  padding-left: 4px; }
 div.sourceCode
   { color: #cccccc; background-color: #303030; }
 @media screen {
-a.sourceLine::before { text-decoration: underline; }
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ffcfaf; } /* Alert */
 code span.an { color: #7f9f7f; font-weight: bold; } /* Annotation */
@@ -180,10 +181,10 @@ code span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
 <div class="browser-bar">
 Change
 </div>
-<div class="sourceCode" id="cb1"><pre class="sourceCode diff"><code class="sourceCode diff"><a class="sourceLine" id="cb1-1" title="1"><span class="st">- let connection = PgConnection::establish_connection(&quot;…&quot;)?;</span></a>
-<a class="sourceLine" id="cb1-2" title="2"><span class="st">- let result = some_query.load(&amp;connection)?;</span></a>
-<a class="sourceLine" id="cb1-3" title="3"><span class="va">+ let mut connection = PgConnection::establish_connection(&quot;…&quot;)?;</span></a>
-<a class="sourceLine" id="cb1-4" title="4"><span class="va">+ let result = some_query.load(&amp;mut connection)?;</span></a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode diff"><code class="sourceCode diff"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="st">- let connection = PgConnection::establish_connection(&quot;…&quot;)?;</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="st">- let result = some_query.load(&amp;connection)?;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a><span class="va">+ let mut connection = PgConnection::establish_connection(&quot;…&quot;)?;</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a><span class="va">+ let result = some_query.load(&amp;mut connection)?;</span></span></code></pre></div>
 </div>
 </div>
 <p>We expect this to be a straightforward change as the connection already can execute only one query at a time.</p>
@@ -204,11 +205,11 @@ Change
 <div class="browser-bar">
 Change
 </div>
-<div class="sourceCode" id="cb2"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb2-1" title="1"><span class="pp">embed_migrations!</span>()</a>
-<a class="sourceLine" id="cb2-2" title="2"></a>
-<a class="sourceLine" id="cb2-3" title="3"><span class="kw">fn</span> run_migration(conn: &amp;PgConnection) <span class="op">{</span></a>
-<a class="sourceLine" id="cb2-4" title="4">    <span class="pp">embedded_migrations::</span>run(conn).unwrap()</a>
-<a class="sourceLine" id="cb2-5" title="5"><span class="op">}</span></a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="pp">embed_migrations!</span>()</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a><span class="kw">fn</span> run_migration(conn<span class="op">:</span> <span class="op">&amp;</span>PgConnection) <span class="op">{</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a>    <span class="pp">embedded_migrations::</span>run(conn)<span class="op">.</span>unwrap()</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true"></a><span class="op">}</span></span></code></pre></div>
 </div>
 </div>
 <p>to</p>
@@ -217,11 +218,11 @@ Change
 <div class="browser-bar">
 Change
 </div>
-<div class="sourceCode" id="cb3"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">pub</span> <span class="kw">const</span> MIGRATIONS: EmbeddedMigrations = <span class="pp">embed_migrations!</span>();</a>
-<a class="sourceLine" id="cb3-2" title="2"></a>
-<a class="sourceLine" id="cb3-3" title="3"><span class="kw">fn</span> run_migration(conn: &amp;<span class="kw">mut</span> PgConnection) <span class="op">{</span></a>
-<a class="sourceLine" id="cb3-4" title="4">    conn.run_pending_migrations(MIGRATIONS).unwrap();</a>
-<a class="sourceLine" id="cb3-5" title="5"><span class="op">}</span></a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="kw">pub</span> <span class="kw">const</span> MIGRATIONS<span class="op">:</span> EmbeddedMigrations <span class="op">=</span> <span class="pp">embed_migrations!</span>()<span class="op">;</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a><span class="kw">fn</span> run_migration(conn<span class="op">:</span> <span class="op">&amp;</span><span class="kw">mut</span> PgConnection) <span class="op">{</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true"></a>    conn<span class="op">.</span>run_pending_migrations(MIGRATIONS)<span class="op">.</span>unwrap()<span class="op">;</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true"></a><span class="op">}</span></span></code></pre></div>
 </div>
 </div>
 <h2 id="changed-nullability-of-operators">Changed nullability of operators<a name="2-0-0-nullability-ops"></a></h2>
@@ -245,10 +246,10 @@ Change
 <div class="browser-bar">
 Change
 </div>
-<div class="sourceCode" id="cb4"><pre class="sourceCode diff"><code class="sourceCode diff"><a class="sourceLine" id="cb4-1" title="1"><span class="st">- impl NonNull for MyCustomSqlType {}</span></a>
-<a class="sourceLine" id="cb4-2" title="2"><span class="va">+ impl SqlType for MyCustomSqlType {</span></a>
-<a class="sourceLine" id="cb4-3" title="3"><span class="va">+     type IsNull = diesel::sql_types::is_nullable::NotNull;</span></a>
-<a class="sourceLine" id="cb4-4" title="4"><span class="va">+ }</span></a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode diff"><code class="sourceCode diff"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="st">- impl NonNull for MyCustomSqlType {}</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a><span class="va">+ impl SqlType for MyCustomSqlType {</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true"></a><span class="va">+     type IsNull = diesel::sql_types::is_nullable::NotNull;</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true"></a><span class="va">+ }</span></span></code></pre></div>
 </div>
 </div>
 <p>Additionally, the diesel CLI tool was changed so that it automatically generates the Rust side definition of custom SQL types as long as they appear on any table. This feature currently only supports the PostgreSQL backend, as all other supported backends do not support real custom types at SQL level at all.</p>
@@ -268,13 +269,13 @@ Change
 <div class="browser-bar">
 Change
 </div>
-<div class="sourceCode" id="cb5"><pre class="sourceCode diff"><code class="sourceCode diff"><a class="sourceLine" id="cb5-1" title="1">impl&lt;DB: Backend&gt; FromSql&lt;YourSqlType, DB&gt; for YourType {</a>
-<a class="sourceLine" id="cb5-2" title="2"><span class="st">-    fn from_sql(bytes: &amp;[u8]) -&gt; deserialize::Result&lt;Self&gt; {</span></a>
-<a class="sourceLine" id="cb5-3" title="3"><span class="va">+    fn from_sql(value: backend::RawValue&lt;&#39;_, DB&gt;) -&gt; deserialize::Result&lt;Self&gt; {</span></a>
-<a class="sourceLine" id="cb5-4" title="4"><span class="va">+        let bytes = value.as_bytes();</span></a>
-<a class="sourceLine" id="cb5-5" title="5">         // …</a>
-<a class="sourceLine" id="cb5-6" title="6">     }</a>
-<a class="sourceLine" id="cb5-7" title="7">}</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode diff"><code class="sourceCode diff"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a>impl&lt;DB: Backend&gt; FromSql&lt;YourSqlType, DB&gt; for YourType {</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a><span class="st">-    fn from_sql(bytes: &amp;[u8]) -&gt; deserialize::Result&lt;Self&gt; {</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a><span class="va">+    fn from_sql(value: backend::RawValue&lt;&#39;_, DB&gt;) -&gt; deserialize::Result&lt;Self&gt; {</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true"></a><span class="va">+        let bytes = value.as_bytes();</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true"></a>         // …</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true"></a>     }</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true"></a>}</span></code></pre></div>
 </div>
 </div>
 <h2 id="no_arg_sql_function"><code>no_arg_sql_function</code><a name="2-0-0-no_arg_sql_function"></a></h2>
@@ -284,16 +285,16 @@ Change
 <div class="browser-bar">
 Change
 </div>
-<div class="sourceCode" id="cb6"><pre class="sourceCode diff"><code class="sourceCode diff"><a class="sourceLine" id="cb6-1" title="1"><span class="st">- no_arg_sql_function!(now, sql_types::Timestamp, &quot;Represents the SQL NOW() function&quot;);</span></a>
-<a class="sourceLine" id="cb6-2" title="2"><span class="st">- </span></a>
-<a class="sourceLine" id="cb6-3" title="3"><span class="st">- diesel::select(now)</span></a>
-<a class="sourceLine" id="cb6-4" title="4"> </a>
-<a class="sourceLine" id="cb6-5" title="5"><span class="va">+ sql_function!{</span></a>
-<a class="sourceLine" id="cb6-6" title="6"><span class="va">+     /// Represents the SQL NOW() function</span></a>
-<a class="sourceLine" id="cb6-7" title="7"><span class="va">+     fn now() -&gt; sql_types::Timestamp;</span></a>
-<a class="sourceLine" id="cb6-8" title="8"><span class="va">+ }</span></a>
-<a class="sourceLine" id="cb6-9" title="9"><span class="va">+</span></a>
-<a class="sourceLine" id="cb6-10" title="10"><span class="va">+ diesel::select(now())</span></a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode diff"><code class="sourceCode diff"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a><span class="st">- no_arg_sql_function!(now, sql_types::Timestamp, &quot;Represents the SQL NOW() function&quot;);</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a><span class="st">- </span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a><span class="st">- diesel::select(now)</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true"></a> </span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true"></a><span class="va">+ sql_function!{</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true"></a><span class="va">+     /// Represents the SQL NOW() function</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true"></a><span class="va">+     fn now() -&gt; sql_types::Timestamp;</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true"></a><span class="va">+ }</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true"></a><span class="va">+</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true"></a><span class="va">+ diesel::select(now())</span></span></code></pre></div>
 </div>
 </div>
 <h2 id="changed-accepted-argument-to-eq_any-for-the-postgresql-backend">Changed accepted argument to <code>eq_any()</code> for the PostgreSQL backend <a name="2-0-0-changed_eq_any"></a></h2>
@@ -312,10 +313,10 @@ Change
 <div class="browser-bar">
 Change
 </div>
-<div class="sourceCode" id="cb7"><pre class="sourceCode diff"><code class="sourceCode diff"><a class="sourceLine" id="cb7-1" title="1"><span class="st">- impl NonAggregate for MyQueryNode {}</span></a>
-<a class="sourceLine" id="cb7-2" title="2"><span class="va">+ impl ValidGrouping&lt;()&gt; for MyQueryNode {</span></a>
-<a class="sourceLine" id="cb7-3" title="3"><span class="va">+    type IsAggregate = is_aggregate::No;</span></a>
-<a class="sourceLine" id="cb7-4" title="4"><span class="va">+ }</span></a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode diff"><code class="sourceCode diff"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a><span class="st">- impl NonAggregate for MyQueryNode {}</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true"></a><span class="va">+ impl ValidGrouping&lt;()&gt; for MyQueryNode {</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true"></a><span class="va">+    type IsAggregate = is_aggregate::No;</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true"></a><span class="va">+ }</span></span></code></pre></div>
 </div>
 </div>
 <p>Additional changes may be required to adapt custom query ast implementations to fully support <code>group_by</code> clauses. Refer to the documentation of <a href="http://docs.diesel.rs/2.0.x/diesel/expression/trait.ValidGrouping.html"><code>ValidGrouping</code></a> for details.</p>
@@ -325,11 +326,11 @@ Change
 <div class="browser-bar">
 Change
 </div>
-<div class="sourceCode" id="cb8"><pre class="sourceCode diff"><code class="sourceCode diff"><a class="sourceLine" id="cb8-1" title="1"> where</a>
-<a class="sourceLine" id="cb8-2" title="2"><span class="st">-     T: NonAggregate,</span></a>
-<a class="sourceLine" id="cb8-3" title="3"><span class="va">+     T: ValidGrouping&lt;()&gt;,</span></a>
-<a class="sourceLine" id="cb8-4" title="4"><span class="va">+     T::IsAggregate: MixedGrouping&lt;is_aggregate::No, Output = is_aggregate::No&gt;,</span></a>
-<a class="sourceLine" id="cb8-5" title="5"><span class="va">+     is_aggregate::No: MixedGrouping&lt;T::IsAggregate, Output = is_aggregate::No&gt;,</span></a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode diff"><code class="sourceCode diff"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a> where</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true"></a><span class="st">-     T: NonAggregate,</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true"></a><span class="va">+     T: ValidGrouping&lt;()&gt;,</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true"></a><span class="va">+     T::IsAggregate: MixedGrouping&lt;is_aggregate::No, Output = is_aggregate::No&gt;,</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true"></a><span class="va">+     is_aggregate::No: MixedGrouping&lt;T::IsAggregate, Output = is_aggregate::No&gt;,</span></span></code></pre></div>
 </div>
 </div>
 <h2 id="other-changes-to-generics">Other changes to generics<a name="2-0-0-generic-changes"></a></h2>
@@ -346,8 +347,8 @@ Change
 <div class="browser-bar">
 Change
 </div>
-<div class="sourceCode" id="cb9"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb9-1" title="1"><span class="kw">where</span></a>
-<a class="sourceLine" id="cb9-2" title="2">    QueryAstNodeMentionedInTheErrorMessage: QueryFragment&lt;BackendType&gt;</a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a><span class="kw">where</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true"></a>    QueryAstNodeMentionedInTheErrorMessage<span class="op">:</span> QueryFragment<span class="op">&lt;</span>BackendType<span class="op">&gt;</span></span></code></pre></div>
 </div>
 </div>
 <p>This rule has one notable exception: Third party backend implementations. We expect those backends to opt into the <code>i-implement-a-third-party-backend-and-opt-into-breaking-changes</code> feature anyway, as it’s otherwise not possible to implement a third party backend.</p>
