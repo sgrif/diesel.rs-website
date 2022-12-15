@@ -420,6 +420,39 @@ Generate rust structs & query functions from diesel schema files.
 
 :::
 
+::: {.community-project}
+
+#### [`diesel-logger`](https://github.com/shssoichiro/diesel-logger) <a style="float:right" href="https://crates.io/crates/diesel-logger"><img src="https://img.shields.io/crates/v/diesel-logger.svg?style=for-the-badge" height="18" alt="License: MIT OR Apache-2.0" /></a>
+
+A generic diesel connection implementations that allows to log any executed query.
+
+:::
+
+::: {.community-project}
+
+#### [`diesel-oci`](https://github.com/GiGainfosystems/diesel-oci) <a style="float:right" href="https://crates.io/crates/diesel-oci"><img src="https://img.shields.io/crates/v/diesel-oci.svg?style=for-the-badge" height="18" alt="License: MIT OR Apache-2.0" /></a>
+
+A diesel backend and connection implementation for oracles database system.
+
+:::
+
+::: {.community-project}
+
+#### [`rsfbclient-diesel`](https://github.com/fernandobatels/rsfbclient) <a style="float:right" href="https://crates.io/crates/rsfbclient-diesel"><img src="https://img.shields.io/crates/v/rsfbclient-diesel.svg?style=for-the-badge" height="18" alt="License: MIT" /></a>
+
+A diesel backend and connection implementation for the Firebird database system.
+
+:::
+
+::: {.community-project}
+
+#### [`diesel-async`](https://github.com/weiznich/diesel_async) <a style="float:right" href="https://crates.io/crates/diesel-async"><img src="https://img.shields.io/crates/v/diesel-async.svg?style=for-the-badge" height="18" alt="License: AGPL3+" /></a>
+
+An experimental async diesel connection implementation for PostgreSQL and MySQL.
+
+:::
+
+
 Something missing? Submit an issue [here](https://github.com/sgrif/diesel.rs-website).
 
 :::
