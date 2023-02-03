@@ -155,8 +155,8 @@ diesel::table! {
 diesel::table! {
     pages (id) {
         id -> Int4,
-        page_number -> Int4,
         content -> Text,
+        page_number -> Int4,
         book_id -> Int4,
     }
 }
@@ -188,20 +188,20 @@ use diesel::prelude::*;
 use crate::schema::books;
 use crate::schema::pages;
 
-#[derive(Queryable, Identifiable)]
+#[derive(Queryable, Identifiable, Debug, PartialEq)]
 #[diesel(table_name = books)]
 pub struct Book {
     pub id: i32,
     pub title: String,
 }
 
-#[derive(Insertable)]
+#[derive(Insertable, Debug, PartialEq)]
 #[diesel(table_name = books)]
 pub struct NewBook<'a> {
     pub title: &'a str,
 }
 
-#[derive(Queryable, Identifiable, Associations)]
+#[derive(Queryable, Identifiable, Associations, Debug, PartialEq)]
 #[diesel(belongs_to(Book))]
 #[diesel(table_name = pages)]
 pub struct Page {
@@ -211,7 +211,7 @@ pub struct Page {
     pub book_id: i32,
 }
 
-#[derive(Insertable)]
+#[derive(Insertable, Debug, PartialEq)]
 #[diesel(table_name = pages)]
 pub struct NewPage<'a> {
     pub content: &'a str,
@@ -223,10 +223,18 @@ pub struct NewPage<'a> {
 :::
 
 Associations in Diesel are always child-to-parent. You can declare an
-association between two records with `#[belongs_to]`. First we need to add
-`#[derive(Associations)]`, which will allow us to add
-`#[diesel(belongs_to(Book))]` to `Page` so that we can tell Diesel that pages
+association between two records with `#[diesel(belongs_to)]`. First we need to add
+[`#[derive(Associations)]`][associations-docs]
+, which will allow us to add `#[diesel(belongs_to(Book))]` to `Page` so 
+that we can tell Diesel that pages
 belong to books and thereby reflect out 1-to-many relation.
+
+By default diesel will assume that your struct contains a field with the lower case 
+remote type name appended with `_id`. So for the given example `book_id`. If your
+foreign key field has a different name you can specify that via the `foreign_key` option:
+`#[diesel(belongs_to(Book, foreign_key = book_id))]`
+
+[associations-docs]: https://docs.diesel.rs/2.0.x/diesel/associations/derive.Associations.html
 
 ## Writing and reading data
 
@@ -289,8 +297,6 @@ fn main() {
 
     // get pages for a book
     let pages = Page::belonging_to(&book)
-        .inner_join(books::table)
-        .select(pages::all_columns)
         .load::<Page>(conn)
         .expect("Error loading pages");
 
@@ -301,6 +307,121 @@ fn main() {
 ```
 
 :::
+
+[`Page::belonging_to`][belonging-to-dsl-docs] allows to query all child records related to one or more 
+parent record. For the presented case it will load all pages for a given book. This function generates a
+query for loading these data. It does not execute the query, so that it is possible to add additional clauses
+to the query later on. The generated query is equivalent to `SELECT * FROM books WHERE book_id IN(…)` with 
+a list of given book ids derived from the function input.
+
+
+[belonging-to-dsl-docs]: https://docs.diesel.rs/2.0.x/diesel/prelude/trait.BelongingToDsl.html
+
+## Joins
+
+We have currently loaded all pages for a given book by using the API provided by the `diesel::associations` module. 
+This API is designed to work for parent-child relations, but not the other way around. Using plain SQL joins is
+the preferred way to resolve such relations the other way around. Diesel provides two kinds of joins: `INNER JOIN` and `LEFT JOIN`, where the former expects that linked elements always exist. The later allows to include rows with missing linked elements. Both constructs load data by executing a single query.
+
+### `INNER JOIN`
+
+[`QueryDsl::inner_join`](https://docs.diesel.rs/2.0.x/diesel/prelude/trait.QueryDsl.html#method.inner_join) allows to construct `INNER JOIN` statements between different tables. 
+
+```rust
+use diesel::pg::PgConnection;
+use diesel::prelude::*;
+use dotenvy::dotenv;
+use std::env;
+
+pub mod model;
+pub mod schema;
+
+use crate::model::*;
+use crate::schema::*;
+
+pub fn establish_connection() -> PgConnection {
+    dotenv().ok();
+
+    let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
+    PgConnection::establish(&database_url)
+        .unwrap_or_else(|_| panic!("Error connecting to {}", database_url))
+}
+
+fn main() {
+    let conn = &mut establish_connection();
+
+    let new_book = NewBook {
+        title: "Momo",
+    };
+    let book: Book = diesel::insert_into(books::table)
+        .values(&new_book)
+        .get_result(conn)
+        .expect("Error saving book");
+
+    let new_page_1 = NewPage {
+        page_number: 1,
+        content: "In alten, alten Zeiten ...",
+        book_id: book.id,
+    };
+    let page_1: Page = diesel::insert_into(pages::table)
+        .values(&new_page_1)
+        .get_result(conn)
+        .expect("Error saving page 1");
+
+    let page_with_book = pages::table
+        .inner_join(books::table)
+        .load::<(Page, Book)>(conn)
+        .expect("Error while loading pages + books");
+
+    assert_eq!(page_with_book[0].0, page_1);
+    assert_eq!(page_with_book[0].0, book_1);
+}
+```
+
+`QueryDsl::inner_join()` modifies the constructed query to include a `INNER JOIN` clause based on the provided arguments. The `ON` clause of the join statement can be 
+inferred based on the [`joinable!`][doc-joinable] call in your `schema.rs` file. In addition it's possible to specify custom `ON` clauses via [`JoinDsl::on`][doc-on].
+If no explicit select clause is provided the constructed query will return all a tuple of both default select clauses for both sides of the join. This can be deserialized 
+to a rust tuple or any compatible type implementing [`Queryable`][doc-queryable]. 
+
+It is possible to chain several joins to join multiple tables. The nesting of the joins controls which tables exactly are joined. This means the following two statements are not equal:
+
+```rust
+users::table.inner_join(posts::table.inner_join(comments::table));
+
+// Results in the following SQL
+// SELECT * FROM users
+// INNER JOIN posts ON users.id = posts.user_id
+// INNER JOIN comments ON post.id = comments.post_id
+
+users::table.inner_join(posts::table).inner_join(comments::table);
+
+// Results in the following SQL
+// SELECT * FROM users
+// INNER JOIN posts ON users.id = posts.user_id
+// INNER JOIN comments ON users.id = comments.user_id
+
+```
+
+For joining the same table more than one refer to the [`alias!`][doc-alias] macro to create distinct aliases.
+
+
+[doc-joinable]: https://docs.diesel.rs/2.0.x/diesel/macro.joinable.html
+[doc-on]: https://docs.diesel.rs/2.0.x/diesel/query_dsl/trait.JoinOnDsl.html#method.on
+[doc-queryable]: https://docs.diesel.rs/2.0.x/diesel/deserialize/trait.Queryable.html
+[doc-alias]: https://docs.diesel.rs/2.0.x/diesel/macro.alias.html
+
+### `LEFT JOIN`
+
+[`QueryDsl::left_join`](https://docs.diesel.rs/2.0.x/diesel/prelude/trait.QueryDsl.html#method.left_join) allows to construct `LEFT JOIN` statements between different tables. 
+
+This works as `QueryDsl::inner_join` with the notable difference that any column returned form a joined table is considered to be nullable. This has several consequences:
+
+* A query like `pages::table.left_join(books::table).load(conn)` returns `(Pages, Option<Book>)` or any compatible type
+* Explicit calls to [`QueryDsl::select`](https://docs.diesel.rs/2.0.x/diesel/prelude/trait.QueryDsl.html#method.select) require 
+that any column that comes from the left joined table is annotated with a [`NullableExpressionMethods::nullable`][doc-nullable] call. 
+This function can be called for individual columns, expressions or tuples containing columns form left joined tables.
+
+[doc-nullable]: https://docs.diesel.rs/2.0.x/diesel/expression_methods/trait.NullableExpressionMethods.html#method.nullable
 
 ## many-to-many or m:n
 
@@ -353,9 +474,9 @@ and authors.
 
 ```sql
 CREATE TABLE books_authors (
-  id SERIAL PRIMARY KEY,
   book_id SERIAL REFERENCES books(id),
-  author_id SERIAL REFERENCES authors(id)
+  author_id SERIAL REFERENCES authors(id),
+  PRIMARY KEY(book_id, author_id)
 );
 ```
 :::
@@ -409,18 +530,18 @@ pub struct NewAuthor<'a> {
     pub name: &'a str,
 }
 
-#[derive(Identifiable, Queryable, Associations)]
+#[derive(Identifiable, Queryable, Associations, Debug)]
 #[diesel(belongs_to(Book))]
 #[diesel(belongs_to(Author))]
 #[diesel(table_name = books_authors)]
+#[diesel(primary_key(book_id, author_id))]
 pub struct BooksAuthor {
-    pub id: i32,
     pub book_id: i32,
     pub author_id: i32,
 }
 
 #[derive(Insertable)]
-#[diesel(table_name = books_authors)]
+#[diesel(table_name = books_authors, Debug)]
 pub struct NewBooksAuthor {
     pub book_id: i32,
     pub author_id: i32,
@@ -505,16 +626,6 @@ fn main() {
     // a second page
     let page_2 = new_page(conn, 2, "den prachtvollen Theatern...", momo.id);
 
-    // get pages for the book
-    let pages = Page::belonging_to(&momo)
-        .inner_join(books::table)
-        .select(pages::all_columns)
-        .load::<Page>(conn)
-        .expect("Error loading pages");
-    // the data is the same we put in
-    assert_eq!(&page_1, pages.get(0).unwrap());
-    assert_eq!(&page_2, pages.get(1).unwrap());
-
     // get a book from a page
     let book_maybe = books::table
         .find(page_2.book_id)
@@ -553,6 +664,25 @@ fn main() {
         .load::<Book>(conn)
         .expect("Error loading books");
     println!("{:?}", books);
+
+    // get a list of authors with all their books
+    //
+    // Note that this will only execute 2 queries
+    // and sidestep any N+1 query problem known
+    // from other ORM's
+    let all_authors = authors::table.load::<Author>(conn).unwrap();
+
+    let books = BooksAuthor::belonging_to(&authors)
+        .inner_join(books::table)
+        .load::<(BooksAuthor, Book)>(conn)
+        .unwrap();
+
+    let books_per_author: Vec<(Author, Vec<Book>)> = books
+        .grouped_by(&authors)
+        .into_iter()
+        .zip(authors)
+        .map(|(b, author)| (author, b.into_iter().map(|(_, book)| book).collect()))
+        .collect();
 }
 ```
 :::
