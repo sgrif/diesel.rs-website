@@ -180,7 +180,7 @@ Generated SQL
 <div class="sourceCode" id="cb3"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="kw">UPDATE</span> <span class="ot">&quot;posts&quot;</span> <span class="kw">SET</span> <span class="ot">&quot;draft&quot;</span> <span class="op">=</span> $<span class="dv">1</span> <span class="co">-- binds: [false]</span></span></code></pre></div>
 </div>
 </div>
-<p>This is pretty much one-to-one with the Rust code (the <code>?</code> denotes a bound parameter in SQL, which will be substituted with <code>false</code> here). It’s quite rare to want to update an entire table, though. So let’s look at how we can scope that down. The second kind that you can pass to <code>update</code> is any query which has only had <code>.filter</code> called on it. We could scope our update to only touch posts where <code>publish_at</code> is in the past like so:</p>
+<p>This is pretty much one-to-one with the Rust code (the <code>$1</code> denotes a bound parameter in PostgreSQL, in SQLite/MySQL it would be <code>?</code>, which will be substituted with <code>false</code> here). It’s quite rare to want to update an entire table, though. So let’s look at how we can scope that down. The second kind that you can pass to <code>update</code> is any query which has only had <code>.filter</code> called on it. We could scope our update to only touch posts where <code>publish_at</code> is in the past like so:</p>
 <div class="demo__example">
 <div class="demo__example-browser">
 <div class="browser-bar">
