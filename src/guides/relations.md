@@ -10,10 +10,10 @@ include-after: |
 ::: content-wrapper
 ::: guide-wrapper
 
-For this guide, we're going to look at 1-to-many and many-to-many relations in Diesel.
+For this guide, we're going to look at joins, 1-to-many and many-to-many relations in Diesel.
 Each step in this guide will build on the previous, and is meant to be followed along.
 
-**This guide assumes that you have gone through the Getting Started Guide**
+**This guide assumes that you have gone through the [Getting Started Guide](./getting-started.html)**
 
 ## New project
 
@@ -34,11 +34,23 @@ As before, let's add Diesel and dotenvy to our dependencies.
 
 ::: code-block
 
-[Cargo.toml](https://github.com/diesel-rs/diesel/blob/2.0.x/examples/postgres/getting_started_step_1/Cargo.toml)
+[Add dependencies]()
+```sh
+cargo add diesel --features "postgres"
+cargo add dotenvy
+```
+
+:::
+
+Your `Cargo.toml` file should now contain entries similar to the following ones:
+
+::: code-block
+
+[Cargo.toml](https://github.com/diesel-rs/diesel/blob/master/examples/postgres/relations/Cargo.toml#L8-L10)
 
 ```toml
 [dependencies]
-diesel = { version = "2.0.2", features = ["postgres"] }
+diesel = { version = "2.0.3", features = ["postgres"] }
 dotenvy = "0.15.6"
 ```
 
@@ -73,13 +85,13 @@ Next, we'll write the SQL for the book migration, which should be straight forwa
 
 ::: code-block
 
-[up.sql]( https://github.com/diesel-rs/diesel/tree/2.0.x/examples/postgres/getting_started_step_1/migrations/20160815133237_create_posts/up.sql)
+[up.sql](https://github.com/diesel-rs/diesel/blob/master/examples/postgres/relations/migrations/2023-02-08-193717_create_books/up.sql)
 
 ```sql
 CREATE TABLE books (
   id SERIAL PRIMARY KEY,
-  title VARCHAR NOT NULL,
-)
+  title VARCHAR NOT NULL
+);
 ```
 :::
 
@@ -87,14 +99,14 @@ The pages migration needs to point to the book they appear in, therefore we add 
 
 ::: code-block
 
-[up.sql]( https://github.com/diesel-rs/diesel/tree/2.0.x/examples/postgres/getting_started_step_1/migrations/20160815133237_create_posts/up.sql)
+[up.sql](https://github.com/diesel-rs/diesel/blob/master/examples/postgres/relations/migrations/2023-02-08-193718_create_pages/up.sql)
 ```sql
 CREATE TABLE pages (
   id SERIAL PRIMARY KEY,
   page_number INT NOT NULL,
   content TEXT NOT NULL,
   book_id SERIAL REFERENCES books(id)
-)
+);
 ```
 
 :::
@@ -103,10 +115,10 @@ Let's add the corresponding down migrations as well:
 
 ::: code-block
 
-[down.sql](https://github.com/diesel-rs/diesel/tree/2.0.x/examples/postgres/getting_started_step_1/migrations/20160815133237_create_posts/down.sql)
+[down.sql](https://github.com/diesel-rs/diesel/tree/master/examples/postgres/relations/migrations/2023-02-08-193717_create_books/down.sql)
 
 ```sql
-DROP TABLE books
+DROP TABLE books;
 ```
 :::
 
@@ -114,10 +126,10 @@ and again for pages
 
 ::: code-block
 
-[down.sql](https://github.com/diesel-rs/diesel/tree/2.0.x/examples/postgres/getting_started_step_1/migrations/20160815133237_create_posts/down.sql)
+[down.sql](https://github.com/diesel-rs/diesel/tree/master/examples/postgres/relations/migrations/2023-02-08-193718_create_pages/down.sql)
 
 ```sql
-DROP TABLE pages
+DROP TABLE pages;
 ```
 
 :::
@@ -131,16 +143,16 @@ diesel migration run
 Let's make sure the down migrations are correct too:
 
 ```
-diesel migration redo
+diesel migration redo -n 2
 ```
 
 ## Schema.rs
 
-The schema should now look like this:
+The generated schema should now look like this:
 
 ::: code-block
 
-[schema.rs](https://github.com/fix-me/schema.rs)
+[schema.rs](https://github.com/diesel-rs/diesel/blob/master/examples/postgres/relations/src/schema.rs)
 
 ```rust
 // @generated automatically by Diesel CLI.
@@ -155,8 +167,8 @@ diesel::table! {
 diesel::table! {
     pages (id) {
         id -> Int4,
-        content -> Text,
         page_number -> Int4,
+        content -> Text,
         book_id -> Int4,
     }
 }
@@ -170,9 +182,9 @@ diesel::allow_tables_to_appear_in_same_query!(
 ```
 :::
 
-Diesel picked up on the reference and created a schema for us that has pages as
+Diesel picked up on the foreign key references. It created a schema for us that has pages as
 joinable into books via the `book_id` and allows for the two to appear in the
-same query.
+same query. This allows to join this table without specify an explicit `ON` clause. Diesel generates these `joinable!` instances only for cases where there is only a single relation between two tables based on a non-composite foreign key. All other cases require to specify an explicit the `ON` clause while constructing such joins.
 
 ## Models
 
@@ -180,44 +192,31 @@ Let's reflect this now in our `model.rs`
 
 ::: code-block
 
-[src/model.rs]( https://github.com/fix-me/model.rs )
+[src/model.rs](https://github.com/diesel-rs/diesel/blob/master/examples/postgres/relations/src/model.rs#L22-L38)
 
 ```rust
 use diesel::prelude::*;
 
-use crate::schema::books;
-use crate::schema::pages;
+use crate::schema::{books, pages};
 
-#[derive(Queryable, Identifiable, Debug, PartialEq)]
+
+#[derive(Queryable, Identifiable, Selectable, Debug, PartialEq)]
 #[diesel(table_name = books)]
 pub struct Book {
     pub id: i32,
     pub title: String,
 }
 
-#[derive(Insertable, Debug, PartialEq)]
-#[diesel(table_name = books)]
-pub struct NewBook<'a> {
-    pub title: &'a str,
-}
-
-#[derive(Queryable, Identifiable, Associations, Debug, PartialEq)]
+#[derive(Queryable, Selectable, Identifiable, Associations, Debug, PartialEq)]
 #[diesel(belongs_to(Book))]
 #[diesel(table_name = pages)]
 pub struct Page {
     pub id: i32,
-    pub content: String,
     pub page_number: i32,
+    pub content: String,
     pub book_id: i32,
 }
 
-#[derive(Insertable, Debug, PartialEq)]
-#[diesel(table_name = pages)]
-pub struct NewPage<'a> {
-    pub content: &'a str,
-    pub page_number: i32,
-    pub book_id: i32,
-}
 ```
 
 :::
@@ -225,9 +224,8 @@ pub struct NewPage<'a> {
 Associations in Diesel are always child-to-parent. You can declare an
 association between two records with `#[diesel(belongs_to)]`. First we need to add
 [`#[derive(Associations)]`][associations-docs]
-, which will allow us to add `#[diesel(belongs_to(Book))]` to `Page` so 
-that we can tell Diesel that pages
-belong to books and thereby reflect out 1-to-many relation.
+, which will allow us to add `#[diesel(belongs_to(Book))]` to `Page`. 
+That tells  that pages0belong to books and thereby reflect our 1-to-many relation.
 
 By default diesel will assume that your struct contains a field with the lower case 
 remote type name appended with `_id`. So for the given example `book_id`. If your
@@ -236,86 +234,82 @@ foreign key field has a different name you can specify that via the `foreign_key
 
 [associations-docs]: https://docs.diesel.rs/2.0.x/diesel/associations/derive.Associations.html
 
-## Writing and reading data
+## Reading data
 
-For ease of following this tutorial, we are going to put all the code into `main.rs`.
+For ease of following this tutorial, we are going to put all the code into `main.rs`. We create a separate function for each part of the guide. See the linked code for the complete file content.
 
 ::: code-block
 
-[src/main.rs]( https://github.com/fix-me/main.rs )
+[src/main.rs](https://github.com/diesel-rs/diesel/blob/master/examples/postgres/relations/src/main.rs#L88-L98)
 
 ```rust
-use diesel::pg::PgConnection;
-use diesel::prelude::*;
-use dotenvy::dotenv;
-use std::env;
+let momo = books::table
+    .filter(books::title.eq("Momo"))
+    .select(Book::as_select())
+    .get_result(conn)?;
 
-pub mod model;
-pub mod schema;
+// get pages for a book
+let pages = Page::belonging_to(&momo)
+    .select(Page::as_select())
+    .load(conn)?;
 
-use crate::model::*;
-use crate::schema::*;
-
-pub fn establish_connection() -> PgConnection {
-    dotenv().ok();
-
-    let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
-    PgConnection::establish(&database_url)
-        .unwrap_or_else(|_| panic!("Error connecting to {}", database_url))
-}
-
-fn main() {
-    let conn = &mut establish_connection();
-
-    let new_book = NewBook {
-        title: "Momo",
-    };
-    let book: Book = diesel::insert_into(books::table)
-        .values(&new_book)
-        .get_result(conn)
-        .expect("Error saving book");
-
-    let new_page_1 = NewPage {
-        page_number: 1,
-        content: "In alten, alten Zeiten ...",
-        book_id: book.id,
-    };
-    let page_1: Page = diesel::insert_into(pages::table)
-        .values(&new_page_1)
-        .get_result(conn)
-        .expect("Error saving page 1");
-
-    let new_page_2 = NewPage {
-        page_number: 2,
-        content: "den prachtvollen Theatern...",
-        book_id: book.id,
-    };
-    let page_2: Page = diesel::insert_into(pages::table)
-        .values(&new_page_2)
-        .get_result(conn)
-        .expect("Error saving page 2");
-
-    // get pages for a book
-    let pages = Page::belonging_to(&book)
-        .load::<Page>(conn)
-        .expect("Error loading pages");
-
-    // the data is the same we put in
-    assert_eq!(&page_1, pages.get(0).unwrap());
-    assert_eq!(&page_2, pages.get(1).unwrap());
-}
+println!("Pages for \"Momo\": \n {pages:?}\n");
 ```
 
 :::
 
 [`Page::belonging_to`][belonging-to-dsl-docs] allows to query all child records related to one or more 
-parent record. For the presented case it will load all pages for a given book. This function generates a
-query for loading these data. It does not execute the query, so that it is possible to add additional clauses
-to the query later on. The generated query is equivalent to `SELECT * FROM books WHERE book_id IN(…)` with 
+parent record. For the presented case it will load all pages for the book with the title "Momo". 
+This function generates a query for loading these data. It does not execute the query, so that 
+it is possible to add additional clauses to the query later on. 
+The generated query is equivalent to `SELECT * FROM pages WHERE book_id IN(…)` with 
 a list of given book ids derived from the function input.
 
 
 [belonging-to-dsl-docs]: https://docs.diesel.rs/2.0.x/diesel/prelude/trait.BelongingToDsl.html
+
+
+Loading all pages for a single book is a straight forward query, it becomes more complicated if we 
+want to load all pages per book. This is a classic ORM problem, where frameworks sometimes run in 
+the so called N+1 query problem. That problem describes cases where a framework naively loads all 
+books first and then execute one query per book to receive the relevant pages. This approach is bad 
+for performance because it executes an unbound number of queries. 
+
+Diesel's [associations API] sidesteps that problem by providing a special tailored API for such cases: 
+
+::: code-block
+
+[src/main.rs](https://github.com/diesel-rs/diesel/blob/master/examples/postgres/relations/src/main.rs#L100-L115)
+
+```rust
+let all_books = books::table.select(Book::as_select()).load(conn)?;
+    
+// get all pages for all books
+let pages = Page::belonging_to(&all_books)
+    .select(Page::as_select())
+    .load(conn)?;
+
+// group the pages per book
+let pages_per_book = pages
+    .grouped_by(&all_books)
+    .into_iter()
+    .zip(all_books)
+    .map(|(pages, book)| (book, pages))
+    .collect::<Vec<(Book, Vec<Page>)>>();
+
+println!("Pages per book: \n {pages_per_book:?}\n");
+```
+
+:::
+
+Here we use a similar construct as before to load all pages for a given list of books by constructing the 
+relevant query via `Page::belonging_to`. The important difference to before is that we now pass a slice of books 
+as argument. This will again construct the equivalent of the `SELECT * FROM pages WHERE book_id IN(…)` query as 
+before. The important difference here is that we use the [`.grouped_by`] function to later group each page to the 
+correct book. In total there are two queries executed in this code block, independently of the number of queried books and pages.
+
+[associations API]: https://docs.diesel.rs/2.0.x/diesel/associations/index.html
+[`.grouped_by`]: https://docs.diesel.rs/2.0.x/diesel/associations/trait.GroupedBy.html
 
 ## Joins
 
@@ -327,56 +321,20 @@ the preferred way to resolve such relations the other way around. Diesel provide
 
 [`QueryDsl::inner_join`](https://docs.diesel.rs/2.0.x/diesel/prelude/trait.QueryDsl.html#method.inner_join) allows to construct `INNER JOIN` statements between different tables. 
 
+::: code-block
+
+[src/main.rs](https://github.com/diesel-rs/diesel/blob/master/examples/postgres/relations/src/main.rs#L70-L76)
 ```rust
-use diesel::pg::PgConnection;
-use diesel::prelude::*;
-use dotenvy::dotenv;
-use std::env;
+let page_with_book = pages::table
+    .inner_join(books::table)
+    .filter(books::title.eq("Momo"))
+    .select((Page::as_select(), Book::as_select()))
+    .load::<(Page, Book)>(conn)?;
 
-pub mod model;
-pub mod schema;
-
-use crate::model::*;
-use crate::schema::*;
-
-pub fn establish_connection() -> PgConnection {
-    dotenv().ok();
-
-    let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
-    PgConnection::establish(&database_url)
-        .unwrap_or_else(|_| panic!("Error connecting to {}", database_url))
-}
-
-fn main() {
-    let conn = &mut establish_connection();
-
-    let new_book = NewBook {
-        title: "Momo",
-    };
-    let book: Book = diesel::insert_into(books::table)
-        .values(&new_book)
-        .get_result(conn)
-        .expect("Error saving book");
-
-    let new_page_1 = NewPage {
-        page_number: 1,
-        content: "In alten, alten Zeiten ...",
-        book_id: book.id,
-    };
-    let page_1: Page = diesel::insert_into(pages::table)
-        .values(&new_page_1)
-        .get_result(conn)
-        .expect("Error saving page 1");
-
-    let page_with_book = pages::table
-        .inner_join(books::table)
-        .load::<(Page, Book)>(conn)
-        .expect("Error while loading pages + books");
-
-    assert_eq!(page_with_book[0].0, page_1);
-    assert_eq!(page_with_book[0].0, book_1);
-}
+println!("Page-Book pairs: {page_with_book:?}");
 ```
+
+:::
 
 `QueryDsl::inner_join()` modifies the constructed query to include a `INNER JOIN` clause based on the provided arguments. The `ON` clause of the join statement can be 
 inferred based on the [`joinable!`][doc-joinable] call in your `schema.rs` file. In addition it's possible to specify custom `ON` clauses via [`JoinDsl::on`][doc-on].
@@ -414,9 +372,23 @@ For joining the same table more than one refer to the [`alias!`][doc-alias] macr
 
 [`QueryDsl::left_join`](https://docs.diesel.rs/2.0.x/diesel/prelude/trait.QueryDsl.html#method.left_join) allows to construct `LEFT JOIN` statements between different tables. 
 
-This works as `QueryDsl::inner_join` with the notable difference that any column returned form a joined table is considered to be nullable. This has several consequences:
+::: code-block 
 
-* A query like `pages::table.left_join(books::table).load(conn)` returns `(Pages, Option<Book>)` or any compatible type
+[src/main.rs](https://github.com/diesel-rs/diesel/blob/master/examples/postgres/relations/src/main.rs#L78-L83)
+
+```rust
+let book_without_pages = books::table
+    .left_join(pages::table)
+    .select((Book::as_select(), Option::<Page>::as_select()))
+    .load::<(Book, Option<Page>)>(conn)?;
+
+println!("Book-Page pairs (including empty books): {book_without_pages:?}");
+```
+:::
+
+This works similar to `QueryDsl::inner_join` with the notable difference that any column returned form a joined table is considered to be nullable. This has several consequences:
+
+* A query like `books::table.left_join(pages::table).load(conn)` returns `(Book, Option<Page>)` or any compatible type
 * Explicit calls to [`QueryDsl::select`](https://docs.diesel.rs/2.0.x/diesel/prelude/trait.QueryDsl.html#method.select) require 
 that any column that comes from the left joined table is annotated with a [`NullableExpressionMethods::nullable`][doc-nullable] call. 
 This function can be called for individual columns, expressions or tuples containing columns form left joined tables.
@@ -443,12 +415,12 @@ Let's keep it simple and just give our `authors` a name.
 
 ::: code-block
 
-[up.sql]( https://github.com/fix-me/up.sql )
+[up.sql](https://github.com/diesel-rs/diesel/blob/master/examples/postgres/relations/migrations/2023-02-17-084424_add_authors/up.sql)
 
 ```sql
 CREATE TABLE authors (
   id SERIAL PRIMARY KEY,
-  name VARCHAR NOT NULL,
+  name VARCHAR NOT NULL
 );
 ```
 :::
@@ -457,7 +429,7 @@ And the corresponding down migration.
 
 ::: code-block
 
-[down.sql]( https://github.com/fix-me/up.sql )
+[down.sql](https://github.com/diesel-rs/diesel/blob/master/examples/postgres/relations/migrations/2023-02-17-084424_add_authors/down.sql)
 
 ```sql
 DROP TABLE authors;
@@ -470,12 +442,12 @@ and authors.
 
 ::: code-block
 
-[up.sql]( https://github.com/fix-me/up.sql )
+[up.sql](https://github.com/diesel-rs/diesel/blob/master/examples/postgres/relations/migrations/2023-02-17-084617_add_books_authors/up.sql)
 
 ```sql
 CREATE TABLE books_authors (
-  book_id SERIAL REFERENCES books(id),
-  author_id SERIAL REFERENCES authors(id),
+  book_id INTEGER REFERENCES books(id),
+  author_id INTEGER REFERENCES authors(id),
   PRIMARY KEY(book_id, author_id)
 );
 ```
@@ -485,7 +457,7 @@ And the corresponding down migration.
 
 ::: code-block
 
-[down.sql]( https://github.com/fix-me/up.sql )
+[up.sql](https://github.com/diesel-rs/diesel/blob/master/examples/postgres/relations/migrations/2023-02-17-084617_add_books_authors/down.sql)
 
 ```sql
 DROP TABLE books_authors;
@@ -500,7 +472,7 @@ Lastly, let's run the migrations
 
 ```sh
 diesel migration run
-diesel migration redo
+diesel migration redo -n 2
 ```
 
 :::
@@ -511,180 +483,114 @@ Now let's reflect the join table in the `model.rs`. To keep this brief, let's on
 
 ::: code-block
 
-[model.rs]( https://github.com/fix-me/model.rs )
+[src/model.rs](https://github.com/diesel-rs/diesel/blob/master/examples/postgres/relations/src/model.rs#1-L20)
 
 ```rust
-use crate::schema::authors;
-use crate::schema::books_authors;
+use diesel::prelude::*;
 
-#[derive(Queryable, Identifiable, PartialEq, Debug)]
+use crate::schema::{books, pages, authors, books_authors};
+
+#[derive(Queryable, Selectable, Identifiable, PartialEq, Debug)]
 #[diesel(table_name = authors)]
 pub struct Author {
     pub id: i32,
     pub name: String,
 }
 
-#[derive(Insertable)]
-#[diesel(table_name = authors)]
-pub struct NewAuthor<'a> {
-    pub name: &'a str,
-}
-
-#[derive(Identifiable, Queryable, Associations, Debug)]
+#[derive(Identifiable, Selectable, Queryable, Associations, Debug)]
 #[diesel(belongs_to(Book))]
 #[diesel(belongs_to(Author))]
 #[diesel(table_name = books_authors)]
 #[diesel(primary_key(book_id, author_id))]
-pub struct BooksAuthor {
+pub struct BookAuthor {
     pub book_id: i32,
     pub author_id: i32,
 }
 
-#[derive(Insertable)]
-#[diesel(table_name = books_authors, Debug)]
-pub struct NewBooksAuthor {
-    pub book_id: i32,
-    pub author_id: i32,
-}
 ```
 :::
 
 The important part is to give `BooksAuthor` two `belongs_to` that point to the book and the author.
 
-## Writing and reading data
+## Reading data
 
-If you have been following the tutorial step-by-step, the easiest thing here
-will be to replace your old `main.rs` with this one.
+If we now want to load all books of a given author we can combine joins and diesels `BelongingToDsl` to load these data:
 
 ::: code-block
 
-[main.rs]( https://github.com/fix-me/main.rs )
+[src/main.rs](https://github.com/diesel-rs/diesel/blob/master/examples/postgres/relations/src/main.rs#121-L131)
 
 ```rust
-use diesel::pg::PgConnection;
-use diesel::prelude::*;
-use dotenvy::dotenv;
-use std::env;
+let astrid_lindgren = authors::table
+    .filter(authors::name.eq("Astrid Lindgren"))
+    .select(Author::as_select())
+    .get_result(conn)?;
 
-pub mod model;
-pub mod schema;
-
-use crate::model::*;
-use crate::schema::*;
-
-pub fn establish_connection() -> PgConnection {
-    dotenv().ok();
-
-    let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
-    PgConnection::establish(&database_url)
-        .unwrap_or_else(|_| panic!("Error connecting to {}", database_url))
-}
-
-pub fn new_author(conn: &mut PgConnection, name: &str) -> Author {
-    let new_author = NewAuthor { name };
-    diesel::insert_into(authors::table)
-        .values(&new_author)
-        .get_result(conn)
-        .expect("Error saving author")
-}
-
-pub fn new_book(conn: &mut PgConnection, title: &str) -> Book {
-    let new_book = NewBook { title };
-    diesel::insert_into(books::table)
-        .values(&new_book)
-        .get_result(conn)
-        .expect("Error saving book")
-}
-
-pub fn new_books_author(conn: &mut PgConnection, book_id: i32, author_id: i32) -> BooksAuthor {
-    let new_books_author = NewBooksAuthor { book_id, author_id };
-    diesel::insert_into(books_authors::table)
-        .values(&new_books_author)
-        .get_result(conn)
-        .expect("Error saving BooksAuthor")
-}
-pub fn new_page(conn: &mut PgConnection, page_number: i32, content: &str, book_id: i32) -> Page {
-    let new_page = NewPage {
-        page_number,
-        content,
-        book_id,
-    };
-    diesel::insert_into(pages::table)
-        .values(&new_page)
-        .get_result(conn)
-        .expect("Error saving page")
-}
-
-fn main() {
-    let conn = &mut establish_connection();
-
-    // create a book
-    let momo = new_book(conn, "Momo");
-
-    // a page in that book
-    let page_1 = new_page(conn, 1, "In alten, alten Zeiten ...", momo.id);
-    // a second page
-    let page_2 = new_page(conn, 2, "den prachtvollen Theatern...", momo.id);
-
-    // get a book from a page
-    let book_maybe = books::table
-        .find(page_2.book_id)
-        .first::<Book>(conn)
-        .expect("Error loading book");
-    assert_eq!(book_maybe, momo);
-
-    // create an author
-    let michael_ende = new_author(conn, "Michael Ende");
-
-    // let's add the author to the already created book
-    new_books_author(conn, momo.id, michael_ende.id);
-
-    // create a second author
-    let astrid_lindgren = new_author(conn, "Astrid Lindgren");
-    let pippi = new_book(conn, "Pippi Långstrump");
-    new_books_author(conn, pippi.id, astrid_lindgren.id);
-
-    // now that both have a single book, let's add a third book, an imaginary collaboration
-    let collaboration = new_book(conn, "Pippi and Momo");
-    new_books_author(conn, collaboration.id, astrid_lindgren.id);
-    new_books_author(conn, collaboration.id, michael_ende.id);
-
-    // get authors for the collaboration
-    let authors = BooksAuthor::belonging_to(&collaboration)
-        .inner_join(authors::table)
-        .select(authors::all_columns)
-        .load::<Author>(conn)
-        .expect("Error loading authors");
-    println!("{:?}", authors);
-
-    // get all of Astrid Lindgren's books
-    let books = BooksAuthor::belonging_to(&astrid_lindgren)
-        .inner_join(books::table)
-        .select(books::all_columns)
-        .load::<Book>(conn)
-        .expect("Error loading books");
-    println!("{:?}", books);
-
-    // get a list of authors with all their books
-    //
-    // Note that this will only execute 2 queries
-    // and sidestep any N+1 query problem known
-    // from other ORM's
-    let all_authors = authors::table.load::<Author>(conn).unwrap();
-
-    let books = BooksAuthor::belonging_to(&authors)
-        .inner_join(books::table)
-        .load::<(BooksAuthor, Book)>(conn)
-        .unwrap();
-
-    let books_per_author: Vec<(Author, Vec<Book>)> = books
-        .grouped_by(&authors)
-        .into_iter()
-        .zip(authors)
-        .map(|(b, author)| (author, b.into_iter().map(|(_, book)| book).collect()))
-        .collect();
-}
+// get all of Astrid Lindgren's books
+let books = BookAuthor::belonging_to(&astrid_lindgren)
+    .inner_join(books::table)
+    .select(Book::as_select())
+    .load(conn)?;
+println!("Asgrid Lindgren books: {books:?}");
 ```
+:::
+
+As described before `BookAuthor::belonging_to` constructs a query to which we can chain other clauses. In this case we join the `books` table to include the relevant books and select only the columns relevant for populating the `Book` type. This results in loading all books for a given author.
+
+The same approach can be applied the other way around, to load all authors for a given book:
+
+:::code-block
+
+[src/main.rs](https://github.com/diesel-rs/diesel/blob/master/examples/postgres/relations/src/main.rs#133-L143)
+```rust
+let collaboration = books::table
+    .filter(books::title.eq("Pippi and Momo"))
+    .select(Book::as_select())
+    .get_result(conn)?;
+
+// get authors for the collaboration
+let authors = BookAuthor::belonging_to(&collaboration)
+    .inner_join(authors::table)
+    .select(Author::as_select())
+    .load(conn)?;
+println!("Authors for \"Pipi and Momo\": {authors:?}");
+```
+
+:::
+
+As before we can use this approach to load a list of all authors and their associated books:
+
+:::code-block
+
+[src/main.rs](https://github.com/diesel-rs/diesel/blob/master/examples/postgres/relations/src/main.rs#146-L164)
+```rust
+let all_authors = authors::table
+    .select(Author::as_select())
+    .load(conn)
+    .unwrap();
+
+let books = BookAuthor::belonging_to(&authors)
+    .inner_join(books::table)
+    .select((BookAuthor::as_select(), Book::as_select()))
+    .load(conn)?;
+
+let books_per_author: Vec<(Author, Vec<Book>)> = books
+    .grouped_by(&all_authors)
+    .into_iter()
+    .zip(authors)
+    .map(|(b, author)| (author, b.into_iter().map(|(_, book)| book).collect()))
+    .collect();
+
+println!("All authors including their books: {books_per_author:?}");
+```
+
+:::
+
+As before we load all associated books by joining the books table to the query produced by `BookAuthor::belonging_to`.
+We now need to load the data from `books_authors` as well, as these data include the relevant mapping. The grouping is performed again with the `.grouped_by` method, similar to how this was done for the 1-to-n relations case. 
+We now need to exclude the `BookAuthor` information in the final grouping step explicitly.
+
+The final code for this tutorial can be found [here](https://github.com/diesel-rs/diesel/blob/master/examples/postgres/relations).
 :::
 
 :::
