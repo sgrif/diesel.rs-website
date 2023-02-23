@@ -10,6 +10,7 @@
 - [Getting started](./guides/getting-started.md)
 - [All About Updates](./guides/all-about-updates.md)
 - [All About Inserts](./guides/all-about-inserts.md)
+- [Relations](./guides/relations.md)
 - [Composing Applications with Diesel](./guides/composing-applications.md)
 - [Schema in Depth](./guides/schema-in-depth.md)
 - [Extending Diesel](./guides/extending-diesel.md)

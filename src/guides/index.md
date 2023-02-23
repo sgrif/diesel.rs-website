@@ -21,6 +21,10 @@ This guide covers everything you need to know about constructing UPDATE queries 
 
 Just like the last guide, but this guide covers INSERT queries.
 
+#### [Relations](./relations.html)
+
+This guide covers everything you need to know about querying data from more than one table with Diesel.
+
 #### [Composing Applications with Diesel](./composing-applications.html)
 
 This guide covers how to structure your application, and best practices for reusing code.
