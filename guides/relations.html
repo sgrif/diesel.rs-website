@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Relations</title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  { color: #cccccc; background-color: #303030; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ffcfaf; } /* Alert */
+code span.an { color: #7f9f7f; font-weight: bold; } /* Annotation */
+code span.at { } /* Attribute */
+code span.bn { color: #dca3a3; } /* BaseN */
+code span.bu { color: #de935f; } /* BuiltIn */
+code span.cf { color: #f0dfaf; } /* ControlFlow */
+code span.ch { color: #dca3a3; } /* Char */
+code span.cn { color: #dca3a3; font-weight: bold; } /* Constant */
+code span.co { color: #7f9f7f; } /* Comment */
+code span.cv { color: #7f9f7f; font-weight: bold; } /* CommentVar */
+code span.do { color: #7f9f7f; } /* Documentation */
+code span.dt { color: #de935f; } /* DataType */
+code span.dv { color: #dcdccc; } /* DecVal */
+code span.er { color: #c3bf9f; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #c0bed1; } /* Float */
+code span.fu { color: #efef8f; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #7f9f7f; font-weight: bold; } /* Information */
+code span.kw { color: #81a2be; } /* Keyword */
+code span.op { color: #f0efd0; } /* Operator */
+code span.ot { color: #efef8f; } /* Other */
+code span.pp { color: #ffcfaf; font-weight: bold; } /* Preprocessor */
+code span.sc { color: #dca3a3; } /* SpecialChar */
+code span.ss { color: #cc9393; } /* SpecialString */
+code span.st { color: #b5bd68; } /* String */
+code span.va { } /* Variable */
+code span.vs { color: #cc9393; } /* VerbatimString */
+code span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="../assets/stylesheets/application.css">
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+    <header class="main-header">
+        <div class="content-wrapper">
+            <h1>
+                <a href="/">
+                    <svg class='logo' height='76px' version='1.1' viewBox='0 0 187 76' width='187px' xmlns:sketch='http://www.bohemiancoding.com/sketch/ns' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns='http://www.w3.org/2000/svg'>
+<g fill-rule='evenodd' fill='none' id='Page-1' sketch:type='MSPage' stroke-width='1' stroke='none'>
+<g id='Desktop-HD' sketch:type='MSArtboardGroup' transform='translate(-119.000000, -30.000000)'>
+<g id='logo' sketch:type='MSLayerGroup' transform='translate(119.000000, 31.000000)'>
+<g id='mark' sketch:type='MSShapeGroup' transform='translate(0.130247, 0.315216)'>
+<g id='drop' transform='translate(73.929204, 47.710843)'>
+<path d='M9.7807837,7.73987977 C9.7807837,10.2104926 7.78625402,12.2130607 5.3255584,12.2130607 C2.86486278,12.2130607 0.870333101,10.2104926 0.870333101,7.73987977 C0.870333101,5.26926692 5.3255584,0.395873804 5.3255584,0.395873804 C5.3255584,0.395873804 9.7807837,5.26926692 9.7807837,7.73987977' fill='#FDBD41' id='drop-fill'></path>
+<path d='M9.7807837,7.73987977 C9.7807837,10.2104926 7.78625402,12.2130607 5.3255584,12.2130607 C2.86486278,12.2130607 0.870333101,10.2104926 0.870333101,7.73987977 C0.870333101,5.26926692 5.3255584,0.395873804 5.3255584,0.395873804 C5.3255584,0.395873804 9.7807837,5.26926692 9.7807837,7.73987977 L9.7807837,7.73987977 Z' id='drop-stroke' stroke-width='2.235' stroke='#000000'></path>
+</g>
+<g id='can'>
+<path d='M79.275823,44.6326234 L80.2209163,43.6799527 C80.6090126,43.2880312 80.6090126,42.6541735 80.219415,42.2637594 L74.2643514,36.3027842 C74.0774346,36.1143604 73.8229575,36.0299465 73.5579711,36.0299465 L64.1791025,36.0299465 L64.1791025,39.0447273 L72.1842454,39.0447273 C72.4499825,39.0447273 72.7044595,39.2934467 72.892127,39.4826242 L77.8608104,44.5617761 C78.2511587,44.9544513 78.8854747,45.0260523 79.275823,44.6326234' fill='#FFFFFF' id='nozzle-fill'></path>
+<path d='M79.275823,44.6326234 L80.2209163,43.6799527 C80.6090126,43.2880312 80.6090126,42.6541735 80.219415,42.2637594 L74.2643514,36.3027842 C74.0774346,36.1143604 73.8229575,36.0299465 73.5579711,36.0299465 L64.1791025,36.0299465 L64.1791025,39.0447273 L72.1842454,39.0447273 C72.4499825,39.0447273 72.7044595,39.2934467 72.892127,39.4826242 L77.8608104,44.5617761 C78.2511587,44.9544513 78.8854747,45.0260523 79.275823,44.6326234 L79.275823,44.6326234 Z' id='nozzle-stroke' stroke-width='2' stroke='#000000'></path>
+<path d='M62.9549102,43.5800881 L63.0967868,31.4757433 L66.1257395,32.9755967 C66.3952299,33.123321 66.5626293,33.4082178 66.5596266,33.7164791 L66.495069,41.2926232 C66.4920663,41.6016382 66.320163,41.8835202 66.0476698,42.0259686 L62.9549102,43.5800881 Z' fill='#9B9B9B' id='attachement-fill'></path>
+<path d='M62.9549102,43.5800881 L63.0967868,31.4757433 L66.1257395,32.9755967 C66.3952299,33.123321 66.5626293,33.4082178 66.5596266,33.7164791 L66.495069,41.2926232 C66.4920663,41.6016382 66.320163,41.8835202 66.0476698,42.0259686 L62.9549102,43.5800881 L62.9549102,43.5800881 Z' id='attachment-stroke' stroke-width='2.235' stroke='#000000'></path>
+<path d='M57.3441789,25.3100644 C56.3690588,26.2891144 54.5156551,26.2793164 53.5232696,25.2829314 L38.2891765,9.98744111 C37.2967911,8.99105607 37.3838688,7.22665562 38.3582382,6.24760556 L38.5271389,6.07802415 C39.5022589,5.09972779 41.0936789,5.17886578 42.0860644,6.17525083 L57.3201575,21.4707411 C58.3125429,22.4671261 58.4881997,24.1614329 57.5130796,25.140483 L57.3441789,25.3100644 Z M62.9742024,45.1367701 L63.179886,22.3812049 C63.1783846,21.6380614 62.9066422,20.8843662 62.384176,20.3590407 L43.748798,1.64931119 C41.7662791,-0.341197814 38.467836,-0.295222407 36.485317,1.6952866 L2.35686493,35.9612849 C0.373595307,37.9517939 0.591289551,40.9997372 2.57380851,42.9902462 L30.81776,71.3480279 C32.8002789,73.3385369 35.853253,73.5744435 37.835772,71.5839345 L62.1732378,47.1483826 C62.6994573,46.6200423 62.9764544,45.8844358 62.9742024,45.1367701 L62.9742024,45.1367701 Z' fill='#FF2727' id='red-fill'></path>
+<path d='M62.8151162,44.3834657 L62.8670115,37.9165376 L36.2319575,64.7024784 C35.0391186,65.9020746 33.1054561,65.9020746 31.9126172,64.7024784 L2.35413024,34.9765434 L2.1187213,35.213286 C0.107591965,37.2350519 0.107591965,40.5441526 2.1187213,42.5659185 L30.2985994,70.9054348 C32.3089767,72.9279572 35.599437,72.9279572 37.6098142,70.9054348 L61.9938173,46.3832971 C62.5210431,45.8530846 62.8166204,45.1337807 62.8151162,44.3834657' fill='#9B0000' id='shadow'></path>
+<path d='M57.4628598,25.4292236 C56.4877397,26.4082737 54.5149795,26.2793918 53.522594,25.2830067 L38.2885009,9.98676279 C37.2961155,8.99037774 37.5025496,7.34581483 38.4769191,6.36676477 L38.6458198,6.19718336 C39.6209398,5.218887 41.0930033,5.17818745 42.0853888,6.1745725 L57.3202325,21.4700627 C58.312618,22.4664478 58.6068806,24.2805921 57.6317605,25.2596422 L57.4628598,25.4292236 L57.4628598,25.4292236 Z M63.1199074,22.4400685 C63.1184061,21.6976787 62.7881114,21.0027717 62.2648945,20.4781999 L43.6295166,1.76771671 C41.6469976,-0.222792299 38.5865168,-0.176063197 36.6039979,1.81444581 L2.47554583,36.0804441 C0.492276204,38.0709531 0.472008119,41.1181427 2.45452708,43.1086517 L30.6984785,71.4671871 C32.6809975,73.4576961 35.8533281,73.5745188 37.835847,71.5840098 L62.1733128,47.148458 C62.6995324,46.6201176 62.9757788,45.8837574 62.9742775,45.1368455 L63.1199074,22.4400685 Z' id='black-stroke' stroke-width='2.235' stroke='#000000'></path>
+<path d='M31.379261,48.8214352 C31.6119686,49.0550807 31.8424242,49.195268 32.0683759,49.2404897 C32.2950781,49.2864651 32.5157751,49.2796819 32.7289653,49.2208937 C32.9429062,49.1628591 33.1440857,49.0580955 33.3317531,48.9088638 C33.5194206,48.7588785 33.6845679,48.6134153 33.8264445,48.4702132 L36.9349682,45.3491614 C37.3493379,44.9331217 37.7637077,44.6663136 38.1788281,44.5494908 C38.5924471,44.4319144 38.9812941,44.3934759 39.3438676,44.4319144 C39.7064411,44.4718602 40.0337332,44.5660721 40.3249931,44.7160575 C40.6162529,44.8652891 40.8399525,45.0047227 40.9953412,45.135112 L41.0538934,45.0763238 C40.9240276,44.9195552 40.7814003,44.6994762 40.6267623,44.413072 C40.470623,44.1274215 40.3730359,43.8018252 40.3347518,43.4377904 C40.2957169,43.0737557 40.3475131,42.6705287 40.4901404,42.2281097 C40.632017,41.7864443 40.943545,41.3244291 41.4224723,40.8435716 L44.3756073,37.8785347 C44.530996,37.7225198 44.6826313,37.5506773 44.8327652,37.3622535 C44.9813979,37.173076 45.0849903,36.9718394 45.1427919,36.7570362 C45.2013441,36.5429868 45.2073495,36.3221541 45.1623093,36.0937845 C45.1165184,35.8669222 44.9776445,35.6355378 44.7449369,35.4018923 L43.6962511,34.3482264 L45.8716922,32.1640177 L48.3383932,34.6406601 C48.5590902,34.8622465 48.752763,35.1682468 48.9216637,35.5579072 C49.0898137,35.9475676 49.1866501,36.3703906 49.2129236,36.8256225 C49.2384463,37.2808544 49.1701354,37.7586972 49.0087414,38.2591508 C48.8473474,38.7596044 48.5455781,39.2314176 48.1056856,39.6730829 L44.4529263,43.3405638 C44.1293876,43.6654064 43.9184494,44.0068303 43.8223637,44.3640818 C43.7240259,44.722087 43.6985032,45.0597425 43.744294,45.3785556 C43.7893342,45.6973686 43.8861706,45.9898024 44.0355539,46.2566105 C44.1841865,46.5226649 44.3365725,46.7344532 44.4919611,46.8904681 L42.8022034,48.587036 C42.6468148,48.4310211 42.4358765,48.278021 42.1708901,48.1287893 C41.905153,47.978804 41.6198985,47.8755477 41.3158772,47.8167595 C41.0111053,47.7579713 40.6905692,47.7677693 40.3542692,47.8461536 C40.0172184,47.9237842 39.7004358,48.112208 39.4024199,48.411425 L35.6333068,52.1957286 C35.1934143,52.637394 34.723495,52.9403794 34.2250502,53.1024239 C33.7258548,53.2652221 33.2499301,53.3330546 32.7972762,53.307429 C32.3438717,53.2818034 31.9227459,53.183823 31.5346496,53.0149953 C31.1458027,52.8454138 30.8417814,52.6509605 30.6210845,52.4293741 L28.1543835,49.9527317 L30.3298246,47.7677693 L31.379261,48.8214352 Z' fill='#9B0000' id='Fill-19'></path>
+<path d='M36.07958,26.7010842 C35.8461217,26.466685 35.615666,26.3272514 35.3897144,26.2820297 C35.1622615,26.2360543 34.9423152,26.2428376 34.729125,26.3016258 C34.5151841,26.3596603 34.3147552,26.4636703 34.1270878,26.6136556 C33.9386697,26.7636409 33.767517,26.9158874 33.6121283,27.0719023 L30.6589933,30.0369392 C30.180066,30.5177967 29.7191547,30.8298265 29.2800129,30.9722749 C28.8393697,31.1162307 28.4377613,31.1682356 28.0751878,31.1290435 C27.7126143,31.090605 27.3883249,30.9926247 27.1045718,30.8366098 C26.8185666,30.6805949 26.599371,30.5373928 26.4439823,30.4070035 L26.3854301,30.4657917 C26.5145453,30.6218066 26.6534192,30.8464078 26.8028025,31.1388415 C26.9514351,31.4312753 27.0452688,31.7598864 27.0843037,32.1231675 C27.1233385,32.4879559 27.0843037,32.87837 26.9679499,33.2936561 C26.8508454,33.7096958 26.5858589,34.1264893 26.1714892,34.542529 L23.0629655,37.6628271 C22.9203383,37.8060292 22.7747083,37.9718422 22.6260757,38.160266 C22.4774431,38.3486898 22.3731,38.5506801 22.3152984,38.7654832 C22.2567462,38.9795326 22.2499901,39.2003653 22.295781,39.428735 C22.3408212,39.6555972 22.4804458,39.8869816 22.7139041,40.1206272 L23.7625898,41.1735393 L21.586398,43.3585017 L19.119697,40.8818593 C18.8990001,40.6602729 18.7053273,40.3542727 18.5364266,39.9646122 C18.3682766,39.5749518 18.2706895,39.1521288 18.2451667,38.6968969 C18.2196439,38.241665 18.2872042,37.7638223 18.4493489,37.2633687 C18.6107429,36.7621614 18.9125122,36.2911019 19.3524047,35.8486828 L23.1215178,32.0651329 C23.4195337,31.7659159 23.6064505,31.4471029 23.6852708,31.1094474 C23.7625898,30.771792 23.7723485,30.4499641 23.7137962,30.1432102 C23.655244,29.8379636 23.5516516,29.5515595 23.4030189,29.2855051 C23.2543863,29.018697 23.1087564,28.8144456 22.9661291,28.6712435 L24.6566375,26.9739219 C24.7985141,27.117124 25.0019456,27.2633409 25.2676827,27.4133262 C25.5334199,27.5625578 25.8246797,27.6605382 26.1422131,27.7050062 C26.4597464,27.7517353 26.7960465,27.725356 27.1526146,27.6273756 C27.5076814,27.530149 27.8484855,27.3191143 28.1720242,26.993518 L31.8247835,23.3267909 C32.264676,22.8843718 32.7345953,22.58214 33.2330401,22.4200955 C33.7314848,22.2572974 34.2074095,22.1894648 34.660814,22.2150904 C35.1142186,22.2407161 35.5353444,22.3386965 35.9234406,22.5075242 C36.3115369,22.6771056 36.6163089,22.871559 36.8370058,23.0931453 L39.3037068,25.5697878 L37.1282657,27.7539964 L36.07958,26.7010842 Z' fill='#9B0000' id='Fill-21'></path>
+</g>
+</g>
+<path d='M100.843301,63.5962709 C100.843301,64.1939346 101.179487,64.5301205 101.77715,64.5301205 L108.575575,64.5301205 C109.061177,64.5301205 109.397363,64.3807046 109.733549,64.0445187 L111.003584,62.7744833 C111.33977,62.4382975 111.489186,62.1021116 111.489186,61.6165099 L111.489186,39.0547046 C111.489186,38.5691028 111.33977,38.2329169 111.003584,37.8967311 L109.733549,36.6266957 C109.397363,36.2905099 109.061177,36.1410939 108.575575,36.1410939 L101.77715,36.1410939 C101.179487,36.1410939 100.843301,36.4772798 100.843301,37.0749435 L100.843301,63.5962709 Z M107.156124,61.4670939 L104.429283,61.4670939 L104.429283,39.2041205 L107.156124,39.2041205 L107.903204,39.9512001 L107.903204,60.7200143 L107.156124,61.4670939 Z M122.428469,37.0749435 C122.428469,36.4772798 122.092283,36.1410939 121.494619,36.1410939 L119.776336,36.1410939 C119.178673,36.1410939 118.842487,36.4772798 118.842487,37.0749435 L118.842487,63.5962709 C118.842487,64.1939346 119.178673,64.5301205 119.776336,64.5301205 L121.494619,64.5301205 C122.092283,64.5301205 122.428469,64.1939346 122.428469,63.5962709 L122.428469,37.0749435 Z M138.821434,62.4009435 C138.821434,61.8032798 138.485248,61.4670939 137.887584,61.4670939 L133.479814,61.4670939 L133.479814,51.6803506 L137.140504,51.6803506 C137.738168,51.6803506 138.074354,51.3441647 138.074354,50.746501 L138.074354,49.5511736 C138.074354,48.9535099 137.738168,48.617324 137.140504,48.617324 L133.479814,48.617324 L133.479814,39.2041205 L137.812876,39.2041205 C138.41054,39.2041205 138.746726,38.8679346 138.746726,38.2702709 L138.746726,37.0749435 C138.746726,36.4772798 138.41054,36.1410939 137.812876,36.1410939 L130.827681,36.1410939 C130.230018,36.1410939 129.893832,36.4772798 129.893832,37.0749435 L129.893832,63.5962709 C129.893832,64.1939346 130.230018,64.5301205 130.827681,64.5301205 L137.887584,64.5301205 C138.485248,64.5301205 138.821434,64.1939346 138.821434,63.5962709 L138.821434,62.4009435 Z M155.214398,39.0547046 C155.214398,38.5691028 155.064982,38.2329169 154.728796,37.8967311 L153.458761,36.6266957 C153.122575,36.2905099 152.786389,36.1410939 152.300788,36.1410939 L148.154496,36.1410939 C147.668894,36.1410939 147.332708,36.2905099 146.996522,36.6266957 L145.726487,37.8967311 C145.390301,38.2329169 145.240885,38.5691028 145.240885,39.0547046 L145.240885,48.76674 C145.240885,49.2523417 145.390301,49.5885276 145.726487,49.9247134 L146.996522,51.1947488 C147.332708,51.5309346 147.668894,51.6803506 148.154496,51.6803506 L150.993398,51.6803506 L151.740478,52.4274302 L151.740478,60.7947223 L150.993398,61.5418019 L149.499239,61.5418019 L148.752159,60.7947223 L148.752159,57.2834479 C148.752159,56.6857842 148.415973,56.3495984 147.81831,56.3495984 L146.100027,56.3495984 C145.502363,56.3495984 145.166177,56.6857842 145.166177,57.2834479 L145.166177,61.6165099 C145.166177,62.1021116 145.315593,62.4382975 145.651779,62.7744833 L146.921814,64.0445187 C147.258,64.3807046 147.594186,64.5301205 148.079788,64.5301205 L152.41285,64.5301205 C152.898451,64.5301205 153.234637,64.3807046 153.570823,64.0445187 L154.840858,62.7744833 C155.177044,62.4382975 155.32646,62.1021116 155.32646,61.6165099 L155.32646,51.5309346 C155.32646,51.0453329 155.177044,50.709147 154.840858,50.3729612 L153.570823,49.1029258 C153.234637,48.76674 152.898451,48.617324 152.41285,48.617324 L149.573947,48.617324 L148.826867,47.8702444 L148.826867,39.8764922 L149.573947,39.1294125 L150.881336,39.1294125 L151.628416,39.8764922 L151.628416,43.4251205 C151.628416,44.0227842 151.964602,44.35897 152.562265,44.35897 L154.280549,44.35897 C154.878212,44.35897 155.214398,44.0227842 155.214398,43.4251205 L155.214398,39.0547046 Z M171.383239,62.4009435 C171.383239,61.8032798 171.047053,61.4670939 170.449389,61.4670939 L166.041619,61.4670939 L166.041619,51.6803506 L169.70231,51.6803506 C170.299973,51.6803506 170.636159,51.3441647 170.636159,50.746501 L170.636159,49.5511736 C170.636159,48.9535099 170.299973,48.617324 169.70231,48.617324 L166.041619,48.617324 L166.041619,39.2041205 L170.374681,39.2041205 C170.972345,39.2041205 171.308531,38.8679346 171.308531,38.2702709 L171.308531,37.0749435 C171.308531,36.4772798 170.972345,36.1410939 170.374681,36.1410939 L163.389487,36.1410939 C162.791823,36.1410939 162.455637,36.4772798 162.455637,37.0749435 L162.455637,63.5962709 C162.455637,64.1939346 162.791823,64.5301205 163.389487,64.5301205 L170.449389,64.5301205 C171.047053,64.5301205 171.383239,64.1939346 171.383239,63.5962709 L171.383239,62.4009435 Z M181.874274,61.4670939 L181.874274,37.0749435 C181.874274,36.4772798 181.538088,36.1410939 180.940425,36.1410939 L179.222142,36.1410939 C178.624478,36.1410939 178.288292,36.4772798 178.288292,37.0749435 L178.288292,63.5962709 C178.288292,64.1939346 178.624478,64.5301205 179.222142,64.5301205 L185.684381,64.5301205 C186.282044,64.5301205 186.61823,64.1939346 186.61823,63.5962709 L186.61823,62.4009435 C186.61823,61.8032798 186.282044,61.4670939 185.684381,61.4670939 L181.874274,61.4670939 Z' fill='#FFFFFF' id='DIESEL' sketch:type='MSShapeGroup'></path>
+</g>
+</g>
+</g>
+                    </svg>
+                </a>
+            </h1>
+            <nav class="header-nav">
+                <ul>
+                    <li class="nav-item">
+                      <a href="/news">News</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/guides">Guides</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/docs">API Docs</a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="/changelog.html">Changelog</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <section class = "banner">
+        <div class = "content-wrapper">
+            <div class = "banner-wrapper">
+                <h2 class = "banner__heading">Relations</h2>
+            </div>
+        </div>
+    </section>
+
+<div class="demo">
+<div class="content-wrapper">
+<div class="guide-wrapper">
+<p>For this guide, we’re going to look at joins, 1-to-many and many-to-many relations in Diesel. Each step in this guide will build on the previous, and is meant to be followed along.</p>
+<p><strong>This guide assumes that you have gone through the <a href="./getting-started.html">Getting Started Guide</a></strong></p>
+<h2 id="new-project">New project</h2>
+<p>Let’s make a new project for this guide:</p>
+<div class="demo__example">
+<div class="demo__example-browser">
+<div class="browser-bar">
+Generate a new project
+</div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="ex">cargo</span> new --lib diesel_relations</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="bu">cd</span> diesel_relations</span></code></pre></div>
+</div>
+</div>
+<p>As before, let’s add Diesel and dotenvy to our dependencies.</p>
+<div class="demo__example">
+<div class="demo__example-browser">
+<div class="browser-bar">
+Add dependencies
+</div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="ex">cargo</span> add diesel --features <span class="st">&quot;postgres&quot;</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a><span class="ex">cargo</span> add dotenvy</span></code></pre></div>
+</div>
+</div>
+<p>Your <code>Cargo.toml</code> file should now contain entries similar to the following ones:</p>
+<div class="demo__example">
+<div class="demo__example-browser">
+<div class="browser-bar">
+Cargo.toml
+</div>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/master/examples/postgres/relations/Cargo.toml#L8-L10">View on GitHub</a>
+<div class="sourceCode" id="cb3"><pre class="sourceCode toml"><code class="sourceCode toml"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="kw">[</span><span class="dt">dependencies</span><span class="kw">]</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="dt">diesel</span> <span class="op">=</span> <span class="op">{ </span><span class="dt">version</span><span class="op"> =</span> <span class="st">&quot;2.0.3&quot;</span><span class="op">, </span><span class="dt">features</span><span class="op"> =</span> <span class="op">[</span><span class="st">&quot;postgres&quot;</span><span class="op">]</span> <span class="op">}</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a><span class="dt">dotenvy</span> <span class="op">=</span> <span class="st">&quot;0.15.6&quot;</span></span></code></pre></div>
+</div>
+</div>
+<p>And a <code>.env</code> to point Diesel to the correct database.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="bu">echo</span> DATABASE_URL=postgres://username:password@localhost/diesel_relations <span class="op">&gt;</span> .env</span></code></pre></div>
+<p>Now we can set up Diesel by running:</p>
+<pre><code>diesel setup</code></pre>
+<h2 id="to-many-or-1m">1-to-many or 1:m</h2>
+<p>We need to create two different objects that we want to connect, for the first 1-to-many example let’s create books and pages. A book can have many pages, but a page can only belong to a single book.</p>
+<h2 id="migrations">Migrations</h2>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a><span class="ex">diesel</span> migration generate create_books</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a><span class="ex">diesel</span> migration generate create_pages</span></code></pre></div>
+<p>Next, we’ll write the SQL for the book migration, which should be straight forward:</p>
+<div class="demo__example">
+<div class="demo__example-browser">
+<div class="browser-bar">
+up.sql
+</div>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/master/examples/postgres/relations/migrations/2023-02-08-193717_create_books/up.sql">View on GitHub</a>
+<div class="sourceCode" id="cb7"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> books (</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true"></a>  <span class="kw">id</span> SERIAL <span class="kw">PRIMARY</span> <span class="kw">KEY</span>,</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true"></a>  title <span class="dt">VARCHAR</span> <span class="kw">NOT</span> <span class="kw">NULL</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true"></a>);</span></code></pre></div>
+</div>
+</div>
+<p>The pages migration needs to point to the book they appear in, therefore we add a reference to the book to the migration:</p>
+<div class="demo__example">
+<div class="demo__example-browser">
+<div class="browser-bar">
+up.sql
+</div>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/master/examples/postgres/relations/migrations/2023-02-08-193718_create_pages/up.sql">View on GitHub</a>
+<div class="sourceCode" id="cb8"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> pages (</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true"></a>  <span class="kw">id</span> SERIAL <span class="kw">PRIMARY</span> <span class="kw">KEY</span>,</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true"></a>  page_number <span class="dt">INT</span> <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true"></a>  content TEXT <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true"></a>  book_id SERIAL <span class="kw">REFERENCES</span> books(<span class="kw">id</span>)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true"></a>);</span></code></pre></div>
+</div>
+</div>
+<p>Let’s add the corresponding down migrations as well:</p>
+<div class="demo__example">
+<div class="demo__example-browser">
+<div class="browser-bar">
+down.sql
+</div>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/tree/master/examples/postgres/relations/migrations/2023-02-08-193717_create_books/down.sql">View on GitHub</a>
+<div class="sourceCode" id="cb9"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a><span class="kw">DROP</span> <span class="kw">TABLE</span> books;</span></code></pre></div>
+</div>
+</div>
+<p>and again for pages</p>
+<div class="demo__example">
+<div class="demo__example-browser">
+<div class="browser-bar">
+down.sql
+</div>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/tree/master/examples/postgres/relations/migrations/2023-02-08-193718_create_pages/down.sql">View on GitHub</a>
+<div class="sourceCode" id="cb10"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true"></a><span class="kw">DROP</span> <span class="kw">TABLE</span> pages;</span></code></pre></div>
+</div>
+</div>
+<p>We can apply our new migration:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true"></a><span class="ex">diesel</span> migration run</span></code></pre></div>
+<p>Let’s make sure the down migrations are correct too:</p>
+<pre><code>diesel migration redo -n 2</code></pre>
+<h2 id="schema.rs">Schema.rs</h2>
+<p>The generated schema should now look like this:</p>
+<div class="demo__example">
+<div class="demo__example-browser">
+<div class="browser-bar">
+schema.rs
+</div>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/master/examples/postgres/relations/src/schema.rs">View on GitHub</a>
+<div class="sourceCode" id="cb13"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true"></a><span class="co">// @generated automatically by Diesel CLI.</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true"></a><span class="pp">diesel::table!</span> <span class="op">{</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true"></a>    books (id) <span class="op">{</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true"></a>        id <span class="op">-&gt;</span> Int4<span class="op">,</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true"></a>        title <span class="op">-&gt;</span> Varchar<span class="op">,</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true"></a>    <span class="op">}</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true"></a><span class="op">}</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true"></a></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true"></a><span class="pp">diesel::table!</span> <span class="op">{</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true"></a>    pages (id) <span class="op">{</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true"></a>        id <span class="op">-&gt;</span> Int4<span class="op">,</span></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true"></a>        page_number <span class="op">-&gt;</span> Int4<span class="op">,</span></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true"></a>        content <span class="op">-&gt;</span> Text<span class="op">,</span></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true"></a>        book_id <span class="op">-&gt;</span> Int4<span class="op">,</span></span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true"></a>    <span class="op">}</span></span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true"></a><span class="op">}</span></span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true"></a></span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true"></a><span class="pp">diesel::joinable!</span>(pages <span class="op">-&gt;</span> books (book_id))<span class="op">;</span></span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true"></a></span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true"></a><span class="pp">diesel::allow_tables_to_appear_in_same_query!</span>(</span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true"></a>    books<span class="op">,</span></span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true"></a>    pages<span class="op">,</span></span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true"></a>)<span class="op">;</span></span></code></pre></div>
+</div>
+</div>
+<p>Diesel picked up on the foreign key references. It created a schema for us that has pages as joinable into books via the <code>book_id</code> and allows for the two to appear in the same query. This allows to join this table without specify an explicit <code>ON</code> clause. Diesel generates these <code>joinable!</code> instances only for cases where there is only a single relation between two tables based on a non-composite foreign key. All other cases require to specify an explicit the <code>ON</code> clause while constructing such joins.</p>
+<h2 id="models">Models</h2>
+<p>Let’s reflect this now in our <code>model.rs</code></p>
+<div class="demo__example">
+<div class="demo__example-browser">
+<div class="browser-bar">
+src/model.rs
+</div>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/master/examples/postgres/relations/src/model.rs#L22-L38">View on GitHub</a>
+<div class="sourceCode" id="cb14"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true"></a><span class="kw">use</span> <span class="pp">diesel::prelude::</span><span class="op">*;</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true"></a><span class="kw">use</span> <span class="kw">crate</span><span class="pp">::schema::</span><span class="op">{</span>books<span class="op">,</span> pages<span class="op">};</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true"></a></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true"></a></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true"></a><span class="at">#[</span>derive<span class="at">(</span>Queryable<span class="op">,</span> Identifiable<span class="op">,</span> Selectable<span class="op">,</span> <span class="bu">Debug</span><span class="op">,</span> <span class="bu">PartialEq</span><span class="at">)]</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true"></a><span class="at">#[</span>diesel<span class="at">(</span>table_name <span class="op">=</span> books<span class="at">)]</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true"></a><span class="kw">pub</span> <span class="kw">struct</span> Book <span class="op">{</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true"></a>    <span class="kw">pub</span> id<span class="op">:</span> <span class="dt">i32</span><span class="op">,</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true"></a>    <span class="kw">pub</span> title<span class="op">:</span> <span class="dt">String</span><span class="op">,</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true"></a><span class="op">}</span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true"></a></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true"></a><span class="at">#[</span>derive<span class="at">(</span>Queryable<span class="op">,</span> Selectable<span class="op">,</span> Identifiable<span class="op">,</span> Associations<span class="op">,</span> <span class="bu">Debug</span><span class="op">,</span> <span class="bu">PartialEq</span><span class="at">)]</span></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true"></a><span class="at">#[</span>diesel<span class="at">(</span>belongs_to<span class="at">(</span>Book<span class="at">))]</span></span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true"></a><span class="at">#[</span>diesel<span class="at">(</span>table_name <span class="op">=</span> pages<span class="at">)]</span></span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true"></a><span class="kw">pub</span> <span class="kw">struct</span> Page <span class="op">{</span></span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true"></a>    <span class="kw">pub</span> id<span class="op">:</span> <span class="dt">i32</span><span class="op">,</span></span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true"></a>    <span class="kw">pub</span> page_number<span class="op">:</span> <span class="dt">i32</span><span class="op">,</span></span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true"></a>    <span class="kw">pub</span> content<span class="op">:</span> <span class="dt">String</span><span class="op">,</span></span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true"></a>    <span class="kw">pub</span> book_id<span class="op">:</span> <span class="dt">i32</span><span class="op">,</span></span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true"></a><span class="op">}</span></span></code></pre></div>
+</div>
+</div>
+<p>Associations in Diesel are always child-to-parent. You can declare an association between two records with <code>#[diesel(belongs_to)]</code>. First we need to add <a href="https://docs.diesel.rs/2.0.x/diesel/associations/derive.Associations.html"><code>#[derive(Associations)]</code></a> , which will allow us to add <code>#[diesel(belongs_to(Book))]</code> to <code>Page</code>. That tells that pages belong to books and thereby reflect our 1-to-many relation.</p>
+<p>By default diesel will assume that your struct contains a field with the lower case remote type name appended with <code>_id</code>. So for the given example <code>book_id</code>. If your foreign key field has a different name you can specify that via the <code>foreign_key</code> option: <code>#[diesel(belongs_to(Book, foreign_key = book_id))]</code></p>
+<h2 id="reading-data">Reading data</h2>
+<p>For ease of following this tutorial, we are going to put all the code into <code>main.rs</code>. We create a separate function for each part of the guide. See the linked code for the complete file content.</p>
+<div class="demo__example">
+<div class="demo__example-browser">
+<div class="browser-bar">
+src/main.rs
+</div>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/master/examples/postgres/relations/src/main.rs#L88-L98">View on GitHub</a>
+<div class="sourceCode" id="cb15"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true"></a><span class="kw">let</span> momo <span class="op">=</span> <span class="pp">books::</span>table</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true"></a>    <span class="op">.</span>filter(<span class="pp">books::</span>title<span class="op">.</span>eq(<span class="st">&quot;Momo&quot;</span>))</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true"></a>    <span class="op">.</span>select(<span class="pp">Book::</span>as_select())</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true"></a>    <span class="op">.</span>get_result(conn)<span class="op">?;</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true"></a></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true"></a><span class="co">// get pages for a book</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true"></a><span class="kw">let</span> pages <span class="op">=</span> <span class="pp">Page::</span>belonging_to(<span class="op">&amp;</span>momo)</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true"></a>    <span class="op">.</span>select(<span class="pp">Page::</span>as_select())</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true"></a>    <span class="op">.</span>load(conn)<span class="op">?;</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true"></a></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true"></a><span class="pp">println!</span>(<span class="st">&quot;Pages for </span><span class="sc">\&quot;</span><span class="st">Momo</span><span class="sc">\&quot;</span><span class="st">: </span><span class="sc">\n</span><span class="st"> {pages:?}</span><span class="sc">\n</span><span class="st">&quot;</span>)<span class="op">;</span></span></code></pre></div>
+</div>
+</div>
+<p><a href="https://docs.diesel.rs/2.0.x/diesel/prelude/trait.BelongingToDsl.html"><code>Page::belonging_to</code></a> allows to query all child records related to one or more parent record. For the presented case it will load all pages for the book with the title “Momo”. This function generates a query for loading these data. It does not execute the query, so that it is possible to add additional clauses to the query later on. The generated query is equivalent to <code>SELECT * FROM pages WHERE book_id IN(…)</code> with a list of given book ids derived from the function input.</p>
+<p>Loading all pages for a single book is a straight forward query, it becomes more complicated if we want to load all pages per book. This is a classic ORM problem, where frameworks sometimes run in the so called N+1 query problem. That problem describes cases where a framework naively loads all books first and then execute one query per book to receive the relevant pages. This approach is bad for performance because it executes an unbound number of queries.</p>
+<p>Diesel’s <a href="https://docs.diesel.rs/2.0.x/diesel/associations/index.html">associations API</a> sidesteps that problem by providing a special tailored API for such cases:</p>
+<div class="demo__example">
+<div class="demo__example-browser">
+<div class="browser-bar">
+src/main.rs
+</div>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/master/examples/postgres/relations/src/main.rs#L100-L115">View on GitHub</a>
+<div class="sourceCode" id="cb16"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true"></a><span class="kw">let</span> all_books <span class="op">=</span> <span class="pp">books::</span>table<span class="op">.</span>select(<span class="pp">Book::</span>as_select())<span class="op">.</span>load(conn)<span class="op">?;</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true"></a>    </span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true"></a><span class="co">// get all pages for all books</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true"></a><span class="kw">let</span> pages <span class="op">=</span> <span class="pp">Page::</span>belonging_to(<span class="op">&amp;</span>all_books)</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true"></a>    <span class="op">.</span>select(<span class="pp">Page::</span>as_select())</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true"></a>    <span class="op">.</span>load(conn)<span class="op">?;</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true"></a></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true"></a><span class="co">// group the pages per book</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true"></a><span class="kw">let</span> pages_per_book <span class="op">=</span> pages</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true"></a>    <span class="op">.</span>grouped_by(<span class="op">&amp;</span>all_books)</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true"></a>    <span class="op">.</span>into_iter()</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true"></a>    <span class="op">.</span>zip(all_books)</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true"></a>    <span class="op">.</span>map(<span class="op">|</span>(pages<span class="op">,</span> book)<span class="op">|</span> (book<span class="op">,</span> pages))</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true"></a>    <span class="op">.</span><span class="pp">collect::</span><span class="op">&lt;</span><span class="dt">Vec</span><span class="op">&lt;</span>(Book<span class="op">,</span> <span class="dt">Vec</span><span class="op">&lt;</span>Page<span class="op">&gt;</span>)<span class="op">&gt;&gt;</span>()<span class="op">;</span></span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true"></a></span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true"></a><span class="pp">println!</span>(<span class="st">&quot;Pages per book: </span><span class="sc">\n</span><span class="st"> {pages_per_book:?}</span><span class="sc">\n</span><span class="st">&quot;</span>)<span class="op">;</span></span></code></pre></div>
+</div>
+</div>
+<p>Here we use a similar construct as before to load all pages for a given list of books by constructing the relevant query via <code>Page::belonging_to</code>. The important difference to before is that we now pass a slice of books as argument. This will again construct the equivalent of the <code>SELECT * FROM pages WHERE book_id IN(…)</code> query as before. The important difference here is that we use the <a href="https://docs.diesel.rs/2.0.x/diesel/associations/trait.GroupedBy.html"><code>.grouped_by</code></a> function to later group each page to the correct book. In total there are two queries executed in this code block, independently of the number of queried books and pages.</p>
+<aside class="aside aside--note">
+<header class="aside__header">
+A note on consuming these data:
+</header>
+<div class="aside__text">
+<p>A common use case for loading associated data is to return a serialized data structure like</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true"></a><span class="ot">[</span><span class="fu">{</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true"></a>    <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true"></a>    <span class="dt">&quot;title&quot;</span><span class="fu">:</span> <span class="st">&quot;Momo&quot;</span><span class="fu">,</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true"></a>    <span class="dt">&quot;pages&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="er">…</span><span class="ot">]</span><span class="fu">,</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true"></a><span class="fu">}</span><span class="ot">]</span></span></code></pre></div>
+<p>Given the API provided by diesel, such a structure can easily be implement by collecting in an a struct with name fields instead of a tuple and using <a href="https://serde.rs/field-attrs.html#flatten"><code>#[serde(flatten)]</code></a> on the relevant fields.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true"></a><span class="at">#[</span>derive<span class="at">(</span>Serialize<span class="at">)]</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true"></a><span class="kw">struct</span> BookWithPages <span class="op">{</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true"></a>    <span class="at">#[</span>serde<span class="at">(</span>flatten<span class="at">)]</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true"></a>    book<span class="op">:</span> Book<span class="op">,</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true"></a>    pages<span class="op">:</span> <span class="dt">Vec</span><span class="op">&lt;</span>Page<span class="op">&gt;,</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true"></a><span class="op">}</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true"></a></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true"></a><span class="co">// group the pages per book</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true"></a><span class="kw">let</span> pages_per_book <span class="op">=</span> pages</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true"></a>    <span class="op">.</span>grouped_by(<span class="op">&amp;</span>all_books)</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true"></a>    <span class="op">.</span>into_iter()</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true"></a>    <span class="op">.</span>zip(all_books)</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true"></a>    <span class="op">.</span>map(<span class="op">|</span>(pages<span class="op">,</span> book)<span class="op">|</span> BookWithPages <span class="op">{</span> book<span class="op">,</span> pages <span class="op">}</span>)</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true"></a>    <span class="op">.</span><span class="pp">collect::</span><span class="op">&lt;</span><span class="dt">Vec</span><span class="op">&lt;</span>BookWithPages<span class="op">&gt;&gt;</span>()<span class="op">;</span></span></code></pre></div>
+</div>
+</aside>
+<h2 id="joins">Joins</h2>
+<p>We have currently loaded all pages for a given book by using the API provided by the <code>diesel::associations</code> module. This API is designed to work for parent-child relations, but not the other way around. Using plain SQL joins is the preferred way to resolve such relations the other way around. Diesel provides two kinds of joins: <code>INNER JOIN</code> and <code>LEFT JOIN</code>, where the former expects that linked elements always exist. The later allows to include rows with missing linked elements. Both constructs load data by executing a single query.</p>
+<h3 id="inner-join"><code>INNER JOIN</code></h3>
+<p><a href="https://docs.diesel.rs/2.0.x/diesel/prelude/trait.QueryDsl.html#method.inner_join"><code>QueryDsl::inner_join</code></a> allows to construct <code>INNER JOIN</code> statements between different tables.</p>
+<div class="demo__example">
+<div class="demo__example-browser">
+<div class="browser-bar">
+src/main.rs
+</div>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/master/examples/postgres/relations/src/main.rs#L70-L76">View on GitHub</a>
+<div class="sourceCode" id="cb19"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true"></a><span class="kw">let</span> page_with_book <span class="op">=</span> <span class="pp">pages::</span>table</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true"></a>    <span class="op">.</span>inner_join(<span class="pp">books::</span>table)</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true"></a>    <span class="op">.</span>filter(<span class="pp">books::</span>title<span class="op">.</span>eq(<span class="st">&quot;Momo&quot;</span>))</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true"></a>    <span class="op">.</span>select((<span class="pp">Page::</span>as_select()<span class="op">,</span> <span class="pp">Book::</span>as_select()))</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true"></a>    <span class="op">.</span><span class="pp">load::</span><span class="op">&lt;</span>(Page<span class="op">,</span> Book)<span class="op">&gt;</span>(conn)<span class="op">?;</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true"></a></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true"></a><span class="pp">println!</span>(<span class="st">&quot;Page-Book pairs: {page_with_book:?}&quot;</span>)<span class="op">;</span></span></code></pre></div>
+</div>
+</div>
+<p><code>QueryDsl::inner_join()</code> modifies the constructed query to include a <code>INNER JOIN</code> clause based on the provided arguments. The <code>ON</code> clause of the join statement can be inferred based on the <a href="https://docs.diesel.rs/2.0.x/diesel/macro.joinable.html"><code>joinable!</code></a> call in your <code>schema.rs</code> file. In addition it’s possible to specify custom <code>ON</code> clauses via <a href="https://docs.diesel.rs/2.0.x/diesel/query_dsl/trait.JoinOnDsl.html#method.on"><code>JoinDsl::on</code></a>. If no explicit select clause is provided the constructed query will return a tuple of both default select clauses for both sides of the join. This can be deserialized to a rust tuple or any compatible type implementing <a href="https://docs.diesel.rs/2.0.x/diesel/deserialize/trait.Queryable.html"><code>Queryable</code></a>.</p>
+<p>It is possible to chain several joins to join multiple tables. The nesting of the joins controls which tables exactly are joined. This means the following two statements are not equal:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true"></a><span class="pp">users::</span>table<span class="op">.</span>inner_join(<span class="pp">posts::</span>table<span class="op">.</span>inner_join(<span class="pp">comments::</span>table))<span class="op">;</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true"></a></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true"></a><span class="co">// Results in the following SQL</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true"></a><span class="co">// SELECT * FROM users</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true"></a><span class="co">// INNER JOIN posts ON users.id = posts.user_id</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true"></a><span class="co">// INNER JOIN comments ON post.id = comments.post_id</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true"></a></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true"></a><span class="pp">users::</span>table<span class="op">.</span>inner_join(<span class="pp">posts::</span>table)<span class="op">.</span>inner_join(<span class="pp">comments::</span>table)<span class="op">;</span></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true"></a></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true"></a><span class="co">// Results in the following SQL</span></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true"></a><span class="co">// SELECT * FROM users</span></span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true"></a><span class="co">// INNER JOIN posts ON users.id = posts.user_id</span></span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true"></a><span class="co">// INNER JOIN comments ON users.id = comments.user_id</span></span></code></pre></div>
+<p>For joining the same table more than one refer to the <a href="https://docs.diesel.rs/2.0.x/diesel/macro.alias.html"><code>alias!</code></a> macro to create distinct aliases.</p>
+<h3 id="left-join"><code>LEFT JOIN</code></h3>
+<p><a href="https://docs.diesel.rs/2.0.x/diesel/prelude/trait.QueryDsl.html#method.left_join"><code>QueryDsl::left_join</code></a> allows to construct <code>LEFT JOIN</code> statements between different tables.</p>
+<div class="demo__example">
+<div class="demo__example-browser">
+<div class="browser-bar">
+src/main.rs
+</div>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/master/examples/postgres/relations/src/main.rs#L78-L83">View on GitHub</a>
+<div class="sourceCode" id="cb21"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true"></a><span class="kw">let</span> book_without_pages <span class="op">=</span> <span class="pp">books::</span>table</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true"></a>    <span class="op">.</span>left_join(<span class="pp">pages::</span>table)</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true"></a>    <span class="op">.</span>select((<span class="pp">Book::</span>as_select()<span class="op">,</span> <span class="dt">Option</span><span class="pp">::</span><span class="op">&lt;</span>Page<span class="op">&gt;</span><span class="pp">::</span>as_select()))</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true"></a>    <span class="op">.</span><span class="pp">load::</span><span class="op">&lt;</span>(Book<span class="op">,</span> <span class="dt">Option</span><span class="op">&lt;</span>Page<span class="op">&gt;</span>)<span class="op">&gt;</span>(conn)<span class="op">?;</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true"></a></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true"></a><span class="pp">println!</span>(<span class="st">&quot;Book-Page pairs (including empty books): {book_without_pages:?}&quot;</span>)<span class="op">;</span></span></code></pre></div>
+</div>
+</div>
+<p>This works similar to <code>QueryDsl::inner_join</code> with the notable difference that any column returned form a joined table is considered to be nullable. This has several consequences:</p>
+<ul>
+<li>A query like <code>books::table.left_join(pages::table).load(conn)</code> returns <code>(Book, Option&lt;Page&gt;)</code> or any compatible type</li>
+<li>Explicit calls to <a href="https://docs.diesel.rs/2.0.x/diesel/prelude/trait.QueryDsl.html#method.select"><code>QueryDsl::select</code></a> require that any column that comes from the left joined table is annotated with a <a href="https://docs.diesel.rs/2.0.x/diesel/expression_methods/trait.NullableExpressionMethods.html#method.nullable"><code>NullableExpressionMethods::nullable</code></a> call. This function can be called for individual columns, expressions or tuples containing columns form left joined tables.</li>
+</ul>
+<h2 id="many-to-many-or-mn">many-to-many or m:n</h2>
+<p>We currently have books and they have pages, but books have an author, too. To be precise, a book can have more than one author and an author can have more than one book. So we have a many-to-many relation here. Diesel does not have a concept of <code>has_many</code> but instead we are going create a “join table” <code>books_authors</code> and add a <code>belongs_to</code> to both <code>books</code> and <code>authors</code>. Let’s see that in action.</p>
+<h2 id="migrations-1">Migrations</h2>
+<div class="sourceCode" id="cb22"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true"></a><span class="ex">diesel</span> migration generate create_authors</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true"></a><span class="ex">diesel</span> migration generate create_books_authors</span></code></pre></div>
+<p>Let’s keep it simple and just give our <code>authors</code> a name.</p>
+<div class="demo__example">
+<div class="demo__example-browser">
+<div class="browser-bar">
+up.sql
+</div>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/master/examples/postgres/relations/migrations/2023-02-17-084424_add_authors/up.sql">View on GitHub</a>
+<div class="sourceCode" id="cb23"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> authors (</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true"></a>  <span class="kw">id</span> SERIAL <span class="kw">PRIMARY</span> <span class="kw">KEY</span>,</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true"></a>  name <span class="dt">VARCHAR</span> <span class="kw">NOT</span> <span class="kw">NULL</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true"></a>);</span></code></pre></div>
+</div>
+</div>
+<p>And the corresponding down migration.</p>
+<div class="demo__example">
+<div class="demo__example-browser">
+<div class="browser-bar">
+down.sql
+</div>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/master/examples/postgres/relations/migrations/2023-02-17-084424_add_authors/down.sql">View on GitHub</a>
+<div class="sourceCode" id="cb24"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true"></a><span class="kw">DROP</span> <span class="kw">TABLE</span> authors;</span></code></pre></div>
+</div>
+</div>
+<p>The <code>books_authors</code> migration has two foreign keys which point to book’s id and the author’s id. This allows us to create a many-to-many relation between books and authors.</p>
+<div class="demo__example">
+<div class="demo__example-browser">
+<div class="browser-bar">
+up.sql
+</div>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/master/examples/postgres/relations/migrations/2023-02-17-084617_add_books_authors/up.sql">View on GitHub</a>
+<div class="sourceCode" id="cb25"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> books_authors (</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true"></a>  book_id <span class="dt">INTEGER</span> <span class="kw">REFERENCES</span> books(<span class="kw">id</span>),</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true"></a>  author_id <span class="dt">INTEGER</span> <span class="kw">REFERENCES</span> authors(<span class="kw">id</span>),</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true"></a>  <span class="kw">PRIMARY</span> <span class="kw">KEY</span>(book_id, author_id)</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true"></a>);</span></code></pre></div>
+</div>
+</div>
+<p>And the corresponding down migration.</p>
+<div class="demo__example">
+<div class="demo__example-browser">
+<div class="browser-bar">
+up.sql
+</div>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/master/examples/postgres/relations/migrations/2023-02-17-084617_add_books_authors/down.sql">View on GitHub</a>
+<div class="sourceCode" id="cb26"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true"></a><span class="kw">DROP</span> <span class="kw">TABLE</span> books_authors;</span></code></pre></div>
+</div>
+</div>
+<p>Lastly, let’s run the migrations</p>
+<div class="demo__example">
+<div class="demo__example-browser">
+<div class="browser-bar">
+Run the migrations
+</div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true"></a><span class="ex">diesel</span> migration run</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true"></a><span class="ex">diesel</span> migration redo -n 2</span></code></pre></div>
+</div>
+</div>
+<h2 id="model">Model</h2>
+<p>Now let’s reflect the join table in the <code>model.rs</code>. To keep this brief, let’s only look at what we are adding.</p>
+<div class="demo__example">
+<div class="demo__example-browser">
+<div class="browser-bar">
+src/model.rs
+</div>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/master/examples/postgres/relations/src/model.rs#L1-L20">View on GitHub</a>
+<div class="sourceCode" id="cb28"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true"></a><span class="kw">use</span> <span class="pp">diesel::prelude::</span><span class="op">*;</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true"></a></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true"></a><span class="kw">use</span> <span class="kw">crate</span><span class="pp">::schema::</span><span class="op">{</span>books<span class="op">,</span> pages<span class="op">,</span> authors<span class="op">,</span> books_authors<span class="op">};</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true"></a></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true"></a><span class="at">#[</span>derive<span class="at">(</span>Queryable<span class="op">,</span> Selectable<span class="op">,</span> Identifiable<span class="op">,</span> <span class="bu">PartialEq</span><span class="op">,</span> <span class="bu">Debug</span><span class="at">)]</span></span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true"></a><span class="at">#[</span>diesel<span class="at">(</span>table_name <span class="op">=</span> authors<span class="at">)]</span></span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true"></a><span class="kw">pub</span> <span class="kw">struct</span> Author <span class="op">{</span></span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true"></a>    <span class="kw">pub</span> id<span class="op">:</span> <span class="dt">i32</span><span class="op">,</span></span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true"></a>    <span class="kw">pub</span> name<span class="op">:</span> <span class="dt">String</span><span class="op">,</span></span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true"></a><span class="op">}</span></span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true"></a></span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true"></a><span class="at">#[</span>derive<span class="at">(</span>Identifiable<span class="op">,</span> Selectable<span class="op">,</span> Queryable<span class="op">,</span> Associations<span class="op">,</span> <span class="bu">Debug</span><span class="at">)]</span></span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true"></a><span class="at">#[</span>diesel<span class="at">(</span>belongs_to<span class="at">(</span>Book<span class="at">))]</span></span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true"></a><span class="at">#[</span>diesel<span class="at">(</span>belongs_to<span class="at">(</span>Author<span class="at">))]</span></span>
+<span id="cb28-15"><a href="#cb28-15" aria-hidden="true"></a><span class="at">#[</span>diesel<span class="at">(</span>table_name <span class="op">=</span> books_authors<span class="at">)]</span></span>
+<span id="cb28-16"><a href="#cb28-16" aria-hidden="true"></a><span class="at">#[</span>diesel<span class="at">(</span>primary_key<span class="at">(</span>book_id<span class="op">,</span> author_id<span class="at">))]</span></span>
+<span id="cb28-17"><a href="#cb28-17" aria-hidden="true"></a><span class="kw">pub</span> <span class="kw">struct</span> BookAuthor <span class="op">{</span></span>
+<span id="cb28-18"><a href="#cb28-18" aria-hidden="true"></a>    <span class="kw">pub</span> book_id<span class="op">:</span> <span class="dt">i32</span><span class="op">,</span></span>
+<span id="cb28-19"><a href="#cb28-19" aria-hidden="true"></a>    <span class="kw">pub</span> author_id<span class="op">:</span> <span class="dt">i32</span><span class="op">,</span></span>
+<span id="cb28-20"><a href="#cb28-20" aria-hidden="true"></a><span class="op">}</span></span></code></pre></div>
+</div>
+</div>
+<p>The important part is to give <code>BooksAuthor</code> two <code>belongs_to</code> that point to the book and the author.</p>
+<h2 id="reading-data-1">Reading data</h2>
+<p>If we now want to load all books of a given author we can combine joins and diesels <code>BelongingToDsl</code> to load these data:</p>
+<div class="demo__example">
+<div class="demo__example-browser">
+<div class="browser-bar">
+src/main.rs
+</div>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/master/examples/postgres/relations/src/main.rs#L121-L131">View on GitHub</a>
+<div class="sourceCode" id="cb29"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true"></a><span class="kw">let</span> astrid_lindgren <span class="op">=</span> <span class="pp">authors::</span>table</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true"></a>    <span class="op">.</span>filter(<span class="pp">authors::</span>name<span class="op">.</span>eq(<span class="st">&quot;Astrid Lindgren&quot;</span>))</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true"></a>    <span class="op">.</span>select(<span class="pp">Author::</span>as_select())</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true"></a>    <span class="op">.</span>get_result(conn)<span class="op">?;</span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true"></a></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true"></a><span class="co">// get all of Astrid Lindgren&#39;s books</span></span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true"></a><span class="kw">let</span> books <span class="op">=</span> <span class="pp">BookAuthor::</span>belonging_to(<span class="op">&amp;</span>astrid_lindgren)</span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true"></a>    <span class="op">.</span>inner_join(<span class="pp">books::</span>table)</span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true"></a>    <span class="op">.</span>select(<span class="pp">Book::</span>as_select())</span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true"></a>    <span class="op">.</span>load(conn)<span class="op">?;</span></span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true"></a><span class="pp">println!</span>(<span class="st">&quot;Asgrid Lindgren books: {books:?}&quot;</span>)<span class="op">;</span></span></code></pre></div>
+</div>
+</div>
+<p>As described before <code>BookAuthor::belonging_to</code> constructs a query to which we can chain other clauses. In this case we join the <code>books</code> table to include the relevant books and select only the columns relevant for populating the <code>Book</code> type. This results in loading all books for a given author.</p>
+<p>The same approach can be applied the other way around, to load all authors for a given book:</p>
+<div class="demo__example">
+<div class="demo__example-browser">
+<div class="browser-bar">
+src/main.rs
+</div>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/master/examples/postgres/relations/src/main.rs#L133-L143">View on GitHub</a>
+<div class="sourceCode" id="cb30"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true"></a><span class="kw">let</span> collaboration <span class="op">=</span> <span class="pp">books::</span>table</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true"></a>    <span class="op">.</span>filter(<span class="pp">books::</span>title<span class="op">.</span>eq(<span class="st">&quot;Pippi and Momo&quot;</span>))</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true"></a>    <span class="op">.</span>select(<span class="pp">Book::</span>as_select())</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true"></a>    <span class="op">.</span>get_result(conn)<span class="op">?;</span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true"></a></span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true"></a><span class="co">// get authors for the collaboration</span></span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true"></a><span class="kw">let</span> authors <span class="op">=</span> <span class="pp">BookAuthor::</span>belonging_to(<span class="op">&amp;</span>collaboration)</span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true"></a>    <span class="op">.</span>inner_join(<span class="pp">authors::</span>table)</span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true"></a>    <span class="op">.</span>select(<span class="pp">Author::</span>as_select())</span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true"></a>    <span class="op">.</span>load(conn)<span class="op">?;</span></span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true"></a><span class="pp">println!</span>(<span class="st">&quot;Authors for </span><span class="sc">\&quot;</span><span class="st">Pipi and Momo</span><span class="sc">\&quot;</span><span class="st">: {authors:?}&quot;</span>)<span class="op">;</span></span></code></pre></div>
+</div>
+</div>
+<p>As before we can use this approach to load a list of all authors and their associated books:</p>
+<div class="demo__example">
+<div class="demo__example-browser">
+<div class="browser-bar">
+src/main.rs
+</div>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/master/examples/postgres/relations/src/main.rs#L146-L162">View on GitHub</a>
+<div class="sourceCode" id="cb31"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true"></a><span class="kw">let</span> all_authors <span class="op">=</span> <span class="pp">authors::</span>table</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true"></a>    <span class="op">.</span>select(<span class="pp">Author::</span>as_select())</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true"></a>    <span class="op">.</span>load(conn)<span class="op">?;</span></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true"></a></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true"></a><span class="kw">let</span> books <span class="op">=</span> <span class="pp">BookAuthor::</span>belonging_to(<span class="op">&amp;</span>authors)</span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true"></a>    <span class="op">.</span>inner_join(<span class="pp">books::</span>table)</span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true"></a>    <span class="op">.</span>select((<span class="pp">BookAuthor::</span>as_select()<span class="op">,</span> <span class="pp">Book::</span>as_select()))</span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true"></a>    <span class="op">.</span>load(conn)<span class="op">?;</span></span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true"></a></span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true"></a><span class="kw">let</span> books_per_author<span class="op">:</span> <span class="dt">Vec</span><span class="op">&lt;</span>(Author<span class="op">,</span> <span class="dt">Vec</span><span class="op">&lt;</span>Book<span class="op">&gt;</span>)<span class="op">&gt;</span> <span class="op">=</span> books</span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true"></a>    <span class="op">.</span>grouped_by(<span class="op">&amp;</span>all_authors)</span>
+<span id="cb31-12"><a href="#cb31-12" aria-hidden="true"></a>    <span class="op">.</span>into_iter()</span>
+<span id="cb31-13"><a href="#cb31-13" aria-hidden="true"></a>    <span class="op">.</span>zip(authors)</span>
+<span id="cb31-14"><a href="#cb31-14" aria-hidden="true"></a>    <span class="op">.</span>map(<span class="op">|</span>(b<span class="op">,</span> author)<span class="op">|</span> (author<span class="op">,</span> b<span class="op">.</span>into_iter()<span class="op">.</span>map(<span class="op">|</span>(_<span class="op">,</span> book)<span class="op">|</span> book)<span class="op">.</span>collect()))</span>
+<span id="cb31-15"><a href="#cb31-15" aria-hidden="true"></a>    <span class="op">.</span>collect()<span class="op">;</span></span>
+<span id="cb31-16"><a href="#cb31-16" aria-hidden="true"></a></span>
+<span id="cb31-17"><a href="#cb31-17" aria-hidden="true"></a><span class="pp">println!</span>(<span class="st">&quot;All authors including their books: {books_per_author:?}&quot;</span>)<span class="op">;</span></span></code></pre></div>
+</div>
+</div>
+<p>As before we load all associated books by joining the books table to the query produced by <code>BookAuthor::belonging_to</code>. It is important to load the data from <code>books_authors</code> as well, as these data include the relevant mapping. The grouping is performed again with the <code>.grouped_by</code> method, similar to how this was done for the 1-to-n relations case. We now need to exclude the <code>BookAuthor</code> information in the final grouping step explicitly.</p>
+<p>The final code for this tutorial can be found <a href="https://github.com/diesel-rs/diesel/blob/master/examples/postgres/relations">here</a>.</p>
+</div>
+</div>
+</div>
+<p>:::</p>
+<script src="../assets/javascripts/application.js"></script>
+<footer>
+    <div class="content-wrapper">
+        <p> Found a mistake on this website? Submit an issue or send a pull request
+            <a href = "https://github.com/sgrif/diesel.rs-website">here</a>! </p>
+        <p></p>
+        <br/>
+        <p>Copyright © 2015-2023 The Diesel Core Team</p>
+    </div>
+</footer>
+<script type="text/javascript">
+
+</script>
+</body>
+</html>
