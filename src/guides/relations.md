@@ -225,7 +225,7 @@ Associations in Diesel are always child-to-parent. You can declare an
 association between two records with `#[diesel(belongs_to)]`. First we need to add
 [`#[derive(Associations)]`][associations-docs]
 , which will allow us to add `#[diesel(belongs_to(Book))]` to `Page`. 
-That tells  that pages0belong to books and thereby reflect our 1-to-many relation.
+That tells  that pages belong to books and thereby reflect our 1-to-many relation.
 
 By default diesel will assume that your struct contains a field with the lower case 
 remote type name appended with `_id`. So for the given example `book_id`. If your
@@ -311,6 +311,43 @@ correct book. In total there are two queries executed in this code block, indepe
 [associations API]: https://docs.diesel.rs/2.0.x/diesel/associations/index.html
 [`.grouped_by`]: https://docs.diesel.rs/2.0.x/diesel/associations/trait.GroupedBy.html
 
+<aside class = "aside aside--note">
+<header class = "aside__header">A note on consuming these data:</header>
+
+::: aside__text
+A common use case for loading associated data is to return a serialized data structure like
+```json
+[{
+    "id": 1,
+    "title": "Momo",
+    "pages": […],
+}]
+```
+
+Given the API provided by diesel, such a structure can easily be implement by collecting in an a struct with name fields instead of a tuple and using [`#[serde(flatten)]`](https://serde.rs/field-attrs.html#flatten) on the relevant fields.
+
+```rust
+#[derive(Serialize)]
+struct BookWithPages {
+    #[serde(flatten)]
+    book: Book,
+    pages: Vec<Page>,
+}
+
+// group the pages per book
+let pages_per_book = pages
+    .grouped_by(&all_books)
+    .into_iter()
+    .zip(all_books)
+    .map(|(pages, book)| BookWithPages { book, pages })
+    .collect::<Vec<BookWithPages>>();
+
+```
+
+:::
+</aside>
+
+
 ## Joins
 
 We have currently loaded all pages for a given book by using the API provided by the `diesel::associations` module. 
@@ -338,7 +375,7 @@ println!("Page-Book pairs: {page_with_book:?}");
 
 `QueryDsl::inner_join()` modifies the constructed query to include a `INNER JOIN` clause based on the provided arguments. The `ON` clause of the join statement can be 
 inferred based on the [`joinable!`][doc-joinable] call in your `schema.rs` file. In addition it's possible to specify custom `ON` clauses via [`JoinDsl::on`][doc-on].
-If no explicit select clause is provided the constructed query will return all a tuple of both default select clauses for both sides of the join. This can be deserialized 
+If no explicit select clause is provided the constructed query will return a tuple of both default select clauses for both sides of the join. This can be deserialized 
 to a rust tuple or any compatible type implementing [`Queryable`][doc-queryable]. 
 
 It is possible to chain several joins to join multiple tables. The nesting of the joins controls which tables exactly are joined. This means the following two statements are not equal:
@@ -483,7 +520,7 @@ Now let's reflect the join table in the `model.rs`. To keep this brief, let's on
 
 ::: code-block
 
-[src/model.rs](https://github.com/diesel-rs/diesel/blob/master/examples/postgres/relations/src/model.rs#1-L20)
+[src/model.rs](https://github.com/diesel-rs/diesel/blob/master/examples/postgres/relations/src/model.rs#L1-L20)
 
 ```rust
 use diesel::prelude::*;
@@ -518,7 +555,7 @@ If we now want to load all books of a given author we can combine joins and dies
 
 ::: code-block
 
-[src/main.rs](https://github.com/diesel-rs/diesel/blob/master/examples/postgres/relations/src/main.rs#121-L131)
+[src/main.rs](https://github.com/diesel-rs/diesel/blob/master/examples/postgres/relations/src/main.rs#L121-L131)
 
 ```rust
 let astrid_lindgren = authors::table
@@ -541,7 +578,7 @@ The same approach can be applied the other way around, to load all authors for a
 
 :::code-block
 
-[src/main.rs](https://github.com/diesel-rs/diesel/blob/master/examples/postgres/relations/src/main.rs#133-L143)
+[src/main.rs](https://github.com/diesel-rs/diesel/blob/master/examples/postgres/relations/src/main.rs#L133-L143)
 ```rust
 let collaboration = books::table
     .filter(books::title.eq("Pippi and Momo"))
@@ -562,12 +599,11 @@ As before we can use this approach to load a list of all authors and their assoc
 
 :::code-block
 
-[src/main.rs](https://github.com/diesel-rs/diesel/blob/master/examples/postgres/relations/src/main.rs#146-L164)
+[src/main.rs](https://github.com/diesel-rs/diesel/blob/master/examples/postgres/relations/src/main.rs#L146-L162)
 ```rust
 let all_authors = authors::table
     .select(Author::as_select())
-    .load(conn)
-    .unwrap();
+    .load(conn)?;
 
 let books = BookAuthor::belonging_to(&authors)
     .inner_join(books::table)
@@ -586,9 +622,7 @@ println!("All authors including their books: {books_per_author:?}");
 
 :::
 
-As before we load all associated books by joining the books table to the query produced by `BookAuthor::belonging_to`.
-We now need to load the data from `books_authors` as well, as these data include the relevant mapping. The grouping is performed again with the `.grouped_by` method, similar to how this was done for the 1-to-n relations case. 
-We now need to exclude the `BookAuthor` information in the final grouping step explicitly.
+As before we load all associated books by joining the books table to the query produced by `BookAuthor::belonging_to`. It is important to load the data from `books_authors` as well, as these data include the relevant mapping. The grouping is performed again with the `.grouped_by` method, similar to how this was done for the 1-to-n relations case. We now need to exclude the `BookAuthor` information in the final grouping step explicitly.
 
 The final code for this tutorial can be found [here](https://github.com/diesel-rs/diesel/blob/master/examples/postgres/relations).
 :::
