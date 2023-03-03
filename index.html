@@ -307,7 +307,7 @@ Without Diesel
 Rust code
 </div>
 <div class="sourceCode" id="cb9"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a><span class="at">#[</span>derive<span class="at">(</span>Insertable<span class="at">)]</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true"></a><span class="at">#[</span>table_name<span class="op">=</span><span class="st">&quot;users&quot;</span><span class="at">]</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true"></a><span class="at">#[</span>diesel<span class="at">(</span>table_name <span class="op">=</span> users<span class="at">)]</span></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true"></a><span class="kw">struct</span> NewUser<span class="op">&lt;</span><span class="ot">&#39;a</span><span class="op">&gt;</span> <span class="op">{</span></span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true"></a>    name<span class="op">:</span> <span class="op">&amp;</span><span class="ot">&#39;a</span> <span class="dt">str</span><span class="op">,</span></span>
 <span id="cb9-5"><a href="#cb9-5" aria-hidden="true"></a>    hair_color<span class="op">:</span> <span class="dt">Option</span><span class="op">&lt;&amp;</span><span class="ot">&#39;a</span> <span class="dt">str</span><span class="op">&gt;,</span></span>
@@ -401,7 +401,7 @@ Using a struct for encapsulation
 Running raw SQL
 </div>
 <div class="sourceCode" id="cb16"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true"></a><span class="at">#[</span>derive<span class="at">(</span>QueryableByName<span class="at">)]</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true"></a><span class="at">#[</span>table_name <span class="op">=</span> <span class="st">&quot;users&quot;</span><span class="at">]</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true"></a><span class="at">#[</span>diesel<span class="at">(</span>table_name <span class="op">=</span> users<span class="at">)]</span></span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true"></a><span class="kw">struct</span> User <span class="op">{</span></span>
 <span id="cb16-4"><a href="#cb16-4" aria-hidden="true"></a>    id<span class="op">:</span> <span class="dt">i32</span><span class="op">,</span></span>
 <span id="cb16-5"><a href="#cb16-5" aria-hidden="true"></a>    name<span class="op">:</span> <span class="dt">String</span><span class="op">,</span></span>
@@ -428,6 +428,10 @@ Running raw SQL
 <section id="diesel-logger" class="community-project">
 <h4><a href="https://github.com/shssoichiro/diesel-logger"><code>diesel-logger</code></a> <a style="float:right" href="https://crates.io/crates/diesel-logger"><img src="https://img.shields.io/crates/v/diesel-logger.svg?style=for-the-badge" height="18" alt="License: MIT OR Apache-2.0" /></a></h4>
 <p>A generic diesel connection implementations that allows to log any executed query.</p>
+</section>
+<section id="diesel-derive-enum" class="community-project">
+<h4><a href="http://github.com/adwhit/diesel-derive-enum"><code>diesel-derive-enum</code></a> <a style="float:right" href="https://crates.io/crates/diesel-derive-enum"><img src="https://img.shields.io/crates/v/diesel-derive-enum.svg?style=for-the-badge" height="18" alt="License: MIT OR Apache-2.0" /></a></h4>
+<p>Use Rust enums directly with diesel.</p>
 </section>
 <section id="diesel-oci" class="community-project">
 <h4><a href="https://github.com/GiGainfosystems/diesel-oci"><code>diesel-oci</code></a> <a style="float:right" href="https://crates.io/crates/diesel-oci"><img src="https://img.shields.io/crates/v/diesel-oci.svg?style=for-the-badge" height="18" alt="License: MIT OR Apache-2.0" /></a></h4>
