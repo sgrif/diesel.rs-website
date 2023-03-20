@@ -1,6 +1,7 @@
 ---
 title: "Diesel is a Safe, Extensible ORM and Query Builder for <a href=\"https://www.rust-lang.org/\" target=\"_blank\" class=\"rust-link\">Rust</a>"
 css: assets/stylesheets/application.css 
+lang: en-US
 header-includes: |
     <style type="text/css">
         body {
