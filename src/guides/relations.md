@@ -352,7 +352,7 @@ let pages_per_book = pages
 
 We have currently loaded all pages for a given book by using the API provided by the `diesel::associations` module. 
 This API is designed to work for parent-child relations, but not the other way around. Using plain SQL joins is
-the preferred way to resolve such relations the other way around. Diesel provides two kinds of joins: `INNER JOIN` and `LEFT JOIN`, where the former expects that linked elements always exist. The later allows to include rows with missing linked elements. Both constructs load data by executing a single query.
+the preferred way to resolve such relations the other way around. Diesel provides two kinds of joins: `INNER JOIN` and `LEFT JOIN`, where the former expects that linked elements always exist. The latter allows to include rows with missing linked elements. Both constructs load data by executing a single query.
 
 ### `INNER JOIN`
 
