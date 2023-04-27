@@ -289,7 +289,7 @@ src/krate/mod.rs
 <span id="cb6-16"><a href="#cb6-16" aria-hidden="true"></a>        T<span class="op">:</span> AsExpression<span class="op">&lt;</span>Text<span class="op">&gt;,</span></span>
 <span id="cb6-17"><a href="#cb6-17" aria-hidden="true"></a>        <span class="pp">T::</span>Expression<span class="op">:</span> BoxableExpression<span class="op">&lt;</span><span class="pp">crates::</span>table<span class="op">,</span> Pg<span class="op">&gt;,</span></span>
 <span id="cb6-18"><a href="#cb6-18" aria-hidden="true"></a>    <span class="op">{</span></span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true"></a>        <span class="dt">Self</span><span class="pp">::</span>all()<span class="op">.</span>filter(by_name(name))</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true"></a>        <span class="dt">Self</span><span class="pp">::</span>all()<span class="op">.</span>filter(with_name(name))</span>
 <span id="cb6-20"><a href="#cb6-20" aria-hidden="true"></a>    <span class="op">}</span></span>
 <span id="cb6-21"><a href="#cb6-21" aria-hidden="true"></a><span class="op">}</span></span></code></pre></div>
 </div>

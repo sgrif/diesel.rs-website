@@ -379,7 +379,7 @@ A note on consuming these data:
 </div>
 </aside>
 <h2 id="joins">Joins</h2>
-<p>We have currently loaded all pages for a given book by using the API provided by the <code>diesel::associations</code> module. This API is designed to work for parent-child relations, but not the other way around. Using plain SQL joins is the preferred way to resolve such relations the other way around. Diesel provides two kinds of joins: <code>INNER JOIN</code> and <code>LEFT JOIN</code>, where the former expects that linked elements always exist. The later allows to include rows with missing linked elements. Both constructs load data by executing a single query.</p>
+<p>We have currently loaded all pages for a given book by using the API provided by the <code>diesel::associations</code> module. This API is designed to work for parent-child relations, but not the other way around. Using plain SQL joins is the preferred way to resolve such relations the other way around. Diesel provides two kinds of joins: <code>INNER JOIN</code> and <code>LEFT JOIN</code>, where the former expects that linked elements always exist. The latter allows to include rows with missing linked elements. Both constructs load data by executing a single query.</p>
 <h3 id="inner-join"><code>INNER JOIN</code></h3>
 <p><a href="https://docs.diesel.rs/2.0.x/diesel/prelude/trait.QueryDsl.html#method.inner_join"><code>QueryDsl::inner_join</code></a> allows to construct <code>INNER JOIN</code> statements between different tables.</p>
 <div class="demo__example">
