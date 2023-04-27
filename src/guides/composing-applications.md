@@ -234,7 +234,7 @@ impl Crate {
         T: AsExpression<Text>,
         T::Expression: BoxableExpression<crates::table, Pg>,
     {
-        Self::all().filter(by_name(name))
+        Self::all().filter(with_name(name))
     }
 }
 ```
