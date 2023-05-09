@@ -1,6 +1,7 @@
 ---
 title: "Diesel is a Safe, Extensible ORM and Query Builder for <a href=\"https://www.rust-lang.org/\" target=\"_blank\" class=\"rust-link\">Rust</a>"
 css: assets/stylesheets/application.css 
+lang: en-US
 header-includes: |
     <style type="text/css">
         body {
@@ -275,7 +276,7 @@ It's not just about reading data. Diesel makes it easy to use structs for new re
 
 ```rust
 #[derive(Insertable)]
-#[table_name="users"]
+#[diesel(table_name = users)]
 struct NewUser<'a> {
     name: &'a str,
     hair_color: Option<&'a str>,
@@ -387,7 +388,7 @@ There will always be certain queries that are just easier to write as raw SQL, o
 
 ```rust
 #[derive(QueryableByName)]
-#[table_name = "users"]
+#[diesel(table_name = users)]
 struct User {
     id: i32,
     name: String,
@@ -425,6 +426,14 @@ Generate rust structs & query functions from diesel schema files.
 #### [`diesel-logger`](https://github.com/shssoichiro/diesel-logger) <a style="float:right" href="https://crates.io/crates/diesel-logger"><img src="https://img.shields.io/crates/v/diesel-logger.svg?style=for-the-badge" height="18" alt="License: MIT OR Apache-2.0" /></a>
 
 A generic diesel connection implementations that allows to log any executed query.
+
+:::
+
+::: {.community-project}
+
+#### [`diesel-derive-enum`](http://github.com/adwhit/diesel-derive-enum) <a style="float:right" href="https://crates.io/crates/diesel-derive-enum"><img src="https://img.shields.io/crates/v/diesel-derive-enum.svg?style=for-the-badge" height="18" alt="License: MIT OR Apache-2.0" /></a>
+
+Use Rust enums directly with diesel.
 
 :::
 

@@ -97,7 +97,7 @@ SQLite and MySQL are using a fixed set of sql types.
 [diesel.toml]()
 
 ```toml
-[print-schema]
+[print_schema]
 # skip generating missing sql type definitions
 generate_missing_sql_type_definitions = false
 ```
