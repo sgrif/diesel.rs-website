@@ -14,14 +14,13 @@ For this guide, we're going to walk through some simple examples for each of the
 which stands for "Create Read Update Delete". Each step in this guide will build on the previous,
 and is meant to be followed along.
 
-**This guide assumes that you're using PostgreSQL.** Before we start,
-make sure you have PostgreSQL installed and running. If you are using some different database, like for example SQLite, some examples won't just run as the implemented API might differ. In the project repository, you may find various [examples](https://github.com/diesel-rs/diesel/tree/2.0.x/examples) for every supported database. 
+Before we start, make sure you have PostgreSQL installed and running. If you are using some different database, like for example SQLite, some examples won't just run as the implemented API might differ. In the project repository, you may find various [examples](https://github.com/diesel-rs/diesel/tree/2.0.x/examples) for every supported database. 
 
 <aside class = "aside aside--note">
 <header class = "aside__header">A note on Rust versions:</header>
 
 ::: aside__text
-Diesel requires Rust 1.56 or later. If you're following along with this guide,
+Diesel requires Rust 1.65 or later. If you're following along with this guide,
 make sure you're using at least that version of Rust by running `rustup update stable`.
 
 :::
@@ -54,7 +53,7 @@ as well.
 
 ```toml
 [dependencies]
-diesel = { version = "2.0.0", features = ["postgres"] }
+diesel = { version = "2.1.0", features = ["postgres"] }
 dotenvy = "0.15"
 ```
 
@@ -95,7 +94,7 @@ This means you are missing the client library needed for a database backend
 (using the usual way to do this depending on your operating system) or by excluding
 the undesired default library with the `--no-default-features` flag. 
 
-By default diesel depends on the following client libraries:
+By default diesel CLI depends on the following client libraries:
 
 * [`libpq`](https://www.postgresql.org/docs/current/libpq.html) for the PostgreSQL backend
 * [`libmysqlclient`](https://dev.mysql.com/doc/c-api/8.0/en/c-api-implementations.html) for the Mysql backend
@@ -109,6 +108,8 @@ with only PostgreSQL:
 ```sh
 cargo install diesel_cli --no-default-features --features postgres
 ```
+
+If you are unsure how to configure these dependencies checkout [diesel CI](https://github.com/diesel-rs/diesel/blob/master/.github/workflows/ci.yml#L63-L193) configuration for a working setup for different operating systems.
 :::
 </aside>
 
@@ -196,7 +197,8 @@ diesel migration redo
 ::: aside__text
 Since migrations are written in raw SQL, they can contain specific features of the database system you use.
 For example, the `CREATE TABLE` statement above uses PostgreSQL's `SERIAL` type. If you want to use SQLite instead,
-you need to use `INTEGER` instead.
+you need to use `INTEGER` instead. The [diesel GitHub repository](https://github.com/diesel-rs/diesel/tree/master/examples) 
+contains modified examples for all supported backends. Be sure to checkout these examples if you use another backend than PostgreSQL.
 :::
 </aside>
 
@@ -208,11 +210,12 @@ When preparing your app for use in production, you may want to run your migratio
 during the application's initialization phase. You may also want to include the migration scripts
 as a part of your code, to avoid having to copy them to your deployment location/image etc.
 
-The [diesel_migrations] crate provides the `embed_migrations!` macro, allowing you to embed migration scripts
+The [diesel_migrations] crate provides the [`embed_migrations!`] macro, allowing you to embed migration scripts
 in the final binary. Once your code uses it, you can simply include `connection.run_pending_migrations(MIGRATIONS)`
 at the start of your `main` function to run migrations every time the application starts.
 
 [diesel_migrations]: https://docs.rs/crate/diesel_migrations/2.0.0
+[`embed_migrations!`]: https://docs.rs/diesel_migrations/2.0.0/diesel_migrations/macro.embed_migrations.html
 
 :::
 </aside>
@@ -224,7 +227,7 @@ The first thing we need to do is establish a database connection.
 
 ::: code-block
 
-[src/lib.rs]( https://github.com/diesel-rs/diesel/blob/2.0.x/examples/postgres/getting_started_step_1/src/lib.rs)
+[src/lib.rs](https://github.com/diesel-rs/diesel/blob/2.0.x/examples/postgres/getting_started_step_1/src/lib.rs)
 
 ```rust
 use diesel::pg::PgConnection;
@@ -250,7 +253,7 @@ We'll add the following lines to the top of `src/lib.rs`:
 
 ::: code-block
 
-[src/lib.rs](https://github.com/diesel-rs/diesel/tree/2.0.x/examples/postgres/getting_started_step_1/src/lib.rs)
+[src/lib.rs](https://github.com/diesel-rs/diesel/tree/2.0.x/examples/postgres/getting_started_step_1/src/lib.rs#L1-L2)
 
 ```rust
 pub mod models;
@@ -268,7 +271,9 @@ Next we need to create the two modules that we just declared.
 ```rust
 use diesel::prelude::*;
 
-#[derive(Queryable)]
+#[derive(Queryable, Selectable)]
+#[diesel(table_name = crate::schema::posts)]
+#[diesel(check_for_backend(diesel::pg::Pg))]
 pub struct Post {
     pub id: i32,
     pub title: String,
@@ -279,9 +284,17 @@ pub struct Post {
 
 :::
 
-`#[derive(Queryable)]` will generate all of the code needed to load a `Post` struct from a SQL query.
+[`#[derive(Queryable)]`] will generate all of the code needed to load a `Post` struct from a SQL query. 
+[`#[derive(Selectable)]`] will generate code to construct a matching select clause based on your model type based on the 
+table defined via `#[diesel(table_name = crate::schema::posts)]`. 
+`#[diesel(check_for_backend(diesel::pg::Pg))`adds additional compile time checks to verify that all field types in 
+your struct are compatible with their corresponding SQL side expressions. This part is optional, but it greatly improves
+the generated compiler error messages.
 
-Typically the schema module isn't created by hand, it gets generated by Diesel. When we ran `diesel setup`,
+[`#[derive(Queryable)]`]: https://docs.diesel.rs/master/diesel/prelude/derive.Queryable.html
+[`#[derive(Selectable)]`]: https://docs.diesel.rs/master/diesel/prelude/derive.Selectable.html
+
+Typically the schema module isn't created by hand, it gets generated by diesel CLI. When we ran `diesel setup`,
 a file called [diesel.toml] was created which tells Diesel to maintain a file at src/schema.rs for us.
 The file should look like this:
 
@@ -310,6 +323,7 @@ The exact output might vary slightly depending on your database, but it should b
 
 The [`table!` macro] creates a bunch of code based on the database schema to represent
 all of the tables and columns. We'll see how exactly to use that in the next example.
+For a deep dive into the generated code see the [Schema in Depth](schema-in-depth.html) guide.
 
 Any time we run or revert a migration, this file will get automatically updated.
 
@@ -322,6 +336,9 @@ Any time we run or revert a migration, this file will get automatically updated.
 
 Using `#[derive(Queryable)]` assumes that the order of fields on the `Post` struct matches
 the columns in the `posts` table, so make sure to define them in the order seen in the `schema.rs` file.
+Using `#[derive(Selectable)]` in combination with [`SelectableHelper::as_select`] ensures that the field order always matches.
+
+[`SelectableHelper::as_select`]: https://docs.diesel.rs/2.0.x/diesel/prelude/trait.SelectableHelper.html#tymethod.as_select
 
 :::
 
@@ -345,7 +362,8 @@ fn main() {
     let results = posts
         .filter(published.eq(true))
         .limit(5)
-        .load::<Post>(connection)
+        .select(Post::as_select())
+        .load(connection)
         .expect("Error loading posts");
 
     println!("Displaying {} posts", results.len());
@@ -362,7 +380,9 @@ fn main() {
 
 The use `self::schema::posts::dsl::*` line imports a bunch of aliases so that we can say `posts`
 instead of `posts::table`, and `published` instead of `posts::published`. It's useful
-when we're only dealing with a single table, but that's not always what we want.
+when we're only dealing with a single table, but that's not always what we want. It's always important 
+to keep imports to `schema::table::dsl::*` inside of the current function to prevent polluting the module 
+namespace.
 
 We can run our script with `cargo run --bin show_posts`. Unfortunately, the results
 won't be terribly interesting, as we don't actually have any posts in the database.
@@ -408,6 +428,7 @@ pub fn create_post(conn: &mut PgConnection, title: &str, body: &str) -> Post {
 
     diesel::insert_into(posts::table)
         .values(&new_post)
+        .returning(Post::as_returning())
         .get_result(conn)
         .expect("Error saving new post")
 }
@@ -415,14 +436,31 @@ pub fn create_post(conn: &mut PgConnection, title: &str, body: &str) -> Post {
 
 :::
 
-When we call `.get_result` on an insert or update statement, it automatically adds `RETURNING *`
+When we call [`.get_result`] on an insert or update statement, it automatically adds `RETURNING *`
 to the end of the query, and lets us load it into any struct that implements `Queryable`
 for the right types. Neat!
 
-Diesel can insert more than one record in a single query. Just pass a `Vec` or slice to `insert`,
-and then call `get_results` instead of `get_result`. If you don't actually want to do anything
-with the row that was just inserted, call `.execute` instead. The compiler won't complain
+<aside class = "aside aside--note">
+<header class = "aside__header"> A Note on `RETURNING` clauses</header>
+
+::: aside__text
+
+Not all databases support `RETURNING` clauses. If you follow this guide on a different database system
+be sure to checkout [the examples specific to your database system](https://github.com/diesel-rs/diesel/tree/master/examples).
+
+:::
+
+</aside>
+
+Diesel can insert more than one record in a single query. Just pass a `Vec` or slice to [`insert_into`],
+and then call [`get_results`] instead of `get_result`. If you don't actually want to do anything
+with the row that was just inserted, call [`.execute`] instead. The compiler won't complain
 at you, that way. :)
+
+[`.get_result`]: https://docs.diesel.rs/2.0.x/diesel/prelude/trait.RunQueryDsl.html#method.get_result
+[`.execute`]: https://docs.diesel.rs/2.0.x/diesel/prelude/trait.RunQueryDsl.html#method.execute
+[`get_results`]: https://docs.diesel.rs/2.0.x/diesel/prelude/trait.RunQueryDsl.html#method.get_results
+[`insert_into`]: https://docs.diesel.rs/2.0.x/diesel/fn.insert_into.html
 
 Now that we've got everything set up, we can create a little script to write a new post.
 
@@ -478,21 +516,20 @@ Ok! Let's write Diesel demo (Press CTRL+D when finished)
 You know, a CLI application probably isn't the best interface for a blog demo.
 But really I just wanted a semi-simple example, where I could focus on Diesel.
 I didn't want to get bogged down in some web framework here.
-Plus I don't really like the Rust web frameworks out there. We might make a
-new one, soon.
 
 Saved draft Diesel demo with id 1
 ```
 
 Unfortunately, running `show_posts` still won't display our new post,
 because we saved it as a draft. If we look back to the code in
-`show_posts`, we added `.filter(published.eq(true))`, and we had
+`show_posts`, we added [`.filter(published.eq(true))`], and we had
 `published` default to false in our migration. We need to publish it!
 But in order to do that, we'll need to look at how to update an
 existing record. First, let's commit. The code for this demo at this
 point can be found [here][commit-no-2].
 
 [commit-no-2]: https://github.com/diesel-rs/diesel/tree/2.0.x/examples/postgres/getting_started_step_2/
+[`.filter(published.eq(true))`]: https://docs.diesel.rs/2.0.x/diesel/prelude/trait.QueryDsl.html#method.filter
 
 Now that we've got create and read out of the way, update is actually
 relatively simple. Let's jump right into the script:
@@ -519,7 +556,8 @@ fn main() {
 
     let post = diesel::update(posts.find(id))
         .set(published.eq(true))
-        .get_result::<Post>(connection)
+        .returning(Post::as_returning())
+        .get_result(connection)
         .unwrap();
     println!("Published post {}", post.title);
 }
