@@ -372,8 +372,8 @@ The full code for the demo at this point can be found [here][full code].
 
 [full code]: https://github.com/diesel-rs/diesel/tree/2.0.x/examples/postgres/getting_started_step_1/
 
-Next, let's write some code to create a new post. We'll want a struct to use for inserting
-a new record.
+Next, let's write some code to create a new post. We'll want a struct to use for inserting 
+a new record. [Why don't I just use the Post struct?](https://github.com/diesel-rs/diesel/issues/1440)
 
 ::: code-block
 
