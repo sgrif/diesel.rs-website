@@ -98,7 +98,7 @@ If we want to avoid writing this return type,
 or dynamically return a different expression,
 we can box the value instead.
 
-[`diesel::dsl`]: https://docs.diesel.rs/2.0.x/diesel/dsl/index.html
+[`diesel::dsl`]: https://docs.diesel.rs/2.1.x/diesel/dsl/index.html
 
 ::: code-block
 
@@ -146,7 +146,7 @@ clause given.
 You cannot use a boxed expression for `crates::table` with an inner join to
 another table.
 
-[`BoxableExpression`]: https://docs.diesel.rs/2.0.x/diesel/expression/trait.BoxableExpression.html
+[`BoxableExpression`]: https://docs.diesel.rs/2.1.x/diesel/expression/trait.BoxableExpression.html
 
 In addition to extracting expressions,
 you can also pull out entire queries into functions.
