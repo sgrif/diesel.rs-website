@@ -51,7 +51,7 @@ It's important to note that the generated migrations can only contain informatio
 
 ## `MultiConnection` support
 
-Diesel now includes a [`#[derive(MultiConnection)]`] proc macro derive, which allows to easily support more than one database backend in a single application. It can be applied to an enum of different connections:
+Diesel now includes a [`#[derive(MultiConnection)]`](https://docs.diesel.rs/2.1.x/diesel/derive.MultiConnection.html) proc macro derive, which allows to easily support more than one database backend in a single application. It can be applied to an enum of different connections:
 
 ```rust
 #[derive(diesel::MultiConnection)]
@@ -83,8 +83,6 @@ By default this connection type will only support a subset of SQL that's support
 * Select the backends you actually use
 * Allow to use third party connections as well (this requires the third party connection to be based at least on diesel 2.1 and to implement the [`MultiConnectionHelper`](https://docs.diesel.rs/2.1.x/diesel/connection/trait.MultiConnectionHelper.html) trait in addition to the existing `Connection` trait.
 
-[`#[derive(MultiConnection)]`]: https://docs.diesel.rs/2.1.x/diesel/derive.MultiConnection.html
-
 ## Upsert support for the MySQL backend
 
 Diesel 2.1 adds support for `INSERT INTO … ON DUPLICATE KEYS …` queries for the MySQL backend using the existing [`upsert`] framework. It's now possible to write such queries using the diesel provided DSL:
@@ -98,7 +96,7 @@ diesel::insert_into(users)
     .execute(conn)?;
 ```
 
-[`upsert`](https://docs.diesel.rs/2.1.x/diesel/query_builder/struct.InsertStatement.html#on-duplicate-key)
+[`upsert`]: https://docs.diesel.rs/2.1.x/diesel/query_builder/struct.InsertStatement.html#on-duplicate-key
 
 ## Improved error messages
 
@@ -188,7 +186,7 @@ note: required by a bound in `diesel::RunQueryDsl::load`
 
 ```
 
-This is caused by a type mismatch in the `name` field. With diesel 2.1 we now introduce an additional [`#[diesel(check_for_backend(diesel::backend::BackendType))]`] attribute that greatly improves the error messages generated for these cases. This helps pining down which field exactly causes a type mismatch.
+This is caused by a type mismatch in the `name` field. With diesel 2.1 we now introduce an additional [`#[diesel(check_for_backend(diesel::backend::BackendType))]`](https://docs.diesel.rs/2.1.x/diesel/expression/derive.Selectable.html#optional-type-attributes) attribute that greatly improves the error messages generated for these cases. This helps pining down which field exactly causes a type mismatch.
 
 By applying this attribute to our example:
 
@@ -218,8 +216,6 @@ error[E0277]: the trait bound `i32: FromSql<diesel::sql_types::Text, Mysql>` is 
 ```
 
 This error message now points to the exact cause of the issue: You cannot deserialize an `Text` value into a `i32` field. This attribute accepts one or more diesel backend type to check the struct definition against. It requires that the struct is using either both, `#[derive(Queryable)]` and `#[derive(Selectable)]` or `#[derive(QueryableByName)]`.
-
-[`#[diesel(check_for_backend(diesel::backend::BackendType))]`]: https://docs.diesel.rs/2.1.x/diesel/expression/derive.Selectable.html#optional-type-attributes
 
 ## Internal changes
 
