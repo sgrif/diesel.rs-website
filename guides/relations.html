@@ -168,7 +168,7 @@ Cargo.toml
 </div>
 <a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/master/examples/postgres/relations/Cargo.toml#L8-L10">View on GitHub</a>
 <div class="sourceCode" id="cb3"><pre class="sourceCode toml"><code class="sourceCode toml"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="kw">[</span><span class="dt">dependencies</span><span class="kw">]</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="dt">diesel</span> <span class="op">=</span> <span class="op">{ </span><span class="dt">version</span><span class="op"> =</span> <span class="st">&quot;2.0.3&quot;</span><span class="op">, </span><span class="dt">features</span><span class="op"> =</span> <span class="op">[</span><span class="st">&quot;postgres&quot;</span><span class="op">]</span> <span class="op">}</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="dt">diesel</span> <span class="op">=</span> <span class="op">{ </span><span class="dt">version</span><span class="op"> =</span> <span class="st">&quot;2.1.0&quot;</span><span class="op">, </span><span class="dt">features</span><span class="op"> =</span> <span class="op">[</span><span class="st">&quot;postgres&quot;</span><span class="op">]</span> <span class="op">}</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a><span class="dt">dotenvy</span> <span class="op">=</span> <span class="st">&quot;0.15.6&quot;</span></span></code></pre></div>
 </div>
 </div>
@@ -187,7 +187,7 @@ Cargo.toml
 <div class="browser-bar">
 up.sql
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/master/examples/postgres/relations/migrations/2023-02-08-193717_create_books/up.sql">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.1.x/examples/postgres/relations/migrations/2023-02-08-193717_create_books/up.sql">View on GitHub</a>
 <div class="sourceCode" id="cb7"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> books (</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true"></a>  <span class="kw">id</span> SERIAL <span class="kw">PRIMARY</span> <span class="kw">KEY</span>,</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true"></a>  title <span class="dt">VARCHAR</span> <span class="kw">NOT</span> <span class="kw">NULL</span></span>
@@ -200,7 +200,7 @@ up.sql
 <div class="browser-bar">
 up.sql
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/master/examples/postgres/relations/migrations/2023-02-08-193718_create_pages/up.sql">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.1.x/examples/postgres/relations/migrations/2023-02-08-193718_create_pages/up.sql">View on GitHub</a>
 <div class="sourceCode" id="cb8"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> pages (</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true"></a>  <span class="kw">id</span> SERIAL <span class="kw">PRIMARY</span> <span class="kw">KEY</span>,</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true"></a>  page_number <span class="dt">INT</span> <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
@@ -215,7 +215,7 @@ up.sql
 <div class="browser-bar">
 down.sql
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/tree/master/examples/postgres/relations/migrations/2023-02-08-193717_create_books/down.sql">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/tree/2.1.x/examples/postgres/relations/migrations/2023-02-08-193717_create_books/down.sql">View on GitHub</a>
 <div class="sourceCode" id="cb9"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a><span class="kw">DROP</span> <span class="kw">TABLE</span> books;</span></code></pre></div>
 </div>
 </div>
@@ -225,7 +225,7 @@ down.sql
 <div class="browser-bar">
 down.sql
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/tree/master/examples/postgres/relations/migrations/2023-02-08-193718_create_pages/down.sql">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/tree/2.1.x/examples/postgres/relations/migrations/2023-02-08-193718_create_pages/down.sql">View on GitHub</a>
 <div class="sourceCode" id="cb10"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true"></a><span class="kw">DROP</span> <span class="kw">TABLE</span> pages;</span></code></pre></div>
 </div>
 </div>
@@ -240,7 +240,7 @@ down.sql
 <div class="browser-bar">
 schema.rs
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/master/examples/postgres/relations/src/schema.rs">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.1.x/examples/postgres/relations/src/schema.rs">View on GitHub</a>
 <div class="sourceCode" id="cb13"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true"></a><span class="co">// @generated automatically by Diesel CLI.</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true"></a></span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true"></a><span class="pp">diesel::table!</span> <span class="op">{</span></span>
@@ -275,7 +275,7 @@ schema.rs
 <div class="browser-bar">
 src/model.rs
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/master/examples/postgres/relations/src/model.rs#L22-L38">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.1.x/examples/postgres/relations/src/model.rs#L22-L38">View on GitHub</a>
 <div class="sourceCode" id="cb14"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true"></a><span class="kw">use</span> <span class="pp">diesel::prelude::</span><span class="op">*;</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true"></a></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true"></a><span class="kw">use</span> <span class="kw">crate</span><span class="pp">::schema::</span><span class="op">{</span>books<span class="op">,</span> pages<span class="op">};</span></span>
@@ -299,7 +299,7 @@ src/model.rs
 <span id="cb14-21"><a href="#cb14-21" aria-hidden="true"></a><span class="op">}</span></span></code></pre></div>
 </div>
 </div>
-<p>Associations in Diesel are always child-to-parent. You can declare an association between two records with <code>#[diesel(belongs_to)]</code>. First we need to add <a href="https://docs.diesel.rs/2.0.x/diesel/associations/derive.Associations.html"><code>#[derive(Associations)]</code></a> , which will allow us to add <code>#[diesel(belongs_to(Book))]</code> to <code>Page</code>. That tells that pages belong to books and thereby reflect our 1-to-many relation.</p>
+<p>Associations in Diesel are always child-to-parent. You can declare an association between two records with <code>#[diesel(belongs_to)]</code>. First we need to add <a href="https://docs.diesel.rs/2.1.x/diesel/associations/derive.Associations.html"><code>#[derive(Associations)]</code></a> , which will allow us to add <code>#[diesel(belongs_to(Book))]</code> to <code>Page</code>. That tells that pages belong to books and thereby reflect our 1-to-many relation.</p>
 <p>By default diesel will assume that your struct contains a field with the lower case remote type name appended with <code>_id</code>. So for the given example <code>book_id</code>. If your foreign key field has a different name you can specify that via the <code>foreign_key</code> option: <code>#[diesel(belongs_to(Book, foreign_key = book_id))]</code></p>
 <h2 id="reading-data">Reading data</h2>
 <p>For ease of following this tutorial, we are going to put all the code into <code>main.rs</code>. We create a separate function for each part of the guide. See the linked code for the complete file content.</p>
@@ -308,7 +308,7 @@ src/model.rs
 <div class="browser-bar">
 src/main.rs
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/master/examples/postgres/relations/src/main.rs#L88-L98">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.1.x/examples/postgres/relations/src/main.rs#L88-L98">View on GitHub</a>
 <div class="sourceCode" id="cb15"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true"></a><span class="kw">let</span> momo <span class="op">=</span> <span class="pp">books::</span>table</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true"></a>    <span class="op">.</span>filter(<span class="pp">books::</span>title<span class="op">.</span>eq(<span class="st">&quot;Momo&quot;</span>))</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true"></a>    <span class="op">.</span>select(<span class="pp">Book::</span>as_select())</span>
@@ -322,15 +322,15 @@ src/main.rs
 <span id="cb15-11"><a href="#cb15-11" aria-hidden="true"></a><span class="pp">println!</span>(<span class="st">&quot;Pages for </span><span class="sc">\&quot;</span><span class="st">Momo</span><span class="sc">\&quot;</span><span class="st">: </span><span class="sc">\n</span><span class="st"> {pages:?}</span><span class="sc">\n</span><span class="st">&quot;</span>)<span class="op">;</span></span></code></pre></div>
 </div>
 </div>
-<p><a href="https://docs.diesel.rs/2.0.x/diesel/prelude/trait.BelongingToDsl.html"><code>Page::belonging_to</code></a> allows to query all child records related to one or more parent record. For the presented case it will load all pages for the book with the title “Momo”. This function generates a query for loading these data. It does not execute the query, so that it is possible to add additional clauses to the query later on. The generated query is equivalent to <code>SELECT * FROM pages WHERE book_id IN(…)</code> with a list of given book ids derived from the function input.</p>
+<p><a href="https://docs.diesel.rs/2.1.x/diesel/prelude/trait.BelongingToDsl.html"><code>Page::belonging_to</code></a> allows to query all child records related to one or more parent record. For the presented case it will load all pages for the book with the title “Momo”. This function generates a query for loading these data. It does not execute the query, so that it is possible to add additional clauses to the query later on. The generated query is equivalent to <code>SELECT * FROM pages WHERE book_id IN(…)</code> with a list of given book ids derived from the function input.</p>
 <p>Loading all pages for a single book is a straight forward query, it becomes more complicated if we want to load all pages per book. This is a classic ORM problem, where frameworks sometimes run in the so called N+1 query problem. That problem describes cases where a framework naively loads all books first and then execute one query per book to receive the relevant pages. This approach is bad for performance because it executes an unbound number of queries.</p>
-<p>Diesel’s <a href="https://docs.diesel.rs/2.0.x/diesel/associations/index.html">associations API</a> sidesteps that problem by providing a special tailored API for such cases:</p>
+<p>Diesel’s <a href="https://docs.diesel.rs/2.1.x/diesel/associations/index.html">associations API</a> sidesteps that problem by providing a special tailored API for such cases:</p>
 <div class="demo__example">
 <div class="demo__example-browser">
 <div class="browser-bar">
 src/main.rs
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/master/examples/postgres/relations/src/main.rs#L100-L115">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.1.x/examples/postgres/relations/src/main.rs#L100-L115">View on GitHub</a>
 <div class="sourceCode" id="cb16"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true"></a><span class="kw">let</span> all_books <span class="op">=</span> <span class="pp">books::</span>table<span class="op">.</span>select(<span class="pp">Book::</span>as_select())<span class="op">.</span>load(conn)<span class="op">?;</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true"></a>    </span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true"></a><span class="co">// get all pages for all books</span></span>
@@ -349,7 +349,7 @@ src/main.rs
 <span id="cb16-16"><a href="#cb16-16" aria-hidden="true"></a><span class="pp">println!</span>(<span class="st">&quot;Pages per book: </span><span class="sc">\n</span><span class="st"> {pages_per_book:?}</span><span class="sc">\n</span><span class="st">&quot;</span>)<span class="op">;</span></span></code></pre></div>
 </div>
 </div>
-<p>Here we use a similar construct as before to load all pages for a given list of books by constructing the relevant query via <code>Page::belonging_to</code>. The important difference to before is that we now pass a slice of books as argument. This will again construct the equivalent of the <code>SELECT * FROM pages WHERE book_id IN(…)</code> query as before. The important difference here is that we use the <a href="https://docs.diesel.rs/2.0.x/diesel/associations/trait.GroupedBy.html"><code>.grouped_by</code></a> function to later group each page to the correct book. In total there are two queries executed in this code block, independently of the number of queried books and pages.</p>
+<p>Here we use a similar construct as before to load all pages for a given list of books by constructing the relevant query via <code>Page::belonging_to</code>. The important difference to before is that we now pass a slice of books as argument. This will again construct the equivalent of the <code>SELECT * FROM pages WHERE book_id IN(…)</code> query as before. The important difference here is that we use the <a href="https://docs.diesel.rs/2.1.x/diesel/associations/trait.GroupedBy.html"><code>.grouped_by</code></a> function to later group each page to the correct book. In total there are two queries executed in this code block, independently of the number of queried books and pages.</p>
 <aside class="aside aside--note">
 <header class="aside__header">
 A note on consuming these data:
@@ -381,13 +381,13 @@ A note on consuming these data:
 <h2 id="joins">Joins</h2>
 <p>We have currently loaded all pages for a given book by using the API provided by the <code>diesel::associations</code> module. This API is designed to work for parent-child relations, but not the other way around. Using plain SQL joins is the preferred way to resolve such relations the other way around. Diesel provides two kinds of joins: <code>INNER JOIN</code> and <code>LEFT JOIN</code>, where the former expects that linked elements always exist. The latter allows to include rows with missing linked elements. Both constructs load data by executing a single query.</p>
 <h3 id="inner-join"><code>INNER JOIN</code></h3>
-<p><a href="https://docs.diesel.rs/2.0.x/diesel/prelude/trait.QueryDsl.html#method.inner_join"><code>QueryDsl::inner_join</code></a> allows to construct <code>INNER JOIN</code> statements between different tables.</p>
+<p><a href="https://docs.diesel.rs/2.1.x/diesel/prelude/trait.QueryDsl.html#method.inner_join"><code>QueryDsl::inner_join</code></a> allows to construct <code>INNER JOIN</code> statements between different tables.</p>
 <div class="demo__example">
 <div class="demo__example-browser">
 <div class="browser-bar">
 src/main.rs
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/master/examples/postgres/relations/src/main.rs#L70-L76">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.1.x/examples/postgres/relations/src/main.rs#L70-L76">View on GitHub</a>
 <div class="sourceCode" id="cb19"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true"></a><span class="kw">let</span> page_with_book <span class="op">=</span> <span class="pp">pages::</span>table</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true"></a>    <span class="op">.</span>inner_join(<span class="pp">books::</span>table)</span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true"></a>    <span class="op">.</span>filter(<span class="pp">books::</span>title<span class="op">.</span>eq(<span class="st">&quot;Momo&quot;</span>))</span>
@@ -397,7 +397,7 @@ src/main.rs
 <span id="cb19-7"><a href="#cb19-7" aria-hidden="true"></a><span class="pp">println!</span>(<span class="st">&quot;Page-Book pairs: {page_with_book:?}&quot;</span>)<span class="op">;</span></span></code></pre></div>
 </div>
 </div>
-<p><code>QueryDsl::inner_join()</code> modifies the constructed query to include a <code>INNER JOIN</code> clause based on the provided arguments. The <code>ON</code> clause of the join statement can be inferred based on the <a href="https://docs.diesel.rs/2.0.x/diesel/macro.joinable.html"><code>joinable!</code></a> call in your <code>schema.rs</code> file. In addition it’s possible to specify custom <code>ON</code> clauses via <a href="https://docs.diesel.rs/2.0.x/diesel/query_dsl/trait.JoinOnDsl.html#method.on"><code>JoinDsl::on</code></a>. If no explicit select clause is provided the constructed query will return a tuple of both default select clauses for both sides of the join. This can be deserialized to a rust tuple or any compatible type implementing <a href="https://docs.diesel.rs/2.0.x/diesel/deserialize/trait.Queryable.html"><code>Queryable</code></a>.</p>
+<p><code>QueryDsl::inner_join()</code> modifies the constructed query to include a <code>INNER JOIN</code> clause based on the provided arguments. The <code>ON</code> clause of the join statement can be inferred based on the <a href="https://docs.diesel.rs/2.1.x/diesel/macro.joinable.html"><code>joinable!</code></a> call in your <code>schema.rs</code> file. In addition it’s possible to specify custom <code>ON</code> clauses via <a href="https://docs.diesel.rs/2.1.x/diesel/query_dsl/trait.JoinOnDsl.html#method.on"><code>JoinDsl::on</code></a>. If no explicit select clause is provided the constructed query will return a tuple of both default select clauses for both sides of the join. This can be deserialized to a rust tuple or any compatible type implementing <a href="https://docs.diesel.rs/2.1.x/diesel/deserialize/trait.Queryable.html"><code>Queryable</code></a>.</p>
 <p>It is possible to chain several joins to join multiple tables. The nesting of the joins controls which tables exactly are joined. This means the following two statements are not equal:</p>
 <div class="sourceCode" id="cb20"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true"></a><span class="pp">users::</span>table<span class="op">.</span>inner_join(<span class="pp">posts::</span>table<span class="op">.</span>inner_join(<span class="pp">comments::</span>table))<span class="op">;</span></span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true"></a></span>
@@ -412,15 +412,15 @@ src/main.rs
 <span id="cb20-11"><a href="#cb20-11" aria-hidden="true"></a><span class="co">// SELECT * FROM users</span></span>
 <span id="cb20-12"><a href="#cb20-12" aria-hidden="true"></a><span class="co">// INNER JOIN posts ON users.id = posts.user_id</span></span>
 <span id="cb20-13"><a href="#cb20-13" aria-hidden="true"></a><span class="co">// INNER JOIN comments ON users.id = comments.user_id</span></span></code></pre></div>
-<p>For joining the same table more than one refer to the <a href="https://docs.diesel.rs/2.0.x/diesel/macro.alias.html"><code>alias!</code></a> macro to create distinct aliases.</p>
+<p>For joining the same table more than one refer to the <a href="https://docs.diesel.rs/2.1.x/diesel/macro.alias.html"><code>alias!</code></a> macro to create distinct aliases.</p>
 <h3 id="left-join"><code>LEFT JOIN</code></h3>
-<p><a href="https://docs.diesel.rs/2.0.x/diesel/prelude/trait.QueryDsl.html#method.left_join"><code>QueryDsl::left_join</code></a> allows to construct <code>LEFT JOIN</code> statements between different tables.</p>
+<p><a href="https://docs.diesel.rs/2.1.x/diesel/prelude/trait.QueryDsl.html#method.left_join"><code>QueryDsl::left_join</code></a> allows to construct <code>LEFT JOIN</code> statements between different tables.</p>
 <div class="demo__example">
 <div class="demo__example-browser">
 <div class="browser-bar">
 src/main.rs
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/master/examples/postgres/relations/src/main.rs#L78-L83">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.1.x/examples/postgres/relations/src/main.rs#L78-L83">View on GitHub</a>
 <div class="sourceCode" id="cb21"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true"></a><span class="kw">let</span> book_without_pages <span class="op">=</span> <span class="pp">books::</span>table</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true"></a>    <span class="op">.</span>left_join(<span class="pp">pages::</span>table)</span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true"></a>    <span class="op">.</span>select((<span class="pp">Book::</span>as_select()<span class="op">,</span> <span class="dt">Option</span><span class="pp">::</span><span class="op">&lt;</span>Page<span class="op">&gt;</span><span class="pp">::</span>as_select()))</span>
@@ -432,7 +432,7 @@ src/main.rs
 <p>This works similar to <code>QueryDsl::inner_join</code> with the notable difference that any column returned form a joined table is considered to be nullable. This has several consequences:</p>
 <ul>
 <li>A query like <code>books::table.left_join(pages::table).load(conn)</code> returns <code>(Book, Option&lt;Page&gt;)</code> or any compatible type</li>
-<li>Explicit calls to <a href="https://docs.diesel.rs/2.0.x/diesel/prelude/trait.QueryDsl.html#method.select"><code>QueryDsl::select</code></a> require that any column that comes from the left joined table is annotated with a <a href="https://docs.diesel.rs/2.0.x/diesel/expression_methods/trait.NullableExpressionMethods.html#method.nullable"><code>NullableExpressionMethods::nullable</code></a> call. This function can be called for individual columns, expressions or tuples containing columns form left joined tables.</li>
+<li>Explicit calls to <a href="https://docs.diesel.rs/2.1.x/diesel/prelude/trait.QueryDsl.html#method.select"><code>QueryDsl::select</code></a> require that any column that comes from the left joined table is annotated with a <a href="https://docs.diesel.rs/2.1.x/diesel/expression_methods/trait.NullableExpressionMethods.html#method.nullable"><code>NullableExpressionMethods::nullable</code></a> call. This function can be called for individual columns, expressions or tuples containing columns form left joined tables.</li>
 </ul>
 <h2 id="many-to-many-or-mn">many-to-many or m:n</h2>
 <p>We currently have books and they have pages, but books have an author, too. To be precise, a book can have more than one author and an author can have more than one book. So we have a many-to-many relation here. Diesel does not have a concept of <code>has_many</code> but instead we are going create a “join table” <code>books_authors</code> and add a <code>belongs_to</code> to both <code>books</code> and <code>authors</code>. Let’s see that in action.</p>
@@ -445,7 +445,7 @@ src/main.rs
 <div class="browser-bar">
 up.sql
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/master/examples/postgres/relations/migrations/2023-02-17-084424_add_authors/up.sql">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.1.x/examples/postgres/relations/migrations/2023-02-17-084424_add_authors/up.sql">View on GitHub</a>
 <div class="sourceCode" id="cb23"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> authors (</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true"></a>  <span class="kw">id</span> SERIAL <span class="kw">PRIMARY</span> <span class="kw">KEY</span>,</span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true"></a>  name <span class="dt">VARCHAR</span> <span class="kw">NOT</span> <span class="kw">NULL</span></span>
@@ -458,7 +458,7 @@ up.sql
 <div class="browser-bar">
 down.sql
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/master/examples/postgres/relations/migrations/2023-02-17-084424_add_authors/down.sql">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.1.x/examples/postgres/relations/migrations/2023-02-17-084424_add_authors/down.sql">View on GitHub</a>
 <div class="sourceCode" id="cb24"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true"></a><span class="kw">DROP</span> <span class="kw">TABLE</span> authors;</span></code></pre></div>
 </div>
 </div>
@@ -468,7 +468,7 @@ down.sql
 <div class="browser-bar">
 up.sql
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/master/examples/postgres/relations/migrations/2023-02-17-084617_add_books_authors/up.sql">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.1.x/examples/postgres/relations/migrations/2023-02-17-084617_add_books_authors/up.sql">View on GitHub</a>
 <div class="sourceCode" id="cb25"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> books_authors (</span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true"></a>  book_id <span class="dt">INTEGER</span> <span class="kw">REFERENCES</span> books(<span class="kw">id</span>),</span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true"></a>  author_id <span class="dt">INTEGER</span> <span class="kw">REFERENCES</span> authors(<span class="kw">id</span>),</span>
@@ -482,7 +482,7 @@ up.sql
 <div class="browser-bar">
 up.sql
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/master/examples/postgres/relations/migrations/2023-02-17-084617_add_books_authors/down.sql">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.1.x/examples/postgres/relations/migrations/2023-02-17-084617_add_books_authors/down.sql">View on GitHub</a>
 <div class="sourceCode" id="cb26"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true"></a><span class="kw">DROP</span> <span class="kw">TABLE</span> books_authors;</span></code></pre></div>
 </div>
 </div>
@@ -503,7 +503,7 @@ Run the migrations
 <div class="browser-bar">
 src/model.rs
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/master/examples/postgres/relations/src/model.rs#L1-L20">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.1.x/examples/postgres/relations/src/model.rs#L1-L20">View on GitHub</a>
 <div class="sourceCode" id="cb28"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true"></a><span class="kw">use</span> <span class="pp">diesel::prelude::</span><span class="op">*;</span></span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true"></a></span>
 <span id="cb28-3"><a href="#cb28-3" aria-hidden="true"></a><span class="kw">use</span> <span class="kw">crate</span><span class="pp">::schema::</span><span class="op">{</span>books<span class="op">,</span> pages<span class="op">,</span> authors<span class="op">,</span> books_authors<span class="op">};</span></span>
@@ -534,7 +534,7 @@ src/model.rs
 <div class="browser-bar">
 src/main.rs
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/master/examples/postgres/relations/src/main.rs#L121-L131">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.1.x/examples/postgres/relations/src/main.rs#L121-L131">View on GitHub</a>
 <div class="sourceCode" id="cb29"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true"></a><span class="kw">let</span> astrid_lindgren <span class="op">=</span> <span class="pp">authors::</span>table</span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true"></a>    <span class="op">.</span>filter(<span class="pp">authors::</span>name<span class="op">.</span>eq(<span class="st">&quot;Astrid Lindgren&quot;</span>))</span>
 <span id="cb29-3"><a href="#cb29-3" aria-hidden="true"></a>    <span class="op">.</span>select(<span class="pp">Author::</span>as_select())</span>
@@ -555,7 +555,7 @@ src/main.rs
 <div class="browser-bar">
 src/main.rs
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/master/examples/postgres/relations/src/main.rs#L133-L143">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.1.x/examples/postgres/relations/src/main.rs#L133-L143">View on GitHub</a>
 <div class="sourceCode" id="cb30"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true"></a><span class="kw">let</span> collaboration <span class="op">=</span> <span class="pp">books::</span>table</span>
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true"></a>    <span class="op">.</span>filter(<span class="pp">books::</span>title<span class="op">.</span>eq(<span class="st">&quot;Pippi and Momo&quot;</span>))</span>
 <span id="cb30-3"><a href="#cb30-3" aria-hidden="true"></a>    <span class="op">.</span>select(<span class="pp">Book::</span>as_select())</span>
@@ -575,7 +575,7 @@ src/main.rs
 <div class="browser-bar">
 src/main.rs
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/master/examples/postgres/relations/src/main.rs#L146-L162">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.1.x/examples/postgres/relations/src/main.rs#L146-L162">View on GitHub</a>
 <div class="sourceCode" id="cb31"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true"></a><span class="kw">let</span> all_authors <span class="op">=</span> <span class="pp">authors::</span>table</span>
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true"></a>    <span class="op">.</span>select(<span class="pp">Author::</span>as_select())</span>
 <span id="cb31-3"><a href="#cb31-3" aria-hidden="true"></a>    <span class="op">.</span>load(conn)<span class="op">?;</span></span>
@@ -596,7 +596,7 @@ src/main.rs
 </div>
 </div>
 <p>As before we load all associated books by joining the books table to the query produced by <code>BookAuthor::belonging_to</code>. It is important to load the data from <code>books_authors</code> as well, as these data include the relevant mapping. The grouping is performed again with the <code>.grouped_by</code> method, similar to how this was done for the 1-to-n relations case. We now need to exclude the <code>BookAuthor</code> information in the final grouping step explicitly.</p>
-<p>The final code for this tutorial can be found <a href="https://github.com/diesel-rs/diesel/blob/master/examples/postgres/relations">here</a>.</p>
+<p>The final code for this tutorial can be found <a href="https://github.com/diesel-rs/diesel/blob/2.1.x/examples/postgres/relations">here</a>.</p>
 </div>
 </div>
 </div>

@@ -138,13 +138,13 @@ code span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
 <div class="content-wrapper">
 <div class="guide-wrapper">
 <p>For this guide, we’re going to walk through some simple examples for each of the pieces of CRUD, which stands for “Create Read Update Delete”. Each step in this guide will build on the previous, and is meant to be followed along.</p>
-<p><strong>This guide assumes that you’re using PostgreSQL.</strong> Before we start, make sure you have PostgreSQL installed and running. If you are using some different database, like for example SQLite, some examples won’t just run as the implemented API might differ. In the project repository, you may find various <a href="https://github.com/diesel-rs/diesel/tree/2.0.x/examples">examples</a> for every supported database.</p>
+<p>Before we start, make sure you have PostgreSQL installed and running. If you are using some different database, like for example SQLite, some examples won’t just run as the implemented API might differ. In the project repository, you may find various <a href="https://github.com/diesel-rs/diesel/tree/2.1.x/examples">examples</a> for every supported database.</p>
 <aside class="aside aside--note">
 <header class="aside__header">
 A note on Rust versions:
 </header>
 <div class="aside__text">
-<p>Diesel requires Rust 1.56 or later. If you’re following along with this guide, make sure you’re using at least that version of Rust by running <code>rustup update stable</code>.</p>
+<p>Diesel requires Rust 1.65 or later. If you’re following along with this guide, make sure you’re using at least that version of Rust by running <code>rustup update stable</code>.</p>
 </div>
 </aside>
 <h2 id="initializing-a-new-project">Initializing a new project</h2>
@@ -164,9 +164,9 @@ Generate a new project
 <div class="browser-bar">
 Cargo.toml
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.0.x/examples/postgres/getting_started_step_1/Cargo.toml">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.1.x/examples/postgres/getting_started_step_1/Cargo.toml">View on GitHub</a>
 <div class="sourceCode" id="cb2"><pre class="sourceCode toml"><code class="sourceCode toml"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="kw">[</span><span class="dt">dependencies</span><span class="kw">]</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a><span class="dt">diesel</span> <span class="op">=</span> <span class="op">{ </span><span class="dt">version</span><span class="op"> =</span> <span class="st">&quot;2.0.0&quot;</span><span class="op">, </span><span class="dt">features</span><span class="op"> =</span> <span class="op">[</span><span class="st">&quot;postgres&quot;</span><span class="op">]</span> <span class="op">}</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a><span class="dt">diesel</span> <span class="op">=</span> <span class="op">{ </span><span class="dt">version</span><span class="op"> =</span> <span class="st">&quot;2.1.0&quot;</span><span class="op">, </span><span class="dt">features</span><span class="op"> =</span> <span class="op">[</span><span class="st">&quot;postgres&quot;</span><span class="op">]</span> <span class="op">}</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a><span class="dt">dotenvy</span> <span class="op">=</span> <span class="st">&quot;0.15&quot;</span></span></code></pre></div>
 </div>
 </div>
@@ -189,7 +189,7 @@ A note on installing <code>diesel_cli</code>
 <pre><code>note: ld: library not found for -lmysqlclient
 clang: error: linker command failed with exit code 1 (use -v to see invocation)</code></pre>
 <p>This means you are missing the client library needed for a database backend – <code>mysqlclient</code> in this case. You can resolve this issue by either installing the library (using the usual way to do this depending on your operating system) or by excluding the undesired default library with the <code>--no-default-features</code> flag.</p>
-<p>By default diesel depends on the following client libraries:</p>
+<p>By default diesel CLI depends on the following client libraries:</p>
 <ul>
 <li><a href="https://www.postgresql.org/docs/current/libpq.html"><code>libpq</code></a> for the PostgreSQL backend</li>
 <li><a href="https://dev.mysql.com/doc/c-api/8.0/en/c-api-implementations.html"><code>libmysqlclient</code></a> for the Mysql backend</li>
@@ -198,6 +198,7 @@ clang: error: linker command failed with exit code 1 (use -v to see invocation)<
 <p>If you are not sure on how to install those dependencies please consult the documentation of the corresponding dependency or your distribution package manager.</p>
 <p>For example, if you only have PostgreSQL installed, you can use this to install <code>diesel_cli</code> with only PostgreSQL:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="ex">cargo</span> install diesel_cli --no-default-features --features postgres</span></code></pre></div>
+<p>If you are unsure how to configure these dependencies checkout <a href="https://github.com/diesel-rs/diesel/blob/master/.github/workflows/ci.yml#L63-L193">diesel CI</a> configuration for a working setup for different operating systems.</p>
 </div>
 </aside>
 <h2 id="setup-diesel-for-your-project">Setup Diesel for your project</h2>
@@ -218,7 +219,7 @@ Creating migrations/20160815133237_create_posts/down.sql</code></pre>
 <div class="browser-bar">
 up.sql
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/tree/2.0.x/examples/postgres/getting_started_step_1/migrations/20160815133237_create_posts/up.sql">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/tree/2.1.x/examples/postgres/getting_started_step_1/migrations/20160815133237_create_posts/up.sql">View on GitHub</a>
 <div class="sourceCode" id="cb10"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> posts (</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true"></a>  <span class="kw">id</span> SERIAL <span class="kw">PRIMARY</span> <span class="kw">KEY</span>,</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true"></a>  title <span class="dt">VARCHAR</span> <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
@@ -232,7 +233,7 @@ up.sql
 <div class="browser-bar">
 down.sql
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/tree/2.0.x/examples/postgres/getting_started_step_1/migrations/20160815133237_create_posts/down.sql">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/tree/2.1.x/examples/postgres/getting_started_step_1/migrations/20160815133237_create_posts/down.sql">View on GitHub</a>
 <div class="sourceCode" id="cb11"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true"></a><span class="kw">DROP</span> <span class="kw">TABLE</span> posts</span></code></pre></div>
 </div>
 </div>
@@ -245,7 +246,7 @@ down.sql
 A Note on Raw SQL in Migrations:
 </header>
 <div class="aside__text">
-<p>Since migrations are written in raw SQL, they can contain specific features of the database system you use. For example, the <code>CREATE TABLE</code> statement above uses PostgreSQL’s <code>SERIAL</code> type. If you want to use SQLite instead, you need to use <code>INTEGER</code> instead.</p>
+<p>Since migrations are written in raw SQL, they can contain specific features of the database system you use. For example, the <code>CREATE TABLE</code> statement above uses PostgreSQL’s <code>SERIAL</code> type. If you want to use SQLite instead, you need to use <code>INTEGER</code> instead. The <a href="https://github.com/diesel-rs/diesel/tree/master/examples">diesel GitHub repository</a> contains modified examples for all supported backends. Be sure to checkout these examples if you use another backend than PostgreSQL.</p>
 </div>
 </aside>
 <aside class="aside aside--note">
@@ -254,7 +255,7 @@ A Note on Using Migrations in Production:
 </header>
 <div class="aside__text">
 <p>When preparing your app for use in production, you may want to run your migrations during the application’s initialization phase. You may also want to include the migration scripts as a part of your code, to avoid having to copy them to your deployment location/image etc.</p>
-<p>The <a href="https://docs.rs/crate/diesel_migrations/2.0.0">diesel_migrations</a> crate provides the <code>embed_migrations!</code> macro, allowing you to embed migration scripts in the final binary. Once your code uses it, you can simply include <code>connection.run_pending_migrations(MIGRATIONS)</code> at the start of your <code>main</code> function to run migrations every time the application starts.</p>
+<p>The <a href="https://docs.rs/crate/diesel_migrations/2.0.0">diesel_migrations</a> crate provides the <a href="https://docs.rs/diesel_migrations/2.0.0/diesel_migrations/macro.embed_migrations.html"><code>embed_migrations!</code></a> macro, allowing you to embed migration scripts in the final binary. Once your code uses it, you can simply include <code>connection.run_pending_migrations(MIGRATIONS)</code> at the start of your <code>main</code> function to run migrations every time the application starts.</p>
 </div>
 </aside>
 <h2 id="write-rust">Write Rust</h2>
@@ -264,7 +265,7 @@ A Note on Using Migrations in Production:
 <div class="browser-bar">
 src/lib.rs
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.0.x/examples/postgres/getting_started_step_1/src/lib.rs">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.1.x/examples/postgres/getting_started_step_1/src/lib.rs">View on GitHub</a>
 <div class="sourceCode" id="cb14"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true"></a><span class="kw">use</span> <span class="pp">diesel::pg::</span>PgConnection<span class="op">;</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true"></a><span class="kw">use</span> <span class="pp">diesel::prelude::</span><span class="op">*;</span></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true"></a><span class="kw">use</span> <span class="pp">dotenvy::</span>dotenv<span class="op">;</span></span>
@@ -286,7 +287,7 @@ src/lib.rs
 <div class="browser-bar">
 src/lib.rs
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/tree/2.0.x/examples/postgres/getting_started_step_1/src/lib.rs">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/tree/2.1.x/examples/postgres/getting_started_step_1/src/lib.rs#L1-L2">View on GitHub</a>
 <div class="sourceCode" id="cb15"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true"></a><span class="kw">pub</span> <span class="kw">mod</span> models<span class="op">;</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true"></a><span class="kw">pub</span> <span class="kw">mod</span> schema<span class="op">;</span></span></code></pre></div>
 </div>
@@ -297,26 +298,28 @@ src/lib.rs
 <div class="browser-bar">
 src/models.rs
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/tree/2.0.x/examples/postgres/getting_started_step_1/src/models.rs">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/tree/2.1.x/examples/postgres/getting_started_step_1/src/models.rs">View on GitHub</a>
 <div class="sourceCode" id="cb16"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true"></a><span class="kw">use</span> <span class="pp">diesel::prelude::</span><span class="op">*;</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true"></a></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true"></a><span class="at">#[</span>derive<span class="at">(</span>Queryable<span class="at">)]</span></span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true"></a><span class="kw">pub</span> <span class="kw">struct</span> Post <span class="op">{</span></span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true"></a>    <span class="kw">pub</span> id<span class="op">:</span> <span class="dt">i32</span><span class="op">,</span></span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true"></a>    <span class="kw">pub</span> title<span class="op">:</span> <span class="dt">String</span><span class="op">,</span></span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true"></a>    <span class="kw">pub</span> body<span class="op">:</span> <span class="dt">String</span><span class="op">,</span></span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true"></a>    <span class="kw">pub</span> published<span class="op">:</span> <span class="dt">bool</span><span class="op">,</span></span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true"></a><span class="op">}</span></span></code></pre></div>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true"></a><span class="at">#[</span>derive<span class="at">(</span>Queryable<span class="op">,</span> Selectable<span class="at">)]</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true"></a><span class="at">#[</span>diesel<span class="at">(</span>table_name <span class="op">=</span> <span class="kw">crate</span><span class="pp">::schema::</span>posts<span class="at">)]</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true"></a><span class="at">#[</span>diesel<span class="at">(</span>check_for_backend<span class="at">(</span><span class="pp">diesel::pg::</span>Pg<span class="at">))]</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true"></a><span class="kw">pub</span> <span class="kw">struct</span> Post <span class="op">{</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true"></a>    <span class="kw">pub</span> id<span class="op">:</span> <span class="dt">i32</span><span class="op">,</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true"></a>    <span class="kw">pub</span> title<span class="op">:</span> <span class="dt">String</span><span class="op">,</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true"></a>    <span class="kw">pub</span> body<span class="op">:</span> <span class="dt">String</span><span class="op">,</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true"></a>    <span class="kw">pub</span> published<span class="op">:</span> <span class="dt">bool</span><span class="op">,</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true"></a><span class="op">}</span></span></code></pre></div>
 </div>
 </div>
-<p><code>#[derive(Queryable)]</code> will generate all of the code needed to load a <code>Post</code> struct from a SQL query.</p>
-<p>Typically the schema module isn’t created by hand, it gets generated by Diesel. When we ran <code>diesel setup</code>, a file called <a href="https://github.com/diesel-rs/diesel/blob/2.0.x/examples/postgres/getting_started_step_1/diesel.toml">diesel.toml</a> was created which tells Diesel to maintain a file at src/schema.rs for us. The file should look like this:</p>
+<p><a href="https://docs.diesel.rs/master/diesel/prelude/derive.Queryable.html"><code>#[derive(Queryable)]</code></a> will generate all of the code needed to load a <code>Post</code> struct from a SQL query. <a href="https://docs.diesel.rs/master/diesel/prelude/derive.Selectable.html"><code>#[derive(Selectable)]</code></a> will generate code to construct a matching select clause based on your model type based on the table defined via <code>#[diesel(table_name = crate::schema::posts)]</code>. <code>#[diesel(check_for_backend(diesel::pg::Pg))</code>adds additional compile time checks to verify that all field types in your struct are compatible with their corresponding SQL side expressions. This part is optional, but it greatly improves the generated compiler error messages.</p>
+<p>Typically the schema module isn’t created by hand, it gets generated by diesel CLI. When we ran <code>diesel setup</code>, a file called <a href="https://github.com/diesel-rs/diesel/blob/2.1.x/examples/postgres/getting_started_step_1/diesel.toml">diesel.toml</a> was created which tells Diesel to maintain a file at src/schema.rs for us. The file should look like this:</p>
 <div class="demo__example">
 <div class="demo__example-browser">
 <div class="browser-bar">
 src/schema.rs
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.0.x/examples/postgres/getting_started_step_1/src/schema.rs">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.1.x/examples/postgres/getting_started_step_1/src/schema.rs">View on GitHub</a>
 <div class="sourceCode" id="cb17"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true"></a><span class="co">// @generated automatically by Diesel CLI.</span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true"></a></span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true"></a><span class="pp">diesel::table!</span> <span class="op">{</span></span>
@@ -330,14 +333,14 @@ src/schema.rs
 </div>
 </div>
 <p>The exact output might vary slightly depending on your database, but it should be equivalent.</p>
-<p>The <a href="https://docs.diesel.rs/2.0.x/diesel/macro.table.html"><code>table!</code> macro</a> creates a bunch of code based on the database schema to represent all of the tables and columns. We’ll see how exactly to use that in the next example.</p>
+<p>The <a href="https://docs.diesel.rs/2.1.x/diesel/macro.table.html"><code>table!</code> macro</a> creates a bunch of code based on the database schema to represent all of the tables and columns. We’ll see how exactly to use that in the next example. For a deep dive into the generated code see the <a href="schema-in-depth.html">Schema in Depth</a> guide.</p>
 <p>Any time we run or revert a migration, this file will get automatically updated.</p>
 <aside class="aside aside--note">
 <header class="aside__header">
 A Note on Field Order
 </header>
 <div class="aside__text">
-<p>Using <code>#[derive(Queryable)]</code> assumes that the order of fields on the <code>Post</code> struct matches the columns in the <code>posts</code> table, so make sure to define them in the order seen in the <code>schema.rs</code> file.</p>
+<p>Using <code>#[derive(Queryable)]</code> assumes that the order of fields on the <code>Post</code> struct matches the columns in the <code>posts</code> table, so make sure to define them in the order seen in the <code>schema.rs</code> file. Using <code>#[derive(Selectable)]</code> in combination with <a href="https://docs.diesel.rs/2.1.x/diesel/prelude/trait.SelectableHelper.html#tymethod.as_select"><code>SelectableHelper::as_select</code></a> ensures that the field order always matches.</p>
 </div>
 </aside>
 <p>Let’s write the code to actually show us our posts.</p>
@@ -346,7 +349,7 @@ A Note on Field Order
 <div class="browser-bar">
 src/bin/show_posts.rs
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.0.x/examples/postgres/getting_started_step_1/src/bin/show_posts.rs">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.1.x/examples/postgres/getting_started_step_1/src/bin/show_posts.rs">View on GitHub</a>
 <div class="sourceCode" id="cb18"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true"></a><span class="kw">use</span> <span class="kw">self</span><span class="pp">::models::</span><span class="op">*;</span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true"></a><span class="kw">use</span> <span class="pp">diesel::prelude::</span><span class="op">*;</span></span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true"></a><span class="kw">use</span> <span class="pp">diesel_demo::</span><span class="op">*;</span></span>
@@ -358,28 +361,29 @@ src/bin/show_posts.rs
 <span id="cb18-9"><a href="#cb18-9" aria-hidden="true"></a>    <span class="kw">let</span> results <span class="op">=</span> posts</span>
 <span id="cb18-10"><a href="#cb18-10" aria-hidden="true"></a>        <span class="op">.</span>filter(published<span class="op">.</span>eq(<span class="cn">true</span>))</span>
 <span id="cb18-11"><a href="#cb18-11" aria-hidden="true"></a>        <span class="op">.</span>limit(<span class="dv">5</span>)</span>
-<span id="cb18-12"><a href="#cb18-12" aria-hidden="true"></a>        <span class="op">.</span><span class="pp">load::</span><span class="op">&lt;</span>Post<span class="op">&gt;</span>(connection)</span>
-<span id="cb18-13"><a href="#cb18-13" aria-hidden="true"></a>        <span class="op">.</span>expect(<span class="st">&quot;Error loading posts&quot;</span>)<span class="op">;</span></span>
-<span id="cb18-14"><a href="#cb18-14" aria-hidden="true"></a></span>
-<span id="cb18-15"><a href="#cb18-15" aria-hidden="true"></a>    <span class="pp">println!</span>(<span class="st">&quot;Displaying {} posts&quot;</span><span class="op">,</span> results<span class="op">.</span>len())<span class="op">;</span></span>
-<span id="cb18-16"><a href="#cb18-16" aria-hidden="true"></a>    <span class="kw">for</span> post <span class="kw">in</span> results <span class="op">{</span></span>
-<span id="cb18-17"><a href="#cb18-17" aria-hidden="true"></a>        <span class="pp">println!</span>(<span class="st">&quot;{}&quot;</span><span class="op">,</span> post<span class="op">.</span>title)<span class="op">;</span></span>
-<span id="cb18-18"><a href="#cb18-18" aria-hidden="true"></a>        <span class="pp">println!</span>(<span class="st">&quot;-----------</span><span class="sc">\n</span><span class="st">&quot;</span>)<span class="op">;</span></span>
-<span id="cb18-19"><a href="#cb18-19" aria-hidden="true"></a>        <span class="pp">println!</span>(<span class="st">&quot;{}&quot;</span><span class="op">,</span> post<span class="op">.</span>body)<span class="op">;</span></span>
-<span id="cb18-20"><a href="#cb18-20" aria-hidden="true"></a>    <span class="op">}</span></span>
-<span id="cb18-21"><a href="#cb18-21" aria-hidden="true"></a><span class="op">}</span></span></code></pre></div>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true"></a>        <span class="op">.</span>select(<span class="pp">Post::</span>as_select())</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true"></a>        <span class="op">.</span>load(connection)</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true"></a>        <span class="op">.</span>expect(<span class="st">&quot;Error loading posts&quot;</span>)<span class="op">;</span></span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true"></a></span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true"></a>    <span class="pp">println!</span>(<span class="st">&quot;Displaying {} posts&quot;</span><span class="op">,</span> results<span class="op">.</span>len())<span class="op">;</span></span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true"></a>    <span class="kw">for</span> post <span class="kw">in</span> results <span class="op">{</span></span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true"></a>        <span class="pp">println!</span>(<span class="st">&quot;{}&quot;</span><span class="op">,</span> post<span class="op">.</span>title)<span class="op">;</span></span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true"></a>        <span class="pp">println!</span>(<span class="st">&quot;-----------</span><span class="sc">\n</span><span class="st">&quot;</span>)<span class="op">;</span></span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true"></a>        <span class="pp">println!</span>(<span class="st">&quot;{}&quot;</span><span class="op">,</span> post<span class="op">.</span>body)<span class="op">;</span></span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true"></a>    <span class="op">}</span></span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true"></a><span class="op">}</span></span></code></pre></div>
 </div>
 </div>
-<p>The use <code>self::schema::posts::dsl::*</code> line imports a bunch of aliases so that we can say <code>posts</code> instead of <code>posts::table</code>, and <code>published</code> instead of <code>posts::published</code>. It’s useful when we’re only dealing with a single table, but that’s not always what we want.</p>
+<p>The use <code>self::schema::posts::dsl::*</code> line imports a bunch of aliases so that we can say <code>posts</code> instead of <code>posts::table</code>, and <code>published</code> instead of <code>posts::published</code>. It’s useful when we’re only dealing with a single table, but that’s not always what we want. It’s always important to keep imports to <code>schema::table::dsl::*</code> inside of the current function to prevent polluting the module namespace.</p>
 <p>We can run our script with <code>cargo run --bin show_posts</code>. Unfortunately, the results won’t be terribly interesting, as we don’t actually have any posts in the database. Still, we’ve written a decent amount of code, so let’s commit.</p>
-<p>The full code for the demo at this point can be found <a href="https://github.com/diesel-rs/diesel/tree/2.0.x/examples/postgres/getting_started_step_1/">here</a>.</p>
+<p>The full code for the demo at this point can be found <a href="https://github.com/diesel-rs/diesel/tree/2.1.x/examples/postgres/getting_started_step_1/">here</a>.</p>
 <p>Next, let’s write some code to create a new post. We’ll want a struct to use for inserting a new record.</p>
 <div class="demo__example">
 <div class="demo__example-browser">
 <div class="browser-bar">
 src/models.rs
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.0.x/examples/postgres/getting_started_step_2/src/models.rs">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.1.x/examples/postgres/getting_started_step_2/src/models.rs">View on GitHub</a>
 <div class="sourceCode" id="cb19"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true"></a><span class="kw">use</span> <span class="kw">crate</span><span class="pp">::schema::</span>posts<span class="op">;</span></span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true"></a></span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true"></a><span class="at">#[</span>derive<span class="at">(</span>Insertable<span class="at">)]</span></span>
@@ -396,7 +400,7 @@ src/models.rs
 <div class="browser-bar">
 src/lib.rs
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.0.x/examples/postgres/getting_started_step_2/src/lib.rs">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.1.x/examples/postgres/getting_started_step_2/src/lib.rs">View on GitHub</a>
 <div class="sourceCode" id="cb20"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true"></a><span class="kw">use</span> <span class="kw">self</span><span class="pp">::models::</span><span class="op">{</span>NewPost<span class="op">,</span> Post<span class="op">};</span></span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true"></a></span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true"></a><span class="kw">pub</span> <span class="kw">fn</span> create_post(conn<span class="op">:</span> <span class="op">&amp;</span><span class="kw">mut</span> PgConnection<span class="op">,</span> title<span class="op">:</span> <span class="op">&amp;</span><span class="dt">str</span><span class="op">,</span> body<span class="op">:</span> <span class="op">&amp;</span><span class="dt">str</span>) <span class="op">-&gt;</span> Post <span class="op">{</span></span>
@@ -406,20 +410,29 @@ src/lib.rs
 <span id="cb20-7"><a href="#cb20-7" aria-hidden="true"></a></span>
 <span id="cb20-8"><a href="#cb20-8" aria-hidden="true"></a>    <span class="pp">diesel::</span>insert_into(<span class="pp">posts::</span>table)</span>
 <span id="cb20-9"><a href="#cb20-9" aria-hidden="true"></a>        <span class="op">.</span>values(<span class="op">&amp;</span>new_post)</span>
-<span id="cb20-10"><a href="#cb20-10" aria-hidden="true"></a>        <span class="op">.</span>get_result(conn)</span>
-<span id="cb20-11"><a href="#cb20-11" aria-hidden="true"></a>        <span class="op">.</span>expect(<span class="st">&quot;Error saving new post&quot;</span>)</span>
-<span id="cb20-12"><a href="#cb20-12" aria-hidden="true"></a><span class="op">}</span></span></code></pre></div>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true"></a>        <span class="op">.</span>returning(<span class="pp">Post::</span>as_returning())</span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true"></a>        <span class="op">.</span>get_result(conn)</span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true"></a>        <span class="op">.</span>expect(<span class="st">&quot;Error saving new post&quot;</span>)</span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true"></a><span class="op">}</span></span></code></pre></div>
 </div>
 </div>
-<p>When we call <code>.get_result</code> on an insert or update statement, it automatically adds <code>RETURNING *</code> to the end of the query, and lets us load it into any struct that implements <code>Queryable</code> for the right types. Neat!</p>
-<p>Diesel can insert more than one record in a single query. Just pass a <code>Vec</code> or slice to <code>insert</code>, and then call <code>get_results</code> instead of <code>get_result</code>. If you don’t actually want to do anything with the row that was just inserted, call <code>.execute</code> instead. The compiler won’t complain at you, that way. :)</p>
+<p>When we call <a href="https://docs.diesel.rs/2.1.x/diesel/prelude/trait.RunQueryDsl.html#method.get_result"><code>.get_result</code></a> on an insert or update statement, it automatically adds <code>RETURNING *</code> to the end of the query, and lets us load it into any struct that implements <code>Queryable</code> for the right types. Neat!</p>
+<aside class="aside aside--note">
+<header class="aside__header">
+A Note on <code>RETURNING</code> clauses
+</header>
+<div class="aside__text">
+<p>Not all databases support <code>RETURNING</code> clauses. If you follow this guide on a different database system be sure to checkout <a href="https://github.com/diesel-rs/diesel/tree/master/examples">the examples specific to your database system</a>.</p>
+</div>
+</aside>
+<p>Diesel can insert more than one record in a single query. Just pass a <code>Vec</code> or slice to <a href="https://docs.diesel.rs/2.1.x/diesel/fn.insert_into.html"><code>insert_into</code></a>, and then call <a href="https://docs.diesel.rs/2.1.x/diesel/prelude/trait.RunQueryDsl.html#method.get_results"><code>get_results</code></a> instead of <code>get_result</code>. If you don’t actually want to do anything with the row that was just inserted, call <a href="https://docs.diesel.rs/2.1.x/diesel/prelude/trait.RunQueryDsl.html#method.execute"><code>.execute</code></a> instead. The compiler won’t complain at you, that way. :)</p>
 <p>Now that we’ve got everything set up, we can create a little script to write a new post.</p>
 <div class="demo__example">
 <div class="demo__example-browser">
 <div class="browser-bar">
 src/bin/write_post.rs
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.0.x/examples/postgres/getting_started_step_2/src/bin/write_post.rs">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.1.x/examples/postgres/getting_started_step_2/src/bin/write_post.rs">View on GitHub</a>
 <div class="sourceCode" id="cb21"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true"></a><span class="kw">use</span> <span class="pp">diesel_demo::</span><span class="op">*;</span></span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true"></a><span class="kw">use</span> <span class="pp">std::io::</span><span class="op">{</span>stdin<span class="op">,</span> <span class="bu">Read</span><span class="op">};</span></span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true"></a></span>
@@ -462,18 +475,16 @@ Ok! Let&#39;s write Diesel demo (Press CTRL+D when finished)
 You know, a CLI application probably isn&#39;t the best interface for a blog demo.
 But really I just wanted a semi-simple example, where I could focus on Diesel.
 I didn&#39;t want to get bogged down in some web framework here.
-Plus I don&#39;t really like the Rust web frameworks out there. We might make a
-new one, soon.
 
 Saved draft Diesel demo with id 1</code></pre>
-<p>Unfortunately, running <code>show_posts</code> still won’t display our new post, because we saved it as a draft. If we look back to the code in <code>show_posts</code>, we added <code>.filter(published.eq(true))</code>, and we had <code>published</code> default to false in our migration. We need to publish it! But in order to do that, we’ll need to look at how to update an existing record. First, let’s commit. The code for this demo at this point can be found <a href="https://github.com/diesel-rs/diesel/tree/2.0.x/examples/postgres/getting_started_step_2/">here</a>.</p>
+<p>Unfortunately, running <code>show_posts</code> still won’t display our new post, because we saved it as a draft. If we look back to the code in <code>show_posts</code>, we added <a href="https://docs.diesel.rs/2.1.x/diesel/prelude/trait.QueryDsl.html#method.filter"><code>.filter(published.eq(true))</code></a>, and we had <code>published</code> default to false in our migration. We need to publish it! But in order to do that, we’ll need to look at how to update an existing record. First, let’s commit. The code for this demo at this point can be found <a href="https://github.com/diesel-rs/diesel/tree/2.1.x/examples/postgres/getting_started_step_2/">here</a>.</p>
 <p>Now that we’ve got create and read out of the way, update is actually relatively simple. Let’s jump right into the script:</p>
 <div class="demo__example">
 <div class="demo__example-browser">
 <div class="browser-bar">
 src/bin/publish_post.rs
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.0.x/examples/postgres/getting_started_step_3/src/bin/publish_post.rs">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.1.x/examples/postgres/getting_started_step_3/src/bin/publish_post.rs">View on GitHub</a>
 <div class="sourceCode" id="cb23"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true"></a><span class="kw">use</span> <span class="kw">self</span><span class="pp">::models::</span>Post<span class="op">;</span></span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true"></a><span class="kw">use</span> <span class="pp">diesel::prelude::</span><span class="op">*;</span></span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true"></a><span class="kw">use</span> <span class="pp">diesel_demo::</span><span class="op">*;</span></span>
@@ -491,10 +502,11 @@ src/bin/publish_post.rs
 <span id="cb23-15"><a href="#cb23-15" aria-hidden="true"></a></span>
 <span id="cb23-16"><a href="#cb23-16" aria-hidden="true"></a>    <span class="kw">let</span> post <span class="op">=</span> <span class="pp">diesel::</span>update(posts<span class="op">.</span>find(id))</span>
 <span id="cb23-17"><a href="#cb23-17" aria-hidden="true"></a>        <span class="op">.</span>set(published<span class="op">.</span>eq(<span class="cn">true</span>))</span>
-<span id="cb23-18"><a href="#cb23-18" aria-hidden="true"></a>        <span class="op">.</span><span class="pp">get_result::</span><span class="op">&lt;</span>Post<span class="op">&gt;</span>(connection)</span>
-<span id="cb23-19"><a href="#cb23-19" aria-hidden="true"></a>        <span class="op">.</span>unwrap()<span class="op">;</span></span>
-<span id="cb23-20"><a href="#cb23-20" aria-hidden="true"></a>    <span class="pp">println!</span>(<span class="st">&quot;Published post {}&quot;</span><span class="op">,</span> post<span class="op">.</span>title)<span class="op">;</span></span>
-<span id="cb23-21"><a href="#cb23-21" aria-hidden="true"></a><span class="op">}</span></span></code></pre></div>
+<span id="cb23-18"><a href="#cb23-18" aria-hidden="true"></a>        <span class="op">.</span>returning(<span class="pp">Post::</span>as_returning())</span>
+<span id="cb23-19"><a href="#cb23-19" aria-hidden="true"></a>        <span class="op">.</span>get_result(connection)</span>
+<span id="cb23-20"><a href="#cb23-20" aria-hidden="true"></a>        <span class="op">.</span>unwrap()<span class="op">;</span></span>
+<span id="cb23-21"><a href="#cb23-21" aria-hidden="true"></a>    <span class="pp">println!</span>(<span class="st">&quot;Published post {}&quot;</span><span class="op">,</span> post<span class="op">.</span>title)<span class="op">;</span></span>
+<span id="cb23-22"><a href="#cb23-22" aria-hidden="true"></a><span class="op">}</span></span></code></pre></div>
 </div>
 </div>
 <p>That’s it! Let’s try it out with <code>cargo run --bin publish_post 1</code>.</p>
@@ -518,7 +530,7 @@ new one, soon.</code></pre>
 <div class="browser-bar">
 src/bin/delete_post.rs
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.0.x/examples/postgres/getting_started_step_3/src/bin/delete_post.rs">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.1.x/examples/postgres/getting_started_step_3/src/bin/delete_post.rs">View on GitHub</a>
 <div class="sourceCode" id="cb26"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true"></a><span class="kw">use</span> <span class="pp">diesel::prelude::</span><span class="op">*;</span></span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true"></a><span class="kw">use</span> <span class="pp">diesel_demo::</span><span class="op">*;</span></span>
 <span id="cb26-3"><a href="#cb26-3" aria-hidden="true"></a><span class="kw">use</span> <span class="pp">std::env::</span>args<span class="op">;</span></span>
@@ -542,7 +554,7 @@ src/bin/delete_post.rs
 <pre><code>   Compiling diesel_demo v0.1.0 (file:///Users/sean/Documents/Projects/open-source/diesel_demo)
      Running `target/debug/delete_post demo`
 Deleted 1 posts</code></pre>
-<p>When we try to run <code>cargo run --bin show_posts</code> again, we can see that the post was in fact deleted. This barely scratches the surface of what you can do with Diesel, but hopefully this tutorial has given you a good foundation to build off of. We recommend exploring the <a href="https://docs.diesel.rs/2.0.x/diesel/index.html">API docs</a> to see more. The final code for this tutorial can be found <a href="https://github.com/diesel-rs/diesel/tree/2.0.x/examples/postgres/getting_started_step_3/">here</a>.</p>
+<p>When we try to run <code>cargo run --bin show_posts</code> again, we can see that the post was in fact deleted. This barely scratches the surface of what you can do with Diesel, but hopefully this tutorial has given you a good foundation to build off of. We recommend exploring the <a href="https://docs.diesel.rs/2.1.x/diesel/index.html">API docs</a> to see more. The final code for this tutorial can be found <a href="https://github.com/diesel-rs/diesel/tree/2.1.x/examples/postgres/getting_started_step_3/">here</a>.</p>
 </div>
 </div>
 </div>

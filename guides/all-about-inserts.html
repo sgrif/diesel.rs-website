@@ -139,14 +139,14 @@ code span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
 <div class="guide-wrapper">
 <p>Most applications fall into a category called “CRUD” apps. CRUD stands for “Create, Read, Update, Delete”. Diesel provides support for all four pieces, but in this guide we’re going to look at the different ways to go about creating <code>INSERT</code> statements.</p>
 <p>The examples for this guide are going to be shown for PostgreSQL, but you can follow along with any backend. The full code examples for all backends are linked at the bottom of this guide.</p>
-<p>An insert statement always starts with <a href="https://docs.diesel.rs/2.0.x/diesel/fn.insert_into.html"><code>insert_into</code></a>. The first argument to this function is the table you’re inserting into.</p>
+<p>An insert statement always starts with <a href="https://docs.diesel.rs/2.1.x/diesel/fn.insert_into.html"><code>insert_into</code></a>. The first argument to this function is the table you’re inserting into.</p>
 <p>For this guide, our schema will look like this:</p>
 <div class="demo__example">
 <div class="demo__example-browser">
 <div class="browser-bar">
 src/lib.rs
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.0.x/examples/postgres/all_about_inserts/src/lib.rs#L11-L21">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.1.x/examples/postgres/all_about_inserts/src/lib.rs#L11-L21">View on GitHub</a>
 <div class="sourceCode" id="cb1"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="pp">diesel::table!</span> <span class="op">{</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a>    users <span class="op">{</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a>        id <span class="op">-&gt;</span> Integer<span class="op">,</span></span>
@@ -159,36 +159,36 @@ src/lib.rs
 </div>
 </div>
 <p>Since our functions are going to only operate on the <code>users</code> table, we can put <code>use schema::users::dsl::*;</code> at the top of our function, which will let us write <code>insert_into(users)</code> instead of <code>insert_into(users::table)</code>. If you’re importing <code>table::dsl::*</code>, make sure it’s always inside a function, not the top of your module.</p>
-<p>If all of the columns on a table have a default, the simplest thing we can do is call <a href="https://docs.diesel.rs/2.0.x/diesel/query_builder/insert_statement/struct.IncompleteInsertStatement.html#method.default_values"><code>.default_values</code></a>. We could write a function that ran that query like this:</p>
+<p>If all of the columns on a table have a default, the simplest thing we can do is call <a href="https://docs.diesel.rs/2.1.x/diesel/query_builder/insert_statement/struct.IncompleteInsertStatement.html#method.default_values"><code>.default_values</code></a>. We could write a function that ran that query like this:</p>
 <div class="demo__example">
 <div class="demo__example-browser">
 <div class="browser-bar">
 src/lib.rs
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.0.x/examples/postgres/all_about_inserts/src/lib.rs#L41-L45">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.1.x/examples/postgres/all_about_inserts/src/lib.rs#L41-L45">View on GitHub</a>
 <div class="sourceCode" id="cb2"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="kw">use</span> <span class="pp">schema::users::dsl::</span><span class="op">*;</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a>insert_into(users)<span class="op">.</span>default_values()<span class="op">.</span>execute(conn)</span></code></pre></div>
 </div>
 </div>
 <p>It’s worth noting that this code will still compile, even if you don’t have default values on all of your columns. Diesel will ensure that the value you’re assigning has the right type, but it can’t validate whether the column has a default, any constraints that could fail, or any triggers that could fire.</p>
-<p>We can use <a href="https://docs.diesel.rs/2.0.x/diesel/fn.debug_query.html"><code>debug_query</code></a> to inspect the generated SQL. The exact SQL that is generated may differ depending on the backend you’re using. If we run <code>println!("{}", debug_query::&lt;Pg, _&gt;(&amp;our_query));</code>, we’ll see the following:</p>
+<p>We can use <a href="https://docs.diesel.rs/2.1.x/diesel/fn.debug_query.html"><code>debug_query</code></a> to inspect the generated SQL. The exact SQL that is generated may differ depending on the backend you’re using. If we run <code>println!("{}", debug_query::&lt;Pg, _&gt;(&amp;our_query));</code>, we’ll see the following:</p>
 <div class="demo__example">
 <div class="demo__example-browser">
 <div class="browser-bar">
 Generated SQL
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.0.x/examples/postgres/all_about_inserts/src/lib.rs#L47-54">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.1.x/examples/postgres/all_about_inserts/src/lib.rs#L47-L54">View on GitHub</a>
 <div class="sourceCode" id="cb3"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> <span class="ot">&quot;users&quot;</span> <span class="kw">DEFAULT</span> <span class="kw">VALUES</span> <span class="co">-- binds: []</span></span></code></pre></div>
 </div>
 </div>
-<p>If we want to actually provide values, we can call <a href="https://docs.diesel.rs/2.0.x/diesel/query_builder/insert_statement/struct.IncompleteInsertStatement.html#method.values"><code>.values</code></a> instead. There are a lot of different arguments we can provide here. The simplest is a single column/value pair using <a href="https://docs.diesel.rs/2.0.x/diesel/expression_methods/trait.ExpressionMethods.html#method.eq"><code>.eq</code></a>.</p>
+<p>If we want to actually provide values, we can call <a href="https://docs.diesel.rs/2.1.x/diesel/query_builder/insert_statement/struct.IncompleteInsertStatement.html#method.values"><code>.values</code></a> instead. There are a lot of different arguments we can provide here. The simplest is a single column/value pair using <a href="https://docs.diesel.rs/2.1.x/diesel/expression_methods/trait.ExpressionMethods.html#method.eq"><code>.eq</code></a>.</p>
 <div class="demo__example">
 <div class="demo__example-browser">
 <div class="browser-bar">
 src/lib.rs
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.0.x/examples/postgres/all_about_inserts/src/lib.rs#L56-L60">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.1.x/examples/postgres/all_about_inserts/src/lib.rs#L56-L60">View on GitHub</a>
 <div class="sourceCode" id="cb4"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="kw">use</span> <span class="pp">schema::users::dsl::</span><span class="op">*;</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true"></a>insert_into(users)<span class="op">.</span>values(name<span class="op">.</span>eq(<span class="st">&quot;Sean&quot;</span>))<span class="op">.</span>execute(conn)</span></code></pre></div>
@@ -200,7 +200,7 @@ src/lib.rs
 <div class="browser-bar">
 Generated SQL
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.0.x/examples/postgres/all_about_inserts/src/lib.rs#L62-L70">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.1.x/examples/postgres/all_about_inserts/src/lib.rs#L62-L70">View on GitHub</a>
 <div class="sourceCode" id="cb5"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> <span class="ot">&quot;users&quot;</span> (<span class="ot">&quot;name&quot;</span>) <span class="kw">VALUES</span> ($<span class="dv">1</span>)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a><span class="co">-- binds [&quot;Sean&quot;]</span></span></code></pre></div>
 </div>
@@ -211,7 +211,7 @@ Generated SQL
 <div class="browser-bar">
 src/lib.rs
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.0.x/examples/postgres/all_about_inserts/src/lib.rs#L72-L78">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.1.x/examples/postgres/all_about_inserts/src/lib.rs#L72-L78">View on GitHub</a>
 <div class="sourceCode" id="cb6"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a>insert_into(users)</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a>    <span class="op">.</span>values((name<span class="op">.</span>eq(<span class="st">&quot;Tess&quot;</span>)<span class="op">,</span> hair_color<span class="op">.</span>eq(<span class="st">&quot;Brown&quot;</span>)))</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a>    <span class="op">.</span>execute(conn)</span></code></pre></div>
@@ -223,20 +223,20 @@ src/lib.rs
 <div class="browser-bar">
 Generated SQL
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.0.x/examples/postgres/all_about_inserts/src/lib.rs#L80-L88">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.1.x/examples/postgres/all_about_inserts/src/lib.rs#L80-L88">View on GitHub</a>
 <div class="sourceCode" id="cb7"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> <span class="ot">&quot;users&quot;</span> (<span class="ot">&quot;name&quot;</span>, <span class="ot">&quot;hair_color&quot;</span>) <span class="kw">VALUES</span> ($<span class="dv">1</span>, $<span class="dv">2</span>)</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true"></a><span class="co">-- binds: [&quot;Tess&quot;, &quot;Brown&quot;]</span></span></code></pre></div>
 </div>
 </div>
 <h2 id="insertable">Insertable</h2>
 <p>Working with tuples is the typical way to do an insert if you just have some values that you want to stick in the database. But what if your data is coming from another source, like a web form deserialized by Serde? It’d be annoying to have to write <code>(name.eq(user.name), hair_color.eq(user.hair_color))</code>.</p>
-<p>Diesel provides the <a href="https://docs.diesel.rs/2.0.x/diesel/prelude/trait.Insertable.html"><code>Insertable</code></a> trait for this case. <code>Insertable</code> maps your struct to columns in the database. We can derive this automatically by adding <code>#[derive(Insertable)]</code> to our type.</p>
+<p>Diesel provides the <a href="https://docs.diesel.rs/2.1.x/diesel/prelude/trait.Insertable.html"><code>Insertable</code></a> trait for this case. <code>Insertable</code> maps your struct to columns in the database. We can derive this automatically by adding <a href="https://docs.diesel.rs/2.1.x/diesel/prelude/derive.Insertable.html"><code>#[derive(Insertable)]</code></a> to our type.</p>
 <div class="demo__example">
 <div class="demo__example-browser">
 <div class="browser-bar">
 src/lib.rs
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.0.x/examples/postgres/all_about_inserts/src/lib.rs#L23-L30">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.1.x/examples/postgres/all_about_inserts/src/lib.rs#L23-L30">View on GitHub</a>
 <div class="sourceCode" id="cb8"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a><span class="kw">use</span> <span class="pp">schema::</span>users<span class="op">;</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true"></a></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true"></a><span class="at">#[</span>derive<span class="at">(</span>Deserialize<span class="op">,</span> Insertable<span class="at">)]</span></span>
@@ -252,7 +252,7 @@ src/lib.rs
 <div class="browser-bar">
 src/lib.rs
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.0.x/examples/postgres/all_about_inserts/src/lib.rs#L90-L99">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.1.x/examples/postgres/all_about_inserts/src/lib.rs#L90-L99">View on GitHub</a>
 <div class="sourceCode" id="cb9"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a><span class="kw">use</span> <span class="pp">schema::users::dsl::</span><span class="op">*;</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true"></a></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true"></a><span class="kw">let</span> json <span class="op">=</span> <span class="st">r#&quot;{ &quot;name&quot;: &quot;Sean&quot;, &quot;hair_color&quot;: &quot;Black&quot; }&quot;#</span><span class="op">;</span></span>
@@ -269,7 +269,7 @@ src/lib.rs
 <div class="browser-bar">
 Generated SQL
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.0.x/examples/postgres/all_about_inserts/src/lib.rs#L101-L111">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.1.x/examples/postgres/all_about_inserts/src/lib.rs#L101-L111">View on GitHub</a>
 <div class="sourceCode" id="cb10"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> <span class="ot">&quot;users&quot;</span> (<span class="ot">&quot;name&quot;</span>, <span class="ot">&quot;hair_color&quot;</span>) <span class="kw">VALUES</span> ($<span class="dv">1</span>, $<span class="dv">2</span>)</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true"></a><span class="co">-- binds: [&quot;Sean&quot;, &quot;Black&quot;]</span></span></code></pre></div>
 </div>
@@ -280,7 +280,7 @@ Generated SQL
 <div class="browser-bar">
 src/lib.rs
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.0.x/examples/postgres/all_about_inserts/src/lib.rs#L113-L122">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.1.x/examples/postgres/all_about_inserts/src/lib.rs#L113-L122">View on GitHub</a>
 <div class="sourceCode" id="cb11"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true"></a><span class="kw">use</span> <span class="pp">schema::users::dsl::</span><span class="op">*;</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true"></a></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true"></a><span class="kw">let</span> json <span class="op">=</span> <span class="st">r#&quot;{ &quot;name&quot;: &quot;Ruby&quot;, &quot;hair_color&quot;: null }&quot;#</span><span class="op">;</span></span>
@@ -297,7 +297,7 @@ src/lib.rs
 <div class="browser-bar">
 Generated SQL
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.0.x/examples/postgres/all_about_inserts/src/lib.rs#L124-L134">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.1.x/examples/postgres/all_about_inserts/src/lib.rs#L124-L134">View on GitHub</a>
 <div class="sourceCode" id="cb12"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> <span class="ot">&quot;users&quot;</span> (<span class="ot">&quot;name&quot;</span>, <span class="ot">&quot;hair_color&quot;</span>) <span class="kw">VALUES</span> ($<span class="dv">1</span>, <span class="kw">DEFAULT</span>)</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true"></a><span class="co">-- binds: [&quot;Ruby&quot;]</span></span></code></pre></div>
 </div>
@@ -311,7 +311,7 @@ Generated SQL
 <div class="browser-bar">
 src/lib.rs
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.0.x/examples/postgres/all_about_inserts/src/lib.rs#L136-L142">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.1.x/examples/postgres/all_about_inserts/src/lib.rs#L136-L142">View on GitHub</a>
 <div class="sourceCode" id="cb13"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true"></a><span class="kw">use</span> <span class="pp">schema::users::dsl::</span><span class="op">*;</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true"></a></span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true"></a>insert_into(users)</span>
@@ -325,21 +325,9 @@ src/lib.rs
 <div class="browser-bar">
 Generated SQL
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.0.x/examples/postgres/all_about_inserts/src/lib.rs#L144-L153">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.1.x/examples/postgres/all_about_inserts/src/lib.rs#L144-L153">View on GitHub</a>
 <div class="sourceCode" id="cb14"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> <span class="ot">&quot;users&quot;</span> (<span class="ot">&quot;name&quot;</span>) <span class="kw">VALUES</span> ($<span class="dv">1</span>), ($<span class="dv">2</span>)</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true"></a><span class="co">-- binds [&quot;Sean&quot;, &quot;Tess&quot;]</span></span></code></pre></div>
-</div>
-</div>
-<p>Note that on SQLite, you won’t be able to use <code>debug_query</code> for this, since it doesn’t map to a single query. You can inspect each row like this:</p>
-<div class="demo__example">
-<div class="demo__example-browser">
-<div class="browser-bar">
-src/lib.rs
-</div>
-<div class="sourceCode" id="cb15"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true"></a><span class="kw">for</span> row <span class="kw">in</span> <span class="op">&amp;</span>values <span class="op">{</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true"></a>    <span class="kw">let</span> query <span class="op">=</span> insert_into(users)<span class="op">.</span>values(row)<span class="op">;</span></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true"></a>    <span class="pp">println!</span>(<span class="st">&quot;{}&quot;</span><span class="op">,</span> <span class="pp">debug_query::</span><span class="op">&lt;</span>Sqlite<span class="op">,</span> _<span class="op">&gt;</span>(<span class="op">&amp;</span>query))<span class="op">;</span></span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true"></a><span class="op">}</span></span></code></pre></div>
 </div>
 </div>
 <p>If we wanted to use <code>DEFAULT</code> for some of our rows, we can use an option here.</p>
@@ -348,12 +336,12 @@ src/lib.rs
 <div class="browser-bar">
 src/lib.rs
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.0.x/examples/postgres/all_about_inserts/src/lib.rs#L155-L161">View on GitHub</a>
-<div class="sourceCode" id="cb16"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true"></a><span class="kw">use</span> <span class="pp">schema::users::dsl::</span><span class="op">*;</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true"></a></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true"></a>insert_into(users)</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true"></a>    <span class="op">.</span>values(<span class="op">&amp;</span><span class="pp">vec!</span>[<span class="cn">Some</span>(name<span class="op">.</span>eq(<span class="st">&quot;Sean&quot;</span>))<span class="op">,</span> <span class="cn">None</span>])</span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true"></a>    <span class="op">.</span>execute(conn)</span></code></pre></div>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.1.x/examples/postgres/all_about_inserts/src/lib.rs#L155-L161">View on GitHub</a>
+<div class="sourceCode" id="cb15"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true"></a><span class="kw">use</span> <span class="pp">schema::users::dsl::</span><span class="op">*;</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true"></a></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true"></a>insert_into(users)</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true"></a>    <span class="op">.</span>values(<span class="op">&amp;</span><span class="pp">vec!</span>[<span class="cn">Some</span>(name<span class="op">.</span>eq(<span class="st">&quot;Sean&quot;</span>))<span class="op">,</span> <span class="cn">None</span>])</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true"></a>    <span class="op">.</span>execute(conn)</span></code></pre></div>
 </div>
 </div>
 <p>Note that the type here is <code>Option&lt;Eq&lt;Column, Value&gt;&gt;</code> not <code>Eq&lt;Column, Option&lt;Value&gt;&gt;</code>. Doing <code>column.eq(None)</code> would insert <code>NULL</code> not <code>DEFAULT</code>. This generates the following SQL:</p>
@@ -362,9 +350,9 @@ src/lib.rs
 <div class="browser-bar">
 Generated SQL
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.0.x/examples/postgres/all_about_inserts/src/lib.rs#L163-L172">View on GitHub</a>
-<div class="sourceCode" id="cb17"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> <span class="ot">&quot;users&quot;</span> (<span class="ot">&quot;name&quot;</span>) <span class="kw">VALUES</span> ($<span class="dv">1</span>), (<span class="kw">DEFAULT</span>)</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true"></a><span class="co">-- binds [&quot;Sean&quot;]</span></span></code></pre></div>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.1.x/examples/postgres/all_about_inserts/src/lib.rs#L163-L172">View on GitHub</a>
+<div class="sourceCode" id="cb16"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> <span class="ot">&quot;users&quot;</span> (<span class="ot">&quot;name&quot;</span>) <span class="kw">VALUES</span> ($<span class="dv">1</span>), (<span class="kw">DEFAULT</span>)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true"></a><span class="co">-- binds [&quot;Sean&quot;]</span></span></code></pre></div>
 </div>
 </div>
 <p>We can do the same thing with tuples.</p>
@@ -373,15 +361,15 @@ Generated SQL
 <div class="browser-bar">
 src/lib.rs
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.0.x/examples/postgres/all_about_inserts/src/lib.rs#L174-L183">View on GitHub</a>
-<div class="sourceCode" id="cb18"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true"></a><span class="kw">use</span> <span class="pp">schema::users::dsl::</span><span class="op">*;</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true"></a></span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true"></a>insert_into(users)</span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true"></a>    <span class="op">.</span>values(<span class="op">&amp;</span><span class="pp">vec!</span>[</span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true"></a>        (name<span class="op">.</span>eq(<span class="st">&quot;Sean&quot;</span>)<span class="op">,</span> hair_color<span class="op">.</span>eq(<span class="st">&quot;Black&quot;</span>))<span class="op">,</span></span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true"></a>        (name<span class="op">.</span>eq(<span class="st">&quot;Tess&quot;</span>)<span class="op">,</span> hair_color<span class="op">.</span>eq(<span class="st">&quot;Brown&quot;</span>))<span class="op">,</span></span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true"></a>    ])</span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true"></a>    <span class="op">.</span>execute(conn)</span></code></pre></div>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.1.x/examples/postgres/all_about_inserts/src/lib.rs#L174-L183">View on GitHub</a>
+<div class="sourceCode" id="cb17"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true"></a><span class="kw">use</span> <span class="pp">schema::users::dsl::</span><span class="op">*;</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true"></a></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true"></a>insert_into(users)</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true"></a>    <span class="op">.</span>values(<span class="op">&amp;</span><span class="pp">vec!</span>[</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true"></a>        (name<span class="op">.</span>eq(<span class="st">&quot;Sean&quot;</span>)<span class="op">,</span> hair_color<span class="op">.</span>eq(<span class="st">&quot;Black&quot;</span>))<span class="op">,</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true"></a>        (name<span class="op">.</span>eq(<span class="st">&quot;Tess&quot;</span>)<span class="op">,</span> hair_color<span class="op">.</span>eq(<span class="st">&quot;Brown&quot;</span>))<span class="op">,</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true"></a>    ])</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true"></a>    <span class="op">.</span>execute(conn)</span></code></pre></div>
 </div>
 </div>
 <p>Which generates the following SQL:</p>
@@ -390,10 +378,10 @@ src/lib.rs
 <div class="browser-bar">
 Generated SQL
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.0.x/examples/postgres/all_about_inserts/src/lib.rs#L185-L198">View on GitHub</a>
-<div class="sourceCode" id="cb19"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> <span class="ot">&quot;users&quot;</span> (<span class="ot">&quot;name&quot;</span>, <span class="ot">&quot;hair_color&quot;</span>)</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true"></a><span class="kw">VALUES</span> ($<span class="dv">1</span>, $<span class="dv">2</span>), ($<span class="dv">3</span>, $<span class="dv">4</span>)</span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true"></a><span class="co">-- binds: [&quot;Sean&quot;, &quot;Black&quot;, &quot;Tess&quot;, &quot;Brown&quot;]</span></span></code></pre></div>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.1.x/examples/postgres/all_about_inserts/src/lib.rs#L185-L198">View on GitHub</a>
+<div class="sourceCode" id="cb18"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> <span class="ot">&quot;users&quot;</span> (<span class="ot">&quot;name&quot;</span>, <span class="ot">&quot;hair_color&quot;</span>)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true"></a><span class="kw">VALUES</span> ($<span class="dv">1</span>, $<span class="dv">2</span>), ($<span class="dv">3</span>, $<span class="dv">4</span>)</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true"></a><span class="co">-- binds: [&quot;Sean&quot;, &quot;Black&quot;, &quot;Tess&quot;, &quot;Brown&quot;]</span></span></code></pre></div>
 </div>
 </div>
 <p>Once again, we can use an <code>Option</code> for any of the fields to insert <code>DEFAULT</code>.</p>
@@ -402,15 +390,15 @@ Generated SQL
 <div class="browser-bar">
 src/lib.rs
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.0.x/examples/postgres/all_about_inserts/src/lib.rs#L200-L209">View on GitHub</a>
-<div class="sourceCode" id="cb20"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true"></a><span class="kw">use</span> <span class="pp">schema::users::dsl::</span><span class="op">*;</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true"></a></span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true"></a>insert_into(users)</span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true"></a>    <span class="op">.</span>values(<span class="op">&amp;</span><span class="pp">vec!</span>[</span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true"></a>        (name<span class="op">.</span>eq(<span class="st">&quot;Sean&quot;</span>)<span class="op">,</span> <span class="cn">Some</span>(hair_color<span class="op">.</span>eq(<span class="st">&quot;Black&quot;</span>)))<span class="op">,</span></span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true"></a>        (name<span class="op">.</span>eq(<span class="st">&quot;Ruby&quot;</span>)<span class="op">,</span> <span class="cn">None</span>)<span class="op">,</span></span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true"></a>    ])</span>
-<span id="cb20-8"><a href="#cb20-8" aria-hidden="true"></a>    <span class="op">.</span>execute(conn)</span></code></pre></div>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.1.x/examples/postgres/all_about_inserts/src/lib.rs#L200-L209">View on GitHub</a>
+<div class="sourceCode" id="cb19"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true"></a><span class="kw">use</span> <span class="pp">schema::users::dsl::</span><span class="op">*;</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true"></a></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true"></a>insert_into(users)</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true"></a>    <span class="op">.</span>values(<span class="op">&amp;</span><span class="pp">vec!</span>[</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true"></a>        (name<span class="op">.</span>eq(<span class="st">&quot;Sean&quot;</span>)<span class="op">,</span> <span class="cn">Some</span>(hair_color<span class="op">.</span>eq(<span class="st">&quot;Black&quot;</span>)))<span class="op">,</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true"></a>        (name<span class="op">.</span>eq(<span class="st">&quot;Ruby&quot;</span>)<span class="op">,</span> <span class="cn">None</span>)<span class="op">,</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true"></a>    ])</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true"></a>    <span class="op">.</span>execute(conn)</span></code></pre></div>
 </div>
 </div>
 <p>Which generates the following SQL:</p>
@@ -419,10 +407,10 @@ src/lib.rs
 <div class="browser-bar">
 Generated SQL
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.0.x/examples/postgres/all_about_inserts/src/lib.rs#L211-L224">View on GitHub</a>
-<div class="sourceCode" id="cb21"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> <span class="ot">&quot;users&quot;</span> (<span class="ot">&quot;name&quot;</span>, <span class="ot">&quot;hair_color&quot;</span>)</span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true"></a><span class="kw">VALUES</span> ($<span class="dv">1</span>, $<span class="dv">2</span>), ($<span class="dv">3</span>, <span class="kw">DEFAULT</span>)</span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true"></a><span class="co">-- binds: [&quot;Sean&quot;, &quot;Black&quot;, &quot;Ruby&quot;]</span></span></code></pre></div>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.1.x/examples/postgres/all_about_inserts/src/lib.rs#L211-L224">View on GitHub</a>
+<div class="sourceCode" id="cb20"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> <span class="ot">&quot;users&quot;</span> (<span class="ot">&quot;name&quot;</span>, <span class="ot">&quot;hair_color&quot;</span>)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true"></a><span class="kw">VALUES</span> ($<span class="dv">1</span>, $<span class="dv">2</span>), ($<span class="dv">3</span>, <span class="kw">DEFAULT</span>)</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true"></a><span class="co">-- binds: [&quot;Sean&quot;, &quot;Black&quot;, &quot;Ruby&quot;]</span></span></code></pre></div>
 </div>
 </div>
 <p>Finally, <code>Insertable</code> structs can be used for batch insert as well.</p>
@@ -431,18 +419,18 @@ Generated SQL
 <div class="browser-bar">
 src/lib.rs
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.0.x/examples/postgres/all_about_inserts/src/lib.rs#L226-L238">View on GitHub</a>
-<div class="sourceCode" id="cb22"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true"></a><span class="kw">use</span> <span class="pp">schema::users::dsl::</span><span class="op">*;</span></span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true"></a></span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true"></a><span class="kw">let</span> json <span class="op">=</span> <span class="st">r#&quot;[</span></span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true"></a><span class="st">    { &quot;name&quot;: &quot;Sean&quot;, &quot;hair_color&quot;: &quot;Black&quot; },</span></span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true"></a><span class="st">    { &quot;name&quot;: &quot;Tess&quot;, &quot;hair_color&quot;: &quot;Brown&quot; }</span></span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true"></a><span class="st">]&quot;#</span><span class="op">;</span></span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true"></a><span class="kw">let</span> user_form <span class="op">=</span> <span class="pp">serde_json::from_str::</span><span class="op">&lt;</span><span class="dt">Vec</span><span class="op">&lt;</span>UserForm<span class="op">&gt;&gt;</span>(json)<span class="op">?;</span></span>
-<span id="cb22-8"><a href="#cb22-8" aria-hidden="true"></a></span>
-<span id="cb22-9"><a href="#cb22-9" aria-hidden="true"></a>insert_into(users)<span class="op">.</span>values(<span class="op">&amp;</span>user_form)<span class="op">.</span>execute(conn)<span class="op">?;</span></span>
-<span id="cb22-10"><a href="#cb22-10" aria-hidden="true"></a></span>
-<span id="cb22-11"><a href="#cb22-11" aria-hidden="true"></a><span class="cn">Ok</span>(())</span></code></pre></div>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.1.x/examples/postgres/all_about_inserts/src/lib.rs#L226-L238">View on GitHub</a>
+<div class="sourceCode" id="cb21"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true"></a><span class="kw">use</span> <span class="pp">schema::users::dsl::</span><span class="op">*;</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true"></a></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true"></a><span class="kw">let</span> json <span class="op">=</span> <span class="st">r#&quot;[</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true"></a><span class="st">    { &quot;name&quot;: &quot;Sean&quot;, &quot;hair_color&quot;: &quot;Black&quot; },</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true"></a><span class="st">    { &quot;name&quot;: &quot;Tess&quot;, &quot;hair_color&quot;: &quot;Brown&quot; }</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true"></a><span class="st">]&quot;#</span><span class="op">;</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true"></a><span class="kw">let</span> user_form <span class="op">=</span> <span class="pp">serde_json::from_str::</span><span class="op">&lt;</span><span class="dt">Vec</span><span class="op">&lt;</span>UserForm<span class="op">&gt;&gt;</span>(json)<span class="op">?;</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true"></a></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true"></a>insert_into(users)<span class="op">.</span>values(<span class="op">&amp;</span>user_form)<span class="op">.</span>execute(conn)<span class="op">?;</span></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true"></a></span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true"></a><span class="cn">Ok</span>(())</span></code></pre></div>
 </div>
 </div>
 <p>This generates the same SQL as if we had used a tuple:</p>
@@ -451,29 +439,29 @@ src/lib.rs
 <div class="browser-bar">
 Generated SQL
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.0.x/examples/postgres/all_about_inserts/src/lib.rs#L211-L224">View on GitHub</a>
-<div class="sourceCode" id="cb23"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> <span class="ot">&quot;users&quot;</span> (<span class="ot">&quot;name&quot;</span>, <span class="ot">&quot;hair_color&quot;</span>)</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true"></a><span class="kw">VALUES</span> ($<span class="dv">1</span>, $<span class="dv">2</span>), ($<span class="dv">3</span>, $<span class="dv">4</span>)</span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true"></a><span class="co">-- binds: [&quot;Sean&quot;, &quot;Black&quot;, &quot;Tess&quot;, &quot;Brown&quot;]</span></span></code></pre></div>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.1.x/examples/postgres/all_about_inserts/src/lib.rs#L211-L224">View on GitHub</a>
+<div class="sourceCode" id="cb22"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> <span class="ot">&quot;users&quot;</span> (<span class="ot">&quot;name&quot;</span>, <span class="ot">&quot;hair_color&quot;</span>)</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true"></a><span class="kw">VALUES</span> ($<span class="dv">1</span>, $<span class="dv">2</span>), ($<span class="dv">3</span>, $<span class="dv">4</span>)</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true"></a><span class="co">-- binds: [&quot;Sean&quot;, &quot;Black&quot;, &quot;Tess&quot;, &quot;Brown&quot;]</span></span></code></pre></div>
 </div>
 </div>
 <h2 id="the-returning-clause">The <code>RETURNING</code> Clause</h2>
-<p>On backends that support the <code>RETURNING</code> clause (such as PostgreSQL and SQLite), we can get data back from our insert as well. On the SQLite backend, support for the <code>RETURNING</code> clause can be enabled with a feature flag, <code>returning_clauses_for_sqlite_3_35</code>. MySQL does not support <code>RETURNING</code> clauses. To get back all of the inserted rows, we can call <a href="https://docs.diesel.rs/2.0.x/diesel/query_dsl/trait.RunQueryDsl.html#method.get_results"><code>.get_results</code></a> instead of <a href="https://docs.diesel.rs/2.0.x/diesel/query_dsl/trait.RunQueryDsl.html#method.execute"><code>.execute</code></a>.</p>
+<p>On backends that support the <code>RETURNING</code> clause (such as PostgreSQL and SQLite), we can get data back from our insert as well. On the SQLite backend, support for the <code>RETURNING</code> clause can be enabled with a feature flag, <code>returning_clauses_for_sqlite_3_35</code>. MySQL does not support <code>RETURNING</code> clauses. To get back all of the inserted rows, we can call <a href="https://docs.diesel.rs/2.1.x/diesel/query_dsl/trait.RunQueryDsl.html#method.get_results"><code>.get_results</code></a> instead of <a href="https://docs.diesel.rs/2.1.x/diesel/query_dsl/trait.RunQueryDsl.html#method.execute"><code>.execute</code></a>.</p>
 <p>Given this struct:</p>
 <div class="demo__example">
 <div class="demo__example-browser">
 <div class="browser-bar">
 src/lib.rs
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.0.x/examples/postgres/all_about_inserts/src/lib.rs#L32-L39">View on GitHub</a>
-<div class="sourceCode" id="cb24"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true"></a><span class="at">#[</span>derive<span class="at">(</span>Queryable<span class="op">,</span> <span class="bu">PartialEq</span><span class="op">,</span> <span class="bu">Debug</span><span class="at">)]</span></span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true"></a><span class="kw">struct</span> User <span class="op">{</span></span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true"></a>    id<span class="op">:</span> <span class="dt">i32</span><span class="op">,</span></span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true"></a>    name<span class="op">:</span> <span class="dt">String</span><span class="op">,</span></span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true"></a>    hair_color<span class="op">:</span> <span class="dt">Option</span><span class="op">&lt;</span><span class="dt">String</span><span class="op">&gt;,</span></span>
-<span id="cb24-6"><a href="#cb24-6" aria-hidden="true"></a>    created_at<span class="op">:</span> SystemTime<span class="op">,</span></span>
-<span id="cb24-7"><a href="#cb24-7" aria-hidden="true"></a>    updated_at<span class="op">:</span> SystemTime<span class="op">,</span></span>
-<span id="cb24-8"><a href="#cb24-8" aria-hidden="true"></a><span class="op">}</span></span></code></pre></div>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.1.x/examples/postgres/all_about_inserts/src/lib.rs#L32-L39">View on GitHub</a>
+<div class="sourceCode" id="cb23"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true"></a><span class="at">#[</span>derive<span class="at">(</span>Queryable<span class="op">,</span> <span class="bu">PartialEq</span><span class="op">,</span> <span class="bu">Debug</span><span class="at">)]</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true"></a><span class="kw">struct</span> User <span class="op">{</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true"></a>    id<span class="op">:</span> <span class="dt">i32</span><span class="op">,</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true"></a>    name<span class="op">:</span> <span class="dt">String</span><span class="op">,</span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true"></a>    hair_color<span class="op">:</span> <span class="dt">Option</span><span class="op">&lt;</span><span class="dt">String</span><span class="op">&gt;,</span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true"></a>    created_at<span class="op">:</span> SystemTime<span class="op">,</span></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true"></a>    updated_at<span class="op">:</span> SystemTime<span class="op">,</span></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true"></a><span class="op">}</span></span></code></pre></div>
 </div>
 </div>
 <p>We can use <code>get_results</code> with this test:</p>
@@ -482,36 +470,36 @@ src/lib.rs
 <div class="browser-bar">
 src/lib.rs
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.0.x/examples/postgres/all_about_inserts/src/lib.rs#L256-L292">View on GitHub</a>
-<div class="sourceCode" id="cb25"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true"></a><span class="kw">use</span> <span class="pp">diesel::</span>select<span class="op">;</span></span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true"></a><span class="kw">use</span> <span class="pp">schema::users::dsl::</span><span class="op">*;</span></span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true"></a></span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true"></a><span class="kw">let</span> now <span class="op">=</span> select(<span class="pp">diesel::dsl::</span>now)<span class="op">.</span><span class="pp">get_result::</span><span class="op">&lt;</span>SystemTime<span class="op">&gt;</span>(conn)<span class="op">?;</span></span>
-<span id="cb25-5"><a href="#cb25-5" aria-hidden="true"></a></span>
-<span id="cb25-6"><a href="#cb25-6" aria-hidden="true"></a><span class="kw">let</span> inserted_users <span class="op">=</span> insert_into(users)</span>
-<span id="cb25-7"><a href="#cb25-7" aria-hidden="true"></a>    <span class="op">.</span>values(<span class="op">&amp;</span><span class="pp">vec!</span>[</span>
-<span id="cb25-8"><a href="#cb25-8" aria-hidden="true"></a>        (id<span class="op">.</span>eq(<span class="dv">1</span>)<span class="op">,</span> name<span class="op">.</span>eq(<span class="st">&quot;Sean&quot;</span>))<span class="op">,</span></span>
-<span id="cb25-9"><a href="#cb25-9" aria-hidden="true"></a>        (id<span class="op">.</span>eq(<span class="dv">2</span>)<span class="op">,</span> name<span class="op">.</span>eq(<span class="st">&quot;Tess&quot;</span>))<span class="op">,</span></span>
-<span id="cb25-10"><a href="#cb25-10" aria-hidden="true"></a>    ])</span>
-<span id="cb25-11"><a href="#cb25-11" aria-hidden="true"></a>    <span class="op">.</span>get_results(conn)<span class="op">?;</span></span>
-<span id="cb25-12"><a href="#cb25-12" aria-hidden="true"></a></span>
-<span id="cb25-13"><a href="#cb25-13" aria-hidden="true"></a><span class="kw">let</span> expected_users <span class="op">=</span> <span class="pp">vec!</span>[</span>
-<span id="cb25-14"><a href="#cb25-14" aria-hidden="true"></a>    User <span class="op">{</span></span>
-<span id="cb25-15"><a href="#cb25-15" aria-hidden="true"></a>        id<span class="op">:</span> <span class="dv">1</span><span class="op">,</span></span>
-<span id="cb25-16"><a href="#cb25-16" aria-hidden="true"></a>        name<span class="op">:</span> <span class="st">&quot;Sean&quot;</span><span class="op">.</span>into()<span class="op">,</span></span>
-<span id="cb25-17"><a href="#cb25-17" aria-hidden="true"></a>        hair_color<span class="op">:</span> <span class="cn">None</span><span class="op">,</span></span>
-<span id="cb25-18"><a href="#cb25-18" aria-hidden="true"></a>        created_at<span class="op">:</span> now<span class="op">,</span></span>
-<span id="cb25-19"><a href="#cb25-19" aria-hidden="true"></a>        updated_at<span class="op">:</span> now<span class="op">,</span></span>
-<span id="cb25-20"><a href="#cb25-20" aria-hidden="true"></a>    <span class="op">},</span></span>
-<span id="cb25-21"><a href="#cb25-21" aria-hidden="true"></a>    User <span class="op">{</span></span>
-<span id="cb25-22"><a href="#cb25-22" aria-hidden="true"></a>        id<span class="op">:</span> <span class="dv">2</span><span class="op">,</span></span>
-<span id="cb25-23"><a href="#cb25-23" aria-hidden="true"></a>        name<span class="op">:</span> <span class="st">&quot;Tess&quot;</span><span class="op">.</span>into()<span class="op">,</span></span>
-<span id="cb25-24"><a href="#cb25-24" aria-hidden="true"></a>        hair_color<span class="op">:</span> <span class="cn">None</span><span class="op">,</span></span>
-<span id="cb25-25"><a href="#cb25-25" aria-hidden="true"></a>        created_at<span class="op">:</span> now<span class="op">,</span></span>
-<span id="cb25-26"><a href="#cb25-26" aria-hidden="true"></a>        updated_at<span class="op">:</span> now<span class="op">,</span></span>
-<span id="cb25-27"><a href="#cb25-27" aria-hidden="true"></a>    <span class="op">},</span></span>
-<span id="cb25-28"><a href="#cb25-28" aria-hidden="true"></a>]<span class="op">;</span></span>
-<span id="cb25-29"><a href="#cb25-29" aria-hidden="true"></a><span class="pp">assert_eq!</span>(expected_users<span class="op">,</span> inserted_users)<span class="op">;</span></span></code></pre></div>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.1.x/examples/postgres/all_about_inserts/src/lib.rs#L256-L292">View on GitHub</a>
+<div class="sourceCode" id="cb24"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true"></a><span class="kw">use</span> <span class="pp">diesel::</span>select<span class="op">;</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true"></a><span class="kw">use</span> <span class="pp">schema::users::dsl::</span><span class="op">*;</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true"></a></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true"></a><span class="kw">let</span> now <span class="op">=</span> select(<span class="pp">diesel::dsl::</span>now)<span class="op">.</span><span class="pp">get_result::</span><span class="op">&lt;</span>SystemTime<span class="op">&gt;</span>(conn)<span class="op">?;</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true"></a></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true"></a><span class="kw">let</span> inserted_users <span class="op">=</span> insert_into(users)</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true"></a>    <span class="op">.</span>values(<span class="op">&amp;</span><span class="pp">vec!</span>[</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true"></a>        (id<span class="op">.</span>eq(<span class="dv">1</span>)<span class="op">,</span> name<span class="op">.</span>eq(<span class="st">&quot;Sean&quot;</span>))<span class="op">,</span></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true"></a>        (id<span class="op">.</span>eq(<span class="dv">2</span>)<span class="op">,</span> name<span class="op">.</span>eq(<span class="st">&quot;Tess&quot;</span>))<span class="op">,</span></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true"></a>    ])</span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true"></a>    <span class="op">.</span>get_results(conn)<span class="op">?;</span></span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true"></a></span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true"></a><span class="kw">let</span> expected_users <span class="op">=</span> <span class="pp">vec!</span>[</span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true"></a>    User <span class="op">{</span></span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true"></a>        id<span class="op">:</span> <span class="dv">1</span><span class="op">,</span></span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true"></a>        name<span class="op">:</span> <span class="st">&quot;Sean&quot;</span><span class="op">.</span>into()<span class="op">,</span></span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true"></a>        hair_color<span class="op">:</span> <span class="cn">None</span><span class="op">,</span></span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true"></a>        created_at<span class="op">:</span> now<span class="op">,</span></span>
+<span id="cb24-19"><a href="#cb24-19" aria-hidden="true"></a>        updated_at<span class="op">:</span> now<span class="op">,</span></span>
+<span id="cb24-20"><a href="#cb24-20" aria-hidden="true"></a>    <span class="op">},</span></span>
+<span id="cb24-21"><a href="#cb24-21" aria-hidden="true"></a>    User <span class="op">{</span></span>
+<span id="cb24-22"><a href="#cb24-22" aria-hidden="true"></a>        id<span class="op">:</span> <span class="dv">2</span><span class="op">,</span></span>
+<span id="cb24-23"><a href="#cb24-23" aria-hidden="true"></a>        name<span class="op">:</span> <span class="st">&quot;Tess&quot;</span><span class="op">.</span>into()<span class="op">,</span></span>
+<span id="cb24-24"><a href="#cb24-24" aria-hidden="true"></a>        hair_color<span class="op">:</span> <span class="cn">None</span><span class="op">,</span></span>
+<span id="cb24-25"><a href="#cb24-25" aria-hidden="true"></a>        created_at<span class="op">:</span> now<span class="op">,</span></span>
+<span id="cb24-26"><a href="#cb24-26" aria-hidden="true"></a>        updated_at<span class="op">:</span> now<span class="op">,</span></span>
+<span id="cb24-27"><a href="#cb24-27" aria-hidden="true"></a>    <span class="op">},</span></span>
+<span id="cb24-28"><a href="#cb24-28" aria-hidden="true"></a>]<span class="op">;</span></span>
+<span id="cb24-29"><a href="#cb24-29" aria-hidden="true"></a><span class="pp">assert_eq!</span>(expected_users<span class="op">,</span> inserted_users)<span class="op">;</span></span></code></pre></div>
 </div>
 </div>
 <p>To inspect the SQL generated by <code>.get_results</code> or <code>.get_result</code>, we will need to call <code>.as_query</code> before passing it to <code>debug_query</code>. The query in the last test generates the following SQL:</p>
@@ -520,11 +508,11 @@ src/lib.rs
 <div class="browser-bar">
 Generated SQL
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.0.x/examples/postgres/all_about_inserts/src/lib.rs#L294-L306">View on GitHub</a>
-<div class="sourceCode" id="cb26"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> <span class="ot">&quot;users&quot;</span> (<span class="ot">&quot;id&quot;</span>, <span class="ot">&quot;name&quot;</span>) <span class="kw">VALUES</span> ($<span class="dv">1</span>, $<span class="dv">2</span>), ($<span class="dv">3</span>, $<span class="dv">4</span>)</span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true"></a><span class="kw">RETURNING</span> <span class="ot">&quot;users&quot;</span>.<span class="ot">&quot;id&quot;</span>, <span class="ot">&quot;users&quot;</span>.<span class="ot">&quot;name&quot;</span>, <span class="ot">&quot;users&quot;</span>.<span class="ot">&quot;hair_color&quot;</span>,</span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true"></a>          <span class="ot">&quot;users&quot;</span>.<span class="ot">&quot;created_at&quot;</span>, <span class="ot">&quot;users&quot;</span>.<span class="ot">&quot;updated_at&quot;</span></span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true"></a><span class="co">-- binds: [1, &quot;Sean&quot;, 2, &quot;Tess&quot;]</span></span></code></pre></div>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.1.x/examples/postgres/all_about_inserts/src/lib.rs#L294-L306">View on GitHub</a>
+<div class="sourceCode" id="cb25"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> <span class="ot">&quot;users&quot;</span> (<span class="ot">&quot;id&quot;</span>, <span class="ot">&quot;name&quot;</span>) <span class="kw">VALUES</span> ($<span class="dv">1</span>, $<span class="dv">2</span>), ($<span class="dv">3</span>, $<span class="dv">4</span>)</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true"></a><span class="kw">RETURNING</span> <span class="ot">&quot;users&quot;</span>.<span class="ot">&quot;id&quot;</span>, <span class="ot">&quot;users&quot;</span>.<span class="ot">&quot;name&quot;</span>, <span class="ot">&quot;users&quot;</span>.<span class="ot">&quot;hair_color&quot;</span>,</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true"></a>          <span class="ot">&quot;users&quot;</span>.<span class="ot">&quot;created_at&quot;</span>, <span class="ot">&quot;users&quot;</span>.<span class="ot">&quot;updated_at&quot;</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true"></a><span class="co">-- binds: [1, &quot;Sean&quot;, 2, &quot;Tess&quot;]</span></span></code></pre></div>
 </div>
 </div>
 <p>You’ll notice that we’ve never given an explicit value for <code>created_at</code> and <code>updated_at</code> in any of our examples. With Diesel, you typically won’t set those values in Rust. Typically these columns get set with <code>DEFAULT CURRENT_TIMESTAMP</code>, and a trigger is used to change <code>updated_at</code> on updates. If you’re using PostgreSQL, you can use a built-in trigger by running <code>SELECT diesel_manage_updated_at('users');</code> in a migration.</p>
@@ -534,24 +522,24 @@ Generated SQL
 <div class="browser-bar">
 src/lib.rs
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.0.x/examples/postgres/all_about_inserts/src/lib.rs#L308-L332">View on GitHub</a>
-<div class="sourceCode" id="cb27"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true"></a><span class="kw">use</span> <span class="pp">diesel::</span>select<span class="op">;</span></span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true"></a><span class="kw">use</span> <span class="pp">schema::users::dsl::</span><span class="op">*;</span></span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true"></a></span>
-<span id="cb27-4"><a href="#cb27-4" aria-hidden="true"></a><span class="kw">let</span> now <span class="op">=</span> select(<span class="pp">diesel::dsl::</span>now)<span class="op">.</span><span class="pp">get_result::</span><span class="op">&lt;</span>SystemTime<span class="op">&gt;</span>(conn)<span class="op">?;</span></span>
-<span id="cb27-5"><a href="#cb27-5" aria-hidden="true"></a></span>
-<span id="cb27-6"><a href="#cb27-6" aria-hidden="true"></a><span class="kw">let</span> inserted_user <span class="op">=</span> insert_into(users)</span>
-<span id="cb27-7"><a href="#cb27-7" aria-hidden="true"></a>    <span class="op">.</span>values((id<span class="op">.</span>eq(<span class="dv">3</span>)<span class="op">,</span> name<span class="op">.</span>eq(<span class="st">&quot;Ruby&quot;</span>)))</span>
-<span id="cb27-8"><a href="#cb27-8" aria-hidden="true"></a>    <span class="op">.</span>get_result(conn)<span class="op">?;</span></span>
-<span id="cb27-9"><a href="#cb27-9" aria-hidden="true"></a></span>
-<span id="cb27-10"><a href="#cb27-10" aria-hidden="true"></a><span class="kw">let</span> expected_user <span class="op">=</span> User <span class="op">{</span></span>
-<span id="cb27-11"><a href="#cb27-11" aria-hidden="true"></a>    id<span class="op">:</span> <span class="dv">3</span><span class="op">,</span></span>
-<span id="cb27-12"><a href="#cb27-12" aria-hidden="true"></a>    name<span class="op">:</span> <span class="st">&quot;Ruby&quot;</span><span class="op">.</span>into()<span class="op">,</span></span>
-<span id="cb27-13"><a href="#cb27-13" aria-hidden="true"></a>    hair_color<span class="op">:</span> <span class="cn">None</span><span class="op">,</span></span>
-<span id="cb27-14"><a href="#cb27-14" aria-hidden="true"></a>    created_at<span class="op">:</span> now<span class="op">,</span></span>
-<span id="cb27-15"><a href="#cb27-15" aria-hidden="true"></a>    updated_at<span class="op">:</span> now<span class="op">,</span></span>
-<span id="cb27-16"><a href="#cb27-16" aria-hidden="true"></a><span class="op">};</span></span>
-<span id="cb27-17"><a href="#cb27-17" aria-hidden="true"></a><span class="pp">assert_eq!</span>(expected_user<span class="op">,</span> inserted_user)<span class="op">;</span></span></code></pre></div>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.1.x/examples/postgres/all_about_inserts/src/lib.rs#L308-L332">View on GitHub</a>
+<div class="sourceCode" id="cb26"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true"></a><span class="kw">use</span> <span class="pp">diesel::</span>select<span class="op">;</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true"></a><span class="kw">use</span> <span class="pp">schema::users::dsl::</span><span class="op">*;</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true"></a></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true"></a><span class="kw">let</span> now <span class="op">=</span> select(<span class="pp">diesel::dsl::</span>now)<span class="op">.</span><span class="pp">get_result::</span><span class="op">&lt;</span>SystemTime<span class="op">&gt;</span>(conn)<span class="op">?;</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true"></a></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true"></a><span class="kw">let</span> inserted_user <span class="op">=</span> insert_into(users)</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true"></a>    <span class="op">.</span>values((id<span class="op">.</span>eq(<span class="dv">3</span>)<span class="op">,</span> name<span class="op">.</span>eq(<span class="st">&quot;Ruby&quot;</span>)))</span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true"></a>    <span class="op">.</span>get_result(conn)<span class="op">?;</span></span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true"></a></span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true"></a><span class="kw">let</span> expected_user <span class="op">=</span> User <span class="op">{</span></span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true"></a>    id<span class="op">:</span> <span class="dv">3</span><span class="op">,</span></span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true"></a>    name<span class="op">:</span> <span class="st">&quot;Ruby&quot;</span><span class="op">.</span>into()<span class="op">,</span></span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true"></a>    hair_color<span class="op">:</span> <span class="cn">None</span><span class="op">,</span></span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true"></a>    created_at<span class="op">:</span> now<span class="op">,</span></span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true"></a>    updated_at<span class="op">:</span> now<span class="op">,</span></span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true"></a><span class="op">};</span></span>
+<span id="cb26-17"><a href="#cb26-17" aria-hidden="true"></a><span class="pp">assert_eq!</span>(expected_user<span class="op">,</span> inserted_user)<span class="op">;</span></span></code></pre></div>
 </div>
 </div>
 <p>This generates the same SQL as <code>get_results</code>:</p>
@@ -560,11 +548,11 @@ src/lib.rs
 <div class="browser-bar">
 Generated SQL
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.0.x/examples/postgres/all_about_inserts/src/lib.rs#L334-L347">View on GitHub</a>
-<div class="sourceCode" id="cb28"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> <span class="ot">&quot;users&quot;</span> (<span class="ot">&quot;id&quot;</span>, <span class="ot">&quot;name&quot;</span>) <span class="kw">VALUES</span> ($<span class="dv">1</span>, $<span class="dv">2</span>)</span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true"></a><span class="kw">RETURNING</span> <span class="ot">&quot;users&quot;</span>.<span class="ot">&quot;id&quot;</span>, <span class="ot">&quot;users&quot;</span>.<span class="ot">&quot;name&quot;</span>, <span class="ot">&quot;users&quot;</span>.<span class="ot">&quot;hair_color&quot;</span>,</span>
-<span id="cb28-3"><a href="#cb28-3" aria-hidden="true"></a>          <span class="ot">&quot;users&quot;</span>.<span class="ot">&quot;created_at&quot;</span>, <span class="ot">&quot;users&quot;</span>.<span class="ot">&quot;updated_at&quot;</span></span>
-<span id="cb28-4"><a href="#cb28-4" aria-hidden="true"></a><span class="co">-- binds: [3, &quot;Ruby&quot;]</span></span></code></pre></div>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.1.x/examples/postgres/all_about_inserts/src/lib.rs#L334-L347">View on GitHub</a>
+<div class="sourceCode" id="cb27"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> <span class="ot">&quot;users&quot;</span> (<span class="ot">&quot;id&quot;</span>, <span class="ot">&quot;name&quot;</span>) <span class="kw">VALUES</span> ($<span class="dv">1</span>, $<span class="dv">2</span>)</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true"></a><span class="kw">RETURNING</span> <span class="ot">&quot;users&quot;</span>.<span class="ot">&quot;id&quot;</span>, <span class="ot">&quot;users&quot;</span>.<span class="ot">&quot;name&quot;</span>, <span class="ot">&quot;users&quot;</span>.<span class="ot">&quot;hair_color&quot;</span>,</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true"></a>          <span class="ot">&quot;users&quot;</span>.<span class="ot">&quot;created_at&quot;</span>, <span class="ot">&quot;users&quot;</span>.<span class="ot">&quot;updated_at&quot;</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true"></a><span class="co">-- binds: [3, &quot;Ruby&quot;]</span></span></code></pre></div>
 </div>
 </div>
 <p>Finally, if we only want a single column back, we can call <code>.returning()</code> explicitly. This code would return the inserted ID:</p>
@@ -573,13 +561,13 @@ Generated SQL
 <div class="browser-bar">
 src/lib.rs
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.0.x/examples/postgres/all_about_inserts/src/lib.rs#L349-L356">View on GitHub</a>
-<div class="sourceCode" id="cb29"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true"></a><span class="kw">use</span> <span class="pp">schema::users::dsl::</span><span class="op">*;</span></span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true"></a></span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true"></a>insert_into(users)</span>
-<span id="cb29-4"><a href="#cb29-4" aria-hidden="true"></a>    <span class="op">.</span>values(name<span class="op">.</span>eq(<span class="st">&quot;Ruby&quot;</span>))</span>
-<span id="cb29-5"><a href="#cb29-5" aria-hidden="true"></a>    <span class="op">.</span>returning(id)</span>
-<span id="cb29-6"><a href="#cb29-6" aria-hidden="true"></a>    <span class="op">.</span>get_result(conn)</span></code></pre></div>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.1.x/examples/postgres/all_about_inserts/src/lib.rs#L349-L356">View on GitHub</a>
+<div class="sourceCode" id="cb28"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true"></a><span class="kw">use</span> <span class="pp">schema::users::dsl::</span><span class="op">*;</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true"></a></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true"></a>insert_into(users)</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true"></a>    <span class="op">.</span>values(name<span class="op">.</span>eq(<span class="st">&quot;Ruby&quot;</span>))</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true"></a>    <span class="op">.</span>returning(id)</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true"></a>    <span class="op">.</span>get_result(conn)</span></code></pre></div>
 </div>
 </div>
 <p>Which generates the following SQL:</p>
@@ -588,23 +576,22 @@ src/lib.rs
 <div class="browser-bar">
 Generated SQL
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.0.x/examples/postgres/all_about_inserts/src/lib.rs#L358-L367">View on GitHub</a>
-<div class="sourceCode" id="cb30"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> <span class="ot">&quot;users&quot;</span> (<span class="ot">&quot;name&quot;</span>) <span class="kw">VALUES</span> ($<span class="dv">1</span>)</span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true"></a><span class="kw">RETURNING</span> <span class="ot">&quot;users&quot;</span>.<span class="ot">&quot;id&quot;</span></span>
-<span id="cb30-3"><a href="#cb30-3" aria-hidden="true"></a><span class="co">-- binds: [&quot;Ruby&quot;]</span></span></code></pre></div>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.1.x/examples/postgres/all_about_inserts/src/lib.rs#L358-L367">View on GitHub</a>
+<div class="sourceCode" id="cb29"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> <span class="ot">&quot;users&quot;</span> (<span class="ot">&quot;name&quot;</span>) <span class="kw">VALUES</span> ($<span class="dv">1</span>)</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true"></a><span class="kw">RETURNING</span> <span class="ot">&quot;users&quot;</span>.<span class="ot">&quot;id&quot;</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true"></a><span class="co">-- binds: [&quot;Ruby&quot;]</span></span></code></pre></div>
 </div>
 </div>
 <h2 id="upsert">“Upsert”</h2>
 <p>Every type of insert statement covered in this guide can also be used for “insert or update” queries, also known as “upsert”. The specifics of upsert are covered extensively in the API documentation.</p>
-<p>For PostgreSQL and SQLite, see the <a href="https://docs.diesel.rs/2.0.x/diesel/upsert/index.html"><code>diesel::upsert</code></a> module. For MySQL, upsert is done via <code>REPLACE</code>. See <a href="https://docs.diesel.rs/2.0.x/diesel/fn.replace_into.html"><code>replace_into</code></a> for details.</p>
-<p>Diesel does not have support for MySQL’s <code>ON DUPLICATE KEY</code> conflict, as its results are non-deterministic, and unsafe with replication.</p>
+<p>For PostgreSQL and SQLite, see the <a href="https://docs.diesel.rs/2.1.x/diesel/upsert/index.html"><code>diesel::upsert</code></a> module. For MySQL, upsert is done via <code>REPLACE</code>. See <a href="https://docs.diesel.rs/2.1.x/diesel/fn.replace_into.html"><code>replace_into</code></a> for details.</p>
 <h2 id="conclusion">Conclusion</h2>
 <p>While there are a lot of examples in this guide, ultimately the only difference between various kinds of insert statements is the argument passed to <code>.values</code>.</p>
 <p>All examples in this guide are run as part of Diesel’s test suite. You can find the full code examples for each backend at these links:</p>
 <ul>
-<li><a href="https://github.com/diesel-rs/diesel/tree/2.0.x/examples/postgres/all_about_inserts">PostgreSQL</a></li>
-<li><a href="https://github.com/diesel-rs/diesel/tree/2.0.x/examples/mysql/all_about_inserts">MySQL</a></li>
-<li><a href="https://github.com/diesel-rs/diesel/tree/2.0.x/examples/sqlite/all_about_inserts">SQLite</a></li>
+<li><a href="https://github.com/diesel-rs/diesel/tree/2.1.x/examples/postgres/all_about_inserts">PostgreSQL</a></li>
+<li><a href="https://github.com/diesel-rs/diesel/tree/2.1.x/examples/mysql/all_about_inserts">MySQL</a></li>
+<li><a href="https://github.com/diesel-rs/diesel/tree/2.1.x/examples/sqlite/all_about_inserts">SQLite</a></li>
 </ul>
 </div>
 </div>

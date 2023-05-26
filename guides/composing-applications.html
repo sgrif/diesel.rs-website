@@ -184,7 +184,7 @@ src/krate/mod.rs
 </div>
 </div>
 <p>It’s up to you whether you make your functions generic, or only take a single type. We recommend only making these functions generic if it’s actually needed, since it requires additional bounds in your <code>where</code> clause. The bounds you need might not be clear, unless you are familiar with Diesel’s lower levels.</p>
-<p>In these examples, we are using helper types from <a href="https://docs.diesel.rs/2.0.x/diesel/dsl/index.html"><code>diesel::dsl</code></a> to write the return type explicitly. Nearly every method in Diesel has a helper type like this. The first type parameter is the method receiver (the thing before the <code>.</code>). The remaining type parameters are the arguments to the method. If we want to avoid writing this return type, or dynamically return a different expression, we can box the value instead.</p>
+<p>In these examples, we are using helper types from <a href="https://docs.diesel.rs/2.1.x/diesel/dsl/index.html"><code>diesel::dsl</code></a> to write the return type explicitly. Nearly every method in Diesel has a helper type like this. The first type parameter is the method receiver (the thing before the <code>.</code>). The remaining type parameters are the arguments to the method. If we want to avoid writing this return type, or dynamically return a different expression, we can box the value instead.</p>
 <div class="demo__example">
 <div class="demo__example-browser">
 <div class="browser-bar">
@@ -206,7 +206,7 @@ src/krate/mod.rs
 <span id="cb3-13"><a href="#cb3-13" aria-hidden="true"></a><span class="op">}</span></span></code></pre></div>
 </div>
 </div>
-<p>In order to use <a href="https://docs.diesel.rs/2.0.x/diesel/expression/trait.BoxableExpression.html"><code>BoxableExpression</code></a>, Diesel needs to know three things:</p>
+<p>In order to use <a href="https://docs.diesel.rs/2.1.x/diesel/expression/trait.BoxableExpression.html"><code>BoxableExpression</code></a>, Diesel needs to know three things:</p>
 <ul>
 <li>The table you intend to use it on</li>
 <li>The backend you plan to execute it against</li>

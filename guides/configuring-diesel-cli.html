@@ -177,6 +177,19 @@ diesel.toml
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a><span class="dt">generate_missing_sql_type_definitions</span> <span class="op">=</span> <span class="cn">false</span></span></code></pre></div>
 </div>
 </div>
+<h2 id="the-custom_type_derives-field">The <code>custom_type_derives</code> field</h2>
+<p>This field adds <code>#[derive(...)]</code> items to the sql type definitions automatically generated as a result of the <code>generate_missing_sql_type_definitions</code> field. When set, <code>diesel print-schema</code> will behave as if <code>--custom-type-derives</code> were passed. The <code>diesel::sql_types::SqlType</code> trait will be automatically derived if this flag is either empty, or doesn’t already contain the trait.</p>
+<div class="demo__example">
+<div class="demo__example-browser">
+<div class="browser-bar">
+diesel.toml
+</div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode toml"><code class="sourceCode toml"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="kw">[</span><span class="dt">print_schema</span><span class="kw">]</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="dt">generate_missing_sql_type_definitions</span> <span class="op">=</span> <span class="cn">true</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a><span class="co"># Derive `SqlType` and `Debug` for the automatically generated sql type definitions</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true"></a><span class="dt">custom_type_derives</span> <span class="op">=</span> <span class="op">[</span><span class="st">&quot;diesel::sql_types::SqlType&quot;</span><span class="op">,</span> <span class="st">&quot;std::fmt::Debug&quot;</span><span class="op">]</span></span></code></pre></div>
+</div>
+</div>
 <h2 id="the-import_types-field">The <code>import_types</code> field</h2>
 <p>This field adds <code>use</code> statements to the top of every <code>table!</code> declaration. When set, <code>diesel print-schema</code> will behave as if <code>--import-types</code> were passed. When no value is given, only types from <code>diesel::sql_types</code> will be imported.</p>
 <div class="demo__example">
@@ -184,9 +197,9 @@ diesel.toml
 <div class="browser-bar">
 diesel.toml
 </div>
-<div class="sourceCode" id="cb3"><pre class="sourceCode toml"><code class="sourceCode toml"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="kw">[</span><span class="dt">print_schema</span><span class="kw">]</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="co"># Add types from `diesel_full_text_search` like `tsvector`</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a><span class="dt">import_types</span> <span class="op">=</span> <span class="op">[</span><span class="st">&quot;diesel::sql_types::*&quot;</span><span class="op">,</span> <span class="st">&quot;diesel_full_text_search::types::*&quot;</span><span class="op">]</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode toml"><code class="sourceCode toml"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="kw">[</span><span class="dt">print_schema</span><span class="kw">]</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a><span class="co"># Add types from `diesel_full_text_search` like `tsvector`</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true"></a><span class="dt">import_types</span> <span class="op">=</span> <span class="op">[</span><span class="st">&quot;diesel::sql_types::*&quot;</span><span class="op">,</span> <span class="st">&quot;diesel_full_text_search::types::*&quot;</span><span class="op">]</span></span></code></pre></div>
 </div>
 </div>
 <h2 id="the-patch_file-field">The <code>patch_file</code> field</h2>
