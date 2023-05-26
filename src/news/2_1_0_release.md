@@ -10,7 +10,7 @@ include-after: |
 ::: content-wrapper
 ::: guide-wrapper
 
-Diesel 2.1.0 contains the contributions of more than 41 people. More than 380 commits were submitted
+Diesel 2.1.0 contains the contributions of 42 people. More than 380 commits were submitted
 over a span of 9 months.
 
 This release contains several new features and improves existing features. It introduces support for generating migrations based on the diff between your `schema.rs` file and your database via Diesel CLI. Diesel derives now provides a `#[derive(MultiConnection)]` derive macro that allows to easily combine different database connections into a single enum, which implements `Connection` on its own. The MySQL backend gets support for `upsert` queries via the `ON DUPLICATE KEYS` syntax. Finally we provide new tooling to improve complex error messages generated for common error cases. Check out our [changelog for a complete list of changes](/changelog.html).
@@ -234,6 +234,56 @@ With Diesel 2.1 we have migrated some traits to use GAT. This affects the follow
 These traits are removed in favour of generic associated types on the corresponding child trait.
 
 Additionally we slightly relaxed one trait bound on `BindCollector::push_bound_value` to allow unsized values there as well.
+
+## Thanks
+
+Thank you to everyone who helped make this release happen through sponsoring, bug reports, and discussion on GitHub and Gitter. While we don't have a way to collect stats on that form of contribution, it's greatly appreciated.
+
+In addition to the Diesel core team, 42 people contributed code to this release. A huge thank you to:
+
+* 6293
+* Aleksei Orazov
+* Alexx Roche
+* AndrolGenhald
+* AndyJado
+* Artemis Livingstone
+* czotomo
+* Diana
+* Elliott Forde
+* Elrendio
+* Gorg Worgington
+* Heliozoa
+* Ian
+* Jake Goulding
+* Jeff Schwab
+* Jeremy Lardenois
+* johnmai
+* Leonardo Yvens
+* mikemcdermottredjack
+* Moritz Hedtke
+* MOZGIII
+* Neil Svedberg
+* Neo
+* Nishant Joshi
+* Oliver Cooper
+* Omid Rad
+* Pablito Labarta
+* Pavan Kumar Sunkara
+* Peter Todorov
+* Rutvik Patel
+* Sanchith Hegde
+* schlamar
+* sebasv
+* Silas McCroskey
+* Šimon Lukašík
+* Steven Chu
+* stormofice
+* Thomas Sieverding
+* Trevor Gross
+* Yuki Okushi
+* 无穷无尽的爱
+* 管唯宇
+
 
 :::
 :::

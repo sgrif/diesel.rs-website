@@ -18,7 +18,7 @@ default features enabled using some set of dependencies. Those set of dependenci
 an up to date version of the specific dependency. We check this by using the unstable `-Z minimal-version` cargo flag. 
 Increasing the minimal supported Rust version will always be coupled at least with a minor release.
 
-## [2.1.0] 2023-05-xx 
+## [2.1.0] 2023-05-26
 
 ### Changed 
 
@@ -34,7 +34,9 @@ Increasing the minimal supported Rust version will always be coupled at least wi
   on the difference between your database and the provided `schema.rs` file
 * Add a `ON CONFLICT (...) DO UPDATE ... [WHERE ...]` conditional clause support for PostgreSQL.
 * Add support for MySQL's `ON DUPLICATE KEY DO UPDATE` syntax through the existing upsert functions.
-* Support for `libsqlite3-sys` 0.26
+* Add ability to define multiple columns in a single `distinct_on` for PostgreSQL,
+  like: `.distinct_on((column_a, column_b))`.
+* Added column size restrictions to the generated `schema.rs` file
 
 ## [2.0.4] 2023-04-18
 
