@@ -9,6 +9,10 @@ include-after: |
 ::: content-wrapper
 ::: guide-wrapper
 
+#### [Diesel 2.1.0](./2_1_0_release.html)
+
+Diesel 2.1 introduces support for generating migrations based on differences between your rust code and your database schema. Additionally it provides a `#[derive(MultiConnection)]` derive for a simplified usage of several different connections at once and a improved compile time error message generation.
+
 #### [Diesel 2.0.0](./2_0_0_release.html)
 
 Diesel 2.0 introduces support for `GROUP BY` and `UNION`/`INTERSECT` queries. Additionally it features table aliases and a improved field mapping mechanism.

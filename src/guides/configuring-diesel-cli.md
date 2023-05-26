@@ -101,6 +101,29 @@ SQLite and MySQL are using a fixed set of sql types.
 # skip generating missing sql type definitions
 generate_missing_sql_type_definitions = false
 ```
+
+:::
+
+## The `custom_type_derives` field
+
+This field adds `#[derive(...)]` items to the sql type definitions
+automatically generated as a result of the
+`generate_missing_sql_type_definitions` field.
+When set, `diesel print-schema` will behave as if `--custom-type-derives`
+were passed. The `diesel::sql_types::SqlType` trait will be automatically
+derived if this flag is either empty, or doesn't already contain the trait.
+
+::: code-block
+
+[diesel.toml]()
+
+```toml
+[print_schema]
+generate_missing_sql_type_definitions = true
+# Derive `SqlType` and `Debug` for the automatically generated sql type definitions
+custom_type_derives = ["diesel::sql_types::SqlType", "std::fmt::Debug"]
+```
+
 :::
 
 ## The `import_types` field

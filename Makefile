@@ -15,7 +15,7 @@ guides: guides/all-about-updates.html guides/all-about-inserts.html guides/compo
 	cp -R src/guides/schema-in-depth/ out/guides/schema-in-depth/
 	cp -R src/guides/relations/ out/guides/relations
 
-news: news/index.html news/2_0_0_release.html
+news: news/index.html news/2_0_0_release.html news/2_1_0_release.html
 
 changelog: changelog.html
 
