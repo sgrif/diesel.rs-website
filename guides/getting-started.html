@@ -513,6 +513,46 @@ src/bin/publish_post.rs
 <pre><code> Compiling diesel_demo v0.1.0 (file:///Users/sean/Documents/Projects/open-source/diesel_demo)
    Running `target/debug/publish_post 1`
 Published post Diesel demo</code></pre>
+<p>Additionally let’s implement a possibility of fetching a single post. We will display the post id with its title. Notice <a href="https://docs.diesel.rs/2.1.x/diesel/result/trait.OptionalExtension.html#tymethod.optional"><code>.optional()</code></a> call. This returns <code>Option&lt;Post&gt;</code> instead of throwing an error, which we can then use in our matching pattern. For additional methods to modify the constructed select statements refer to the <a href="https://docs.diesel.rs/2.1.x/diesel/query_dsl/trait.QueryDsl.html"><code>documentation</code> of <code>QueryDsl</code></a></p>
+<div class="demo__example">
+<div class="demo__example-browser">
+<div class="browser-bar">
+src/bin/get_post.rs
+</div>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/master/examples/postgres/getting_started_step_3/src/bin/get_post.rs">View on GitHub</a>
+<div class="sourceCode" id="cb25"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true"></a><span class="kw">use</span> <span class="kw">self</span><span class="pp">::models::</span>Post<span class="op">;</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true"></a><span class="kw">use</span> <span class="pp">diesel::prelude::</span><span class="op">*;</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true"></a><span class="kw">use</span> <span class="pp">std::env::</span>args<span class="op">;</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true"></a></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true"></a><span class="kw">fn</span> main() <span class="op">{</span></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true"></a>    <span class="kw">use</span> <span class="kw">self</span><span class="pp">::schema::posts::dsl::</span>posts<span class="op">;</span></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true"></a></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true"></a>    <span class="kw">let</span> post_id <span class="op">=</span> args()</span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true"></a>        <span class="op">.</span>nth(<span class="dv">1</span>)</span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true"></a>        <span class="op">.</span>expect(<span class="st">&quot;get_post requires a post id&quot;</span>)</span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true"></a>        <span class="op">.</span><span class="pp">parse::</span><span class="op">&lt;</span><span class="dt">i32</span><span class="op">&gt;</span>()</span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true"></a>        <span class="op">.</span>expect(<span class="st">&quot;Invalid ID&quot;</span>)<span class="op">;</span></span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true"></a></span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true"></a>    <span class="kw">let</span> connection <span class="op">=</span> <span class="op">&amp;</span><span class="kw">mut</span> establish_connection()<span class="op">;</span></span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true"></a></span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true"></a>    <span class="kw">let</span> post <span class="op">=</span> posts</span>
+<span id="cb25-17"><a href="#cb25-17" aria-hidden="true"></a>        <span class="op">.</span>find(post_id)</span>
+<span id="cb25-18"><a href="#cb25-18" aria-hidden="true"></a>        <span class="op">.</span>select(<span class="pp">Post::</span>as_select())</span>
+<span id="cb25-19"><a href="#cb25-19" aria-hidden="true"></a>        <span class="op">.</span>first(connection)</span>
+<span id="cb25-20"><a href="#cb25-20" aria-hidden="true"></a>        <span class="op">.</span>optional()<span class="op">;</span> <span class="co">// This allows for returning an Option&lt;Post&gt;, otherwise it will throw an error</span></span>
+<span id="cb25-21"><a href="#cb25-21" aria-hidden="true"></a></span>
+<span id="cb25-22"><a href="#cb25-22" aria-hidden="true"></a>    <span class="kw">match</span> post <span class="op">{</span></span>
+<span id="cb25-23"><a href="#cb25-23" aria-hidden="true"></a>        <span class="cn">Ok</span>(<span class="cn">Some</span>(post)) <span class="op">=&gt;</span> <span class="pp">println!</span>(<span class="st">&quot;Post with id: {} has a title: {}&quot;</span><span class="op">,</span> post<span class="op">.</span>id<span class="op">,</span> post<span class="op">.</span>title)<span class="op">,</span></span>
+<span id="cb25-24"><a href="#cb25-24" aria-hidden="true"></a>        <span class="cn">Ok</span>(<span class="cn">None</span>) <span class="op">=&gt;</span> <span class="pp">println!</span>(<span class="st">&quot;Unable to find post {}&quot;</span><span class="op">,</span> post_id)<span class="op">,</span></span>
+<span id="cb25-25"><a href="#cb25-25" aria-hidden="true"></a>        <span class="cn">Err</span>(_) <span class="op">=&gt;</span> <span class="pp">println!</span>(<span class="st">&quot;An error occured while fetching post {}&quot;</span><span class="op">,</span> post_id)<span class="op">,</span></span>
+<span id="cb25-26"><a href="#cb25-26" aria-hidden="true"></a>    <span class="op">}</span></span>
+<span id="cb25-27"><a href="#cb25-27" aria-hidden="true"></a><span class="op">}</span></span></code></pre></div>
+</div>
+</div>
+<p>We can see our post with <code>cargo run --bin get_post 1</code>.</p>
+<pre><code> Compiling diesel_demo v0.1.0 (file:///Users/sean/Documents/Projects/open-source/diesel_demo)
+   Running `target/debug/get_post 1`
+   Post with id: 1 has a title: Diesel demo</code></pre>
 <p>And now, finally, we can see our post with <code>cargo run --bin show_posts</code>.</p>
 <pre><code>     Running `target/debug/show_posts`
 Displaying 1 posts
@@ -531,23 +571,23 @@ new one, soon.</code></pre>
 src/bin/delete_post.rs
 </div>
 <a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.1.x/examples/postgres/getting_started_step_3/src/bin/delete_post.rs">View on GitHub</a>
-<div class="sourceCode" id="cb26"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true"></a><span class="kw">use</span> <span class="pp">diesel::prelude::</span><span class="op">*;</span></span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true"></a><span class="kw">use</span> <span class="pp">diesel_demo::</span><span class="op">*;</span></span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true"></a><span class="kw">use</span> <span class="pp">std::env::</span>args<span class="op">;</span></span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true"></a></span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true"></a><span class="kw">fn</span> main() <span class="op">{</span></span>
-<span id="cb26-6"><a href="#cb26-6" aria-hidden="true"></a>    <span class="kw">use</span> <span class="kw">self</span><span class="pp">::schema::posts::dsl::</span><span class="op">*;</span></span>
-<span id="cb26-7"><a href="#cb26-7" aria-hidden="true"></a></span>
-<span id="cb26-8"><a href="#cb26-8" aria-hidden="true"></a>    <span class="kw">let</span> target <span class="op">=</span> args()<span class="op">.</span>nth(<span class="dv">1</span>)<span class="op">.</span>expect(<span class="st">&quot;Expected a target to match against&quot;</span>)<span class="op">;</span></span>
-<span id="cb26-9"><a href="#cb26-9" aria-hidden="true"></a>    <span class="kw">let</span> pattern <span class="op">=</span> <span class="pp">format!</span>(<span class="st">&quot;%{}%&quot;</span><span class="op">,</span> target)<span class="op">;</span></span>
-<span id="cb26-10"><a href="#cb26-10" aria-hidden="true"></a></span>
-<span id="cb26-11"><a href="#cb26-11" aria-hidden="true"></a>    <span class="kw">let</span> connection <span class="op">=</span> <span class="op">&amp;</span><span class="kw">mut</span> establish_connection()<span class="op">;</span></span>
-<span id="cb26-12"><a href="#cb26-12" aria-hidden="true"></a>    <span class="kw">let</span> num_deleted <span class="op">=</span> <span class="pp">diesel::</span>delete(posts<span class="op">.</span>filter(title<span class="op">.</span>like(pattern)))</span>
-<span id="cb26-13"><a href="#cb26-13" aria-hidden="true"></a>        <span class="op">.</span>execute(connection)</span>
-<span id="cb26-14"><a href="#cb26-14" aria-hidden="true"></a>        <span class="op">.</span>expect(<span class="st">&quot;Error deleting posts&quot;</span>)<span class="op">;</span></span>
-<span id="cb26-15"><a href="#cb26-15" aria-hidden="true"></a></span>
-<span id="cb26-16"><a href="#cb26-16" aria-hidden="true"></a>    <span class="pp">println!</span>(<span class="st">&quot;Deleted {} posts&quot;</span><span class="op">,</span> num_deleted)<span class="op">;</span></span>
-<span id="cb26-17"><a href="#cb26-17" aria-hidden="true"></a><span class="op">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true"></a><span class="kw">use</span> <span class="pp">diesel::prelude::</span><span class="op">*;</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true"></a><span class="kw">use</span> <span class="pp">diesel_demo::</span><span class="op">*;</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true"></a><span class="kw">use</span> <span class="pp">std::env::</span>args<span class="op">;</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true"></a></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true"></a><span class="kw">fn</span> main() <span class="op">{</span></span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true"></a>    <span class="kw">use</span> <span class="kw">self</span><span class="pp">::schema::posts::dsl::</span><span class="op">*;</span></span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true"></a></span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true"></a>    <span class="kw">let</span> target <span class="op">=</span> args()<span class="op">.</span>nth(<span class="dv">1</span>)<span class="op">.</span>expect(<span class="st">&quot;Expected a target to match against&quot;</span>)<span class="op">;</span></span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true"></a>    <span class="kw">let</span> pattern <span class="op">=</span> <span class="pp">format!</span>(<span class="st">&quot;%{}%&quot;</span><span class="op">,</span> target)<span class="op">;</span></span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true"></a></span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true"></a>    <span class="kw">let</span> connection <span class="op">=</span> <span class="op">&amp;</span><span class="kw">mut</span> establish_connection()<span class="op">;</span></span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true"></a>    <span class="kw">let</span> num_deleted <span class="op">=</span> <span class="pp">diesel::</span>delete(posts<span class="op">.</span>filter(title<span class="op">.</span>like(pattern)))</span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true"></a>        <span class="op">.</span>execute(connection)</span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true"></a>        <span class="op">.</span>expect(<span class="st">&quot;Error deleting posts&quot;</span>)<span class="op">;</span></span>
+<span id="cb28-15"><a href="#cb28-15" aria-hidden="true"></a></span>
+<span id="cb28-16"><a href="#cb28-16" aria-hidden="true"></a>    <span class="pp">println!</span>(<span class="st">&quot;Deleted {} posts&quot;</span><span class="op">,</span> num_deleted)<span class="op">;</span></span>
+<span id="cb28-17"><a href="#cb28-17" aria-hidden="true"></a><span class="op">}</span></span></code></pre></div>
 </div>
 </div>
 <p>We can run the script with <code>cargo run --bin delete_post demo</code> (at least with the title I chose). Your output should look something like:</p>
