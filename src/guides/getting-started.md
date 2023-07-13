@@ -573,6 +573,59 @@ That's it! Let's try it out with `cargo run --bin publish_post 1`.
 Published post Diesel demo
 ```
 
+Additionally let's implement a possibility of fetching a single post. We will display the post id with its title.
+Notice [`.optional()`] call. This returns `Option<Post>` instead of throwing an error, which we can then use in our matching pattern. For additional methods to modify the constructed select statements refer to the [`documentation` of `QueryDsl`]
+
+
+[`.optional()`]: https://docs.diesel.rs/2.1.x/diesel/result/trait.OptionalExtension.html#tymethod.optional
+[`documentation` of `QueryDsl`]: https://docs.diesel.rs/2.1.x/diesel/query_dsl/trait.QueryDsl.html
+
+::: code-block
+
+[src/bin/get_post.rs](https://github.com/diesel-rs/diesel/blob/master/examples/postgres/getting_started_step_3/src/bin/get_post.rs)
+
+```rust
+use self::models::Post;
+use diesel::prelude::*;
+use std::env::args;
+
+fn main() {
+    use self::schema::posts::dsl::posts;
+
+    let post_id = args()
+        .nth(1)
+        .expect("get_post requires a post id")
+        .parse::<i32>()
+        .expect("Invalid ID");
+
+    let connection = &mut establish_connection();
+
+    let post = posts
+        .find(post_id)
+        .select(Post::as_select())
+        .first(connection)
+        .optional(); // This allows for returning an Option<Post>, otherwise it will throw an error
+
+    match post {
+        Ok(Some(post)) => println!("Post with id: {} has a title: {}", post.id, post.title),
+        Ok(None) => println!("Unable to find post {}", post_id),
+        Err(_) => println!("An error occured while fetching post {}", post_id),
+    }
+}
+
+```
+
+:::
+
+We can see our post with `cargo run --bin get_post 1`.
+
+
+```
+ Compiling diesel_demo v0.1.0 (file:///Users/sean/Documents/Projects/open-source/diesel_demo)
+   Running `target/debug/get_post 1`
+   Post with id: 1 has a title: Diesel demo
+```
+
 And now, finally, we can see our post with `cargo run --bin show_posts`.
 
 ```
