@@ -574,11 +574,11 @@ Published post Diesel demo
 ```
 
 Additionally let's implement a possibility of fetching a single post. We will display the post id with its title.
-Notice [`.optional()`] call. This returns `Option<Post>` instead of throwing an error, which we can then use in our matching pattern. For additional methods of `QueryDsl` refer to the [`documentation`]
+Notice [`.optional()`] call. This returns `Option<Post>` instead of throwing an error, which we can then use in our matching pattern. For additional methods to modify the constructed select statements refer to the [`documentation` of `QueryDsl`]
 
 
 [`.optional()`]: https://docs.diesel.rs/2.1.x/diesel/result/trait.OptionalExtension.html#tymethod.optional
-[`documentation`]: https://docs.diesel.rs/2.1.x/diesel/query_dsl/trait.QueryDsl.html
+[`documentation` of `QueryDsl`]: https://docs.diesel.rs/2.1.x/diesel/query_dsl/trait.QueryDsl.html
 
 ::: code-block
 
