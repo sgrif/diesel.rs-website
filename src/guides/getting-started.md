@@ -587,7 +587,7 @@ use diesel_demo_step_3_sqlite::*;
 use std::env::args;
 
 fn main() {
-    use self::schema::posts::dsl::{posts, id};
+    use self::schema::posts::dsl::{id, posts};
 
     let post_id = args()
         .nth(1)
