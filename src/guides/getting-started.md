@@ -587,6 +587,7 @@ Notice [`.optional()`] call. This returns `Option<Post>` instead of throwing an 
 ```rust
 use self::models::Post;
 use diesel::prelude::*;
+use diesel_demo::*;
 use std::env::args;
 
 fn main() {
