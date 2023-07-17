@@ -522,31 +522,32 @@ src/bin/get_post.rs
 <a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/master/examples/postgres/getting_started_step_3/src/bin/get_post.rs">View on GitHub</a>
 <div class="sourceCode" id="cb25"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true"></a><span class="kw">use</span> <span class="kw">self</span><span class="pp">::models::</span>Post<span class="op">;</span></span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true"></a><span class="kw">use</span> <span class="pp">diesel::prelude::</span><span class="op">*;</span></span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true"></a><span class="kw">use</span> <span class="pp">std::env::</span>args<span class="op">;</span></span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true"></a></span>
-<span id="cb25-5"><a href="#cb25-5" aria-hidden="true"></a><span class="kw">fn</span> main() <span class="op">{</span></span>
-<span id="cb25-6"><a href="#cb25-6" aria-hidden="true"></a>    <span class="kw">use</span> <span class="kw">self</span><span class="pp">::schema::posts::dsl::</span>posts<span class="op">;</span></span>
-<span id="cb25-7"><a href="#cb25-7" aria-hidden="true"></a></span>
-<span id="cb25-8"><a href="#cb25-8" aria-hidden="true"></a>    <span class="kw">let</span> post_id <span class="op">=</span> args()</span>
-<span id="cb25-9"><a href="#cb25-9" aria-hidden="true"></a>        <span class="op">.</span>nth(<span class="dv">1</span>)</span>
-<span id="cb25-10"><a href="#cb25-10" aria-hidden="true"></a>        <span class="op">.</span>expect(<span class="st">&quot;get_post requires a post id&quot;</span>)</span>
-<span id="cb25-11"><a href="#cb25-11" aria-hidden="true"></a>        <span class="op">.</span><span class="pp">parse::</span><span class="op">&lt;</span><span class="dt">i32</span><span class="op">&gt;</span>()</span>
-<span id="cb25-12"><a href="#cb25-12" aria-hidden="true"></a>        <span class="op">.</span>expect(<span class="st">&quot;Invalid ID&quot;</span>)<span class="op">;</span></span>
-<span id="cb25-13"><a href="#cb25-13" aria-hidden="true"></a></span>
-<span id="cb25-14"><a href="#cb25-14" aria-hidden="true"></a>    <span class="kw">let</span> connection <span class="op">=</span> <span class="op">&amp;</span><span class="kw">mut</span> establish_connection()<span class="op">;</span></span>
-<span id="cb25-15"><a href="#cb25-15" aria-hidden="true"></a></span>
-<span id="cb25-16"><a href="#cb25-16" aria-hidden="true"></a>    <span class="kw">let</span> post <span class="op">=</span> posts</span>
-<span id="cb25-17"><a href="#cb25-17" aria-hidden="true"></a>        <span class="op">.</span>find(post_id)</span>
-<span id="cb25-18"><a href="#cb25-18" aria-hidden="true"></a>        <span class="op">.</span>select(<span class="pp">Post::</span>as_select())</span>
-<span id="cb25-19"><a href="#cb25-19" aria-hidden="true"></a>        <span class="op">.</span>first(connection)</span>
-<span id="cb25-20"><a href="#cb25-20" aria-hidden="true"></a>        <span class="op">.</span>optional()<span class="op">;</span> <span class="co">// This allows for returning an Option&lt;Post&gt;, otherwise it will throw an error</span></span>
-<span id="cb25-21"><a href="#cb25-21" aria-hidden="true"></a></span>
-<span id="cb25-22"><a href="#cb25-22" aria-hidden="true"></a>    <span class="kw">match</span> post <span class="op">{</span></span>
-<span id="cb25-23"><a href="#cb25-23" aria-hidden="true"></a>        <span class="cn">Ok</span>(<span class="cn">Some</span>(post)) <span class="op">=&gt;</span> <span class="pp">println!</span>(<span class="st">&quot;Post with id: {} has a title: {}&quot;</span><span class="op">,</span> post<span class="op">.</span>id<span class="op">,</span> post<span class="op">.</span>title)<span class="op">,</span></span>
-<span id="cb25-24"><a href="#cb25-24" aria-hidden="true"></a>        <span class="cn">Ok</span>(<span class="cn">None</span>) <span class="op">=&gt;</span> <span class="pp">println!</span>(<span class="st">&quot;Unable to find post {}&quot;</span><span class="op">,</span> post_id)<span class="op">,</span></span>
-<span id="cb25-25"><a href="#cb25-25" aria-hidden="true"></a>        <span class="cn">Err</span>(_) <span class="op">=&gt;</span> <span class="pp">println!</span>(<span class="st">&quot;An error occured while fetching post {}&quot;</span><span class="op">,</span> post_id)<span class="op">,</span></span>
-<span id="cb25-26"><a href="#cb25-26" aria-hidden="true"></a>    <span class="op">}</span></span>
-<span id="cb25-27"><a href="#cb25-27" aria-hidden="true"></a><span class="op">}</span></span></code></pre></div>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true"></a><span class="kw">use</span> <span class="pp">diesel_demo::</span><span class="op">*;</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true"></a><span class="kw">use</span> <span class="pp">std::env::</span>args<span class="op">;</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true"></a></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true"></a><span class="kw">fn</span> main() <span class="op">{</span></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true"></a>    <span class="kw">use</span> <span class="kw">self</span><span class="pp">::schema::posts::dsl::</span>posts<span class="op">;</span></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true"></a></span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true"></a>    <span class="kw">let</span> post_id <span class="op">=</span> args()</span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true"></a>        <span class="op">.</span>nth(<span class="dv">1</span>)</span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true"></a>        <span class="op">.</span>expect(<span class="st">&quot;get_post requires a post id&quot;</span>)</span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true"></a>        <span class="op">.</span><span class="pp">parse::</span><span class="op">&lt;</span><span class="dt">i32</span><span class="op">&gt;</span>()</span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true"></a>        <span class="op">.</span>expect(<span class="st">&quot;Invalid ID&quot;</span>)<span class="op">;</span></span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true"></a></span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true"></a>    <span class="kw">let</span> connection <span class="op">=</span> <span class="op">&amp;</span><span class="kw">mut</span> establish_connection()<span class="op">;</span></span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true"></a></span>
+<span id="cb25-17"><a href="#cb25-17" aria-hidden="true"></a>    <span class="kw">let</span> post <span class="op">=</span> posts</span>
+<span id="cb25-18"><a href="#cb25-18" aria-hidden="true"></a>        <span class="op">.</span>find(post_id)</span>
+<span id="cb25-19"><a href="#cb25-19" aria-hidden="true"></a>        <span class="op">.</span>select(<span class="pp">Post::</span>as_select())</span>
+<span id="cb25-20"><a href="#cb25-20" aria-hidden="true"></a>        <span class="op">.</span>first(connection)</span>
+<span id="cb25-21"><a href="#cb25-21" aria-hidden="true"></a>        <span class="op">.</span>optional()<span class="op">;</span> <span class="co">// This allows for returning an Option&lt;Post&gt;, otherwise it will throw an error</span></span>
+<span id="cb25-22"><a href="#cb25-22" aria-hidden="true"></a></span>
+<span id="cb25-23"><a href="#cb25-23" aria-hidden="true"></a>    <span class="kw">match</span> post <span class="op">{</span></span>
+<span id="cb25-24"><a href="#cb25-24" aria-hidden="true"></a>        <span class="cn">Ok</span>(<span class="cn">Some</span>(post)) <span class="op">=&gt;</span> <span class="pp">println!</span>(<span class="st">&quot;Post with id: {} has a title: {}&quot;</span><span class="op">,</span> post<span class="op">.</span>id<span class="op">,</span> post<span class="op">.</span>title)<span class="op">,</span></span>
+<span id="cb25-25"><a href="#cb25-25" aria-hidden="true"></a>        <span class="cn">Ok</span>(<span class="cn">None</span>) <span class="op">=&gt;</span> <span class="pp">println!</span>(<span class="st">&quot;Unable to find post {}&quot;</span><span class="op">,</span> post_id)<span class="op">,</span></span>
+<span id="cb25-26"><a href="#cb25-26" aria-hidden="true"></a>        <span class="cn">Err</span>(_) <span class="op">=&gt;</span> <span class="pp">println!</span>(<span class="st">&quot;An error occured while fetching post {}&quot;</span><span class="op">,</span> post_id)<span class="op">,</span></span>
+<span id="cb25-27"><a href="#cb25-27" aria-hidden="true"></a>    <span class="op">}</span></span>
+<span id="cb25-28"><a href="#cb25-28" aria-hidden="true"></a><span class="op">}</span></span></code></pre></div>
 </div>
 </div>
 <p>We can see our post with <code>cargo run --bin get_post 1</code>.</p>
