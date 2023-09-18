@@ -205,7 +205,7 @@ up.sql
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true"></a>  <span class="kw">id</span> SERIAL <span class="kw">PRIMARY</span> <span class="kw">KEY</span>,</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true"></a>  page_number <span class="dt">INT</span> <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true"></a>  content TEXT <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true"></a>  book_id SERIAL <span class="kw">REFERENCES</span> books(<span class="kw">id</span>)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true"></a>  book_id <span class="dt">INTEGER</span> <span class="kw">NOT</span> <span class="kw">NULL</span> <span class="kw">REFERENCES</span> books(<span class="kw">id</span>)</span>
 <span id="cb8-6"><a href="#cb8-6" aria-hidden="true"></a>);</span></code></pre></div>
 </div>
 </div>
