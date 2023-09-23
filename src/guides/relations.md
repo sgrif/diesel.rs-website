@@ -494,7 +494,7 @@ And the corresponding down migration.
 
 ::: code-block
 
-[up.sql](https://github.com/diesel-rs/diesel/blob/2.1.x/examples/postgres/relations/migrations/2023-02-17-084617_add_books_authors/down.sql)
+[down.sql](https://github.com/diesel-rs/diesel/blob/2.1.x/examples/postgres/relations/migrations/2023-02-17-084617_add_books_authors/down.sql)
 
 ```sql
 DROP TABLE books_authors;
