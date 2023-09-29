@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE language SYSTEM "language.dtd"
+<!DOCTYPE language
 [
 	<!ENTITY more "(_\d+)*">
 	<!ENTITY int  "[+-]?(0|[1-9]\d*)&more;">
@@ -11,7 +11,15 @@
 	<!ENTITY datetime "\d\d\d\d-\d\d-\d\d(T&time;)?">
 ]>
 <!-- https://github.com/toml-lang/toml -->
-<language name="TOML" section="Configuration" extensions="*.toml" mimetype="text/x-toml" version="8" kateversion="5.0" author="flying-sheep@web.de" license="LGPLv2+">
+<language
+	name="TOML"
+	section="Configuration"
+	extensions="*.toml"
+	mimetype="text/x-toml"
+	version="12"
+	kateversion="5.0"
+	author="flying-sheep@web.de"
+	license="LGPLv2+">
 <highlighting>
 	<list name="bools">
 		<item>true</item>
