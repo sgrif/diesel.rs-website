@@ -446,9 +446,9 @@ for the right types. Neat!
 ::: aside__text
 
 Not all databases support `RETURNING` clauses. On backends that support the RETURNING clause (such as PostgreSQL and SQLite), we can get data back from our insert as well.
-On the SQLite backend, [RETURNING](https://www.sqlite.org/lang_returning.html){:target="_blank"} has been supported since version 3.35.0. To enable RETURNING clause add feature flag, `returning_clauses_for_sqlite_3_35`.
+On the SQLite backend, [RETURNING](https://www.sqlite.org/lang_returning.html){target="_blank"} has been supported since version 3.35.0. To enable RETURNING clause add feature flag, `returning_clauses_for_sqlite_3_35`.
 MySQL does not support RETURNING clauses. To get back all of the inserted rows, we can call `.get_results` instead of `.execute`.
-If you follow this guide on a different database system be sure to checkout [the examples specific to your database system](https://github.com/diesel-rs/diesel/tree/master/examples){:target="_blank"}.
+If you follow this guide on a different database system be sure to checkout [the examples specific to your database system](https://github.com/diesel-rs/diesel/tree/master/examples){target="_blank"}.
 
 :::
 
