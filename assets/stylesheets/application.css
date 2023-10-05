@@ -846,7 +846,7 @@ body.index {
       height: 75px;
       width: auto;
       display: block;
-      overflow: visible; 
+      overflow: visible;
       box-sizing: content-box;
       padding-bottom: 5px;
     }
@@ -872,8 +872,8 @@ body.index {
         margin-right: 0.75em; }
     .main-header .header-nav a {
       color: #fff; }
-      .main-header .header-nav a:hover, 
-      .main-header .header-nav a:focus, 
+      .main-header .header-nav a:hover,
+      .main-header .header-nav a:focus,
       .main-header .header-nav a:active {
         color: #FFCD57; }
 
@@ -1105,3 +1105,16 @@ div.vertical-tabs-container {
   margin-bottom: 1.5em; }
   .community-project p {
     margin-bottom: 0; }
+
+/* Fix overflow issue in mobile screen */
+
+@media screen and (min-width: 420px) {
+  code {
+    white-space: pre;
+  }
+}
+@media screen and (max-width: 420px) {
+  code {
+    word-wrap: break-word;
+  }
+}
