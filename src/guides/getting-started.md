@@ -1,5 +1,5 @@
 ---
-title: "Getting Started"
+title: "Getting Started with Diesel"
 lang: en-US
 css: ../assets/stylesheets/application.css
 include-after: |
