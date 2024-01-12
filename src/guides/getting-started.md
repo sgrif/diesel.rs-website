@@ -199,6 +199,27 @@ Since migrations are written in raw SQL, they can contain specific features of t
 For example, the `CREATE TABLE` statement above uses PostgreSQL's `SERIAL` type. If you want to use SQLite instead,
 you need to use `INTEGER` instead. The [diesel GitHub repository](https://github.com/diesel-rs/diesel/tree/master/examples) 
 contains modified examples for all supported backends. Be sure to checkout these examples if you use another backend than PostgreSQL.
+
+If you prefer to generate your migrations based on Rust code instead, the diesel CLI tool provides an additional `--diff-schema`  on the `diesel migration generate` command that allows to generate migrations based on a the current schema definition and your database. To generate a migration equivalent to the shown Raw SQL migration you need to 
+
+* Create a `schema.rs` file with the following content:
+
+```rust
+diesel::table! {
+    posts (id) {
+        id -> Int4,
+        title -> Varchar,
+        body -> Text,
+        published -> Bool,
+    }
+}
+```
+
+[The documentation of the `table!` macro](https://docs.diesel.rs/2.1.x/diesel/macro.table.html) contains details about the syntax used for this macros. [The `diesel::sql_types` module](https://docs.diesel.rs/2.1.x/diesel/sql_types/index.html) provides documentation for the SQL side types used to define the relevant columns.
+
+* Run `diesel migration generate --diff-schema create_posts`
+
+This will generate both the `up.sql` file and the `down.sql` file of your migration pre-populated with the relevant SQL. After that you should continue with the `diesel migration run` step.
 :::
 </aside>
 
