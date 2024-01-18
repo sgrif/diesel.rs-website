@@ -11,7 +11,7 @@ include-after: |
 ::: guide-wrapper
 
 For this guide, we're going to walk through some simple examples for each of the pieces of CRUD,
-which stands for "Create Read Update Delete". Each step in this guide will build on the previous,
+which stands for "Create Read Update Delete". Each step in this guide will build on the previous
 and is meant to be followed along.
 
 Before we start, make sure you have PostgreSQL installed and running. If you are using some different database, like for example SQLite, some examples won't just run as the implemented API might differ. In the project repository, you may find various [examples](https://github.com/diesel-rs/diesel/tree/2.1.x/examples) for every supported database. 
@@ -98,7 +98,7 @@ By default diesel CLI depends on the following client libraries:
 
 * [`libpq`](https://www.postgresql.org/docs/current/libpq.html) for the PostgreSQL backend
 * [`libmysqlclient`](https://dev.mysql.com/doc/c-api/8.0/en/c-api-implementations.html) for the Mysql backend
-* [`libsqlite3`](https://www.sqlite.org/index.html) for the SQlite backend
+* [`libsqlite3`](https://www.sqlite.org/index.html) for the SQLite backend
 
 If you are not sure on how to install those dependencies please consult the documentation of the corresponding dependency or your distribution package manager.
 
@@ -185,7 +185,7 @@ We can apply our new migration:
 diesel migration run
 ```
 
-It's a good idea to make sure that `down.sql` is correct. You can quickly confirm that your `down.sql`
+It's a good idea to ensure that `down.sql` is correct. You can quickly confirm that your `down.sql`
 rolls back your migration correctly by `redoing` the migration:
 
 ```
@@ -200,7 +200,7 @@ For example, the `CREATE TABLE` statement above uses PostgreSQL's `SERIAL` type.
 you need to use `INTEGER` instead. The [diesel GitHub repository](https://github.com/diesel-rs/diesel/tree/master/examples) 
 contains modified examples for all supported backends. Be sure to checkout these examples if you use another backend than PostgreSQL.
 
-If you prefer to generate your migrations based on Rust code instead, the diesel CLI tool provides an additional `--diff-schema`  on the `diesel migration generate` command that allows to generate migrations based on a the current schema definition and your database. To generate a migration equivalent to the shown Raw SQL migration you need to 
+If you prefer to generate your migrations based on Rust code instead, the diesel CLI tool provides an additional `--diff-schema`  on the `diesel migration generate` command that allows to generate migrations based on the current schema definition and your database. To generate a migration equivalent to the shown Raw SQL migration you need to 
 
 * Create a `schema.rs` file with the following content:
 
@@ -215,11 +215,11 @@ diesel::table! {
 }
 ```
 
-[The documentation of the `table!` macro](https://docs.diesel.rs/2.1.x/diesel/macro.table.html) contains details about the syntax used for this macros. [The `diesel::sql_types` module](https://docs.diesel.rs/2.1.x/diesel/sql_types/index.html) provides documentation for the SQL side types used to define the relevant columns.
+[The documentation of the `table!` macro](https://docs.diesel.rs/2.1.x/diesel/macro.table.html) contains the syntax used for this macros. [The `diesel::sql_types` module](https://docs.diesel.rs/2.1.x/diesel/sql_types/index.html) provides documentation for the SQL side types used to define the relevant columns.
 
 * Run `diesel migration generate --diff-schema create_posts`
 
-This will generate both the `up.sql` file and the `down.sql` file of your migration pre-populated with the relevant SQL. After that you should continue with the `diesel migration run` step.
+This will generate both the `up.sql` and the `down.sql` files of your migration pre-populated with the relevant SQL. After that, you should continue with the `diesel migration run` step.
 :::
 </aside>
 
@@ -596,7 +596,7 @@ That's it! Let's try it out with `cargo run --bin publish_post 1`.
 Published post Diesel demo
 ```
 
-Additionally let's implement a possibility of fetching a single post. We will display the post id with its title.
+Additionally, let's implement a possibility of fetching a single post. We will display the post id with its title.
 Notice [`.optional()`] call. This returns `Option<Post>` instead of throwing an error, which we can then use in our matching pattern. For additional methods to modify the constructed select statements refer to the [`documentation` of `QueryDsl`]
 
 
