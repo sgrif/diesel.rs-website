@@ -139,7 +139,7 @@ code span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
 <div class="demo">
 <div class="content-wrapper">
 <div class="guide-wrapper">
-<p>For this guide, we’re going to walk through some simple examples for each of the pieces of CRUD, which stands for “Create Read Update Delete”. Each step in this guide will build on the previous, and is meant to be followed along.</p>
+<p>For this guide, we’re going to walk through some simple examples for each of the pieces of CRUD, which stands for “Create Read Update Delete”. Each step in this guide will build on the previous and is meant to be followed along.</p>
 <p>Before we start, make sure you have PostgreSQL installed and running. If you are using some different database, like for example SQLite, some examples won’t just run as the implemented API might differ. In the project repository, you may find various <a href="https://github.com/diesel-rs/diesel/tree/2.1.x/examples">examples</a> for every supported database.</p>
 <aside class="aside aside--note">
 <header class="aside__header">
@@ -195,7 +195,7 @@ clang: error: linker command failed with exit code 1 (use -v to see invocation)<
 <ul>
 <li><a href="https://www.postgresql.org/docs/current/libpq.html"><code>libpq</code></a> for the PostgreSQL backend</li>
 <li><a href="https://dev.mysql.com/doc/c-api/8.0/en/c-api-implementations.html"><code>libmysqlclient</code></a> for the Mysql backend</li>
-<li><a href="https://www.sqlite.org/index.html"><code>libsqlite3</code></a> for the SQlite backend</li>
+<li><a href="https://www.sqlite.org/index.html"><code>libsqlite3</code></a> for the SQLite backend</li>
 </ul>
 <p>If you are not sure on how to install those dependencies please consult the documentation of the corresponding dependency or your distribution package manager.</p>
 <p>For example, if you only have PostgreSQL installed, you can use this to install <code>diesel_cli</code> with only PostgreSQL:</p>
@@ -241,7 +241,7 @@ down.sql
 </div>
 <p>We can apply our new migration:</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true"></a><span class="ex">diesel</span> migration run</span></code></pre></div>
-<p>It’s a good idea to make sure that <code>down.sql</code> is correct. You can quickly confirm that your <code>down.sql</code> rolls back your migration correctly by <code>redoing</code> the migration:</p>
+<p>It’s a good idea to ensure that <code>down.sql</code> is correct. You can quickly confirm that your <code>down.sql</code> rolls back your migration correctly by <code>redoing</code> the migration:</p>
 <pre><code>diesel migration redo</code></pre>
 <aside class="aside aside--note">
 <header class="aside__header">
@@ -249,7 +249,7 @@ A Note on Raw SQL in Migrations:
 </header>
 <div class="aside__text">
 <p>Since migrations are written in raw SQL, they can contain specific features of the database system you use. For example, the <code>CREATE TABLE</code> statement above uses PostgreSQL’s <code>SERIAL</code> type. If you want to use SQLite instead, you need to use <code>INTEGER</code> instead. The <a href="https://github.com/diesel-rs/diesel/tree/master/examples">diesel GitHub repository</a> contains modified examples for all supported backends. Be sure to checkout these examples if you use another backend than PostgreSQL.</p>
-<p>If you prefer to generate your migrations based on Rust code instead, the diesel CLI tool provides an additional <code>--diff-schema</code> on the <code>diesel migration generate</code> command that allows to generate migrations based on a the current schema definition and your database. To generate a migration equivalent to the shown Raw SQL migration you need to</p>
+<p>If you prefer to generate your migrations based on Rust code instead, the diesel CLI tool provides an additional <code>--diff-schema</code> on the <code>diesel migration generate</code> command that allows to generate migrations based on the current schema definition and your database. To generate a migration equivalent to the shown Raw SQL migration you need to</p>
 <ul>
 <li>Create a <code>schema.rs</code> file with the following content:</li>
 </ul>
@@ -261,11 +261,11 @@ A Note on Raw SQL in Migrations:
 <span id="cb14-6"><a href="#cb14-6" aria-hidden="true"></a>        published <span class="op">-&gt;</span> Bool<span class="op">,</span></span>
 <span id="cb14-7"><a href="#cb14-7" aria-hidden="true"></a>    <span class="op">}</span></span>
 <span id="cb14-8"><a href="#cb14-8" aria-hidden="true"></a><span class="op">}</span></span></code></pre></div>
-<p><a href="https://docs.diesel.rs/2.1.x/diesel/macro.table.html">The documentation of the <code>table!</code> macro</a> contains details about the syntax used for this macros. <a href="https://docs.diesel.rs/2.1.x/diesel/sql_types/index.html">The <code>diesel::sql_types</code> module</a> provides documentation for the SQL side types used to define the relevant columns.</p>
+<p><a href="https://docs.diesel.rs/2.1.x/diesel/macro.table.html">The documentation of the <code>table!</code> macro</a> contains the syntax used for this macros. <a href="https://docs.diesel.rs/2.1.x/diesel/sql_types/index.html">The <code>diesel::sql_types</code> module</a> provides documentation for the SQL side types used to define the relevant columns.</p>
 <ul>
 <li>Run <code>diesel migration generate --diff-schema create_posts</code></li>
 </ul>
-<p>This will generate both the <code>up.sql</code> file and the <code>down.sql</code> file of your migration pre-populated with the relevant SQL. After that you should continue with the <code>diesel migration run</code> step.</p>
+<p>This will generate both the <code>up.sql</code> and the <code>down.sql</code> files of your migration pre-populated with the relevant SQL. After that, you should continue with the <code>diesel migration run</code> step.</p>
 </div>
 </aside>
 <aside class="aside aside--note">
@@ -532,7 +532,7 @@ src/bin/publish_post.rs
 <pre><code> Compiling diesel_demo v0.1.0 (file:///Users/sean/Documents/Projects/open-source/diesel_demo)
    Running `target/debug/publish_post 1`
 Published post Diesel demo</code></pre>
-<p>Additionally let’s implement a possibility of fetching a single post. We will display the post id with its title. Notice <a href="https://docs.diesel.rs/2.1.x/diesel/result/trait.OptionalExtension.html#tymethod.optional"><code>.optional()</code></a> call. This returns <code>Option&lt;Post&gt;</code> instead of throwing an error, which we can then use in our matching pattern. For additional methods to modify the constructed select statements refer to the <a href="https://docs.diesel.rs/2.1.x/diesel/query_dsl/trait.QueryDsl.html"><code>documentation</code> of <code>QueryDsl</code></a></p>
+<p>Additionally, let’s implement a possibility of fetching a single post. We will display the post id with its title. Notice <a href="https://docs.diesel.rs/2.1.x/diesel/result/trait.OptionalExtension.html#tymethod.optional"><code>.optional()</code></a> call. This returns <code>Option&lt;Post&gt;</code> instead of throwing an error, which we can then use in our matching pattern. For additional methods to modify the constructed select statements refer to the <a href="https://docs.diesel.rs/2.1.x/diesel/query_dsl/trait.QueryDsl.html"><code>documentation</code> of <code>QueryDsl</code></a></p>
 <div class="demo__example">
 <div class="demo__example-browser">
 <div class="browser-bar">
