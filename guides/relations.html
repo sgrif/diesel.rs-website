@@ -334,7 +334,7 @@ src/main.rs
 </div>
 <a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.1.x/examples/postgres/relations/src/main.rs#L100-L115">View on GitHub</a>
 <div class="sourceCode" id="cb16"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true"></a><span class="kw">let</span> all_books <span class="op">=</span> <span class="pp">books::</span>table<span class="op">.</span>select(<span class="pp">Book::</span>as_select())<span class="op">.</span>load(conn)<span class="op">?;</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true"></a>    </span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true"></a></span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true"></a><span class="co">// get all pages for all books</span></span>
 <span id="cb16-4"><a href="#cb16-4" aria-hidden="true"></a><span class="kw">let</span> pages <span class="op">=</span> <span class="pp">Page::</span>belonging_to(<span class="op">&amp;</span>all_books)</span>
 <span id="cb16-5"><a href="#cb16-5" aria-hidden="true"></a>    <span class="op">.</span>select(<span class="pp">Page::</span>as_select())</span>
@@ -363,7 +363,7 @@ A note on consuming these data:
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true"></a>    <span class="dt">&quot;title&quot;</span><span class="fu">:</span> <span class="st">&quot;Momo&quot;</span><span class="fu">,</span></span>
 <span id="cb17-4"><a href="#cb17-4" aria-hidden="true"></a>    <span class="dt">&quot;pages&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="er">…</span><span class="ot">]</span><span class="fu">,</span></span>
 <span id="cb17-5"><a href="#cb17-5" aria-hidden="true"></a><span class="fu">}</span><span class="ot">]</span></span></code></pre></div>
-<p>Given the API provided by diesel, such a structure can easily be implement by collecting in an a struct with name fields instead of a tuple and using <a href="https://serde.rs/field-attrs.html#flatten"><code>#[serde(flatten)]</code></a> on the relevant fields.</p>
+<p>Given the API provided by diesel, such a structure can easily be implemented by collecting the data in a struct with named fields instead of a tuple and using <a href="https://serde.rs/field-attrs.html#flatten"><code>#[serde(flatten)]</code></a> on the relevant fields.</p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true"></a><span class="at">#[</span>derive<span class="at">(</span>Serialize<span class="at">)]</span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true"></a><span class="kw">struct</span> BookWithPages <span class="op">{</span></span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true"></a>    <span class="at">#[</span>serde<span class="at">(</span>flatten<span class="at">)]</span></span>
@@ -547,7 +547,7 @@ src/main.rs
 <span id="cb29-8"><a href="#cb29-8" aria-hidden="true"></a>    <span class="op">.</span>inner_join(<span class="pp">books::</span>table)</span>
 <span id="cb29-9"><a href="#cb29-9" aria-hidden="true"></a>    <span class="op">.</span>select(<span class="pp">Book::</span>as_select())</span>
 <span id="cb29-10"><a href="#cb29-10" aria-hidden="true"></a>    <span class="op">.</span>load(conn)<span class="op">?;</span></span>
-<span id="cb29-11"><a href="#cb29-11" aria-hidden="true"></a><span class="pp">println!</span>(<span class="st">&quot;Asgrid Lindgren books: {books:?}&quot;</span>)<span class="op">;</span></span></code></pre></div>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true"></a><span class="pp">println!</span>(<span class="st">&quot;Books by Astrid Lindgren: {books:?}&quot;</span>)<span class="op">;</span></span></code></pre></div>
 </div>
 </div>
 <p>As described before <code>BookAuthor::belonging_to</code> constructs a query to which we can chain other clauses. In this case we join the <code>books</code> table to include the relevant books and select only the columns relevant for populating the <code>Book</code> type. This results in loading all books for a given author.</p>
@@ -568,7 +568,7 @@ src/main.rs
 <span id="cb30-8"><a href="#cb30-8" aria-hidden="true"></a>    <span class="op">.</span>inner_join(<span class="pp">authors::</span>table)</span>
 <span id="cb30-9"><a href="#cb30-9" aria-hidden="true"></a>    <span class="op">.</span>select(<span class="pp">Author::</span>as_select())</span>
 <span id="cb30-10"><a href="#cb30-10" aria-hidden="true"></a>    <span class="op">.</span>load(conn)<span class="op">?;</span></span>
-<span id="cb30-11"><a href="#cb30-11" aria-hidden="true"></a><span class="pp">println!</span>(<span class="st">&quot;Authors for </span><span class="sc">\&quot;</span><span class="st">Pipi and Momo</span><span class="sc">\&quot;</span><span class="st">: {authors:?}&quot;</span>)<span class="op">;</span></span></code></pre></div>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true"></a><span class="pp">println!</span>(<span class="st">&quot;Authors for </span><span class="sc">\&quot;</span><span class="st">Pippi and Momo</span><span class="sc">\&quot;</span><span class="st">: {authors:?}&quot;</span>)<span class="op">;</span></span></code></pre></div>
 </div>
 </div>
 <p>As before we can use this approach to load a list of all authors and their associated books:</p>
