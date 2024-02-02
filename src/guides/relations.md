@@ -188,7 +188,7 @@ same query. This allows to join this table without specify an explicit `ON` clau
 
 ## Models
 
-Let's reflect this now in our `model.rs` 
+Let's reflect this now in our `model.rs`
 
 ::: code-block
 
@@ -224,10 +224,10 @@ pub struct Page {
 Associations in Diesel are always child-to-parent. You can declare an
 association between two records with `#[diesel(belongs_to)]`. First we need to add
 [`#[derive(Associations)]`][associations-docs]
-, which will allow us to add `#[diesel(belongs_to(Book))]` to `Page`. 
+, which will allow us to add `#[diesel(belongs_to(Book))]` to `Page`.
 That tells  that pages belong to books and thereby reflect our 1-to-many relation.
 
-By default diesel will assume that your struct contains a field with the lower case 
+By default diesel will assume that your struct contains a field with the lower case
 remote type name appended with `_id`. So for the given example `book_id`. If your
 foreign key field has a different name you can specify that via the `foreign_key` option:
 `#[diesel(belongs_to(Book, foreign_key = book_id))]`
@@ -258,24 +258,24 @@ println!("Pages for \"Momo\": \n {pages:?}\n");
 
 :::
 
-[`Page::belonging_to`][belonging-to-dsl-docs] allows to query all child records related to one or more 
-parent record. For the presented case it will load all pages for the book with the title "Momo". 
-This function generates a query for loading these data. It does not execute the query, so that 
-it is possible to add additional clauses to the query later on. 
-The generated query is equivalent to `SELECT * FROM pages WHERE book_id IN(…)` with 
+[`Page::belonging_to`][belonging-to-dsl-docs] allows to query all child records related to one or more
+parent record. For the presented case it will load all pages for the book with the title "Momo".
+This function generates a query for loading these data. It does not execute the query, so that
+it is possible to add additional clauses to the query later on.
+The generated query is equivalent to `SELECT * FROM pages WHERE book_id IN(…)` with
 a list of given book ids derived from the function input.
 
 
 [belonging-to-dsl-docs]: https://docs.diesel.rs/2.1.x/diesel/prelude/trait.BelongingToDsl.html
 
 
-Loading all pages for a single book is a straight forward query, it becomes more complicated if we 
-want to load all pages per book. This is a classic ORM problem, where frameworks sometimes run in 
-the so called N+1 query problem. That problem describes cases where a framework naively loads all 
-books first and then execute one query per book to receive the relevant pages. This approach is bad 
-for performance because it executes an unbound number of queries. 
+Loading all pages for a single book is a straight forward query, it becomes more complicated if we
+want to load all pages per book. This is a classic ORM problem, where frameworks sometimes run in
+the so called N+1 query problem. That problem describes cases where a framework naively loads all
+books first and then execute one query per book to receive the relevant pages. This approach is bad
+for performance because it executes an unbound number of queries.
 
-Diesel's [associations API] sidesteps that problem by providing a special tailored API for such cases: 
+Diesel's [associations API] sidesteps that problem by providing a special tailored API for such cases:
 
 ::: code-block
 
@@ -283,7 +283,7 @@ Diesel's [associations API] sidesteps that problem by providing a special tailor
 
 ```rust
 let all_books = books::table.select(Book::as_select()).load(conn)?;
-    
+
 // get all pages for all books
 let pages = Page::belonging_to(&all_books)
     .select(Page::as_select())
@@ -302,10 +302,10 @@ println!("Pages per book: \n {pages_per_book:?}\n");
 
 :::
 
-Here we use a similar construct as before to load all pages for a given list of books by constructing the 
-relevant query via `Page::belonging_to`. The important difference to before is that we now pass a slice of books 
-as argument. This will again construct the equivalent of the `SELECT * FROM pages WHERE book_id IN(…)` query as 
-before. The important difference here is that we use the [`.grouped_by`] function to later group each page to the 
+Here we use a similar construct as before to load all pages for a given list of books by constructing the
+relevant query via `Page::belonging_to`. The important difference to before is that we now pass a slice of books
+as argument. This will again construct the equivalent of the `SELECT * FROM pages WHERE book_id IN(…)` query as
+before. The important difference here is that we use the [`.grouped_by`] function to later group each page to the
 correct book. In total there are two queries executed in this code block, independently of the number of queried books and pages.
 
 [associations API]: https://docs.diesel.rs/2.1.x/diesel/associations/index.html
@@ -324,7 +324,7 @@ A common use case for loading associated data is to return a serialized data str
 }]
 ```
 
-Given the API provided by diesel, such a structure can easily be implement by collecting in an a struct with name fields instead of a tuple and using [`#[serde(flatten)]`](https://serde.rs/field-attrs.html#flatten) on the relevant fields.
+Given the API provided by diesel, such a structure can easily be implemented by collecting the data in a struct with named fields instead of a tuple and using [`#[serde(flatten)]`](https://serde.rs/field-attrs.html#flatten) on the relevant fields.
 
 ```rust
 #[derive(Serialize)]
@@ -350,13 +350,13 @@ let pages_per_book = pages
 
 ## Joins
 
-We have currently loaded all pages for a given book by using the API provided by the `diesel::associations` module. 
+We have currently loaded all pages for a given book by using the API provided by the `diesel::associations` module.
 This API is designed to work for parent-child relations, but not the other way around. Using plain SQL joins is
 the preferred way to resolve such relations the other way around. Diesel provides two kinds of joins: `INNER JOIN` and `LEFT JOIN`, where the former expects that linked elements always exist. The latter allows to include rows with missing linked elements. Both constructs load data by executing a single query.
 
 ### `INNER JOIN`
 
-[`QueryDsl::inner_join`](https://docs.diesel.rs/2.1.x/diesel/prelude/trait.QueryDsl.html#method.inner_join) allows to construct `INNER JOIN` statements between different tables. 
+[`QueryDsl::inner_join`](https://docs.diesel.rs/2.1.x/diesel/prelude/trait.QueryDsl.html#method.inner_join) allows to construct `INNER JOIN` statements between different tables.
 
 ::: code-block
 
@@ -373,10 +373,10 @@ println!("Page-Book pairs: {page_with_book:?}");
 
 :::
 
-`QueryDsl::inner_join()` modifies the constructed query to include a `INNER JOIN` clause based on the provided arguments. The `ON` clause of the join statement can be 
+`QueryDsl::inner_join()` modifies the constructed query to include a `INNER JOIN` clause based on the provided arguments. The `ON` clause of the join statement can be
 inferred based on the [`joinable!`][doc-joinable] call in your `schema.rs` file. In addition it's possible to specify custom `ON` clauses via [`JoinDsl::on`][doc-on].
-If no explicit select clause is provided the constructed query will return a tuple of both default select clauses for both sides of the join. This can be deserialized 
-to a rust tuple or any compatible type implementing [`Queryable`][doc-queryable]. 
+If no explicit select clause is provided the constructed query will return a tuple of both default select clauses for both sides of the join. This can be deserialized
+to a rust tuple or any compatible type implementing [`Queryable`][doc-queryable].
 
 It is possible to chain several joins to join multiple tables. The nesting of the joins controls which tables exactly are joined. This means the following two statements are not equal:
 
@@ -407,9 +407,9 @@ For joining the same table more than one refer to the [`alias!`][doc-alias] macr
 
 ### `LEFT JOIN`
 
-[`QueryDsl::left_join`](https://docs.diesel.rs/2.1.x/diesel/prelude/trait.QueryDsl.html#method.left_join) allows to construct `LEFT JOIN` statements between different tables. 
+[`QueryDsl::left_join`](https://docs.diesel.rs/2.1.x/diesel/prelude/trait.QueryDsl.html#method.left_join) allows to construct `LEFT JOIN` statements between different tables.
 
-::: code-block 
+::: code-block
 
 [src/main.rs](https://github.com/diesel-rs/diesel/blob/2.1.x/examples/postgres/relations/src/main.rs#L78-L83)
 
@@ -426,8 +426,8 @@ println!("Book-Page pairs (including empty books): {book_without_pages:?}");
 This works similar to `QueryDsl::inner_join` with the notable difference that any column returned form a joined table is considered to be nullable. This has several consequences:
 
 * A query like `books::table.left_join(pages::table).load(conn)` returns `(Book, Option<Page>)` or any compatible type
-* Explicit calls to [`QueryDsl::select`](https://docs.diesel.rs/2.1.x/diesel/prelude/trait.QueryDsl.html#method.select) require 
-that any column that comes from the left joined table is annotated with a [`NullableExpressionMethods::nullable`][doc-nullable] call. 
+* Explicit calls to [`QueryDsl::select`](https://docs.diesel.rs/2.1.x/diesel/prelude/trait.QueryDsl.html#method.select) require
+that any column that comes from the left joined table is annotated with a [`NullableExpressionMethods::nullable`][doc-nullable] call.
 This function can be called for individual columns, expressions or tuples containing columns form left joined tables.
 
 [doc-nullable]: https://docs.diesel.rs/2.1.x/diesel/expression_methods/trait.NullableExpressionMethods.html#method.nullable
@@ -568,7 +568,7 @@ let books = BookAuthor::belonging_to(&astrid_lindgren)
     .inner_join(books::table)
     .select(Book::as_select())
     .load(conn)?;
-println!("Asgrid Lindgren books: {books:?}");
+println!("Books by Astrid Lindgren: {books:?}");
 ```
 :::
 
@@ -590,7 +590,7 @@ let authors = BookAuthor::belonging_to(&collaboration)
     .inner_join(authors::table)
     .select(Author::as_select())
     .load(conn)?;
-println!("Authors for \"Pipi and Momo\": {authors:?}");
+println!("Authors for \"Pippi and Momo\": {authors:?}");
 ```
 
 :::
