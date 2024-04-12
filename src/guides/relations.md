@@ -397,7 +397,7 @@ users::table.inner_join(posts::table).inner_join(comments::table);
 
 ```
 
-For joining the same table more than one refer to the [`alias!`][doc-alias] macro to create distinct aliases.
+For joining the same table more than once, refer to the [`alias!`][doc-alias] macro to create distinct aliases.
 
 
 [doc-joinable]: https://docs.diesel.rs/2.1.x/diesel/macro.joinable.html
