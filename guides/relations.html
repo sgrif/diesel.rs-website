@@ -414,7 +414,7 @@ src/main.rs
 <span id="cb20-11"><a href="#cb20-11" aria-hidden="true"></a><span class="co">// SELECT * FROM users</span></span>
 <span id="cb20-12"><a href="#cb20-12" aria-hidden="true"></a><span class="co">// INNER JOIN posts ON users.id = posts.user_id</span></span>
 <span id="cb20-13"><a href="#cb20-13" aria-hidden="true"></a><span class="co">// INNER JOIN comments ON users.id = comments.user_id</span></span></code></pre></div>
-<p>For joining the same table more than one refer to the <a href="https://docs.diesel.rs/2.1.x/diesel/macro.alias.html"><code>alias!</code></a> macro to create distinct aliases.</p>
+<p>For joining the same table more than once, refer to the <a href="https://docs.diesel.rs/2.1.x/diesel/macro.alias.html"><code>alias!</code></a> macro to create distinct aliases.</p>
 <h3 id="left-join"><code>LEFT JOIN</code></h3>
 <p><a href="https://docs.diesel.rs/2.1.x/diesel/prelude/trait.QueryDsl.html#method.left_join"><code>QueryDsl::left_join</code></a> allows to construct <code>LEFT JOIN</code> statements between different tables.</p>
 <div class="demo__example">
