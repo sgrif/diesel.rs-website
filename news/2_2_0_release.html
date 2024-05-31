@@ -7,7 +7,7 @@
     <link rel="icon" type="image/png" href="/assets/images/diesel_logo_favicon_32.png" sizes="32x32">
     <link rel="icon" type="image/png" href="/assets/images/diesel_logo_favicon_96.png" sizes="96x96">
     <link rel="icon" type="image/png" href="/assets/images/diesel_logo_favicon.png" sizes="192x192">
-  <title>Configuring Diesel CLI</title>
+  <title>Diesel 2.2.0</title>
   <style type="text/css">
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
@@ -131,7 +131,7 @@ code span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
     <section class = "banner">
         <div class = "content-wrapper">
             <div class = "banner-wrapper">
-                <h2 class = "banner__heading">Configuring Diesel CLI</h2>
+                <h2 class = "banner__heading">Diesel 2.2.0</h2>
             </div>
         </div>
     </section>
@@ -139,122 +139,154 @@ code span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
 <div class="demo">
 <div class="content-wrapper">
 <div class="guide-wrapper">
-<p>Diesel CLI is an optional tool Diesel provides to manage your database schema. Its main two roles are to run database migrations, and to create a Rust file which represents your database schema.</p>
-<p>The behavior of Diesel CLI can be configured through a toml file. By default Diesel will look for <code>diesel.toml</code> in the same directory as your <code>Cargo.toml</code> file. You can provide a different config file by setting the <code>DIESEL_CONFIG_FILE</code> environment variable, or passing <code>--config-file</code> on the command line. You can get a basic config file with some defaults provided by running <code>diesel setup</code>.</p>
-<p>As of Diesel 2.0, the file contains a single section, <code>[print_schema]</code>. All fields in this file are optional.</p>
-<h2 id="the-file-field">The <code>file</code> field</h2>
-<p>This field specifies the file where you want the Rust representation of your schema to live. When this field is present, commands which modify database schema (such as <code>diesel migration run</code>) will automatically run <code>diesel print-schema</code>, and output its results to this file.</p>
-<p>This means that you can modify your database schema without having to worry about running a separate command to update your Rust code. It is highly recommended that you use this field, to ensure that the Rust representation of your database schema is always in sync with what is actually in your database. Typically this is set to <code>src/schema.rs</code>.</p>
-<p>Unlike other fields, this doesn’t actually modify the behavior of <code>diesel print-schema</code>. <code>diesel print-schema</code> will always output your schema to stdout, regardless of whether this field is present or not.</p>
-<h2 id="the-with_docs-field">The <code>with_docs</code> field</h2>
-<p>When this field is set to <code>true</code>, <code>diesel print-schema</code> will act as though the <code>--with-docs</code> flag was passed by default. This places a doc comment on all tables and columns.</p>
-<h2 id="the-filter-field">The <code>filter</code> field</h2>
-<p>This field specifies which tables should be output by <code>diesel print-schema</code>. It corresponds to the <code>--only-tables</code> and <code>--except-tables</code> on the command line. Its value should be a map with one of those two keys. For example:</p>
-<div class="demo__example">
-<div class="demo__example-browser">
-<div class="browser-bar">
-diesel.toml
-</div>
-<div class="sourceCode" id="cb1"><pre class="sourceCode toml"><code class="sourceCode toml"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="kw">[</span><span class="dt">print_schema</span><span class="kw">]</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="co"># This will cause only the users and posts tables to be output</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a><span class="dt">filter</span> <span class="op">=</span> <span class="op">{ </span><span class="dt">only_tables</span><span class="op"> =</span> <span class="op">[</span><span class="st">&quot;users&quot;</span><span class="op">,</span> <span class="st">&quot;posts&quot;</span><span class="op">]</span> <span class="op">}</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true"></a><span class="co"># This will cause all tables *except* the comments table to be</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true"></a><span class="co"># output</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true"></a><span class="dt">filter</span> <span class="op">=</span> <span class="op">{ </span><span class="dt">except_tables</span><span class="op"> =</span> <span class="op">[</span><span class="st">&quot;comments&quot;</span><span class="op">]</span> <span class="op">}</span></span></code></pre></div>
-</div>
-</div>
-<h2 id="the-schema-field">The <code>schema</code> field</h2>
-<p>Specifies which schema to use when searching for tables. When set, <code>diesel print-schema</code> will always behave as though <code>--schema</code> were passed. This field only affects PostgreSQL. If no value is provided, the <code>public</code> schema will be searched.</p>
-<h2 id="the-generate_missing_sql_type_definitions-field">The <code>generate_missing_sql_type_definitions</code> field</h2>
-<p>This field accepts a boolean value, that configures whether <code>diesel print-schema</code> should generate definitions for missing sql types as part of the <code>schema.rs</code> file. The generated sql type definitions are placed in a separate <code>sql_types</code> module inside of the generated <code>schema.rs</code> file. This will generate only definitions for sql types actually used by any of the <code>table!</code> definitions generated by <code>diesel print-schema</code>. Those definitions automatically use the auto-generated sql type definition.</p>
-<p>If this field is not present, or set to <code>true</code> <code>diesel print-schema</code> will generate the corresponding definitions. This configuration only generates custom sql type definition for PostgreSQL based database systems, as SQLite and MySQL are using a fixed set of sql types.</p>
-<p>See the <code>exclude_custom_type_definitions</code> field for skipping the generation of certain custom types.</p>
-<div class="demo__example">
-<div class="demo__example-browser">
-<div class="browser-bar">
-diesel.toml
-</div>
-<div class="sourceCode" id="cb2"><pre class="sourceCode toml"><code class="sourceCode toml"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="kw">[</span><span class="dt">print_schema</span><span class="kw">]</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a><span class="co"># skip generating missing sql type definitions</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a><span class="dt">generate_missing_sql_type_definitions</span> <span class="op">=</span> <span class="cn">false</span></span></code></pre></div>
-</div>
-</div>
-<h2 id="the-custom_type_derives-field">The <code>custom_type_derives</code> field</h2>
-<p>This field adds <code>#[derive(...)]</code> items to the sql type definitions automatically generated as a result of the <code>generate_missing_sql_type_definitions</code> field. When set, <code>diesel print-schema</code> will behave as if <code>--custom-type-derives</code> were passed. The <code>diesel::sql_types::SqlType</code> trait will be automatically derived if this flag is either empty, or doesn’t already contain the trait.</p>
-<div class="demo__example">
-<div class="demo__example-browser">
-<div class="browser-bar">
-diesel.toml
-</div>
-<div class="sourceCode" id="cb3"><pre class="sourceCode toml"><code class="sourceCode toml"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="kw">[</span><span class="dt">print_schema</span><span class="kw">]</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="dt">generate_missing_sql_type_definitions</span> <span class="op">=</span> <span class="cn">true</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a><span class="co"># Derive `SqlType` and `Debug` for the automatically generated sql type definitions</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true"></a><span class="dt">custom_type_derives</span> <span class="op">=</span> <span class="op">[</span><span class="st">&quot;diesel::sql_types::SqlType&quot;</span><span class="op">,</span> <span class="st">&quot;std::fmt::Debug&quot;</span><span class="op">]</span></span></code></pre></div>
-</div>
-</div>
-<h2 id="the-exclude_custom_type_definitions-field">The <code>exclude_custom_type_definitions</code> field</h2>
-<p>This field allows to define a list of regexes matched against custom type names for which diesel-cli should not generate sql type definitions. You should use this option in combination with <code>import_types</code> if you use crates like <code>postgis-diesel</code> or <code>pgvector</code> that provide their own sql type definition for specific custom types. If not set this defaults to an empty list.</p>
-<div class="demo__example">
-<div class="demo__example-browser">
-<div class="browser-bar">
-diesel.toml
-</div>
-<div class="sourceCode" id="cb4"><pre class="sourceCode toml"><code class="sourceCode toml"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="kw">[</span><span class="dt">print_schema</span><span class="kw">]</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a><span class="dt">generate_missing_sql_type_definitions</span> <span class="op">=</span> <span class="cn">true</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true"></a><span class="co"># excludes any type named `Vector` from the generated `sql_types` module</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true"></a><span class="dt">exclude_custom_type_definitions</span> <span class="op">=</span> <span class="op">[</span><span class="st">&quot;Vector&quot;</span><span class="op">]</span></span></code></pre></div>
-</div>
-</div>
-<h2 id="the-import_types-field">The <code>import_types</code> field</h2>
-<p>This field adds <code>use</code> statements to the top of every <code>table!</code> declaration. When set, <code>diesel print-schema</code> will behave as if <code>--import-types</code> were passed. When no value is given, only types from <code>diesel::sql_types</code> will be imported.</p>
-<div class="demo__example">
-<div class="demo__example-browser">
-<div class="browser-bar">
-diesel.toml
-</div>
-<div class="sourceCode" id="cb5"><pre class="sourceCode toml"><code class="sourceCode toml"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="kw">[</span><span class="dt">print_schema</span><span class="kw">]</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a><span class="co"># Add types from `diesel_full_text_search` like `tsvector`</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a><span class="dt">import_types</span> <span class="op">=</span> <span class="op">[</span><span class="st">&quot;diesel::sql_types::*&quot;</span><span class="op">,</span> <span class="st">&quot;diesel_full_text_search::types::*&quot;</span><span class="op">]</span></span></code></pre></div>
-</div>
-</div>
-<h2 id="the-patch_file-field">The <code>patch_file</code> field</h2>
-<p>Specifies a <code>.patch</code> file to be applied to your schema after it is generated. Corresponds to the <code>--patch-file</code> option on the command line.</p>
-<p>We can’t provide an option for every possible customization to this file that you might want to make. This serves as a general purpose catch-all for schema customizations.</p>
-<p>The file should be a unified diff, which you can generate with <code>diff</code> or <code>git diff</code>. It’s highly recommended that you provide more than 3 context lines, especially if you have set <code>import_types</code>.</p>
-<p>You can easily generate this file by making the changes you want to <code>schema.rs</code>, and then running <code>git diff -U6 &gt; src/schema.patch</code>.</p>
-<h2 id="the-sqlite_integer_primary_key_is_bigint-field">The <code>sqlite_integer_primary_key_is_bigint</code> field</h2>
-<p>This field allows you to configure diesel-cli to thread <code>INTEGER PRIMARY KEY</code> fields as <code>BIGINT</code> for sqlite databases. If not set this defaults to false.</p>
-<div class="demo__example">
-<div class="demo__example-browser">
-<div class="browser-bar">
-diesel.toml
-</div>
-<div class="sourceCode" id="cb6"><pre class="sourceCode toml"><code class="sourceCode toml"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a><span class="kw">[</span><span class="dt">print_schema</span><span class="kw">]</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a><span class="dt">sqlite_integer_primary_key_is_bigint</span> <span class="op">=</span> <span class="cn">true</span></span></code></pre></div>
-</div>
-</div>
-<h2 id="nested-sub-schemas">Nested sub schemas</h2>
-<p>Diesel-CLI allows to configure nested subschemas via <code>[print_schema.your_sub_schema]</code> entries. This allows to split up large <code>schema.rs</code> files into smaller ones or generate schema.rs files for multiple database schemas at once. Each subschema can configure all keys described above. Diesel-cli allows to configure the subschema that should be used via the <code>--schema-key</code> command line argument. If no such argument is given it default to the top level <code>[print_schema]</code> entry.</p>
-<div class="demo__example">
-<div class="demo__example-browser">
-<div class="browser-bar">
-diesel.toml
-</div>
-<div class="sourceCode" id="cb7"><pre class="sourceCode toml"><code class="sourceCode toml"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a><span class="co"># defines a subschema `user1` including the `user1` table</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true"></a><span class="kw">[</span><span class="dt">print_schema</span><span class="kw">.</span><span class="dt">user1</span><span class="kw">]</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true"></a><span class="dt">file</span> <span class="op">=</span> <span class="st">&quot;src/schema1.rs&quot;</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true"></a><span class="dt">with_docs</span> <span class="op">=</span> <span class="cn">true</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true"></a><span class="dt">filter</span> <span class="op">=</span> <span class="op">{ </span><span class="dt">only_tables</span><span class="op"> =</span> <span class="op">[</span><span class="st">&quot;users1&quot;</span><span class="op">]</span> <span class="op">}</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true"></a></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true"></a></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true"></a><span class="co"># defines a subschema `user2` including the `user2` table</span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true"></a><span class="kw">[</span><span class="dt">print_schema</span><span class="kw">.</span><span class="dt">user2</span><span class="kw">]</span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true"></a><span class="dt">file</span> <span class="op">=</span> <span class="st">&quot;src/schema2.rs&quot;</span></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true"></a><span class="dt">with_docs</span> <span class="op">=</span> <span class="cn">true</span></span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true"></a><span class="dt">filter</span> <span class="op">=</span> <span class="op">{ </span><span class="dt">only_tables</span><span class="op"> =</span> <span class="op">[</span><span class="st">&quot;users2&quot;</span><span class="op">]</span> <span class="op">}</span></span></code></pre></div>
-</div>
-</div>
+<p>Diesel 2.2.0 contains the contributions of 42 people. More than 560 commits were submitted over a span of 12 months.</p>
+<p>This release contains several new features and improves existing features. Diesel now provides a procedural macro attribute that infers the correct return type for your query. It’s now possible to instrument connection implementations provided by diesel to perform logging and performance measurements. We added support for PostgreSQL’s <code>COPY FROM</code> and <code>COPY TO</code> syntax which can be used to send and receive large amounts of data efficiently. Our dependencies wrapping the native database drives support now all building the database driver as part of your <code>cargo build</code>. This enables us to distribute static precompiled versions of diesel-cli easily. Finally we worked with the <a href="https://blog.weiznich.de/blog/diagnostic-namespace-10-23/">Rust team to stabilize</a> attributes to customize error messages emitted by the compiler. This is now used by diesel to improve the quality of certain otherwise hard to understand error messages. Check out our <a href="/changelog.html">changelog for a complete list of changes</a>.</p>
+<p>This release wouldn’t be possible without the support of our contributors and sponsors. If you want to support diesels development, consider <a href="https://github.com/diesel-rs/diesel/issues/1186">joining the reviewer team</a>, submitting <a href="https://github.com/diesel-rs/diesel/issues?q=is%3Aissue+is%3Aopen++label%3A%22help+wanted%22+">PR’s</a>, help writing documentation or <a href="https://github.com/sponsors/weiznich">sponsor the maintainers</a>.</p>
+<h2 id="automatic-return-type-inference-for-querydsl-types">Automatic return type inference for QueryDSL types</h2>
+<p>Diesel’s QueryDSL is designed to be composable through several functions since even before diesel 1.0. This enables you to move common parts of your query into a function and reuse that function from several places.</p>
+<p>In practice that requires specifying the return type of your query part, which is a complex composed highly nested type for anything that’s not a trivial query. That made it hard for users to refactor their code to move common query parts into shared functions. Diesel 2.2 introduces the <a href="https://docs.diesel.rs/2.2.x/diesel/dsl/attr.auto_type.html"><code>#[diesel::dsl::auto_type]</code></a> procedural macro attribute, which infers the correct return type for you.</p>
+<p>Without this attribute you would need to write code like this:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="kw">fn</span> users_filtered_by_name(name<span class="op">:</span> <span class="op">&amp;</span><span class="dt">str</span>) <span class="op">-&gt;</span> <span class="pp">dsl::</span>Filter<span class="op">&lt;</span><span class="pp">users::</span>table<span class="op">,</span> <span class="pp">dsl::</span><span class="bu">Eq</span><span class="op">&lt;</span><span class="pp">users::</span>name<span class="op">,</span> <span class="op">&amp;</span><span class="dt">str</span><span class="op">&gt;&gt;</span> <span class="op">{</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a>    <span class="pp">users::</span>table<span class="op">.</span>filter(<span class="pp">users::</span>name<span class="op">.</span>eq(name))</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a><span class="op">}</span></span></code></pre></div>
+<p>The new attribute enables you to write just:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="at">#[</span><span class="pp">dsl::</span>auto_type<span class="at">]</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a><span class="kw">fn</span> users_filtered_by_name(name<span class="op">:</span> <span class="op">&amp;</span><span class="dt">str</span>) <span class="op">-&gt;</span> _ <span class="op">{</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a>    <span class="pp">users::</span>table<span class="op">.</span>filter(<span class="pp">users::</span>name<span class="op">.</span>eq(name))</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a><span class="op">}</span></span></code></pre></div>
+<p>The <code>#[dsl::auto_type]</code> attribute macro replace the <code>_</code> placeholder with the correct return type. See the <a href="https://docs.diesel.rs/2.2.x/diesel/dsl/attr.auto_type.html">documentation</a> for more advanced examples and limitations.</p>
+<h2 id="instrumentation-support">Instrumentation Support</h2>
+<p>Diesel now provides support for instrumenting the built-in connections. This enables users to customize logging for these connection types. Diesel provides the <a href="https://docs.diesel.rs/2.2.x/diesel/connection/trait.Connection.html#tymethod.set_instrumentation"><code>Connection::set_instrumentation</code></a> method that allows to set connection specific instrumentations. It also provides a global <a href="https://docs.diesel.rs/2.2.x/diesel/connection/fn.set_default_instrumentation.html"><code>diesel::connection::set_global_instrumentation</code></a> that allows to set an instrumentation constructor that is used by all supported connection types.</p>
+<p>An <a href="https://docs.diesel.rs/2.2.x/diesel/connection/trait.Instrumentation.html"><code>Instrumentation</code></a> is a user defined hook that allows to get notified for certain <a href="https://docs.diesel.rs/2.2.x/diesel/connection/enum.InstrumentationEvent.html"><code>InstrumentationEvent</code></a>. By default the <code>Instrumentation</code> trait is implemented for closures with a single <code>InstrumentationEvent</code> argument, but it is possible to provide custom implementations for this trait. This enables our users to customize logging based on their preferences in terms of used logging crate, log levels and similar preferences.</p>
+<p>Example of a simple <code>println!</code> based instrumentation that just logs everything to the standard output:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="kw">let</span> <span class="kw">mut</span> connection <span class="op">=</span> <span class="pp">PgConnection::</span>establish(<span class="st">&quot;postgres://localhost/diesel&quot;</span>)<span class="op">?;</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>connection<span class="op">.</span>set_instrumentation(<span class="op">|</span>event<span class="op">:</span> InstrumentationEvent<span class="op">&lt;</span><span class="ot">&#39;_</span><span class="op">&gt;|</span> <span class="pp">println!</span>(<span class="st">&quot;{event:?}&quot;</span>))<span class="op">;</span></span></code></pre></div>
+<h2 id="postgresql-copy-fromto-support">PostgreSQL COPY FROM/TO Support</h2>
+<p>Diesel now supports <a href="https://www.postgresql.org/docs/current/sql-copy.html">PostgreSQL’s <code>COPY FROM STDIN</code> and <code>COPY TO STDOUT</code></a> syntax. This allows to efficiently transfer large amounts of data between the database and your application. Diesel supports two ways to use these commands, one for using the Diesel model structs as source or target for an optimised binary transfer and one that allows you to configure the low level statement in detail and provide your own input/output stream.</p>
+<p>Example <code>COPY FROM</code> statement using an <code>Insertable</code> struct:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="at">#[</span>derive<span class="at">(</span>Insertable<span class="at">)]</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a><span class="at">#[</span>diesel<span class="at">(</span>table_name <span class="op">=</span> users<span class="at">)]</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true"></a><span class="at">#[</span>diesel<span class="at">(</span>treat_none_as_default_value <span class="op">=</span> <span class="cn">false</span><span class="at">)]</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true"></a><span class="kw">struct</span> NewUser <span class="op">{</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true"></a>    name<span class="op">:</span> <span class="op">&amp;</span><span class="ot">&#39;static</span> <span class="dt">str</span><span class="op">,</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true"></a><span class="op">}</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true"></a></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true"></a></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true"></a><span class="kw">let</span> data <span class="op">=</span> <span class="pp">vec!</span>[</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true"></a>    NewUser <span class="op">{</span> name<span class="op">:</span> <span class="st">&quot;Diva Plavalaguna&quot;</span> <span class="op">},</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true"></a>    NewUser <span class="op">{</span> name<span class="op">:</span> <span class="st">&quot;Father Vito Cornelius&quot;</span> <span class="op">},</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true"></a>]<span class="op">;</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true"></a></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true"></a><span class="kw">let</span> count <span class="op">=</span> <span class="pp">diesel::</span>copy_from(<span class="pp">users::</span>table)</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true"></a>    <span class="op">.</span>from_insertable(<span class="op">&amp;</span>data)</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true"></a>    <span class="op">.</span>execute(connection)<span class="op">?;</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true"></a></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true"></a><span class="pp">assert_eq!</span>(count<span class="op">,</span> <span class="dv">2</span>)<span class="op">;</span></span></code></pre></div>
+<p>Example <code>COPY FROM</code> statement using the low level interface to provide a CSV stream:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="kw">use</span> <span class="pp">diesel::pg::</span>CopyFormat<span class="op">;</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a><span class="kw">let</span> count <span class="op">=</span> <span class="pp">diesel::</span>copy_from(<span class="pp">users::</span>table)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a>    <span class="op">.</span>from_raw_data(<span class="pp">users::</span>table<span class="op">,</span> <span class="op">|</span>copy<span class="op">|</span> <span class="op">{</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true"></a>        <span class="pp">writeln!</span>(copy<span class="op">,</span> <span class="st">&quot;3,Diva Plavalaguna&quot;</span>)<span class="op">.</span>unwrap()<span class="op">;</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true"></a>        <span class="pp">writeln!</span>(copy<span class="op">,</span> <span class="st">&quot;4,Father Vito Cornelius&quot;</span>)<span class="op">.</span>unwrap()<span class="op">;</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true"></a>        <span class="pp">diesel::QueryResult::</span><span class="cn">Ok</span>(())</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true"></a>    <span class="op">}</span>)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true"></a>    <span class="op">.</span>with_format(<span class="pp">CopyFormat::</span>Csv)</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true"></a>    <span class="op">.</span>execute(connection)<span class="op">?;</span></span></code></pre></div>
+<p>See the documentation of <a href="https://docs.diesel.rs/2.2.x/diesel/fn.copy_from.html"><code>diesel::copy_to</code></a> and <a href="https://docs.diesel.rs/2.2.x/diesel/fn.copy_from.html"><code>diesel::copy_from</code></a> for more details.</p>
+<h2 id="bundling-support-for-all-native-drives-and-perbuild-binaries-for-diesel-cli">Bundling support for all native drives and perbuild binaries for diesel-cli</h2>
+<p>We updated the <a href="https://blog.weiznich.de/blog/pq-sys-05/">pq-sys</a> and <a href="https://blog.weiznich.de/blog/mysqlclient-sys-03/">mysqlclient-sys</a> crates to provide a feature that allows to build both libraries as part of your local <code>cargo build</code> command. This simplifies the setup of diesel in new environments and also makes it easier to cross compile applications using diesel. As with the existing bundling support for the SQLite backend you need to add the relevant crate to your <code>Cargo.toml</code> and enable the <code>bundled</code> feature for this crate. For <code>diesel-cli</code> we now provide a <code>postgres-bundled</code> and a <code>mysql-bundled</code> feature flag as well.</p>
+<p>As a result of this work we are now able to build fully static binaries for <code>diesel-cli</code>. Such builds are now provided as part of each release as prebuild binaries. This hopefully streamlines the setup process for new users, although you can continue to use <code>cargo install diesel_cli</code> to locally build your version of diesel-cli.</p>
+<h2 id="improved-error-messages">Improved Error Messages</h2>
+<p>We worked with the <a href="https://blog.weiznich.de/blog/diagnostic-namespace-10-23/">Rust team to stabilize</a> attributes to customize error messages emitted by the compiler. This allows us to include custom messages directly in the compiler error message to hint possible solutions.</p>
+<p>The following two examples demonstrate the new error messages:</p>
+<p>For type mismatches between your query and the result type we now include explicit hints to use <code>#[derive(Selectable)]</code> + <code>#[diesel(check_for_backend(…))]</code>:</p>
+<pre><code>error[E0277]: the trait bound `(diesel::sql_types::Integer, diesel::sql_types::Text): load_dsl::private::CompatibleType&lt;User, _&gt;` is not satisfied
+  --&gt; tests/fail/queryable_with_typemismatch.rs:21:31
+   |
+21 |     users::table.load::&lt;User&gt;(&amp;mut conn).unwrap();
+   |                  ----         ^^^^^^^^^ the trait `load_dsl::private::CompatibleType&lt;User, _&gt;` is not implemented for `(diesel::sql_types::Integer, diesel::sql_types::Text)`, which is required by `users::table: LoadQuery&lt;&#39;_, _, User&gt;`
+   |                  |
+   |                  required by a bound introduced by this call
+   |
+   = note: this is a mismatch between what your query returns and what your type expects the query to return
+   = note: the fields in your struct need to match the fields returned by your query in count, order and type
+   = note: consider using `#[derive(Selectable)]` + `#[diesel(check_for_backend(_))]` on your struct `User` and
+           in your query `.select(UserWithToManyFields::as_select())` to get a better error message</code></pre>
+<p>For field type mismatches rustc now explicitly tells you that this mapping is not supported:</p>
+<pre><code>
+error[E0277]: cannot deserialize a value of the database type `diesel::sql_types::Integer` as `*const str`
+  --&gt; tests/fail/broken_queryable_by_name.rs:16:5
+   |
+16 |     id: String,
+   |     ^^^^^^^^^^ the trait `FromSql&lt;diesel::sql_types::Integer, Pg&gt;` is not implemented for `*const str`, which is required by `std::string::String: FromSqlRow&lt;diesel::sql_types::Integer, Pg&gt;`
+   |
+   = note: double check your type mappings via the documentation of `diesel::sql_types::Integer`</code></pre>
+<p>Diesel 2.2 includes similar improvements for many more error messages. Improving hard to understand error messages is still an ongoing project so please reach out with examples if you hit a particular bad error message. This enables us to further improve the messages by either adding the new attribute there as well or by working with the Rust team to introduce additional attributes to cover more cases.</p>
+<h2 id="thanks">Thanks</h2>
+<p>Thank you to everyone who helped to make this release happen through sponsoring, bug reports, and discussion on GitHub and Gitter. While we don’t have a way to collect stats on that form of contribution, it’s greatly appreciated.</p>
+<p>In addition to the Diesel core team, 60 people contributed code to this release. A huge thank you to:</p>
+<ul>
+<li>Alexander ‘z33ky’ Hirsch</li>
+<li>aumetra</li>
+<li>BlackDex</li>
+<li>Caio</li>
+<li>Daniel Sousa</li>
+<li>Danilo Bargen</li>
+<li>Danny Goldberg</li>
+<li>David Soria Parra</li>
+<li>Davis Muro</li>
+<li>Denny Biasiolli</li>
+<li>Dessalines</li>
+<li>Drew Vogel</li>
+<li>dullbananas</li>
+<li>Elrendio</li>
+<li>Emile Fugulin</li>
+<li>Ernest Rudnicki</li>
+<li>Everett Pompeii</li>
+<li>forest1102</li>
+<li>George Manning</li>
+<li>hasezoey</li>
+<li>Henry Zimmerman</li>
+<li>ISibboI</li>
+<li>Jonathan Boyle</li>
+<li>Junghyun Nam</li>
+<li>Kevin GRONDIN</li>
+<li>kirk</li>
+<li>Kornel</li>
+<li>Kristopher Wuollett</li>
+<li>Marc Coleman</li>
+<li>Maxi Barmetler</li>
+<li>Michael Bachmann</li>
+<li>Minsung Kim</li>
+<li>Mohamed Belaouad</li>
+<li>Moulins</li>
+<li>obsoleszenz</li>
+<li>Omid Rad</li>
+<li>Orne Brocaar</li>
+<li>Paolo Barbolini</li>
+<li>Pavan Kumar Sunkara</li>
+<li>Peter C. S. Scholtens</li>
+<li>retro</li>
+<li>sabati</li>
+<li>Saber Haj Rabiee</li>
+<li>Samuel Batissou</li>
+<li>Sean Klein</li>
+<li>Sebastian Fritsch</li>
+<li>Sebastian N. Fernandez</li>
+<li>Sebastian Schmidt</li>
+<li>Sebastian Urban</li>
+<li>Serhii Potapov</li>
+<li>Simon Eisenmann</li>
+<li>snf</li>
+<li>Tal Pressman</li>
+<li>Tanguille</li>
+<li>Thomas Constantine Moore</li>
+<li>Tommy McCallig</li>
+<li>Viktor Szépe</li>
+<li>yagince</li>
+<li>Zhai Xiang</li>
+<li>森田一世</li>
+</ul>
 </div>
 </div>
 </div>

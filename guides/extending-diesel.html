@@ -144,7 +144,7 @@ code span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
 <p>This guide is only going to cover extending the query builder. How to add support for new SQL types will be covered in a future guide.</p>
 <h2 id="sql_function"><code>sql_function!</code></h2>
 <p>The easiest and most common way to extend Diesel’s query builder is by declaring a new SQL function. This can be used for functions defined by your database, or for built-in functions that Diesel doesn’t support out of the box.</p>
-<p>Functions in SQL often have multiple signatures, making them difficult or impossible to represent in Rust. Because of this, Diesel only provides support for a small number of built-in SQL functions. Consider <code>COALESCE</code>. This function can take any number of arguments, and its return type changes based on whether any arguments are <code>NOT NULL</code>. While we can’t easily represent that in Rust, we can use <a href="https://docs.diesel.rs/2.1.x/diesel/expression/functions/macro.sql_function.html"><code>sql_function!</code></a> to declare it with the exact signature we’re using.</p>
+<p>Functions in SQL often have multiple signatures, making them difficult or impossible to represent in Rust. Because of this, Diesel only provides support for a small number of built-in SQL functions. Consider <code>COALESCE</code>. This function can take any number of arguments, and its return type changes based on whether any arguments are <code>NOT NULL</code>. While we can’t easily represent that in Rust, we can use <a href="https://docs.diesel.rs/2.2.x/diesel/expression/functions/macro.sql_function.html"><code>sql_function!</code></a> to declare it with the exact signature we’re using.</p>
 <div class="demo__example">
 <div class="demo__example-browser">
 <div class="browser-bar">
@@ -156,7 +156,7 @@ Example
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a>users<span class="op">.</span>select(coalesce(hair_color<span class="op">,</span> <span class="st">&quot;blue&quot;</span>))</span></code></pre></div>
 </div>
 </div>
-<p>As this example shows, <a href="https://docs.diesel.rs/2.1.x/diesel/expression/functions/macro.sql_function.html"><code>sql_function!</code></a> converts its argument like other parts of the query builder. This means that the generated function can take both Diesel expressions, and Rust values to be sent with the query.</p>
+<p>As this example shows, <a href="https://docs.diesel.rs/2.2.x/diesel/expression/functions/macro.sql_function.html"><code>sql_function!</code></a> converts its argument like other parts of the query builder. This means that the generated function can take both Diesel expressions, and Rust values to be sent with the query.</p>
 <p>The macro takes one argument: a function definition. However, the types in the function signature are SQL types, not concrete Rust types. This is what allows us to pass both columns and Rust strings. If we defined this function manually, it would look like this:</p>
 <div class="demo__example">
 <div class="demo__example-browser">
@@ -176,7 +176,7 @@ Example
 <span id="cb2-11"><a href="#cb2-11" aria-hidden="true"></a><span class="op">}</span></span></code></pre></div>
 </div>
 </div>
-<p>A helper type is generated with the same name as the function. This helper type handles Diesel’s argument conversion. This lets us write <code>coalesce&lt;hair_color, &amp;str&gt;</code>. More information can be found in <a href="https://docs.diesel.rs/2.1.x/diesel/expression/functions/macro.sql_function.html">the API documentation</a></p>
+<p>A helper type is generated with the same name as the function. This helper type handles Diesel’s argument conversion. This lets us write <code>coalesce&lt;hair_color, &amp;str&gt;</code>. More information can be found in <a href="https://docs.diesel.rs/2.2.x/diesel/expression/functions/macro.sql_function.html">the API documentation</a></p>
 <h2 id="using-custom-sql-and-how-to-extend-the-query-dsl">Using Custom SQL and How to Extend the Query DSL</h2>
 <p>Often times it’s useful to encapsulate a common SQL pattern. For example, if you’re doing pagination on your queries, PostgreSQL is capable of loading the total count in a single query. The query you would want to execute would look like this:</p>
 <div class="demo__example">
@@ -189,13 +189,13 @@ Example
 </div>
 <p>However, as of version 2.0, Diesel doesn’t support window functions, or selecting from a subselect. Even if Diesel’s query builder supported those things, this is a case that is easier to reason about in terms of the SQL we want to generate.</p>
 <p>Let’s look at how we would go about adding a <code>paginate</code> method to Diesel’s query builder, to generate that query. Let’s assume for the time being that we have a struct <code>Paginated&lt;T&gt;</code> already. We’ll look at the specifics of this struct shortly.</p>
-<p>If you are creating a struct where you want to manually define the SQL, you will need to implement a trait called <a href="https://docs.diesel.rs/2.1.x/diesel/query_builder/trait.QueryFragment.html"><code>QueryFragment</code></a>. The implementation will look like this:</p>
+<p>If you are creating a struct where you want to manually define the SQL, you will need to implement a trait called <a href="https://docs.diesel.rs/2.2.x/diesel/query_builder/trait.QueryFragment.html"><code>QueryFragment</code></a>. The implementation will look like this:</p>
 <div class="demo__example">
 <div class="demo__example-browser">
 <div class="browser-bar">
 src/pagination.rs
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.1.x/examples/postgres/advanced-blog-cli/src/pagination.rs#L60-L73">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.2.x/examples/postgres/advanced-blog-cli/src/pagination.rs#L60-L73">View on GitHub</a>
 <div class="sourceCode" id="cb4"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="kw">impl</span><span class="op">&lt;</span>T<span class="op">&gt;</span> QueryFragment<span class="op">&lt;</span>Pg<span class="op">&gt;</span> <span class="kw">for</span> Paginated<span class="op">&lt;</span>T<span class="op">&gt;</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a><span class="kw">where</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true"></a>    T<span class="op">:</span> QueryFragment<span class="op">&lt;</span>Pg<span class="op">&gt;,</span></span>
@@ -212,14 +212,14 @@ src/pagination.rs
 <span id="cb4-14"><a href="#cb4-14" aria-hidden="true"></a><span class="op">}</span></span></code></pre></div>
 </div>
 </div>
-<p>For details on what each method does, see the documentation for <a href="https://docs.diesel.rs/2.1.x/diesel/query_builder/struct.AstPass.html"><code>AstPass</code></a>. One important question to ask whenever you implement <code>QueryFragment</code> is whether you are generating a query that is safe to cache. The way to answer this question is by asking “does this struct generate an unlimited number of potential SQL queries”? Typically that is only the case if the body of <code>walk_ast</code> contains a for loop. If your query is not safe to cache, you <em>must</em> call <a href="https://docs.diesel.rs/2.1.x/diesel/query_builder/struct.AstPass.html#method.unsafe_to_cache_prepared"><code>out.unsafe_to_cache_prepared</code></a>.</p>
-<p>Whenever you implement <code>QueryFragment</code>, you also need to implement <a href="https://docs.diesel.rs/2.1.x/diesel/query_builder/trait.QueryId.html"><code>QueryId</code></a>. - We can use <a href="https://docs.diesel.rs/2.1.x/diesel/query_builder/derive.QueryId.html"><code>#[derive(QueryId)]</code></a> for this. Since this struct represents a full query which can be executed, we will implement <a href="https://docs.diesel.rs/2.1.x/diesel/query_dsl/trait.RunQueryDsl.html"><code>RunQueryDsl</code></a> which adds methods like <a href="https://docs.diesel.rs/2.1.x/diesel/query_dsl/trait.RunQueryDsl.html#method.execute"><code>execute</code></a> and <a href="https://docs.diesel.rs/2.1.x/diesel/query_dsl/trait.RunQueryDsl.html#method.load"><code>load</code></a>. Since this query has a return type, we’ll implement <a href="https://docs.diesel.rs/2.1.x/diesel/query_builder/trait.Query.html"><code>Query</code></a> which states the return type as well.</p>
+<p>For details on what each method does, see the documentation for <a href="https://docs.diesel.rs/2.2.x/diesel/query_builder/struct.AstPass.html"><code>AstPass</code></a>. One important question to ask whenever you implement <code>QueryFragment</code> is whether you are generating a query that is safe to cache. The way to answer this question is by asking “does this struct generate an unlimited number of potential SQL queries”? Typically that is only the case if the body of <code>walk_ast</code> contains a for loop. If your query is not safe to cache, you <em>must</em> call <a href="https://docs.diesel.rs/2.2.x/diesel/query_builder/struct.AstPass.html#method.unsafe_to_cache_prepared"><code>out.unsafe_to_cache_prepared</code></a>.</p>
+<p>Whenever you implement <code>QueryFragment</code>, you also need to implement <a href="https://docs.diesel.rs/2.2.x/diesel/query_builder/trait.QueryId.html"><code>QueryId</code></a>. - We can use <a href="https://docs.diesel.rs/2.2.x/diesel/query_builder/derive.QueryId.html"><code>#[derive(QueryId)]</code></a> for this. Since this struct represents a full query which can be executed, we will implement <a href="https://docs.diesel.rs/2.2.x/diesel/query_dsl/trait.RunQueryDsl.html"><code>RunQueryDsl</code></a> which adds methods like <a href="https://docs.diesel.rs/2.2.x/diesel/query_dsl/trait.RunQueryDsl.html#method.execute"><code>execute</code></a> and <a href="https://docs.diesel.rs/2.2.x/diesel/query_dsl/trait.RunQueryDsl.html#method.load"><code>load</code></a>. Since this query has a return type, we’ll implement <a href="https://docs.diesel.rs/2.2.x/diesel/query_builder/trait.Query.html"><code>Query</code></a> which states the return type as well.</p>
 <div class="demo__example">
 <div class="demo__example-browser">
 <div class="browser-bar">
 src/pagination.rs
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.1.x/examples/postgres/advanced-blog-cli/src/pagination.rs#L54-L58">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.2.x/examples/postgres/advanced-blog-cli/src/pagination.rs#L54-L58">View on GitHub</a>
 <div class="sourceCode" id="cb5"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="kw">impl</span><span class="op">&lt;</span>T<span class="op">:</span> Query<span class="op">&gt;</span> Query <span class="kw">for</span> Paginated<span class="op">&lt;</span>T<span class="op">&gt;</span> <span class="op">{</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a>    <span class="kw">type</span> SqlType <span class="op">=</span> (<span class="pp">T::</span>SqlType<span class="op">,</span> BigInt)<span class="op">;</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a><span class="op">}</span></span>
@@ -234,7 +234,7 @@ src/pagination.rs
 <div class="browser-bar">
 src/pagination.rs
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.1.x/examples/postgres/advanced-blog-cli/src/pagination.rs#L7-L39">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.2.x/examples/postgres/advanced-blog-cli/src/pagination.rs#L7-L39">View on GitHub</a>
 <div class="sourceCode" id="cb6"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a><span class="kw">pub</span> <span class="kw">trait</span> Paginate<span class="op">:</span> <span class="bu">Sized</span> <span class="op">{</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a>    <span class="kw">fn</span> paginate(<span class="kw">self</span><span class="op">,</span> page<span class="op">:</span> <span class="dt">i64</span>) <span class="op">-&gt;</span> Paginated<span class="op">&lt;</span><span class="dt">Self</span><span class="op">&gt;;</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a><span class="op">}</span></span>
@@ -290,7 +290,7 @@ Example
 <div class="browser-bar">
 src/pagination.rs
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.1.x/examples/postgres/advanced-blog-cli/src/pagination.rs#L41-L51">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.2.x/examples/postgres/advanced-blog-cli/src/pagination.rs#L41-L51">View on GitHub</a>
 <div class="sourceCode" id="cb8"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a><span class="kw">impl</span><span class="op">&lt;</span>T<span class="op">&gt;</span> Paginated<span class="op">&lt;</span>T<span class="op">&gt;</span> <span class="op">{</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true"></a>    <span class="kw">pub</span> <span class="kw">fn</span> load_and_count_pages<span class="op">&lt;</span><span class="ot">&#39;a</span><span class="op">,</span> U<span class="op">&gt;</span>(<span class="kw">self</span><span class="op">,</span> conn<span class="op">:</span> <span class="op">&amp;</span><span class="kw">mut</span> PgConnection) <span class="op">-&gt;</span> QueryResult<span class="op">&lt;</span>(<span class="dt">Vec</span><span class="op">&lt;</span>U<span class="op">&gt;,</span> <span class="dt">i64</span>)<span class="op">&gt;</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true"></a>    <span class="kw">where</span></span>
@@ -307,7 +307,7 @@ src/pagination.rs
 </div>
 </div>
 <p>This is one of the rare cases where we want to define a function that takes a connection. One benefit of defining the function this way is that if we wanted to support backends other than PostgreSQL, we could have this function execute two queries.</p>
-<p>You can find the full code for this example in <a href="https://github.com/diesel-rs/diesel/tree/2.1.x/examples/postgres/advanced-blog-cli">the “advanced blog” example</a>.</p>
+<p>You can find the full code for this example in <a href="https://github.com/diesel-rs/diesel/tree/2.2.x/examples/postgres/advanced-blog-cli">the “advanced blog” example</a>.</p>
 <h2 id="custom-operators">Custom Operators</h2>
 <p>If you’re adding support for a new type to Diesel, or working with a type that has incomplete support, you may wish to add support for the operators associated with that type. The term operator refers to anything that uses one of these syntaxes:</p>
 <ul>
@@ -315,7 +315,7 @@ src/pagination.rs
 <li>Prefix (e.g. <code>OP expr</code>)</li>
 <li>Postfix (e.g. <code>expr OP</code>)</li>
 </ul>
-<p>Diesel provides helper macros for defining each of these kinds of operators. In fact, Diesel uses these macros to declare nearly all of the operators supported by the main crate. The macros are <a href="https://docs.diesel.rs/2.1.x/diesel/macro.infix_operator.html"><code>diesel::infix_operator!</code></a>, <a href="https://docs.diesel.rs/2.1.x/diesel/macro.postfix_operator.html"><code>diesel::postfix_operator!</code></a> and <a href="https://docs.diesel.rs/2.1.x/diesel/macro.prefix_operator.html"><code>diesel::prefix_operator!</code></a>.</p>
+<p>Diesel provides helper macros for defining each of these kinds of operators. In fact, Diesel uses these macros to declare nearly all of the operators supported by the main crate. The macros are <a href="https://docs.diesel.rs/2.2.x/diesel/macro.infix_operator.html"><code>diesel::infix_operator!</code></a>, <a href="https://docs.diesel.rs/2.2.x/diesel/macro.postfix_operator.html"><code>diesel::postfix_operator!</code></a> and <a href="https://docs.diesel.rs/2.2.x/diesel/macro.prefix_operator.html"><code>diesel::prefix_operator!</code></a>.</p>
 <p>All of these macros have the same signature. They take between two and four arguments.</p>
 <p>The first is the name of the struct you want to represent this operator.</p>
 <p>The second is the actual SQL for this operator.</p>
@@ -367,13 +367,13 @@ src/lib.rs
 <li>Postfix operators are usually methods on the expression.</li>
 <li>Prefix operators are usually bare functions.</li>
 </ul>
-<p>For operators that you create with methods, you would typically create a trait for this. For example, here’s how the <a href="https://docs.diesel.rs/2.1.x/diesel/expression_methods/trait.ExpressionMethods.html#method.eq"><code>.eq</code></a> method gets defined by Diesel.</p>
+<p>For operators that you create with methods, you would typically create a trait for this. For example, here’s how the <a href="https://docs.diesel.rs/2.2.x/diesel/expression_methods/trait.ExpressionMethods.html#method.eq"><code>.eq</code></a> method gets defined by Diesel.</p>
 <div class="demo__example">
 <div class="demo__example-browser">
 <div class="browser-bar">
 src/expression_methods/global_expression_methods.rs
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.1.x/diesel/src/expression_methods/global_expression_methods.rs#L71-L77">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.2.x/diesel/src/expression_methods/global_expression_methods.rs#L71-L77">View on GitHub</a>
 <div class="sourceCode" id="cb11"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true"></a><span class="kw">pub</span> <span class="kw">trait</span> ExpressionMethods<span class="op">:</span> Expression <span class="op">+</span> <span class="bu">Sized</span> <span class="op">{</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true"></a>    <span class="kw">fn</span> eq<span class="op">&lt;</span>T<span class="op">&gt;</span>(<span class="kw">self</span><span class="op">,</span> other<span class="op">:</span> T) <span class="op">-&gt;</span> <span class="pp">dsl::</span><span class="bu">Eq</span><span class="op">&lt;</span><span class="dt">Self</span><span class="op">,</span> T<span class="op">&gt;</span></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true"></a>    <span class="kw">where</span></span>
@@ -388,7 +388,7 @@ src/expression_methods/global_expression_methods.rs
 </div>
 </div>
 <p>It’s important to note that these methods are where you should put any type constraints. The structs defined by <code>diesel::*_operator!</code> don’t know or care about what the types of the arguments should be. The <code>=</code> operator requires that both sides be of the same type, so we represent that in the type of <code>ExpressionMethods::eq</code>.</p>
-<p>You’ll also notice that our argument is <a href="https://docs.diesel.rs/2.1.x/diesel/expression/trait.AsExpression.html"><code>AsExpression&lt;Self::SqlType&gt;</code></a>, not <a href="https://docs.diesel.rs/2.1.x/diesel/prelude/trait.Expression.html"><code>Expression&lt;SqlType = Self::SqlType&gt;</code></a>. This allows Rust values to be passed as well as Diesel expressions. For example, we can do <code>text_col.eq(other_text_col)</code>, or <code>text_col.eq("Some Rust string")</code>.</p>
+<p>You’ll also notice that our argument is <a href="https://docs.diesel.rs/2.2.x/diesel/expression/trait.AsExpression.html"><code>AsExpression&lt;Self::SqlType&gt;</code></a>, not <a href="https://docs.diesel.rs/2.2.x/diesel/prelude/trait.Expression.html"><code>Expression&lt;SqlType = Self::SqlType&gt;</code></a>. This allows Rust values to be passed as well as Diesel expressions. For example, we can do <code>text_col.eq(other_text_col)</code>, or <code>text_col.eq("Some Rust string")</code>.</p>
 <p>If the operator is specific to only one SQL type, we can represent that in our trait.</p>
 <div class="demo__example">
 <div class="demo__example-browser">
@@ -419,13 +419,13 @@ src/expression_methods/global_expression_methods.rs
 <span id="cb12-21"><a href="#cb12-21" aria-hidden="true"></a><span class="op">}</span></span></code></pre></div>
 </div>
 </div>
-<p>Prefix operators are usually defined as bare functions. The code is very similar, but without the trait. Here’s how <a href="https://docs.diesel.rs/2.1.x/diesel/dsl/fn.not.html"><code>not</code></a> is defined in Diesel.</p>
+<p>Prefix operators are usually defined as bare functions. The code is very similar, but without the trait. Here’s how <a href="https://docs.diesel.rs/2.2.x/diesel/dsl/fn.not.html"><code>not</code></a> is defined in Diesel.</p>
 <div class="demo__example">
 <div class="demo__example-browser">
 <div class="browser-bar">
 src/expression/not.rs
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.1.x/diesel/src/expression/not.rs#L26-L32">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.2.x/diesel/src/expression/not.rs#L26-L32">View on GitHub</a>
 <div class="sourceCode" id="cb13"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true"></a><span class="kw">pub</span> <span class="kw">fn</span> not<span class="op">&lt;</span>T<span class="op">&gt;</span>(expr<span class="op">:</span> T) <span class="op">-&gt;</span> not<span class="op">&lt;</span>T<span class="op">&gt;</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true"></a><span class="kw">where</span></span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true"></a>    T<span class="op">:</span> Expression<span class="op">,</span></span>
@@ -436,17 +436,17 @@ src/expression/not.rs
 </div>
 </div>
 <p>In this case we’re using <code>Grouped</code> (which is currently undocumented in Diesel and only used internally) to add parenthesis around our argument. This ensures that the operator precedence in SQL matches what’s expected. For example, we would expect <code>not(true.and(false))</code> to return <code>true</code>. However, <code>SELECT NOT TRUE AND FALSE</code> returns <code>FALSE</code>. Diesel does the same thing for most of the built-in operators.</p>
-<p>It’s also a best practice to expose a “helper type” for your method, which does the same type conversion as the method itself. Nobody wants to write <code>Eq&lt;text_col, &lt;&amp;str as AsExpression&lt;Text&gt;&gt;::Expression&gt;</code>. Instead, we provide a type that lets you write <a href="https://docs.diesel.rs/2.1.x/diesel/helper_types/type.Eq.html"><code>Eq&lt;text_col, &amp;str&gt;</code></a>.</p>
+<p>It’s also a best practice to expose a “helper type” for your method, which does the same type conversion as the method itself. Nobody wants to write <code>Eq&lt;text_col, &lt;&amp;str as AsExpression&lt;Text&gt;&gt;::Expression&gt;</code>. Instead, we provide a type that lets you write <a href="https://docs.diesel.rs/2.2.x/diesel/helper_types/type.Eq.html"><code>Eq&lt;text_col, &amp;str&gt;</code></a>.</p>
 <div class="demo__example">
 <div class="demo__example-browser">
 <div class="browser-bar">
 src/expression/helper_types.rs
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.1.x/diesel/src/expression/helper_types.rs#L21">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.2.x/diesel/src/expression/helper_types.rs#L21">View on GitHub</a>
 <div class="sourceCode" id="cb14"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true"></a><span class="kw">pub</span> <span class="kw">type</span> Eq<span class="op">&lt;</span>Lhs<span class="op">,</span> Rhs<span class="op">&gt;</span> <span class="op">=</span> Grouped<span class="op">&lt;</span><span class="kw">super</span><span class="pp">::operators::</span><span class="bu">Eq</span><span class="op">&lt;</span>Lhs<span class="op">,</span> AsExpr<span class="op">&lt;</span>Rhs<span class="op">,</span> Lhs<span class="op">&gt;&gt;&gt;;</span></span></code></pre></div>
 </div>
 </div>
-<p>For defining these types, you’ll usually want to make use of <a href="https://docs.diesel.rs/2.1.x/diesel/helper_types/type.SqlTypeOf.html"><code>SqlTypeOf</code></a>, <a href="https://docs.diesel.rs/2.1.x/diesel/helper_types/type.AsExpr.html"><code>AsExpr</code></a>, and <a href="https://docs.diesel.rs/2.1.x/diesel/helper_types/type.AsExprOf.html"><code>AsExprOf</code></a>.</p>
+<p>For defining these types, you’ll usually want to make use of <a href="https://docs.diesel.rs/2.2.x/diesel/helper_types/type.SqlTypeOf.html"><code>SqlTypeOf</code></a>, <a href="https://docs.diesel.rs/2.2.x/diesel/helper_types/type.AsExpr.html"><code>AsExpr</code></a>, and <a href="https://docs.diesel.rs/2.2.x/diesel/helper_types/type.AsExprOf.html"><code>AsExprOf</code></a>.</p>
 </div>
 </div>
 </div>
