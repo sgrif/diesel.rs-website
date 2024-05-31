@@ -93,6 +93,8 @@ If this field is not present, or set to `true`
 only generates custom sql type definition for PostgreSQL based database systems, as
 SQLite and MySQL are using a fixed set of sql types.
 
+See the `exclude_custom_type_definitions` field for skipping the generation of certain custom types.
+
 ::: code-block
 [diesel.toml]()
 
@@ -126,6 +128,22 @@ custom_type_derives = ["diesel::sql_types::SqlType", "std::fmt::Debug"]
 
 :::
 
+## The `exclude_custom_type_definitions` field
+
+This field allows to define a list of regexes matched against custom type names for which diesel-cli should not generate sql type definitions. You should use this option in combination with `import_types` if you use crates like `postgis-diesel` or `pgvector` that provide their own sql type definition for specific custom types. If not set this defaults to an empty list.
+
+::: code-block
+
+[diesel.toml]()
+
+```toml
+[print_schema]
+generate_missing_sql_type_definitions = true
+# excludes any type named `Vector` from the generated `sql_types` module
+exclude_custom_type_definitions = ["Vector"]
+```
+
+:::
 ## The `import_types` field
 
 This field adds `use` statements to the top of every `table!`
@@ -161,6 +179,47 @@ context lines, especially if you have set `import_types`.
 
 You can easily generate this file by making the changes you want to
 `schema.rs`, and then running `git diff -U6 > src/schema.patch`.
+
+
+## The `sqlite_integer_primary_key_is_bigint` field
+
+This field allows you to configure diesel-cli to thread `INTEGER PRIMARY KEY` fields as `BIGINT` for sqlite databases. If not set this defaults to false.
+
+::: code-block
+
+[diesel.toml]()
+
+```toml
+[print_schema]
+sqlite_integer_primary_key_is_bigint = true
+```
+:::
+
+## Nested sub schemas
+
+Diesel-CLI allows to configure nested subschemas via `[print_schema.your_sub_schema]` entries. This allows to split up large `schema.rs` files into smaller ones or generate schema.rs files for multiple database schemas at once. Each subschema can configure all keys described above. Diesel-cli allows to configure the subschema that should be used via the `--schema-key` command line argument. If no such argument is given it default to the top level `[print_schema]` entry.
+
+::: code-block
+
+[diesel.toml]()
+
+```toml
+# defines a subschema `user1` including the `user1` table
+[print_schema.user1]
+file = "src/schema1.rs"
+with_docs = true
+filter = { only_tables = ["users1"] }
+
+
+# defines a subschema `user2` including the `user2` table
+[print_schema.user2]
+file = "src/schema2.rs"
+with_docs = true
+filter = { only_tables = ["users2"] }
+```
+
+
+:::
 
 :::
 :::
