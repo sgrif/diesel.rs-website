@@ -67,6 +67,24 @@ Instead, we just install it on our system.
 
 [CLI]: https://github.com/diesel-rs/diesel/tree/2.2.x/diesel_cli
 
+We provide pre-built binaries for diesel cli. You can install the command line tool via:
+
+:::code-block
+
+[Install the CLI tool]()
+
+```sh
+# Linux/MacOS
+curl --proto '=https' --tlsv1.2 -LsSf https://github.com/diesel-rs/diesel/releases/download/v2.2.0/diesel_cli-installer.sh | sh
+
+# Windows
+powershell -c "irm https://github.com/diesel-rs/diesel/releases/download/v2.2.0/diesel_cli-installer.ps1 | iex"
+```
+
+:::
+
+Alternatively you can manually install diesel cli by using `cargo install:`
+
 ::: code-block
 
 [Install the CLI tool]()
