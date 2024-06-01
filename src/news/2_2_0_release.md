@@ -96,7 +96,7 @@ let count = diesel::copy_from(users::table)
     .execute(connection)?;
 ```
 
-See the documentation of [`diesel::copy_to`](https://docs.diesel.rs/2.2.x/diesel/fn.copy_from.html) and [`diesel::copy_from`](https://docs.diesel.rs/2.2.x/diesel/fn.copy_from.html) for more details.
+See the documentation of [`diesel::copy_to`](https://docs.diesel.rs/2.2.x/diesel/fn.copy_to.html) and [`diesel::copy_from`](https://docs.diesel.rs/2.2.x/diesel/fn.copy_from.html) for more details.
 
 ## Bundling support for all native drives and perbuild binaries for diesel-cli
 
