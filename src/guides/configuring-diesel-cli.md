@@ -128,7 +128,7 @@ custom_type_derives = ["diesel::sql_types::SqlType", "std::fmt::Debug"]
 
 :::
 
-## The `exclude_custom_type_definitions` field
+## The `except_custom_type_definitions` field
 
 This field allows to define a list of regexes matched against custom type names for which diesel-cli should not generate sql type definitions. You should use this option in combination with `import_types` if you use crates like `postgis-diesel` or `pgvector` that provide their own sql type definition for specific custom types. If not set this defaults to an empty list.
 
@@ -140,7 +140,7 @@ This field allows to define a list of regexes matched against custom type names 
 [print_schema]
 generate_missing_sql_type_definitions = true
 # excludes any type named `Vector` from the generated `sql_types` module
-exclude_custom_type_definitions = ["Vector"]
+except_custom_type_definitions = ["Vector"]
 ```
 
 :::
