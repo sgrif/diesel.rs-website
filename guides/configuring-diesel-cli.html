@@ -193,7 +193,7 @@ diesel.toml
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true"></a><span class="dt">custom_type_derives</span> <span class="op">=</span> <span class="op">[</span><span class="st">&quot;diesel::sql_types::SqlType&quot;</span><span class="op">,</span> <span class="st">&quot;std::fmt::Debug&quot;</span><span class="op">]</span></span></code></pre></div>
 </div>
 </div>
-<h2 id="the-exclude_custom_type_definitions-field">The <code>exclude_custom_type_definitions</code> field</h2>
+<h2 id="the-except_custom_type_definitions-field">The <code>except_custom_type_definitions</code> field</h2>
 <p>This field allows to define a list of regexes matched against custom type names for which diesel-cli should not generate sql type definitions. You should use this option in combination with <code>import_types</code> if you use crates like <code>postgis-diesel</code> or <code>pgvector</code> that provide their own sql type definition for specific custom types. If not set this defaults to an empty list.</p>
 <div class="demo__example">
 <div class="demo__example-browser">
@@ -203,7 +203,7 @@ diesel.toml
 <div class="sourceCode" id="cb4"><pre class="sourceCode toml"><code class="sourceCode toml"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="kw">[</span><span class="dt">print_schema</span><span class="kw">]</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a><span class="dt">generate_missing_sql_type_definitions</span> <span class="op">=</span> <span class="cn">true</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true"></a><span class="co"># excludes any type named `Vector` from the generated `sql_types` module</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true"></a><span class="dt">exclude_custom_type_definitions</span> <span class="op">=</span> <span class="op">[</span><span class="st">&quot;Vector&quot;</span><span class="op">]</span></span></code></pre></div>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true"></a><span class="dt">except_custom_type_definitions</span> <span class="op">=</span> <span class="op">[</span><span class="st">&quot;Vector&quot;</span><span class="op">]</span></span></code></pre></div>
 </div>
 </div>
 <h2 id="the-import_types-field">The <code>import_types</code> field</h2>
