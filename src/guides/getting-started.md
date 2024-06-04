@@ -93,6 +93,14 @@ Alternatively you can manually install diesel cli by using `cargo install:`
 cargo install diesel_cli
 ```
 
+### Prebuilt binaries with cargo-binstall :
+
+The cli can also be installed using [cargo-binstall](https://github.com/cargo-bins/cargo-binstall), which will lookup for prebuilt binaries for your system . To install with cargo-binstall, run:
+
+```sh
+cargo binstall diesel_cli
+```
+
 :::
 
 <aside class = "aside aside--note">
