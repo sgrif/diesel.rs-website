@@ -83,6 +83,19 @@ powershell -c "irm https://github.com/diesel-rs/diesel/releases/download/v2.2.0/
 
 :::
 
+You also can use [`cargo-binstall`](https://github.com/cargo-bins/cargo-binstall) for this. To install diesel cli with `cargo binstall` run the following command:
+
+::: code-block
+
+[Install with cargo binstall]()
+
+```sh
+cargo binstall diesel_cli
+```
+:::
+
+This automatically finds the right binary for your system.
+
 Alternatively you can manually install diesel cli by using `cargo install:`
 
 ::: code-block
@@ -92,7 +105,6 @@ Alternatively you can manually install diesel cli by using `cargo install:`
 ```sh
 cargo install diesel_cli
 ```
-
 :::
 
 <aside class = "aside aside--note">
