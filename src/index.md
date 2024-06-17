@@ -46,7 +46,7 @@ Diesel is the most productive way to interact with databases in Rust because of 
 
 ::: btn-container
 
-[Getting Started](/guides/getting-started){.btn .btn-primary .btn-download}    [View on GitHub](https://github.com/diesel-rs/diesel){.btn .btn-secondary}
+[Getting Started](/guides/getting-started/){.btn .btn-primary .btn-download}    [View on GitHub](https://github.com/diesel-rs/diesel){.btn .btn-secondary}
 
 :::
 
