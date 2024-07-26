@@ -695,8 +695,6 @@ Diesel demo
 You know, a CLI application probably isn't the best interface for a blog demo.
 But really I just wanted a semi-simple example, where I could focus on Diesel.
 I didn't want to get bogged down in some web framework here.
-Plus I don't really like the Rust web frameworks out there. We might make a
-new one, soon.
 ```
 
 We've still only covered three of the four letters of CRUD though. Let's show
