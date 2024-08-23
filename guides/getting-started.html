@@ -140,7 +140,7 @@ code span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
 <div class="content-wrapper">
 <div class="guide-wrapper">
 <p>For this guide, we’re going to walk through some simple examples for each of the pieces of CRUD, which stands for “Create Read Update Delete”. Each step in this guide will build on the previous and is meant to be followed along.</p>
-<p>Before we start, make sure you have PostgreSQL installed and running. If you are using some different database, like for example SQLite, some examples won’t just run as the implemented API might differ. In the project repository, you may find various <a href="https://github.com/diesel-rs/diesel/tree/2.1.x/examples">examples</a> for every supported database.</p>
+<p>Before we start, make sure you have PostgreSQL installed and running. If you are using some different database, like for example SQLite, some examples won’t just run as the implemented API might differ. In the project repository, you may find various <a href="https://github.com/diesel-rs/diesel/tree/2.2.x/examples">examples</a> for every supported database.</p>
 <aside class="aside aside--note">
 <header class="aside__header">
 A note on Rust versions:
@@ -181,10 +181,10 @@ Cargo.toml
 Install the CLI tool
 </div>
 <div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="co"># Linux/MacOS</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="ex">curl</span> --proto <span class="st">&#39;=https&#39;</span> --tlsv1.2 -LsSf https://github.com/diesel-rs/diesel/releases/download/v2.2.1/diesel_cli-installer.sh <span class="kw">|</span> <span class="fu">sh</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="ex">curl</span> --proto <span class="st">&#39;=https&#39;</span> --tlsv1.2 -LsSf https://github.com/diesel-rs/diesel/releases/latest/download/diesel_cli-installer.sh <span class="kw">|</span> <span class="fu">sh</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a></span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true"></a><span class="co"># Windows</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true"></a><span class="ex">powershell</span> -c <span class="st">&quot;irm https://github.com/diesel-rs/diesel/releases/download/v2.2.1/diesel_cli-installer.ps1 | iex&quot;</span></span></code></pre></div>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true"></a><span class="ex">powershell</span> -c <span class="st">&quot;irm https://github.com/diesel-rs/diesel/releases/latest/download/diesel_cli-installer.ps1 | iex&quot;</span></span></code></pre></div>
 </div>
 </div>
 <p>You also can use <a href="https://github.com/cargo-bins/cargo-binstall"><code>cargo-binstall</code></a> for this. To install diesel cli with <code>cargo binstall</code> run the following command:</p>
