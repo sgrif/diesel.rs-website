@@ -4,11 +4,58 @@ lang: en-US
 css: ../assets/stylesheets/application.css
 include-after: |
     <script src="../assets/javascripts/application.js"></script>
+    <script type="text/javascript">
+    // this code is ripped off from the home page's tab selector code
+    function change_db_type(evt, db_type) {
+        // Declare all variables
+        var i, examples_content, db_type_buttons;
+
+        // Get all elements with class="postgres-example" and hide them
+        examples_content = document.getElementsByClassName("postgres-example");
+        for (i = 0; i < examples_content.length; i++) {
+            examples_content[i].style.display = "none";
+        };
+
+        // Get all elements with class="sqlite-example" and hide them
+        examples_content = document.getElementsByClassName("sqlite-example");
+        for (i = 0; i < examples_content.length; i++) {
+            examples_content[i].style.display = "none";
+        }
+
+        // Get all elements with class="mysql-example" and hide them
+        examples_content = document.getElementsByClassName("mysql-example");
+        for (i = 0; i < examples_content.length; i++) {
+            examples_content[i].style.display = "none";
+        }
+
+        // Get all elements with class="tablinks" and remove the class "btn-primary"
+        db_type_buttons = document.getElementsByClassName("db-type-button");
+        for (i = 0; i < db_type_buttons.length; i++) {
+            db_type_buttons[i].className = db_type_buttons[i].className.replace(" btn-primary", "");
+        }
+
+        // Get all elements with the now-selected class name and show them
+        examples_content = document.getElementsByClassName(db_type + "-example");
+        console.log(examples_content);
+        for (i = 0; i < examples_content.length; i++) {
+            examples_content[i].style.display = "block";
+        }
+        // set the link that was clicked to be active
+        evt.currentTarget.className += " btn-primary";
+    }
+    </script>
+
 ---
 
 ::: demo
 ::: content-wrapper
 ::: guide-wrapper
+
+::: btn-container
+<!-- Select PostgreSQL button by default. If this ever changes, also modify the postgres-example CSS class -->
+[PostgreSQL](javascript:void(0)){.btn .btn-primary .db-type-button onclick="change_db_type(event, 'postgres')"} [SQLite](javascript:void(0)){.btn .db-type-button onclick="change_db_type(event, 'sqlite')"} [MySQL](javascript:void(0)){.btn .db-type-button onclick="change_db_type(event, 'mysql')"} 
+:::
+
 
 For this guide, we're going to walk through some simple examples for each of the pieces of CRUD,
 which stands for "Create Read Update Delete". Each step in this guide will build on the previous
@@ -47,6 +94,7 @@ as well.
 
 [dotenvy]: https://github.com/allan2/dotenvy
 
+::: postgres-example
 ::: code-block
 
 [Cargo.toml](https://github.com/diesel-rs/diesel/blob/2.2.x/examples/postgres/getting_started_step_1/Cargo.toml)
@@ -57,6 +105,37 @@ diesel = { version = "2.2.0", features = ["postgres"] }
 dotenvy = "0.15"
 ```
 
+:::
+:::
+
+
+::: {.sqlite-example}
+::: code-block 
+
+[Cargo.toml (SQLite)](https://github.com/diesel-rs/diesel/blob/2.2.x/examples/sqlite/getting_started_step_1/Cargo.toml)
+
+```toml
+[dependencies]
+diesel = { version = "2.2.0", features = ["sqlite"] }
+dotenvy = "0.15"
+libsqlite3-sys = { workspace = true, features = ["bundled"] }
+```
+
+:::
+:::
+
+::: {.mysql-example}
+::: code-block 
+
+[Cargo.toml (MySQL)](https://github.com/diesel-rs/diesel/blob/2.2.x/examples/mysql/getting_started_step_1/Cargo.toml)
+
+```toml
+[dependencies]
+diesel = { version = "2.2.0", features = ["mysql"] }
+dotenvy = "0.15"
+```
+
+:::
 :::
 
 ## Installing Diesel CLI

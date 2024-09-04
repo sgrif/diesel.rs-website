@@ -1106,6 +1106,16 @@ div.vertical-tabs-container {
   .community-project p {
     margin-bottom: 0; }
 
+    
+.mysql-example, .sqlite-example {
+  display:none;
+}
+/* Use PostgreSQL as default DB type for the getting started page 
+ (it will also be selected if javascript is broken/disabled)*/
+.postgres-example {
+  display:block;
+}
+
 /* Fix overflow issue in mobile screen */
 
 @media screen and (min-width: 420px) {
