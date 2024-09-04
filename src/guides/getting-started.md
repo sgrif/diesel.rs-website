@@ -163,8 +163,7 @@ Now Diesel CLI can set everything up for us.
 diesel setup
 ```
 
-This will create our database (if it didn't already exist), and create an empty migrations directory
-that we can use to manage our schema (more on that later).
+This will create our database (if it didn't already exist) and set up the initial migrations directory, which will contain a generated migration file that establishes the Diesel setup. Note that the migrations directory will not be empty as the initial setup migration is automatically generated.
 
 Now we're going to write a small CLI that lets us manage a blog (ignoring the fact
 that we can only access the database from this CLI…). The first thing we're going to need is
@@ -182,9 +181,7 @@ Creating migrations/20160815133237_create_posts/up.sql
 Creating migrations/20160815133237_create_posts/down.sql
 ```
 
-Migrations allow us to evolve the database schema over time. Each migration can be applied
-(`up.sql`) or reverted (`down.sql`). Applying and immediately reverting a migration should
-leave your database schema unchanged.
+Migrations allow us to evolve the database schema over time. Each migration consists of an `up.sql` file to apply the changes and a `down.sql` file to revert them. Applying and immediately reverting a migration should leave your database schema unchanged.
 
 Next, we'll write the SQL for migrations:
 
