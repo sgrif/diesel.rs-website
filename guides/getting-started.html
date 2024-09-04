@@ -234,13 +234,13 @@ clang: error: linker command failed with exit code 1 (use -v to see invocation)<
 <div class="sourceCode" id="cb8"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a><span class="bu">echo</span> DATABASE_URL=postgres://username:password@localhost/diesel_demo <span class="op">&gt;</span> .env</span></code></pre></div>
 <p>Now Diesel CLI can set everything up for us.</p>
 <pre><code>diesel setup</code></pre>
-<p>This will create our database (if it didn’t already exist), and create an empty migrations directory that we can use to manage our schema (more on that later).</p>
+<p>This will create our database (if it didn’t already exist) and set up the initial migrations directory, which will contain a generated migration file that establishes the Diesel setup. Note that the migrations directory will not be empty as the initial setup migration is automatically generated.</p>
 <p>Now we’re going to write a small CLI that lets us manage a blog (ignoring the fact that we can only access the database from this CLI…). The first thing we’re going to need is a table to store our posts. Let’s create a migration for that:</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true"></a><span class="ex">diesel</span> migration generate create_posts</span></code></pre></div>
 <p>Diesel CLI will create two empty files for us in the required structure. You’ll see output that looks something like this:</p>
 <pre><code>Creating migrations/20160815133237_create_posts/up.sql
 Creating migrations/20160815133237_create_posts/down.sql</code></pre>
-<p>Migrations allow us to evolve the database schema over time. Each migration can be applied (<code>up.sql</code>) or reverted (<code>down.sql</code>). Applying and immediately reverting a migration should leave your database schema unchanged.</p>
+<p>Migrations allow us to evolve the database schema over time. Each migration consists of an <code>up.sql</code> file to apply the changes and a <code>down.sql</code> file to revert them. Applying and immediately reverting a migration should leave your database schema unchanged.</p>
 <p>Next, we’ll write the SQL for migrations:</p>
 <div class="demo__example">
 <div class="demo__example-browser">
