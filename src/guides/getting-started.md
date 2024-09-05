@@ -52,7 +52,7 @@ include-after: |
 ::: guide-wrapper
 
 ::: btn-container
-<!-- Select PostgreSQL button by default. If this ever changes, also modify the postgres-example CSS class -->
+<!-- PostgreSQL button is selected by default. If this ever changes, also modify the postgres-example CSS class -->
 [PostgreSQL](javascript:void(0)){.btn .btn-primary .db-type-button onclick="change_db_type(event, 'postgres')"} [SQLite](javascript:void(0)){.btn .db-type-button onclick="change_db_type(event, 'sqlite')"} [MySQL](javascript:void(0)){.btn .db-type-button onclick="change_db_type(event, 'mysql')"} 
 :::
 
@@ -61,7 +61,7 @@ For this guide, we're going to walk through some simple examples for each of the
 which stands for "Create Read Update Delete". Each step in this guide will build on the previous
 and is meant to be followed along.
 
-Before we start, make sure you have PostgreSQL installed and running. If you are using some different database, like for example SQLite, some examples won't just run as the implemented API might differ. In the project repository, you may find various [examples](https://github.com/diesel-rs/diesel/tree/2.2.x/examples) for every supported database. 
+Before we start, make sure you have one of PostgreSQL, SQLite, or MySQL installed and running. In the project repository, you may find various [examples](https://github.com/diesel-rs/diesel/tree/2.2.x/examples) for every supported database. 
 
 <aside class = "aside aside--note">
 <header class = "aside__header">A note on Rust versions:</header>
@@ -97,7 +97,7 @@ as well.
 ::: postgres-example
 ::: code-block
 
-[Cargo.toml](https://github.com/diesel-rs/diesel/blob/2.2.x/examples/postgres/getting_started_step_1/Cargo.toml)
+[Cargo.toml (PostgreSQL)](https://github.com/diesel-rs/diesel/blob/2.2.x/examples/postgres/getting_started_step_1/Cargo.toml)
 
 ```toml
 [dependencies]
@@ -118,7 +118,6 @@ dotenvy = "0.15"
 [dependencies]
 diesel = { version = "2.2.0", features = ["sqlite"] }
 dotenvy = "0.15"
-libsqlite3-sys = { workspace = true, features = ["bundled"] }
 ```
 
 :::
@@ -211,12 +210,30 @@ By default diesel CLI depends on the following client libraries:
 
 If you are not sure on how to install those dependencies please consult the documentation of the corresponding dependency or your distribution package manager. By default diesel will dynamically link these libraries, which means they need to be present on your system at build and runtime.
 
+::: postgres-example
 For example, if you only have PostgreSQL installed, you can use this to install `diesel_cli`
 with only PostgreSQL:
 
 ```sh
 cargo install diesel_cli --no-default-features --features postgres
 ```
+:::
+::: sqlite-example
+For example, if you only have SQLite installed, you can use this to install `diesel_cli`
+with only SQLite:
+
+```sh
+cargo install diesel_cli --no-default-features --features sqlite
+```
+:::
+::: mysql-example
+For example, if you only have MySQL installed, you can use this to install `diesel_cli`
+with only MySQL:
+
+```sh
+cargo install diesel_cli --no-default-features --features mysql
+```
+:::
 
 If you are unsure how to configure these dependencies checkout [diesel CI](https://github.com/diesel-rs/diesel/blob/master/.github/workflows/ci.yml#L63-L222) configuration for a working setup for different operating systems.
 
@@ -643,7 +660,7 @@ pub struct Post {
 [`#[derive(Queryable)]`] will generate all of the code needed to load a `Post` struct from a SQL query. 
 [`#[derive(Selectable)]`] will generate code to construct a matching select clause based on your model type based on the 
 table defined via `#[diesel(table_name = crate::schema::posts)]`. 
-`#[diesel(check_for_backend(diesel::pg::Pg))` adds additional compile time checks to verify that all field types in 
+`#[diesel(check_for_backend(diesel::pg::Pg))` (or `sqlite::SQLite` or `mysql::MySQL`) adds additional compile time checks to verify that all field types in 
 your struct are compatible with their corresponding SQL side expressions. This part is optional, but it greatly improves
 the generated compiler error messages.
 
@@ -729,7 +746,6 @@ Using `#[derive(Selectable)]` in combination with [`SelectableHelper::as_select`
 
 Let's write the code to actually show us our posts.
 
-<!-- This example is the same across PostgrSQL, SQLite, and MySQL -->
 ::: code-block
 [src/bin/show_posts.rs](https://github.com/diesel-rs/diesel/blob/2.2.x/examples/postgres/getting_started_step_1/src/bin/show_posts.rs)
 
