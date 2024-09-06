@@ -326,7 +326,7 @@ up.sql (SQLite)
 </div>
 <a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.2.x/examples/sqlite/getting_started_step_1/migrations/20170124012402_create_posts/up.sql">View on GitHub</a>
 <div class="sourceCode" id="cb19"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> posts (</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true"></a>  <span class="kw">id</span> <span class="dt">INTEGER</span> <span class="kw">NOT</span> <span class="kw">NULL</span> AUTOINCREMENT <span class="kw">PRIMARY</span> <span class="kw">KEY</span>,</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true"></a>  <span class="kw">id</span> <span class="dt">INTEGER</span> <span class="kw">NOT</span> <span class="kw">NULL</span> <span class="kw">PRIMARY</span> <span class="kw">KEY</span> AUTOINCREMENT,</span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true"></a>  title <span class="dt">VARCHAR</span> <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
 <span id="cb19-4"><a href="#cb19-4" aria-hidden="true"></a>  <span class="kw">body</span> TEXT <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
 <span id="cb19-5"><a href="#cb19-5" aria-hidden="true"></a>  published <span class="dt">BOOLEAN</span> <span class="kw">NOT</span> <span class="kw">NULL</span> <span class="kw">DEFAULT</span> <span class="dv">0</span></span>
