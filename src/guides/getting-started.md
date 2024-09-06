@@ -61,6 +61,10 @@ as well.
 ```toml
 [dependencies]
 diesel = { version = "2.2.0", features = ["postgres"] }
+# build libpq and openssl as part of the build process
+# uncomment these lines if you run into setup issues
+# pq-sys = { version = "0.6", features = ["bundled"] }
+# openssl-sys = { version = "0.9.100", features = ["vendored"] } 
 dotenvy = "0.15"
 ```
 
@@ -75,7 +79,10 @@ dotenvy = "0.15"
 
 ```toml
 [dependencies]
-diesel = { version = "2.2.0", features = ["sqlite"] }
+diesel = { version = "2.2.0", features = ["sqlite", "returning_clauses_for_sqlite_3_35"] }
+# build libsqlite3 as part of the build process
+# uncomment this line if you run into setup issues
+# libsqlite3-sys = { version = "0.30", features = ["bundled"] }
 dotenvy = "0.15"
 ```
 
@@ -90,6 +97,9 @@ dotenvy = "0.15"
 ```toml
 [dependencies]
 diesel = { version = "2.2.0", features = ["mysql"] }
+# build libmysqlclient as part of the build process
+# uncomment this line if you run into setup issues
+# mysqlclient-sys = { version = "0.4", features = ["bundled"] }
 dotenvy = "0.15"
 ```
 
@@ -198,7 +208,7 @@ If you are unsure how to configure these dependencies checkout [diesel CI](https
 
 Diesel-cli also offers features to build and statically link these libraries during `cargo install`. Use the `postgres-bundled`, `mysql-bundled` and `sqlite-bundled` feature flags for this. You need to provide the build dependencies for these libraries in that case. This involves a C compiler for all of them and for mysql cmake + a C++ compiler. In turn it might simplify your setup process.
 
-There are no `*-bundled` features for diesel itself. If you want to utilise static linking there as well you need to add a dependency on the relevant sys crate (`pq-sy` for PostgreSQL, `mysqlclient-sys` for MySQL and `libsqlite3-sys` for SQLite) and enable the `bundled` feature for this crate.
+There are no `*-bundled` features for diesel itself. If you want to utilise static linking there as well you need to add a dependency on the relevant sys crate (`pq-sy` for PostgreSQL, `mysqlclient-sys` for MySQL and `libsqlite3-sys` for SQLite) and enable the `bundled` feature for this crate. See the uncommented lines in the example `Cargo.toml` files above for the corresponding setup.
 :::
 </aside>
 
@@ -361,7 +371,7 @@ diesel migration redo
 Since migrations are written in raw SQL, they can contain specific features of the database system you use.
 For example, the `CREATE TABLE` statement above uses PostgreSQL's `SERIAL` type. If you want to use SQLite instead,
 you need to use `INTEGER` instead. The [diesel GitHub repository](https://github.com/diesel-rs/diesel/tree/master/examples) 
-contains modified examples for all supported backends. Be sure to checkout these examples if you use another backend than PostgreSQL.
+contains modified examples for all supported backends. Be sure to select the backend you are using at the top of the page to see examples specific for that backend.
 
 If you prefer to generate your migrations based on Rust code instead, the diesel CLI tool provides an additional `--diff-schema`  on the `diesel migration generate` command that allows to generate migrations based on the current schema definition and your database. To generate a migration equivalent to the shown Raw SQL migration you need to 
 
