@@ -523,34 +523,10 @@ we'll use to reference tables and columns in our queries.
 
 We'll add the following lines to the top of `src/lib.rs`:
 
-::: postgres-example
+::: {.shared-example backends="postgres, sqlite, mysql"}
 ::: code-block
 
-[src/lib.rs (PostgreSQL)](https://github.com/diesel-rs/diesel/tree/2.2.x/examples/postgres/getting_started_step_1/src/lib.rs#L1-L2)
-
-```rust
-pub mod models;
-pub mod schema;
-```
-:::
-:::
-
-::: sqlite-example
-::: code-block
-
-[src/lib.rs (SQLite)](https://github.com/diesel-rs/diesel/tree/2.2.x/examples/sqlite/getting_started_step_1/src/lib.rs#L1-L2)
-
-```rust
-pub mod models;
-pub mod schema;
-```
-:::
-:::
-
-::: mysql-example
-::: code-block
-
-[src/lib.rs (MySQL)](https://github.com/diesel-rs/diesel/tree/2.2.x/examples/mysql/getting_started_step_1/src/lib.rs#L1-L2)
+[src/lib.rs](https://github.com/diesel-rs/diesel/tree/2.2.x/examples/$backend/getting_started_step_1/src/lib.rs#L1-L2)
 
 ```rust
 pub mod models;
@@ -715,8 +691,9 @@ Using `#[derive(Selectable)]` in combination with [`SelectableHelper::as_select`
 
 Let's write the code to actually show us our posts.
 
+::: {.shared-example backends="postgres, sqlite, mysql" }
 ::: code-block
-[src/bin/show_posts.rs](https://github.com/diesel-rs/diesel/blob/2.2.x/examples/postgres/getting_started_step_1/src/bin/show_posts.rs)
+[src/bin/show_posts.rs](https://github.com/diesel-rs/diesel/blob/2.2.x/examples/$backend/getting_started_step_1/src/bin/show_posts.rs)
 
 ```rust
 use self::models::*;
@@ -744,7 +721,7 @@ fn main() {
 ```
 
 :::
-
+:::
 
 The use `self::schema::posts::dsl::*` line imports a bunch of aliases so that we can say `posts`
 instead of `posts::table`, and `published` instead of `posts::published`. It's useful
@@ -765,9 +742,10 @@ The full code for the demo at this point can be found here for [PostgreSQL][full
 Next, let's write some code to create a new post. We'll want a struct to use for inserting
 a new record.
 
+::: {.shared-example backends="postgres, sqlite, mysql" }
 ::: code-block
 
-[src/models.rs](https://github.com/diesel-rs/diesel/blob/2.2.x/examples/postgres/getting_started_step_2/src/models.rs)
+[src/models.rs](https://github.com/diesel-rs/diesel/blob/2.2.x/examples/$backend/getting_started_step_2/src/models.rs)
 
 ```rust
 use crate::schema::posts;
@@ -781,13 +759,14 @@ pub struct NewPost<'a> {
 ```
 
 :::
+:::
 
 Now let's add a function to save a new post.
 
-::: postgres-example
+::: {.shared-example backends="postgres, sqlite"}
 ::: code-block
 
-[src/lib.rs (PostgreSQL)](https://github.com/diesel-rs/diesel/blob/2.2.x/examples/postgres/getting_started_step_2/src/lib.rs)
+[src/lib.rs](https://github.com/diesel-rs/diesel/blob/2.2.x/examples/$backend/getting_started_step_2/src/lib.rs)
 
 ```rust
 use self::models::{NewPost, Post};
@@ -808,29 +787,6 @@ pub fn create_post(conn: &mut PgConnection, title: &str, body: &str) -> Post {
 :::
 :::
 
-::: sqlite-example
-::: code-block
-
-[src/lib.rs (SQLite)](https://github.com/diesel-rs/diesel/blob/2.2.x/examples/sqlite/getting_started_step_2/src/lib.rs)
-
-```rust
-use self::models::{NewPost, Post};
-
-pub fn create_post(conn: &mut SqliteConnection, title: &str, body: &str) -> Post {
-    use crate::schema::posts;
-
-    let new_post = NewPost { title, body };
-
-    diesel::insert_into(posts::table)
-        .values(&new_post)
-        .returning(Post::as_returning())
-        .get_result(conn)
-        .expect("Error saving new post")
-}
-```
-
-:::
-:::
 
 ::: mysql-example
 ::: code-block
@@ -895,9 +851,10 @@ at you, that way. :)
 
 Now that we've got everything set up, we can create a little script to write a new post.
 
+::: {.shared-example backends="postgres, sqlite, mysql"}
 ::: code-block
 
-[src/bin/write_post.rs](https://github.com/diesel-rs/diesel/blob/2.2.x/examples/postgres/getting_started_step_2/src/bin/write_post.rs)
+[src/bin/write_post.rs](https://github.com/diesel-rs/diesel/blob/2.2.x/examples/$backend/getting_started_step_2/src/bin/write_post.rs)
 
 ```rust
 use diesel_demo::*;
@@ -913,14 +870,11 @@ fn main() {
     stdin().read_line(&mut title).unwrap();
     let title = title.trim_end(); // Remove the trailing newline
 
-    println!(
-        "\nOk! Let's write {} (Press {} when finished)\n",
-        title, EOF
-    );
+    println!("\nOk! Let's write {title} (Press {EOF} when finished)\n",);
     stdin().read_to_string(&mut body).unwrap();
 
     let post = create_post(connection, title, &body);
-    println!("\nSaved draft {} with id {}", title, post.id);
+    println!("\nSaved draft {title} with id {}", post.id);
 }
 
 #[cfg(not(windows))]
@@ -930,6 +884,7 @@ const EOF: &str = "CTRL+D";
 const EOF: &str = "CTRL+Z";
 ```
 
+:::
 :::
 
 We can run our new script with `cargo run --bin write_post`. Go ahead and write a blog post.
@@ -967,9 +922,10 @@ point can be found here for [PostgreSQL][commit-no-2], [SQLite][commit-no-2-sqli
 Now that we've got create and read out of the way, update is actually
 relatively simple. Let's jump right into the script:
 
+::: {.shared-example backends="postgres, sqlite" }
 ::: code-block
 
-[src/bin/publish_post.rs](https://github.com/diesel-rs/diesel/blob/2.2.x/examples/postgres/getting_started_step_3/src/bin/publish_post.rs)
+[src/bin/publish_post.rs](https://github.com/diesel-rs/diesel/blob/2.2.x/examples/$backend/getting_started_step_3/src/bin/publish_post.rs)
 
 ```rust
 use self::models::Post;
@@ -997,6 +953,46 @@ fn main() {
 ```
 
 :::
+:::
+
+::: mysql-example
+::: code-block
+
+[src/bin/publish_post.rs](https://github.com/diesel-rs/diesel/blob/2.2.x/examples/mysql/getting_started_step_3/src/bin/publish_post.rs)
+
+```rust
+use self::models::Post;
+use diesel::prelude::*;
+use diesel_demo::*;
+use std::env::args;
+
+fn main() {
+    use self::schema::posts::dsl::{posts, published};
+
+    let id = args()
+        .nth(1)
+        .expect("publish_post requires a post id")
+        .parse::<i32>()
+        .expect("Invalid ID");
+    let connection = &mut establish_connection();
+
+    let post = connection
+        .transaction(|connection| {
+            let post = posts.find(id).select(Post::as_select()).first(connection)?;
+
+            diesel::update(posts.find(id))
+                .set(published.eq(true))
+                .execute(connection)?;
+            Ok(post)
+        })
+        .unwrap_or_else(|_: diesel::result::Error| panic!("Unable to find post {}", id));
+
+    println!("Published post {}", post.title);
+}
+```
+
+:::
+:::
 
 That's it! Let's try it out with `cargo run --bin publish_post 1`.
 
@@ -1013,9 +1009,10 @@ Notice [`.optional()`] call. This returns `Option<Post>` instead of throwing an 
 [`.optional()`]: https://docs.diesel.rs/2.2.x/diesel/result/trait.OptionalExtension.html#tymethod.optional
 [`documentation` of `QueryDsl`]: https://docs.diesel.rs/2.2.x/diesel/query_dsl/trait.QueryDsl.html
 
+::: {.shared-example backends="postgres, sqlite, mysql" }
 ::: code-block
 
-[src/bin/get_post.rs](https://github.com/diesel-rs/diesel/blob/2.2.x/examples/postgres/getting_started_step_3/src/bin/get_post.rs)
+[src/bin/get_post.rs](https://github.com/diesel-rs/diesel/blob/2.2.x/examples/$backend/getting_started_step_3/src/bin/get_post.rs)
 
 ```rust
 use self::models::Post;
@@ -1050,6 +1047,7 @@ fn main() {
 ```
 
 :::
+:::
 
 We can see our post with `cargo run --bin get_post 1`.
 
@@ -1078,9 +1076,10 @@ how to delete things. Sometimes we write something we really hate, and
 we don't have time to look up the ID. So let's delete based on the
 title, or even just some words in the title.
 
+::: {.shared-example backends="postgres, sqlite, mysql"}
 ::: code-block
 
-[src/bin/delete_post.rs](https://github.com/diesel-rs/diesel/blob/2.2.x/examples/postgres/getting_started_step_3/src/bin/delete_post.rs)
+[src/bin/delete_post.rs](https://github.com/diesel-rs/diesel/blob/2.2.x/examples/$backend/getting_started_step_3/src/bin/delete_post.rs)
 
 ```rust
 use diesel::prelude::*;
@@ -1102,6 +1101,7 @@ fn main() {
 }
 ```
 
+:::
 :::
 
 We can run the script with `cargo run --bin delete_post demo` (at least with the title I chose).
