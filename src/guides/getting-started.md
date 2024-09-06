@@ -10,11 +10,17 @@ include-after: |
 ::: content-wrapper
 ::: guide-wrapper
 
+::: btn-container
+<!-- PostgreSQL button is selected by default. If this ever changes, also modify the postgres-example CSS class -->
+[PostgreSQL](javascript:void(0)){.btn .btn-primary .db-type-button onclick="change_db_type(event, 'postgres')"} [SQLite](javascript:void(0)){.btn .db-type-button onclick="change_db_type(event, 'sqlite')"} [MySQL](javascript:void(0)){.btn .db-type-button onclick="change_db_type(event, 'mysql')"} 
+:::
+
+
 For this guide, we're going to walk through some simple examples for each of the pieces of CRUD,
 which stands for "Create Read Update Delete". Each step in this guide will build on the previous
 and is meant to be followed along.
 
-Before we start, make sure you have PostgreSQL installed and running. If you are using some different database, like for example SQLite, some examples won't just run as the implemented API might differ. In the project repository, you may find various [examples](https://github.com/diesel-rs/diesel/tree/2.2.x/examples) for every supported database. 
+Before we start, make sure you have one of PostgreSQL, SQLite, or MySQL installed and running. In the project repository, you may find various [examples](https://github.com/diesel-rs/diesel/tree/2.2.x/examples) for every supported database. 
 
 <aside class = "aside aside--note">
 <header class = "aside__header">A note on Rust versions:</header>
@@ -47,16 +53,57 @@ as well.
 
 [dotenvy]: https://github.com/allan2/dotenvy
 
+::: postgres-example
 ::: code-block
 
-[Cargo.toml](https://github.com/diesel-rs/diesel/blob/2.2.x/examples/postgres/getting_started_step_1/Cargo.toml)
+[Cargo.toml (PostgreSQL)](https://github.com/diesel-rs/diesel/blob/2.2.x/examples/postgres/getting_started_step_1/Cargo.toml)
 
 ```toml
 [dependencies]
 diesel = { version = "2.2.0", features = ["postgres"] }
+# build libpq and openssl as part of the build process
+# uncomment these lines if you run into setup issues
+# pq-sys = { version = "0.6", features = ["bundled"] }
+# openssl-sys = { version = "0.9.100", features = ["vendored"] } 
 dotenvy = "0.15"
 ```
 
+:::
+:::
+
+
+::: sqlite-example
+::: code-block 
+
+[Cargo.toml (SQLite)](https://github.com/diesel-rs/diesel/blob/2.2.x/examples/sqlite/getting_started_step_1/Cargo.toml)
+
+```toml
+[dependencies]
+diesel = { version = "2.2.0", features = ["sqlite", "returning_clauses_for_sqlite_3_35"] }
+# build libsqlite3 as part of the build process
+# uncomment this line if you run into setup issues
+# libsqlite3-sys = { version = "0.30", features = ["bundled"] }
+dotenvy = "0.15"
+```
+
+:::
+:::
+
+::: mysql-example
+::: code-block 
+
+[Cargo.toml (MySQL)](https://github.com/diesel-rs/diesel/blob/2.2.x/examples/mysql/getting_started_step_1/Cargo.toml)
+
+```toml
+[dependencies]
+diesel = { version = "2.2.0", features = ["mysql"] }
+# build libmysqlclient as part of the build process
+# uncomment this line if you run into setup issues
+# mysqlclient-sys = { version = "0.4", features = ["bundled"] }
+dotenvy = "0.15"
+```
+
+:::
 :::
 
 ## Installing Diesel CLI
@@ -132,18 +179,36 @@ By default diesel CLI depends on the following client libraries:
 
 If you are not sure on how to install those dependencies please consult the documentation of the corresponding dependency or your distribution package manager. By default diesel will dynamically link these libraries, which means they need to be present on your system at build and runtime.
 
+::: postgres-example
 For example, if you only have PostgreSQL installed, you can use this to install `diesel_cli`
 with only PostgreSQL:
 
 ```sh
 cargo install diesel_cli --no-default-features --features postgres
 ```
+:::
+::: sqlite-example
+For example, if you only have SQLite installed, you can use this to install `diesel_cli`
+with only SQLite:
+
+```sh
+cargo install diesel_cli --no-default-features --features sqlite
+```
+:::
+::: mysql-example
+For example, if you only have MySQL installed, you can use this to install `diesel_cli`
+with only MySQL:
+
+```sh
+cargo install diesel_cli --no-default-features --features mysql
+```
+:::
 
 If you are unsure how to configure these dependencies checkout [diesel CI](https://github.com/diesel-rs/diesel/blob/master/.github/workflows/ci.yml#L63-L222) configuration for a working setup for different operating systems.
 
 Diesel-cli also offers features to build and statically link these libraries during `cargo install`. Use the `postgres-bundled`, `mysql-bundled` and `sqlite-bundled` feature flags for this. You need to provide the build dependencies for these libraries in that case. This involves a C compiler for all of them and for mysql cmake + a C++ compiler. In turn it might simplify your setup process.
 
-There are no `*-bundled` features for diesel itself. If you want to utilise static linking there as well you need to add a dependency on the relevant sys crate (`pq-sy` for PostgreSQL, `mysqlclient-sys` for MySQL and `libsqlite3-sys` for SQLite) and enable the `bundled` feature for this crate.
+There are no `*-bundled` features for diesel itself. If you want to utilise static linking there as well you need to add a dependency on the relevant sys crate (`pq-sy` for PostgreSQL, `mysqlclient-sys` for MySQL and `libsqlite3-sys` for SQLite) and enable the `bundled` feature for this crate. See the uncommented lines in the example `Cargo.toml` files above for the corresponding setup.
 :::
 </aside>
 
@@ -153,9 +218,23 @@ We need to tell Diesel where to find our database. We do this by setting the `DA
 environment variable. On our development machines, we'll likely have multiple projects going,
 and we don't want to pollute our environment. We can put the url in a `.env` file instead.
 
+::: postgres-example
 ```sh
 echo DATABASE_URL=postgres://username:password@localhost/diesel_demo > .env
 ```
+:::
+
+::: sqlite-example
+```sh
+echo DATABASE_URL=/path/to/your/sqlite/database.db > .env
+```
+:::
+
+::: mysql-example
+```sh
+echo DATABASE_URL=mysql://username:password@localhost/diesel_demo > .env
+```
+:::
 
 Now Diesel CLI can set everything up for us.
 
@@ -185,9 +264,10 @@ Migrations allow us to evolve the database schema over time. Each migration cons
 
 Next, we'll write the SQL for migrations:
 
+::: postgres-example
 ::: code-block
 
-[up.sql]( https://github.com/diesel-rs/diesel/tree/2.2.x/examples/postgres/getting_started_step_1/migrations/20160815133237_create_posts/up.sql)
+[up.sql (PostgreSQL)]( https://github.com/diesel-rs/diesel/tree/2.2.x/examples/postgres/getting_started_step_1/migrations/20160815133237_create_posts/up.sql)
 
 ```sql
 CREATE TABLE posts (
@@ -199,15 +279,77 @@ CREATE TABLE posts (
 ```
 
 :::
+:::
 
+::: sqlite-example
 ::: code-block
 
-[down.sql](https://github.com/diesel-rs/diesel/tree/2.2.x/examples/postgres/getting_started_step_1/migrations/20160815133237_create_posts/down.sql)
+[up.sql (SQLite)](https://github.com/diesel-rs/diesel/blob/2.2.x/examples/sqlite/getting_started_step_1/migrations/20170124012402_create_posts/up.sql)
+
+```sql
+CREATE TABLE posts (
+  id INTEGER NOT NULL AUTOINCREMENT PRIMARY KEY,
+  title VARCHAR NOT NULL,
+  body TEXT NOT NULL,
+  published BOOLEAN NOT NULL DEFAULT 0
+)
+```
+
+:::
+:::
+
+::: mysql-example
+::: code-block
+
+[up.sql (MySQL)]( https://github.com/diesel-rs/diesel/blob/2.2.x/examples/mysql/getting_started_step_1/migrations/20160815133237_create_posts/up.sql)
+
+```sql
+CREATE TABLE posts (
+  id INTEGER AUTO_INCREMENT PRIMARY KEY,
+  title VARCHAR(255) NOT NULL,
+  body TEXT NOT NULL,
+  published BOOLEAN NOT NULL DEFAULT FALSE
+);
+```
+
+:::
+:::
+
+
+::: postgres-example
+::: code-block
+
+[down.sql (PostgreSQL)](https://github.com/diesel-rs/diesel/tree/2.2.x/examples/postgres/getting_started_step_1/migrations/20160815133237_create_posts/down.sql)
 
 ```sql
 DROP TABLE posts
 ```
 
+:::
+:::
+
+::: sqlite-example
+::: code-block
+
+[down.sql (SQLite)](https://github.com/diesel-rs/diesel/blob/2.2.x/examples/sqlite/getting_started_step_1/migrations/20170124012402_create_posts/down.sql)
+
+```sql
+DROP TABLE posts
+```
+
+:::
+:::
+
+::: mysql-example
+::: code-block
+
+[down.sql (MySQL)](https://github.com/diesel-rs/diesel/blob/2.2.x/examples/mysql/getting_started_step_1/migrations/20160815133237_create_posts/down.sql)
+
+```sql
+DROP TABLE posts
+```
+
+:::
 :::
 
 We can apply our new migration:
@@ -229,12 +371,15 @@ diesel migration redo
 Since migrations are written in raw SQL, they can contain specific features of the database system you use.
 For example, the `CREATE TABLE` statement above uses PostgreSQL's `SERIAL` type. If you want to use SQLite instead,
 you need to use `INTEGER` instead. The [diesel GitHub repository](https://github.com/diesel-rs/diesel/tree/master/examples) 
-contains modified examples for all supported backends. Be sure to checkout these examples if you use another backend than PostgreSQL.
+contains modified examples for all supported backends. Be sure to select the backend you are using at the top of the page to see examples specific for that backend.
 
 If you prefer to generate your migrations based on Rust code instead, the diesel CLI tool provides an additional `--diff-schema`  on the `diesel migration generate` command that allows to generate migrations based on the current schema definition and your database. To generate a migration equivalent to the shown Raw SQL migration you need to 
 
 * Create a `schema.rs` file with the following content:
 
+::: postgres-example
+::: code-block
+[schema.rs (PostgreSQL)](https://github.com/diesel-rs/diesel/blob/2.2.x/examples/postgres/getting_started_step_1/src/schema.rs)
 ```rust
 diesel::table! {
     posts (id) {
@@ -245,8 +390,40 @@ diesel::table! {
     }
 }
 ```
+:::
+:::
+::: sqlite-example
+::: code-block
+[schema.rs (SQLite)](https://github.com/diesel-rs/diesel/blob/2.2.x/examples/sqlite/getting_started_step_1/src/schema.rs)
+```rust
+diesel::table! {
+    posts (id) {
+        id -> Integer,
+        title -> Text,
+        body -> Text,
+        published -> Bool,
+    }
+}
+```
+:::
+:::
+::: mysql-example
+::: code-block
+[schema.rs (MySQL)](https://github.com/diesel-rs/diesel/blob/2.2.x/examples/mysql/getting_started_step_1/src/schema.rs)
+```rust
+diesel::table! {
+    posts (id) {
+        id -> Integer,
+        title -> Varchar,
+        body -> Text,
+        published -> Bool,
+    }
+}
+```
+:::
+:::
 
-[The documentation of the `table!` macro](https://docs.diesel.rs/2.2.x/diesel/macro.table.html) contains the syntax used for this macros. [The `diesel::sql_types` module](https://docs.diesel.rs/2.1.x/diesel/sql_types/index.html) provides documentation for the SQL side types used to define the relevant columns.
+[The documentation of the `table!` macro](https://docs.diesel.rs/2.2.x/diesel/macro.table.html) contains the syntax used for this macros. [The `diesel::sql_types` module](https://docs.diesel.rs/2.2.x/diesel/sql_types/index.html) provides documentation for the SQL side types used to define the relevant columns.
 
 * Run `diesel migration generate --diff-schema create_posts`
 
@@ -277,12 +454,12 @@ at the start of your `main` function to run migrations every time the applicatio
 OK enough SQL, let's write some Rust. We'll start by writing some code to show the last five published posts.
 The first thing we need to do is establish a database connection.
 
+::: postgres-example
 ::: code-block
 
-[src/lib.rs](https://github.com/diesel-rs/diesel/blob/2.2.x/examples/postgres/getting_started_step_1/src/lib.rs)
+[src/lib.rs (PostgreSQL)](https://github.com/diesel-rs/diesel/blob/2.2.x/examples/postgres/getting_started_step_1/src/lib.rs)
 
 ```rust
-use diesel::pg::PgConnection;
 use diesel::prelude::*;
 use dotenvy::dotenv;
 use std::env;
@@ -297,28 +474,73 @@ pub fn establish_connection() -> PgConnection {
 ```
 
 :::
+:::
+::: sqlite-example
+::: code-block
+
+[src/lib.rs (SQLite)](https://github.com/diesel-rs/diesel/blob/2.2.x/examples/sqlite/getting_started_step_1/src/lib.rs)
+
+```rust
+use diesel::prelude::*;
+use dotenvy::dotenv;
+use std::env;
+
+pub fn establish_connection() -> SqliteConnection {
+    dotenv().ok();
+
+    let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
+    SqliteConnection::establish(&database_url)
+        .unwrap_or_else(|_| panic!("Error connecting to {}", database_url))
+}
+```
+
+:::
+:::
+::: mysql-example
+::: code-block
+
+[src/lib.rs (MySQL)](https://github.com/diesel-rs/diesel/blob/2.2.x/examples/mysql/getting_started_step_1/src/lib.rs)
+
+```rust
+use diesel::prelude::*;
+use dotenvy::dotenv;
+use std::env;
+
+pub fn establish_connection() -> MysqlConnection {
+    dotenv().ok();
+
+    let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
+    MysqlConnection::establish(&database_url)
+        .unwrap_or_else(|_| panic!("Error connecting to {}", database_url))
+}
+```
+
+:::
+:::
 
 We'll also want to create a `Post` struct into which we can read our data, and have diesel generate the names
 we'll use to reference tables and columns in our queries.
 
 We'll add the following lines to the top of `src/lib.rs`:
 
+::: {.shared-example backends="postgres, sqlite, mysql"}
 ::: code-block
 
-[src/lib.rs](https://github.com/diesel-rs/diesel/tree/2.2.x/examples/postgres/getting_started_step_1/src/lib.rs#L1-L2)
+[src/lib.rs](https://github.com/diesel-rs/diesel/tree/2.2.x/examples/$backend/getting_started_step_1/src/lib.rs#L1-L2)
 
 ```rust
 pub mod models;
 pub mod schema;
 ```
-
+:::
 :::
 
 Next we need to create the two modules that we just declared.
 
+::: postgres-example
 ::: code-block
 
-[src/models.rs](https://github.com/diesel-rs/diesel/tree/2.2.x/examples/postgres/getting_started_step_1/src/models.rs)
+[src/models.rs (PostgreSQL)](https://github.com/diesel-rs/diesel/tree/2.2.x/examples/postgres/getting_started_step_1/src/models.rs)
 
 ```rust
 use diesel::prelude::*;
@@ -335,11 +557,55 @@ pub struct Post {
 ```
 
 :::
+:::
+
+::: sqlite-example
+::: code-block
+
+[src/models.rs (SQLite)](https://github.com/diesel-rs/diesel/tree/2.2.x/examples/sqlite/getting_started_step_1/src/models.rs)
+
+```rust
+use diesel::prelude::*;
+
+#[derive(Queryable, Selectable)]
+#[diesel(table_name = crate::schema::posts)]
+#[diesel(check_for_backend(diesel::sqlite::Sqlite))]
+pub struct Post {
+    pub id: i32,
+    pub title: String,
+    pub body: String,
+    pub published: bool,
+}
+```
+
+:::
+:::
+::: mysql-example
+::: code-block
+
+[src/models.rs (MySQL)](https://github.com/diesel-rs/diesel/tree/2.2.x/examples/mysql/getting_started_step_1/src/models.rs)
+
+```rust
+use diesel::prelude::*;
+
+#[derive(Queryable, Selectable)]
+#[diesel(table_name = crate::schema::posts)]
+#[diesel(check_for_backend(diesel::mysql::Mysql))]
+pub struct Post {
+    pub id: i32,
+    pub title: String,
+    pub body: String,
+    pub published: bool,
+}
+```
+
+:::
+:::
 
 [`#[derive(Queryable)]`] will generate all of the code needed to load a `Post` struct from a SQL query. 
 [`#[derive(Selectable)]`] will generate code to construct a matching select clause based on your model type based on the 
 table defined via `#[diesel(table_name = crate::schema::posts)]`. 
-`#[diesel(check_for_backend(diesel::pg::Pg))`adds additional compile time checks to verify that all field types in 
+`#[diesel(check_for_backend(diesel::pg::Pg))` (or `sqlite::SQLite` or `mysql::MySQL`) adds additional compile time checks to verify that all field types in 
 your struct are compatible with their corresponding SQL side expressions. This part is optional, but it greatly improves
 the generated compiler error messages.
 
@@ -347,18 +613,15 @@ the generated compiler error messages.
 [`#[derive(Selectable)]`]: https://docs.diesel.rs/master/diesel/prelude/derive.Selectable.html
 
 Typically the schema module isn't created by hand, it gets generated by diesel CLI. When we ran `diesel setup`,
-a file called [diesel.toml] was created which tells Diesel to maintain a file at src/schema.rs for us.
+a file called [diesel.toml] was created which tells Diesel to maintain a file at `src/schema.rs` for us.
 The file should look like this:
 
 [diesel.toml]: https://github.com/diesel-rs/diesel/blob/2.2.x/examples/postgres/getting_started_step_1/diesel.toml
 
+::: postgres-example
 ::: code-block
-
-[src/schema.rs](https://github.com/diesel-rs/diesel/blob/2.2.x/examples/postgres/getting_started_step_1/src/schema.rs)
-
+[schema.rs (PostgreSQL)](https://github.com/diesel-rs/diesel/blob/2.2.x/examples/postgres/getting_started_step_1/src/schema.rs)
 ```rust
-// @generated automatically by Diesel CLI.
-
 diesel::table! {
     posts (id) {
         id -> Int4,
@@ -368,7 +631,37 @@ diesel::table! {
     }
 }
 ```
-
+:::
+:::
+::: sqlite-example
+::: code-block
+[schema.rs (SQLite)](https://github.com/diesel-rs/diesel/blob/2.2.x/examples/sqlite/getting_started_step_1/src/schema.rs)
+```rust
+diesel::table! {
+    posts (id) {
+        id -> Integer,
+        title -> Text,
+        body -> Text,
+        published -> Bool,
+    }
+}
+```
+:::
+:::
+::: mysql-example
+::: code-block
+[schema.rs (MySQL)](https://github.com/diesel-rs/diesel/blob/2.2.x/examples/mysql/getting_started_step_1/src/schema.rs)
+```rust
+diesel::table! {
+    posts (id) {
+        id -> Integer,
+        title -> Varchar,
+        body -> Text,
+        published -> Bool,
+    }
+}
+```
+:::
 :::
 
 The exact output might vary slightly depending on your database, but it should be equivalent.
@@ -398,9 +691,9 @@ Using `#[derive(Selectable)]` in combination with [`SelectableHelper::as_select`
 
 Let's write the code to actually show us our posts.
 
+::: {.shared-example backends="postgres, sqlite, mysql" }
 ::: code-block
-
-[src/bin/show_posts.rs](https://github.com/diesel-rs/diesel/blob/2.2.x/examples/postgres/getting_started_step_1/src/bin/show_posts.rs)
+[src/bin/show_posts.rs](https://github.com/diesel-rs/diesel/blob/2.2.x/examples/$backend/getting_started_step_1/src/bin/show_posts.rs)
 
 ```rust
 use self::models::*;
@@ -428,7 +721,7 @@ fn main() {
 ```
 
 :::
-
+:::
 
 The use `self::schema::posts::dsl::*` line imports a bunch of aliases so that we can say `posts`
 instead of `posts::table`, and `published` instead of `posts::published`. It's useful
@@ -440,16 +733,19 @@ We can run our script with `cargo run --bin show_posts`. Unfortunately, the resu
 won't be terribly interesting, as we don't actually have any posts in the database.
 Still, we've written a decent amount of code, so let's commit.
 
-The full code for the demo at this point can be found [here][full code].
+The full code for the demo at this point can be found here for [PostgreSQL][full code], [SQLite][step 1 sqlite] and [MySQL][step 1 mysql].
 
 [full code]: https://github.com/diesel-rs/diesel/tree/2.2.x/examples/postgres/getting_started_step_1/
+[step 1 sqlite]: https://github.com/diesel-rs/diesel/tree/2.2.x/examples/sqlite/getting_started_step_1
+[step 1 mysql]: https://github.com/diesel-rs/diesel/tree/2.2.x/examples/mysql/getting_started_step_1
 
 Next, let's write some code to create a new post. We'll want a struct to use for inserting
 a new record.
 
+::: {.shared-example backends="postgres, sqlite, mysql" }
 ::: code-block
 
-[src/models.rs](https://github.com/diesel-rs/diesel/blob/2.2.x/examples/postgres/getting_started_step_2/src/models.rs)
+[src/models.rs](https://github.com/diesel-rs/diesel/blob/2.2.x/examples/$backend/getting_started_step_2/src/models.rs)
 
 ```rust
 use crate::schema::posts;
@@ -463,12 +759,14 @@ pub struct NewPost<'a> {
 ```
 
 :::
+:::
 
 Now let's add a function to save a new post.
 
+::: {.shared-example backends="postgres, sqlite"}
 ::: code-block
 
-[src/lib.rs](https://github.com/diesel-rs/diesel/blob/2.2.x/examples/postgres/getting_started_step_2/src/lib.rs)
+[src/lib.rs](https://github.com/diesel-rs/diesel/blob/2.2.x/examples/$backend/getting_started_step_2/src/lib.rs)
 
 ```rust
 use self::models::{NewPost, Post};
@@ -487,6 +785,38 @@ pub fn create_post(conn: &mut PgConnection, title: &str, body: &str) -> Post {
 ```
 
 :::
+:::
+
+
+::: mysql-example
+::: code-block
+
+[src/lib.rs (MySQL)](https://github.com/diesel-rs/diesel/blob/2.2.x/examples/mysql/getting_started_step_2/src/lib.rs)
+
+```rust
+use self::models::{NewPost, Post};
+
+pub fn create_post(conn: &mut MysqlConnection, title: &str, body: &str) -> Post {
+    use crate::schema::posts;
+
+    let new_post = NewPost { title, body };
+
+    conn.transaction(|conn| {
+        diesel::insert_into(posts::table)
+            .values(&new_post)
+            .execute(conn)?;
+
+        posts::table
+            .order(posts::id.desc())
+            .select(Post::as_select())
+            .first(conn)
+    })
+    .expect("Error while saving post")
+}
+```
+
+:::
+:::
 
 When we call [`.get_result`] on an insert or update statement, it automatically adds `RETURNING *`
 to the end of the query, and lets us load it into any struct that implements `Queryable`
@@ -498,9 +828,12 @@ for the right types. Neat!
 ::: aside__text
 
 Not all databases support `RETURNING` clauses. On backends that support the RETURNING clause (such as PostgreSQL and SQLite), we can get data back from our insert as well.
-On the SQLite backend, [RETURNING](https://www.sqlite.org/lang_returning.html){target="_blank"} has been supported since version 3.35.0. To enable RETURNING clause add feature flag, `returning_clauses_for_sqlite_3_35`.
+On the SQLite backend, [RETURNING](https://www.sqlite.org/lang_returning.html){target="_blank"} has been supported since version 3.35.0. To enable RETURNING clause add feature flag, `returning_clauses_for_sqlite_3_35` in `Cargo.toml`:
+```toml
+diesel = { version = "2.2.0", features = ["sqlite", "returning_clauses_for_sqlite_3_35"]
+```
 MySQL does not support RETURNING clauses. To get back all of the inserted rows, we can call `.get_results` instead of `.execute`.
-If you follow this guide on a different database system be sure to checkout [the examples specific to your database system](https://github.com/diesel-rs/diesel/tree/master/examples){target="_blank"}.
+If you follow this guide on a different database system be sure to checkout [the examples specific to your database system](https://github.com/diesel-rs/diesel/tree/2.2.x/examples){target="_blank"}.
 
 :::
 
@@ -518,9 +851,10 @@ at you, that way. :)
 
 Now that we've got everything set up, we can create a little script to write a new post.
 
+::: {.shared-example backends="postgres, sqlite, mysql"}
 ::: code-block
 
-[src/bin/write_post.rs](https://github.com/diesel-rs/diesel/blob/2.2.x/examples/postgres/getting_started_step_2/src/bin/write_post.rs)
+[src/bin/write_post.rs](https://github.com/diesel-rs/diesel/blob/2.2.x/examples/$backend/getting_started_step_2/src/bin/write_post.rs)
 
 ```rust
 use diesel_demo::*;
@@ -536,14 +870,11 @@ fn main() {
     stdin().read_line(&mut title).unwrap();
     let title = title.trim_end(); // Remove the trailing newline
 
-    println!(
-        "\nOk! Let's write {} (Press {} when finished)\n",
-        title, EOF
-    );
+    println!("\nOk! Let's write {title} (Press {EOF} when finished)\n",);
     stdin().read_to_string(&mut body).unwrap();
 
     let post = create_post(connection, title, &body);
-    println!("\nSaved draft {} with id {}", title, post.id);
+    println!("\nSaved draft {title} with id {}", post.id);
 }
 
 #[cfg(not(windows))]
@@ -553,6 +884,7 @@ const EOF: &str = "CTRL+D";
 const EOF: &str = "CTRL+Z";
 ```
 
+:::
 :::
 
 We can run our new script with `cargo run --bin write_post`. Go ahead and write a blog post.
@@ -580,17 +912,20 @@ because we saved it as a draft. If we look back to the code in
 `published` default to false in our migration. We need to publish it!
 But in order to do that, we'll need to look at how to update an
 existing record. First, let's commit. The code for this demo at this
-point can be found [here][commit-no-2].
+point can be found here for [PostgreSQL][commit-no-2], [SQLite][commit-no-2-sqlite], and [MySQL][commit-no-2-mysql].
 
 [commit-no-2]: https://github.com/diesel-rs/diesel/tree/2.2.x/examples/postgres/getting_started_step_2/
+[commit-no-2-sqlite]: https://github.com/diesel-rs/diesel/tree/2.2.x/examples/sqlite/getting_started_step_2/
+[commit-no-2-mysql]: https://github.com/diesel-rs/diesel/tree/2.2.x/examples/mysql/getting_started_step_2/
 [`.filter(published.eq(true))`]: https://docs.diesel.rs/2.2.x/diesel/prelude/trait.QueryDsl.html#method.filter
 
 Now that we've got create and read out of the way, update is actually
 relatively simple. Let's jump right into the script:
 
+::: {.shared-example backends="postgres, sqlite" }
 ::: code-block
 
-[src/bin/publish_post.rs](https://github.com/diesel-rs/diesel/blob/2.2.x/examples/postgres/getting_started_step_3/src/bin/publish_post.rs)
+[src/bin/publish_post.rs](https://github.com/diesel-rs/diesel/blob/2.2.x/examples/$backend/getting_started_step_3/src/bin/publish_post.rs)
 
 ```rust
 use self::models::Post;
@@ -618,6 +953,46 @@ fn main() {
 ```
 
 :::
+:::
+
+::: mysql-example
+::: code-block
+
+[src/bin/publish_post.rs](https://github.com/diesel-rs/diesel/blob/2.2.x/examples/mysql/getting_started_step_3/src/bin/publish_post.rs)
+
+```rust
+use self::models::Post;
+use diesel::prelude::*;
+use diesel_demo::*;
+use std::env::args;
+
+fn main() {
+    use self::schema::posts::dsl::{posts, published};
+
+    let id = args()
+        .nth(1)
+        .expect("publish_post requires a post id")
+        .parse::<i32>()
+        .expect("Invalid ID");
+    let connection = &mut establish_connection();
+
+    let post = connection
+        .transaction(|connection| {
+            let post = posts.find(id).select(Post::as_select()).first(connection)?;
+
+            diesel::update(posts.find(id))
+                .set(published.eq(true))
+                .execute(connection)?;
+            Ok(post)
+        })
+        .unwrap_or_else(|_: diesel::result::Error| panic!("Unable to find post {}", id));
+
+    println!("Published post {}", post.title);
+}
+```
+
+:::
+:::
 
 That's it! Let's try it out with `cargo run --bin publish_post 1`.
 
@@ -634,9 +1009,10 @@ Notice [`.optional()`] call. This returns `Option<Post>` instead of throwing an 
 [`.optional()`]: https://docs.diesel.rs/2.2.x/diesel/result/trait.OptionalExtension.html#tymethod.optional
 [`documentation` of `QueryDsl`]: https://docs.diesel.rs/2.2.x/diesel/query_dsl/trait.QueryDsl.html
 
+::: {.shared-example backends="postgres, sqlite, mysql" }
 ::: code-block
 
-[src/bin/get_post.rs](https://github.com/diesel-rs/diesel/blob/2.2.x/examples/postgres/getting_started_step_3/src/bin/get_post.rs)
+[src/bin/get_post.rs](https://github.com/diesel-rs/diesel/blob/2.2.x/examples/$backend/getting_started_step_3/src/bin/get_post.rs)
 
 ```rust
 use self::models::Post;
@@ -671,6 +1047,7 @@ fn main() {
 ```
 
 :::
+:::
 
 We can see our post with `cargo run --bin get_post 1`.
 
@@ -699,9 +1076,10 @@ how to delete things. Sometimes we write something we really hate, and
 we don't have time to look up the ID. So let's delete based on the
 title, or even just some words in the title.
 
+::: {.shared-example backends="postgres, sqlite, mysql"}
 ::: code-block
 
-[src/bin/delete_post.rs](https://github.com/diesel-rs/diesel/blob/2.2.x/examples/postgres/getting_started_step_3/src/bin/delete_post.rs)
+[src/bin/delete_post.rs](https://github.com/diesel-rs/diesel/blob/2.2.x/examples/$backend/getting_started_step_3/src/bin/delete_post.rs)
 
 ```rust
 use diesel::prelude::*;
@@ -724,6 +1102,7 @@ fn main() {
 ```
 
 :::
+:::
 
 We can run the script with `cargo run --bin delete_post demo` (at least with the title I chose).
 Your output should look something like:
@@ -737,10 +1116,12 @@ Deleted 1 posts
 When we try to run `cargo run --bin show_posts` again, we can see that the post was in fact deleted.
 This barely scratches the surface of what you can do with Diesel, but hopefully this tutorial
 has given you a good foundation to build off of. We recommend exploring the [API docs] to see more.
-The final code for this tutorial can be found [here][final].
+The final code for this tutorial can be found here for [PostgreSQL][final], [SQLite][final code sqlite], and [MySQL][final code mysql].
 
 [API docs]: https://docs.diesel.rs/2.2.x/diesel/index.html
 [final]: https://github.com/diesel-rs/diesel/tree/2.2.x/examples/postgres/getting_started_step_3/
+[final code sqlite]: https://github.com/diesel-rs/diesel/tree/2.2.x/examples/sqlite/getting_started_step_3/
+[final code mysql]: https://github.com/diesel-rs/diesel/tree/2.2.x/examples/mysql/getting_started_step_3/
 
 ::: 
 :::
