@@ -1,15 +1,16 @@
 #!/usr/bin/env python3
 
 """
-Pandoc filter to convert all level 2+ headings to paragraphs with
-emphasized text.
+Pandoc filter to postprocess code blocks from our guides
 """
 
+import json
 from pandocfilters import toJSONFilter, RawBlock, Div
 
 def html(x):
     return RawBlock('html', x)
 
+backend_map = {'postgres': 'PostgreSQL', 'sqlite': 'SQLite', 'mysql': 'MySQL'}
 
 def behead(key, value, format, meta):
     if key == 'Div':
@@ -33,6 +34,20 @@ def behead(key, value, format, meta):
             demo_example_browser = Div([ident, ['demo__example-browser'], kvs],
                                        browser_content)
             return Div([ident, ['demo__example'], kvs], [demo_example_browser])
+        if "shared-example" in classes:
+            backends = [x[1] for x in kvs if x[0] == "backends"][0].split(",")
+            kvs = [x for x in kvs if x[0] != "backends"]
+            backends = [b.strip() for b in backends]
+            out = []
+            [block] = content
+            out = []
+            for b in backends:
+                copy_block = json.loads(json.dumps(block))
+                [link, code_block] = copy_block['c'][1]
+                link['c'][0]['c'][2][0] = link['c'][0]['c'][2][0].replace('$backend', b)
+                link['c'][0]['c'][1][0]['c'] = link['c'][0]['c'][1][0]['c'] + " (" + backend_map[b] + ")"
+                out.append(Div([ident, [b + "-example"], kvs ], [copy_block]))
+            return Div(["", [], []], out)
 
 if __name__ == "__main__":
   toJSONFilter(behead)
