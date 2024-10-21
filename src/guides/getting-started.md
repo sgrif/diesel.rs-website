@@ -763,10 +763,10 @@ pub struct NewPost<'a> {
 
 Now let's add a function to save a new post.
 
-::: {.shared-example backends="postgres, sqlite"}
+::: postgres-example
 ::: code-block
 
-[src/lib.rs](https://github.com/diesel-rs/diesel/blob/2.2.x/examples/$backend/getting_started_step_2/src/lib.rs)
+[src/lib.rs](https://github.com/diesel-rs/diesel/blob/2.2.x/examples/postgres/getting_started_step_2/src/lib.rs)
 
 ```rust
 use self::models::{NewPost, Post};
@@ -783,16 +783,31 @@ pub fn create_post(conn: &mut PgConnection, title: &str, body: &str) -> Post {
         .expect("Error saving new post")
 }
 ```
-
 :::
 :::
+::: sqlite-example
+::: code-block
+[src/lib.rs](https://github.com/diesel-rs/diesel/blob/2.2.x/examples/sqlite/getting_started_step_2/src/lib.rs)
+```rust
+use self::models::{NewPost, Post};
 
+pub fn create_post(conn: &mut SqliteConnection, title: &str, body: &str) -> Post {
+    use crate::schema::posts;
 
+    let new_post = NewPost { title, body };
+
+    diesel::insert_into(posts::table)
+        .values(&new_post)
+        .returning(Post::as_returning())
+        .get_result(conn)
+        .expect("Error saving new post")
+}
+```
+:::
+:::
 ::: mysql-example
 ::: code-block
-
 [src/lib.rs (MySQL)](https://github.com/diesel-rs/diesel/blob/2.2.x/examples/mysql/getting_started_step_2/src/lib.rs)
-
 ```rust
 use self::models::{NewPost, Post};
 
@@ -814,7 +829,6 @@ pub fn create_post(conn: &mut MysqlConnection, title: &str, body: &str) -> Post 
     .expect("Error while saving post")
 }
 ```
-
 :::
 :::
 
