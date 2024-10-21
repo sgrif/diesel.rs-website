@@ -863,12 +863,11 @@ src/models.rs (MySQL)
 </div>
 </div>
 <p>Now let’s add a function to save a new post.</p>
-<div>
 <div class="postgres-example">
 <div class="demo__example">
 <div class="demo__example-browser">
 <div class="browser-bar">
-src/lib.rs (PostgreSQL)
+src/lib.rs
 </div>
 <a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.2.x/examples/postgres/getting_started_step_2/src/lib.rs">View on GitHub</a>
 <div class="sourceCode" id="cb47"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true"></a><span class="kw">use</span> <span class="kw">self</span><span class="pp">::models::</span><span class="op">{</span>NewPost<span class="op">,</span> Post<span class="op">};</span></span>
@@ -891,12 +890,12 @@ src/lib.rs (PostgreSQL)
 <div class="demo__example">
 <div class="demo__example-browser">
 <div class="browser-bar">
-src/lib.rs (SQLite)
+src/lib.rs
 </div>
 <a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.2.x/examples/sqlite/getting_started_step_2/src/lib.rs">View on GitHub</a>
 <div class="sourceCode" id="cb48"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true"></a><span class="kw">use</span> <span class="kw">self</span><span class="pp">::models::</span><span class="op">{</span>NewPost<span class="op">,</span> Post<span class="op">};</span></span>
 <span id="cb48-2"><a href="#cb48-2" aria-hidden="true"></a></span>
-<span id="cb48-3"><a href="#cb48-3" aria-hidden="true"></a><span class="kw">pub</span> <span class="kw">fn</span> create_post(conn<span class="op">:</span> <span class="op">&amp;</span><span class="kw">mut</span> PgConnection<span class="op">,</span> title<span class="op">:</span> <span class="op">&amp;</span><span class="dt">str</span><span class="op">,</span> body<span class="op">:</span> <span class="op">&amp;</span><span class="dt">str</span>) <span class="op">-&gt;</span> Post <span class="op">{</span></span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true"></a><span class="kw">pub</span> <span class="kw">fn</span> create_post(conn<span class="op">:</span> <span class="op">&amp;</span><span class="kw">mut</span> SqliteConnection<span class="op">,</span> title<span class="op">:</span> <span class="op">&amp;</span><span class="dt">str</span><span class="op">,</span> body<span class="op">:</span> <span class="op">&amp;</span><span class="dt">str</span>) <span class="op">-&gt;</span> Post <span class="op">{</span></span>
 <span id="cb48-4"><a href="#cb48-4" aria-hidden="true"></a>    <span class="kw">use</span> <span class="kw">crate</span><span class="pp">::schema::</span>posts<span class="op">;</span></span>
 <span id="cb48-5"><a href="#cb48-5" aria-hidden="true"></a></span>
 <span id="cb48-6"><a href="#cb48-6" aria-hidden="true"></a>    <span class="kw">let</span> new_post <span class="op">=</span> NewPost <span class="op">{</span> title<span class="op">,</span> body <span class="op">};</span></span>
@@ -907,7 +906,6 @@ src/lib.rs (SQLite)
 <span id="cb48-11"><a href="#cb48-11" aria-hidden="true"></a>        <span class="op">.</span>get_result(conn)</span>
 <span id="cb48-12"><a href="#cb48-12" aria-hidden="true"></a>        <span class="op">.</span>expect(<span class="st">&quot;Error saving new post&quot;</span>)</span>
 <span id="cb48-13"><a href="#cb48-13" aria-hidden="true"></a><span class="op">}</span></span></code></pre></div>
-</div>
 </div>
 </div>
 </div>
