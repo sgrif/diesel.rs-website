@@ -93,6 +93,7 @@ and think in terms of your problem domain and not SQL.
 :::
 :::
 
+Still not sold? Have a look at an in-depth [comparison](/compare_diesel.html) with other rust database crates.
 
 ::: demo
 
@@ -119,7 +120,8 @@ and think in terms of your problem domain and not SQL.
 [Updating Data](javascript::void(0)){.js-vertical-tab .vertical-tab
 onclick="change_tab(event, 'updating_data')"}
 [Ergonomic Raw SQL](javascript::void(0)){.js-vertical-tab .vertical-tab onclick="change_tab(event, 'raw_sql')"}
-[Community Projects](javascript::void(0)){.js-vertical-tab .vertical-tab onclick="change_tab(event, 'community_projects')"}
+[Popular Projects using Diesel](javascript::void(0)){.js-vertical-tab .vertical-tab onclick="change_tab(event, 'popular_projects_using_diesel')"}
+[Community Extensions](javascript::void(0)){.js-vertical-tab .vertical-tab onclick="change_tab(event, 'community_extensions')"}
 
 :::
 
@@ -409,7 +411,39 @@ sql_query(include_str!("complex_users_by_organization.sql"))
 
 :::
 
-::: {#community_projects .js-vertical-tab-content .vertical-tab-content}
+::: {#popular_projects_using_diesel .js-vertical-tab-content .vertical-tab-content}
+
+::: {.community-project}
+### [crates.io](https://github.com/rust-lang/crates.io)
+![](assets/images/crates_io.png){height=5em}
+
+crates.io serves as a central registry for sharing "crates", which are packages or libraries written in Rust that you can use to enhance your projects. This repository contains the source code and infrastructure for the crates.io website, including both frontend and backend components. It uses Diesel as central component to store crate metadata in a database.
+
+:::
+
+::: {.community-project}
+
+### [vaultwarden](https://github.com/dani-garcia/vaultwarden/)
+
+![](assets/images/vaultwarden-logo-auto.svg){height=5em}
+
+Vaultwarden is a alternative server implementation of the Bitwarden Client API, written in Rust and compatible with official Bitwarden clients [disclaimer], perfect for self-hosted deployment where running the official resource-heavy service might not be ideal. Diesel is used to store sensitive data in their backend application.
+
+:::
+
+::: {.community-project}
+
+### [lemmy](https://github.com/LemmyNet/lemmy/)
+
+![](assets/images/lemmy.svg){height=5em}
+
+Lemmy is a link aggregator and forum for the fediverse. It's to sites like Reddit, Lobste.rs, or Hacker News: you subscribe to forums you're interested in, post links and discussions, then vote, and comment on them. It's a well established software for the fediverse using Diesel in the backend.
+
+:::
+
+:::
+
+::: {#community_extensions .js-vertical-tab-content .vertical-tab-content}
 
 The community has made some utilities to help make diesel even easier to work with!
 

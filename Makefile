@@ -2,7 +2,7 @@
 	mkdir -p out/$(dir $@)
 	. $(VENV)/activate && pandoc -t html5 --template=template.html -F code-block-filter.py src/$*.md -o out/$*.html -s --syntax-definition=toml.xml --highlight-style=diesel.theme
 
-page: index.html guides docs news changelog
+page: index.html compare_diesel.html guides docs news changelog
 	cp -R assets/ out
 
 guides: guides/all-about-updates.html guides/all-about-inserts.html guides/composing-applications.html guides/configuring-diesel-cli.html guides/extending-diesel.html guides/getting-started.html guides/index.html guides/schema-in-depth.html guides/migration_guide.html guides/relations.html
