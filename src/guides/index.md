@@ -50,5 +50,9 @@ This guide will cover all available configuration options in `diesel.toml`, and 
 This guide contains information about how to resolve breaking changes while updating from Diesel
 1.4.x to Diesel 2.0
 
+### Valuable third party resources
+
+* [EuroRust 2024 Diesel Workshop](https://blog.weiznich.de/eurorust_2024.html)
+
 :::
 :::
