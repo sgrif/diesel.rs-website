@@ -141,7 +141,7 @@ code span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
 <div class="guide-wrapper">
 <p>For this guide, we’re going to look at joins, 1-to-many and many-to-many relations in Diesel. Each step in this guide will build on the previous, and is meant to be followed along.</p>
 <p><strong>This guide assumes that you have gone through the <a href="./getting-started.html">Getting Started Guide</a></strong></p>
-<h2 id="new-project">New project</h2>
+<h2 id="new-project"><a href="#new-project" class="anchor" aria-hidden="true"></a>New project</h2>
 <p>Let’s make a new project for this guide:</p>
 <div class="demo__example">
 <div class="demo__example-browser">
@@ -178,9 +178,9 @@ Cargo.toml
 <div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="bu">echo</span> DATABASE_URL=postgres://username:password@localhost/diesel_relations <span class="op">&gt;</span> .env</span></code></pre></div>
 <p>Now we can set up Diesel by running:</p>
 <pre><code>diesel setup</code></pre>
-<h2 id="to-many-or-1m">1-to-many or 1:m</h2>
+<h2 id="to-many-or-1m"><a href="#to-many-or-1m" class="anchor" aria-hidden="true"></a>1-to-many or 1:m</h2>
 <p>We need to create two different objects that we want to connect, for the first 1-to-many example let’s create books and pages. A book can have many pages, but a page can only belong to a single book.</p>
-<h2 id="migrations">Migrations</h2>
+<h2 id="migrations"><a href="#migrations" class="anchor" aria-hidden="true"></a>Migrations</h2>
 <div class="sourceCode" id="cb6"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a><span class="ex">diesel</span> migration generate create_books</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a><span class="ex">diesel</span> migration generate create_pages</span></code></pre></div>
 <p>Next, we’ll write the SQL for the book migration, which should be straight forward:</p>
@@ -235,7 +235,7 @@ down.sql
 <div class="sourceCode" id="cb11"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true"></a><span class="ex">diesel</span> migration run</span></code></pre></div>
 <p>Let’s make sure the down migrations are correct too:</p>
 <pre><code>diesel migration redo -n 2</code></pre>
-<h2 id="schema.rs">Schema.rs</h2>
+<h2 id="schema.rs"><a href="#schema.rs" class="anchor" aria-hidden="true"></a>Schema.rs</h2>
 <p>The generated schema should now look like this:</p>
 <div class="demo__example">
 <div class="demo__example-browser">
@@ -270,7 +270,7 @@ schema.rs
 </div>
 </div>
 <p>Diesel picked up on the foreign key references. It created a schema for us that has pages as joinable into books via the <code>book_id</code> and allows for the two to appear in the same query. This allows to join this table without specify an explicit <code>ON</code> clause. Diesel generates these <code>joinable!</code> instances only for cases where there is only a single relation between two tables based on a non-composite foreign key. All other cases require to specify an explicit the <code>ON</code> clause while constructing such joins.</p>
-<h2 id="models">Models</h2>
+<h2 id="models"><a href="#models" class="anchor" aria-hidden="true"></a>Models</h2>
 <p>Let’s reflect this now in our <code>model.rs</code></p>
 <div class="demo__example">
 <div class="demo__example-browser">
@@ -303,7 +303,7 @@ src/model.rs
 </div>
 <p>Associations in Diesel are always child-to-parent. You can declare an association between two records with <code>#[diesel(belongs_to)]</code>. First we need to add <a href="https://docs.diesel.rs/2.2.x/diesel/associations/derive.Associations.html"><code>#[derive(Associations)]</code></a> , which will allow us to add <code>#[diesel(belongs_to(Book))]</code> to <code>Page</code>. That tells that pages belong to books and thereby reflect our 1-to-many relation.</p>
 <p>By default diesel will assume that your struct contains a field with the lower case remote type name appended with <code>_id</code>. So for the given example <code>book_id</code>. If your foreign key field has a different name you can specify that via the <code>foreign_key</code> option: <code>#[diesel(belongs_to(Book, foreign_key = book_id))]</code></p>
-<h2 id="reading-data">Reading data</h2>
+<h2 id="reading-data"><a href="#reading-data" class="anchor" aria-hidden="true"></a>Reading data</h2>
 <p>For ease of following this tutorial, we are going to put all the code into <code>main.rs</code>. We create a separate function for each part of the guide. See the linked code for the complete file content.</p>
 <div class="demo__example">
 <div class="demo__example-browser">
@@ -380,9 +380,9 @@ A note on consuming these data:
 <span id="cb18-14"><a href="#cb18-14" aria-hidden="true"></a>    <span class="op">.</span><span class="pp">collect::</span><span class="op">&lt;</span><span class="dt">Vec</span><span class="op">&lt;</span>BookWithPages<span class="op">&gt;&gt;</span>()<span class="op">;</span></span></code></pre></div>
 </div>
 </aside>
-<h2 id="joins">Joins</h2>
+<h2 id="joins"><a href="#joins" class="anchor" aria-hidden="true"></a>Joins</h2>
 <p>We have currently loaded all pages for a given book by using the API provided by the <code>diesel::associations</code> module. This API is designed to work for parent-child relations, but not the other way around. Using plain SQL joins is the preferred way to resolve such relations the other way around. Diesel provides two kinds of joins: <code>INNER JOIN</code> and <code>LEFT JOIN</code>, where the former expects that linked elements always exist. The latter allows to include rows with missing linked elements. Both constructs load data by executing a single query.</p>
-<h3 id="inner-join"><code>INNER JOIN</code></h3>
+<h3 id="inner-join"><a href="#inner-join" class="anchor" aria-hidden="true"></a><code>INNER JOIN</code></h3>
 <p><a href="https://docs.diesel.rs/2.2.x/diesel/prelude/trait.QueryDsl.html#method.inner_join"><code>QueryDsl::inner_join</code></a> allows to construct <code>INNER JOIN</code> statements between different tables.</p>
 <div class="demo__example">
 <div class="demo__example-browser">
@@ -415,7 +415,7 @@ src/main.rs
 <span id="cb20-12"><a href="#cb20-12" aria-hidden="true"></a><span class="co">// INNER JOIN posts ON users.id = posts.user_id</span></span>
 <span id="cb20-13"><a href="#cb20-13" aria-hidden="true"></a><span class="co">// INNER JOIN comments ON users.id = comments.user_id</span></span></code></pre></div>
 <p>For joining the same table more than once, refer to the <a href="https://docs.diesel.rs/2.2.x/diesel/macro.alias.html"><code>alias!</code></a> macro to create distinct aliases.</p>
-<h3 id="left-join"><code>LEFT JOIN</code></h3>
+<h3 id="left-join"><a href="#left-join" class="anchor" aria-hidden="true"></a><code>LEFT JOIN</code></h3>
 <p><a href="https://docs.diesel.rs/2.2.x/diesel/prelude/trait.QueryDsl.html#method.left_join"><code>QueryDsl::left_join</code></a> allows to construct <code>LEFT JOIN</code> statements between different tables.</p>
 <div class="demo__example">
 <div class="demo__example-browser">
@@ -436,9 +436,9 @@ src/main.rs
 <li>A query like <code>books::table.left_join(pages::table).load(conn)</code> returns <code>(Book, Option&lt;Page&gt;)</code> or any compatible type</li>
 <li>Explicit calls to <a href="https://docs.diesel.rs/2.2.x/diesel/prelude/trait.QueryDsl.html#method.select"><code>QueryDsl::select</code></a> require that any column that comes from the left joined table is annotated with a <a href="https://docs.diesel.rs/2.2.x/diesel/expression_methods/trait.NullableExpressionMethods.html#method.nullable"><code>NullableExpressionMethods::nullable</code></a> call. This function can be called for individual columns, expressions or tuples containing columns form left joined tables.</li>
 </ul>
-<h2 id="many-to-many-or-mn">many-to-many or m:n</h2>
+<h2 id="many-to-many-or-mn"><a href="#many-to-many-or-mn" class="anchor" aria-hidden="true"></a>many-to-many or m:n</h2>
 <p>We currently have books and they have pages, but books have an author, too. To be precise, a book can have more than one author and an author can have more than one book. So we have a many-to-many relation here. Diesel does not have a concept of <code>has_many</code> but instead we are going create a “join table” <code>books_authors</code> and add a <code>belongs_to</code> to both <code>books</code> and <code>authors</code>. Let’s see that in action.</p>
-<h2 id="migrations-1">Migrations</h2>
+<h2 id="migrations-1"><a href="#migrations-1" class="anchor" aria-hidden="true"></a>Migrations</h2>
 <div class="sourceCode" id="cb22"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true"></a><span class="ex">diesel</span> migration generate create_authors</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true"></a><span class="ex">diesel</span> migration generate create_books_authors</span></code></pre></div>
 <p>Let’s keep it simple and just give our <code>authors</code> a name.</p>
@@ -498,7 +498,7 @@ Run the migrations
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true"></a><span class="ex">diesel</span> migration redo -n 2</span></code></pre></div>
 </div>
 </div>
-<h2 id="model">Model</h2>
+<h2 id="model"><a href="#model" class="anchor" aria-hidden="true"></a>Model</h2>
 <p>Now let’s reflect the join table in the <code>model.rs</code>. To keep this brief, let’s only look at what we are adding.</p>
 <div class="demo__example">
 <div class="demo__example-browser">
@@ -529,7 +529,7 @@ src/model.rs
 </div>
 </div>
 <p>The important part is to give <code>BooksAuthor</code> two <code>belongs_to</code> that point to the book and the author.</p>
-<h2 id="reading-data-1">Reading data</h2>
+<h2 id="reading-data-1"><a href="#reading-data-1" class="anchor" aria-hidden="true"></a>Reading data</h2>
 <p>If we now want to load all books of a given author we can combine joins and diesels <code>BelongingToDsl</code> to load these data:</p>
 <div class="demo__example">
 <div class="demo__example-browser">

@@ -230,7 +230,7 @@ Generated SQL
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true"></a><span class="co">-- binds: [&quot;Tess&quot;, &quot;Brown&quot;]</span></span></code></pre></div>
 </div>
 </div>
-<h2 id="insertable">Insertable</h2>
+<h2 id="insertable"><a href="#insertable" class="anchor" aria-hidden="true"></a>Insertable</h2>
 <p>Working with tuples is the typical way to do an insert if you just have some values that you want to stick in the database. But what if your data is coming from another source, like a web form deserialized by Serde? It’d be annoying to have to write <code>(name.eq(user.name), hair_color.eq(user.hair_color))</code>.</p>
 <p>Diesel provides the <a href="https://docs.diesel.rs/2.2.x/diesel/prelude/trait.Insertable.html"><code>Insertable</code></a> trait for this case. <code>Insertable</code> maps your struct to columns in the database. We can derive this automatically by adding <a href="https://docs.diesel.rs/2.2.x/diesel/prelude/derive.Insertable.html"><code>#[derive(Insertable)]</code></a> to our type.</p>
 <div class="demo__example">
@@ -304,7 +304,7 @@ Generated SQL
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true"></a><span class="co">-- binds: [&quot;Ruby&quot;]</span></span></code></pre></div>
 </div>
 </div>
-<h2 id="batch-insert">Batch Insert</h2>
+<h2 id="batch-insert"><a href="#batch-insert" class="anchor" aria-hidden="true"></a>Batch Insert</h2>
 <p>If we want to insert more than one row at a time, we can do that by passing a <code>&amp;Vec</code> or slice of any of the forms used above. Keep in mind that you’re always passing a reference here.</p>
 <p>On backends that support the <code>DEFAULT</code> keyword (all backends except SQLite), the data will be inserted in a single query. On SQLite, one query will be performed per row.</p>
 <p>For example, if we wanted to insert two rows with a single value, we can just use a <code>Vec</code>.</p>
@@ -447,7 +447,7 @@ Generated SQL
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true"></a><span class="co">-- binds: [&quot;Sean&quot;, &quot;Black&quot;, &quot;Tess&quot;, &quot;Brown&quot;]</span></span></code></pre></div>
 </div>
 </div>
-<h2 id="the-returning-clause">The <code>RETURNING</code> Clause</h2>
+<h2 id="the-returning-clause"><a href="#the-returning-clause" class="anchor" aria-hidden="true"></a>The <code>RETURNING</code> Clause</h2>
 <p>On backends that support the <code>RETURNING</code> clause (such as PostgreSQL and SQLite), we can get data back from our insert as well. On the SQLite backend, support for the <code>RETURNING</code> clause can be enabled with a feature flag, <code>returning_clauses_for_sqlite_3_35</code>. MySQL does not support <code>RETURNING</code> clauses. To get back all of the inserted rows, we can call <a href="https://docs.diesel.rs/2.2.x/diesel/query_dsl/trait.RunQueryDsl.html#method.get_results"><code>.get_results</code></a> instead of <a href="https://docs.diesel.rs/2.2.x/diesel/query_dsl/trait.RunQueryDsl.html#method.execute"><code>.execute</code></a>.</p>
 <p>Given this struct:</p>
 <div class="demo__example">
@@ -584,10 +584,10 @@ Generated SQL
 <span id="cb29-3"><a href="#cb29-3" aria-hidden="true"></a><span class="co">-- binds: [&quot;Ruby&quot;]</span></span></code></pre></div>
 </div>
 </div>
-<h2 id="upsert">“Upsert”</h2>
+<h2 id="upsert"><a href="#upsert" class="anchor" aria-hidden="true"></a>“Upsert”</h2>
 <p>Every type of insert statement covered in this guide can also be used for “insert or update” queries, also known as “upsert”. The specifics of upsert are covered extensively in the API documentation.</p>
 <p>For PostgreSQL and SQLite, see the <a href="https://docs.diesel.rs/2.2.x/diesel/upsert/index.html"><code>diesel::upsert</code></a> module. For MySQL, upsert is done via <code>REPLACE</code>. See <a href="https://docs.diesel.rs/2.2.x/diesel/fn.replace_into.html"><code>replace_into</code></a> for details.</p>
-<h2 id="conclusion">Conclusion</h2>
+<h2 id="conclusion"><a href="#conclusion" class="anchor" aria-hidden="true"></a>Conclusion</h2>
 <p>While there are a lot of examples in this guide, ultimately the only difference between various kinds of insert statements is the argument passed to <code>.values</code>.</p>
 <p>All examples in this guide are run as part of Diesel’s test suite. You can find the full code examples for each backend at these links:</p>
 <ul>

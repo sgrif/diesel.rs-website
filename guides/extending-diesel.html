@@ -142,7 +142,7 @@ code span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
 <p>Diesel provides a lot of capabilities out of the box. However, it doesn’t necessarily provide everything your app may want to use. One of Diesel’s greatest strengths is that it can be extended to add new functionality.</p>
 <p>In this guide we’ll look at several ways to hook into Diesel’s query builder, both to add new capabilities, and to introduce new abstractions.</p>
 <p>This guide is only going to cover extending the query builder. How to add support for new SQL types will be covered in a future guide.</p>
-<h2 id="sql_function"><code>sql_function!</code></h2>
+<h2 id="sql_function"><a href="#sql_function" class="anchor" aria-hidden="true"></a><code>sql_function!</code></h2>
 <p>The easiest and most common way to extend Diesel’s query builder is by declaring a new SQL function. This can be used for functions defined by your database, or for built-in functions that Diesel doesn’t support out of the box.</p>
 <p>Functions in SQL often have multiple signatures, making them difficult or impossible to represent in Rust. Because of this, Diesel only provides support for a small number of built-in SQL functions. Consider <code>COALESCE</code>. This function can take any number of arguments, and its return type changes based on whether any arguments are <code>NOT NULL</code>. While we can’t easily represent that in Rust, we can use <a href="https://docs.diesel.rs/2.2.x/diesel/expression/functions/macro.sql_function.html"><code>sql_function!</code></a> to declare it with the exact signature we’re using.</p>
 <div class="demo__example">
@@ -177,7 +177,7 @@ Example
 </div>
 </div>
 <p>A helper type is generated with the same name as the function. This helper type handles Diesel’s argument conversion. This lets us write <code>coalesce&lt;hair_color, &amp;str&gt;</code>. More information can be found in <a href="https://docs.diesel.rs/2.2.x/diesel/expression/functions/macro.sql_function.html">the API documentation</a></p>
-<h2 id="using-custom-sql-and-how-to-extend-the-query-dsl">Using Custom SQL and How to Extend the Query DSL</h2>
+<h2 id="using-custom-sql-and-how-to-extend-the-query-dsl"><a href="#using-custom-sql-and-how-to-extend-the-query-dsl" class="anchor" aria-hidden="true"></a>Using Custom SQL and How to Extend the Query DSL</h2>
 <p>Often times it’s useful to encapsulate a common SQL pattern. For example, if you’re doing pagination on your queries, PostgreSQL is capable of loading the total count in a single query. The query you would want to execute would look like this:</p>
 <div class="demo__example">
 <div class="demo__example-browser">
@@ -308,7 +308,7 @@ src/pagination.rs
 </div>
 <p>This is one of the rare cases where we want to define a function that takes a connection. One benefit of defining the function this way is that if we wanted to support backends other than PostgreSQL, we could have this function execute two queries.</p>
 <p>You can find the full code for this example in <a href="https://github.com/diesel-rs/diesel/tree/2.2.x/examples/postgres/advanced-blog-cli">the “advanced blog” example</a>.</p>
-<h2 id="custom-operators">Custom Operators</h2>
+<h2 id="custom-operators"><a href="#custom-operators" class="anchor" aria-hidden="true"></a>Custom Operators</h2>
 <p>If you’re adding support for a new type to Diesel, or working with a type that has incomplete support, you may wish to add support for the operators associated with that type. The term operator refers to anything that uses one of these syntaxes:</p>
 <ul>
 <li>Infix (e.g. <code>left OP right</code>)</li>

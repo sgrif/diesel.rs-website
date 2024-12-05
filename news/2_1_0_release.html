@@ -142,7 +142,7 @@ code span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
 <p>Diesel 2.1.0 contains the contributions of 42 people. More than 380 commits were submitted over a span of 9 months.</p>
 <p>This release contains several new features and improves existing features. It introduces support for generating migrations based on the diff between your <code>schema.rs</code> file and your database via Diesel CLI. Diesel derives now provides a <code>#[derive(MultiConnection)]</code> derive macro that allows to easily combine different database connections into a single enum, which implements <code>Connection</code> on its own. The MySQL backend gets support for <code>upsert</code> queries via the <code>ON DUPLICATE KEYS</code> syntax. Finally we provide new tooling to improve complex error messages generated for common error cases. Check out our <a href="/changelog.html">changelog for a complete list of changes</a>.</p>
 <p>This release wouldn’t be possible without the support of our contributors and sponsors. If you want to support diesels development, consider <a href="https://github.com/diesel-rs/diesel/issues?q=reviewer+is%3Aopen">joining the reviewer team</a>, submitting <a href="https://github.com/diesel-rs/diesel/issues?q=is%3Aissue+is%3Aopen++label%3A%22help+wanted%22+">PR’s</a>, help writing documentation or <a href="https://github.com/sponsors/weiznich">sponsor the maintainers</a>.</p>
-<h2 id="migration-generation">Migration generation</h2>
+<h2 id="migration-generation"><a href="#migration-generation" class="anchor" aria-hidden="true"></a>Migration generation</h2>
 <p>Diesel CLI now includes support for generating migrations based on the difference of your <code>schema.rs</code> file and your local database. This works as following:</p>
 <ol type="1">
 <li>Start editing your <code>schema.rs</code> file, for example by adding your first table:</li>
@@ -166,7 +166,7 @@ code span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
 <li>Run the migration via <code>diesel migration run --database-url DATABASE_URL</code></li>
 </ol>
 <p>It’s important to note that the generated migrations can only contain information that are part of the <code>schema.rs</code> file. This explicitly excludes default value, custom check constraints and similar SQL features. We expect the generated migrations to be a good starting point for writing the actual migration you need, we do not expect them to include all necessary information in all cases or to provide the perfect solution in each scenario.</p>
-<h2 id="multiconnection-support"><code>MultiConnection</code> support</h2>
+<h2 id="multiconnection-support"><a href="#multiconnection-support" class="anchor" aria-hidden="true"></a><code>MultiConnection</code> support</h2>
 <p>Diesel now includes a <a href="https://docs.diesel.rs/2.1.x/diesel/derive.MultiConnection.html"><code>#[derive(MultiConnection)]</code></a> proc macro derive, which allows to easily support more than one database backend in a single application. It can be applied to an enum of different connections:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="at">#[</span>derive<span class="at">(</span><span class="pp">diesel::</span>MultiConnection<span class="at">)]</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="kw">pub</span> <span class="kw">enum</span> AnyConnection <span class="op">{</span></span>
@@ -191,7 +191,7 @@ code span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
 <li>Select the backends you actually use</li>
 <li>Allow to use third party connections as well (this requires the third party connection to be based at least on diesel 2.1 and to implement the <a href="https://docs.diesel.rs/2.1.x/diesel/connection/trait.MultiConnectionHelper.html"><code>MultiConnectionHelper</code></a> trait in addition to the existing <code>Connection</code> trait.</li>
 </ul>
-<h2 id="upsert-support-for-the-mysql-backend">Upsert support for the MySQL backend</h2>
+<h2 id="upsert-support-for-the-mysql-backend"><a href="#upsert-support-for-the-mysql-backend" class="anchor" aria-hidden="true"></a>Upsert support for the MySQL backend</h2>
 <p>Diesel 2.1 adds support for <code>INSERT INTO … ON DUPLICATE KEYS …</code> queries for the MySQL backend using the existing <a href="https://docs.diesel.rs/2.1.x/diesel/query_builder/struct.InsertStatement.html#on-duplicate-key"><code>upsert</code></a> framework. It’s now possible to write such queries using the diesel provided DSL:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="pp">diesel::</span>insert_into(users)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a>    <span class="op">.</span>values(<span class="op">&amp;</span>user2)</span>
@@ -199,7 +199,7 @@ code span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true"></a>    <span class="op">.</span>do_update()</span>
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true"></a>    <span class="op">.</span>set(name<span class="op">.</span>eq(<span class="st">&quot;I DONT KNOW ANYMORE&quot;</span>))</span>
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true"></a>    <span class="op">.</span>execute(conn)<span class="op">?;</span></span></code></pre></div>
-<h2 id="improved-error-messages">Improved error messages</h2>
+<h2 id="improved-error-messages"><a href="#improved-error-messages" class="anchor" aria-hidden="true"></a>Improved error messages</h2>
 <p>We spend some effort to improve error messages generated by rustc for common diesel issues further.</p>
 <p>Consider the following example:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a><span class="pp">table!</span> <span class="op">{</span></span>
@@ -289,7 +289,7 @@ note: required by a bound in `diesel::RunQueryDsl::load`
    = note: required for `i32` to implement `FromSqlRow&lt;diesel::sql_types::Text, Mysql&gt;`
    = help: see issue #48214</code></pre>
 <p>This error message now points to the exact cause of the issue: You cannot deserialize an <code>Text</code> value into a <code>i32</code> field. This attribute accepts one or more diesel backend type to check the struct definition against. It requires that the struct is using either both, <code>#[derive(Queryable)]</code> and <code>#[derive(Selectable)]</code> or <code>#[derive(QueryableByName)]</code>.</p>
-<h2 id="internal-changes">Internal changes</h2>
+<h2 id="internal-changes"><a href="#internal-changes" class="anchor" aria-hidden="true"></a>Internal changes</h2>
 <p>Changes listed here are relevant for crates using the <code>i-implement-a-third-party-backend-and-opt-into-breaking-changes</code> feature flag. With Diesel 2.1 we have migrated some traits to use GAT. This affects the following traits:</p>
 <ul>
 <li><code>RowGatWorkaround</code></li>
@@ -299,7 +299,7 @@ note: required by a bound in `diesel::RunQueryDsl::load`
 </ul>
 <p>These traits are removed in favour of generic associated types on the corresponding child trait.</p>
 <p>Additionally we slightly relaxed one trait bound on <code>BindCollector::push_bound_value</code> to allow unsized values there as well.</p>
-<h2 id="thanks">Thanks</h2>
+<h2 id="thanks"><a href="#thanks" class="anchor" aria-hidden="true"></a>Thanks</h2>
 <p>Thank you to everyone who helped make this release happen through sponsoring, bug reports, and discussion on GitHub and Gitter. While we don’t have a way to collect stats on that form of contribution, it’s greatly appreciated.</p>
 <p>In addition to the Diesel core team, 42 people contributed code to this release. A huge thank you to:</p>
 <ul>

@@ -150,7 +150,7 @@ code span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
 <li>diesel_dynamic_schema 0.2.0</li>
 </ul>
 <p>Support the development of Diesel by <a href="https://github.com/diesel-rs/diesel">sponsoring our work on GitHub</a></p>
-<h2 id="features">Features</h2>
+<h2 id="features"><a href="#features" class="anchor" aria-hidden="true"></a>Features</h2>
 <p>As a highlight Diesel 2.0.0 adds support for the following features:</p>
 <ul>
 <li>Fully type checked <code>GROUP BY</code> support</li>
@@ -163,7 +163,7 @@ code span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
 <li>Mixed nested <code>LEFT JOINS</code> and <code>INNER JOINS</code></li>
 <li>Chaining mixed nullable expressions via <code>AND</code>, <code>OR</code> and similar operators</li>
 </ul>
-<h3 id="support-for-group-by-clauses">Support for <code>GROUP BY</code> clauses</h3>
+<h3 id="support-for-group-by-clauses"><a href="#support-for-group-by-clauses" class="anchor" aria-hidden="true"></a>Support for <code>GROUP BY</code> clauses</h3>
 <p>Diesel 2.0 adds support for <code>GROUP BY</code> clauses for select queries.</p>
 <p>This means queries like the following one will just work.</p>
 <div class="demo__example">
@@ -177,7 +177,7 @@ Example
 </div>
 </div>
 <p>As this is the case for all other Diesel built-in query dsl, this construct is fully checked at compile time. This means Diesel will ensure that the <code>GROUP BY</code> clause is valid for the current query and it will also ensure that expressions appearing inside of your <code>SELECT</code> clause will match the aggregation rules provided by the current <code>GROUP BY</code> clause. Checkout the documentation of <a href="https://docs.diesel.rs/2.0.x/diesel/prelude/trait.QueryDsl.html#method.group_by"><code>QueryDsl::group_by</code></a> for examples.</p>
-<h3 id="support-for-table-aliasing">Support for table aliasing</h3>
+<h3 id="support-for-table-aliasing"><a href="#support-for-table-aliasing" class="anchor" aria-hidden="true"></a>Support for table aliasing</h3>
 <p>Diesel 2.0 adds support for table aliasing. This enables users to write queries, where a table appears more than once in the corresponding <code>FROM</code> clause. For this Diesel provides a <a href="https://docs.diesel.rs/2.0.x/diesel/macro.alias.html"><code>diesel::alias!</code></a> macro that allows to define new alias for existing tables.</p>
 <p>The following query demonstrates the support for this feature:</p>
 <div class="demo__example">
@@ -196,7 +196,7 @@ Example
 </div>
 </div>
 <p>Again all of this is checked at compile time. So similar to a normal table, columns from aliases are only allowed to appear if the corresponding query actually uses the alias.</p>
-<h3 id="implied-selection-via-the-new-selectable-trait">Implied selection via the new <code>Selectable</code> trait</h3>
+<h3 id="implied-selection-via-the-new-selectable-trait"><a href="#implied-selection-via-the-new-selectable-trait" class="anchor" aria-hidden="true"></a>Implied selection via the new <code>Selectable</code> trait</h3>
 <p>Diesel 2.0 features a new <a href="https://docs.diesel.rs/2.0.x/diesel/expression/trait.Selectable.html"><code>Selectable</code></a> trait and derive that lets users declare that a type expects a certain kind of select clause. The major use case for this feature is to ensure that columns from a specific query are always requested in the right order for a corresponding type implementing <code>Queryable</code>. This also works for complex queries involving joins or other kinds of nesting.</p>
 <div class="demo__example">
 <div class="demo__example-browser">
@@ -213,7 +213,7 @@ Example
 </div>
 </div>
 <p>Diesel enforces at type system level that once you provided such a select clause via <code>User::as_select()</code> you are only allowed to construct this type from the returned result of the corresponding query. This means there is no need to specify the <code>User</code> type twice in the query above.</p>
-<h3 id="support-for-unionintersectexcept-queries">Support for <code>UNION</code>/<code>INTERSECT</code>/<code>EXCEPT</code> queries</h3>
+<h3 id="support-for-unionintersectexcept-queries"><a href="#support-for-unionintersectexcept-queries" class="anchor" aria-hidden="true"></a>Support for <code>UNION</code>/<code>INTERSECT</code>/<code>EXCEPT</code> queries</h3>
 <p>Diesel 2.0 extents the query builder to support query combinations via <code>UNION</code>/<code>INTERSECT</code>/<code>EXCEPT</code>. This allows you to easily chain multiple queries together as long as they return fields of the same type. Queries like the following one are now supported:</p>
 <div class="demo__example">
 <div class="demo__example-browser">
@@ -225,7 +225,7 @@ Example
 </div>
 </div>
 <p>As always this is checked at compile time to reject invalid queries, like for example that ones containing select clauses with different fields. Checkout the documentation of <a href="https://docs.diesel.rs/2.0.x/diesel/prelude/trait.CombineDsl.html"><code>CombineDsl</code></a> for details.</p>
-<h2 id="call-for-participation">Call for Participation</h2>
+<h2 id="call-for-participation"><a href="#call-for-participation" class="anchor" aria-hidden="true"></a>Call for Participation</h2>
 <p>The release of Diesel 2.0 does not only include the features listed above, but also marks the point where the following things can be provided by third party crates:</p>
 <ul>
 <li>Custom <code>QueryDsl</code> extensions to support previously unsupported SQL features. Checkout <a href="https://github.com/diesel-rs/diesel_full_text_search"><code>diesel_full_text_search</code></a> for an example</li>
@@ -240,10 +240,10 @@ Example
 <li>Alternative query dsl implementations. Checkout <a href="https://github.com/SeaQL/sea-query/discussions/168">this discussion</a> as starting point.</li>
 </ul>
 <p>Please get in touch with us for pointers, help and details.</p>
-<h2 id="input-for-future-roadmap">Input for Future Roadmap</h2>
+<h2 id="input-for-future-roadmap"><a href="#input-for-future-roadmap" class="anchor" aria-hidden="true"></a>Input for Future Roadmap</h2>
 <p>With the release of Diesel 2.0 the planing for our next releases start. Hopefully they will not take as long as Diesel 2.0. We are looking for input on which features are wanted by our community. Please open a discussion thread with your idea in our <a href="https://github.com/diesel-rs/diesel/discussions/categories/ideas">discussion forum</a>.</p>
 <p>Weiznich will work on improving error messages for trait heavy crates based on a Rust Foundation Project Grant. This work will hopefully improve error messages for Diesel as well. If you are aware of bad error messages please submit a minimal example <a href="https://github.com/weiznich/rust-foundation-community-grant">here</a>.</p>
-<h2 id="update-considerations">Update considerations</h2>
+<h2 id="update-considerations"><a href="#update-considerations" class="anchor" aria-hidden="true"></a>Update considerations</h2>
 <p>Diesel 2.0 introduces substantial changes to Diesel’s inner workings. In some cases this impacts code written using Diesel 1.4.x. This document outlines notable changes and presents potential update strategies. We recommend to start the upgrade by removing the usage of all items that are marked as deprecated in Diesel 1.4.x.</p>
 <p>Any code base migrating from Diesel 1.4.x to Diesel 2.0 is expected to be affected at least by the following changes:</p>
 <ul>
@@ -282,7 +282,7 @@ Example
 <li><a href="/guides/migration_guide.html#2-0-0-generic-changes">Changed generic bounds</a></li>
 </ul>
 <p>Additionally this release contains many changes for users that implemented a custom backend/connection. We do not provide explicit migration steps but we encourage users to reach out with questions pertaining to these changes.</p>
-<h2 id="thanks">Thanks</h2>
+<h2 id="thanks"><a href="#thanks" class="anchor" aria-hidden="true"></a>Thanks</h2>
 <p>As part of this release we would like to welcome <span class="citation" data-cites="Ten0">@Ten0</span> as part of the diesel core team.</p>
 <p>Thank you to everyone who helped make this release happen through sponsoring, bug reports, and discussion on GitHub and Gitter. While we don’t have a way to collect stats on that form of contribution, it’s greatly appreciated.</p>
 <p>In addition to the Diesel core team, 141 people contributed code to this release. A huge thank you to:</p>

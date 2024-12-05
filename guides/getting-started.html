@@ -153,7 +153,7 @@ A note on Rust versions:
 <p>Diesel requires Rust 1.78 or later. If you’re following along with this guide, make sure you’re using at least that version of Rust by running <code>rustup update stable</code>.</p>
 </div>
 </aside>
-<h2 id="initializing-a-new-project">Initializing a new project</h2>
+<h2 id="initializing-a-new-project"><a href="#initializing-a-new-project" class="anchor" aria-hidden="true"></a>Initializing a new project</h2>
 <p>The first thing we need to do is generate our project.</p>
 <div class="demo__example">
 <div class="demo__example-browser">
@@ -214,7 +214,7 @@ Cargo.toml (MySQL)
 </div>
 </div>
 </div>
-<h2 id="installing-diesel-cli">Installing Diesel CLI</h2>
+<h2 id="installing-diesel-cli"><a href="#installing-diesel-cli" class="anchor" aria-hidden="true"></a>Installing Diesel CLI</h2>
 <p>Diesel provides a separate <a href="https://github.com/diesel-rs/diesel/tree/2.2.x/diesel_cli">CLI</a> tool to help manage your project. Since it’s a standalone binary, and doesn’t affect your project’s code directly, we don’t add it to <code>Cargo.toml</code>. Instead, we just install it on our system.</p>
 <p>We provide pre-built binaries for diesel cli. You can install the command line tool via:</p>
 <div class="demo__example">
@@ -281,7 +281,7 @@ clang: error: linker command failed with exit code 1 (use -v to see invocation)<
 <p>There are no <code>*-bundled</code> features for diesel itself. If you want to utilise static linking there as well you need to add a dependency on the relevant sys crate (<code>pq-sy</code> for PostgreSQL, <code>mysqlclient-sys</code> for MySQL and <code>libsqlite3-sys</code> for SQLite) and enable the <code>bundled</code> feature for this crate. See the uncommented lines in the example <code>Cargo.toml</code> files above for the corresponding setup.</p>
 </div>
 </aside>
-<h2 id="setup-diesel-for-your-project">Setup Diesel for your project</h2>
+<h2 id="setup-diesel-for-your-project"><a href="#setup-diesel-for-your-project" class="anchor" aria-hidden="true"></a>Setup Diesel for your project</h2>
 <p>We need to tell Diesel where to find our database. We do this by setting the <code>DATABASE_URL</code> environment variable. On our development machines, we’ll likely have multiple projects going, and we don’t want to pollute our environment. We can put the url in a <code>.env</code> file instead.</p>
 <div class="postgres-example">
 <div class="sourceCode" id="cb12"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true"></a><span class="bu">echo</span> DATABASE_URL=postgres://username:password@localhost/diesel_demo <span class="op">&gt;</span> .env</span></code></pre></div>
@@ -467,7 +467,7 @@ A Note on Using Migrations in Production:
 <p>The <a href="https://docs.rs/crate/diesel_migrations/2.2.0">diesel_migrations</a> crate provides the <a href="https://docs.rs/diesel_migrations/2.2.0/diesel_migrations/macro.embed_migrations.html"><code>embed_migrations!</code></a> macro, allowing you to embed migration scripts in the final binary. Once your code uses it, you can simply include <code>connection.run_pending_migrations(MIGRATIONS)</code> at the start of your <code>main</code> function to run migrations every time the application starts.</p>
 </div>
 </aside>
-<h2 id="write-rust">Write Rust</h2>
+<h2 id="write-rust"><a href="#write-rust" class="anchor" aria-hidden="true"></a>Write Rust</h2>
 <p>OK enough SQL, let’s write some Rust. We’ll start by writing some code to show the last five published posts. The first thing we need to do is establish a database connection.</p>
 <div class="postgres-example">
 <div class="demo__example">
