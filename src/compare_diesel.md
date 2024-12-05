@@ -21,12 +21,12 @@ We will cover the following crates:
 
 As part of this comparison we will try to cover the following topics:
 
-* Stability, which covers what stability guarantees are provided by the corresponding crates
-* Safety guarantees, which covers what is checked by a specific crate at compile time
-* Flexibility, which covers what queries can by expressed by the corresponding crates
-* Extensibility, which covers how easy you can extend a specific crate by additional functionality
-* Usability, which covers how easy it is to use a specific crate
-* Performance, which covers how well a specific crate performs
+* [Stability](#stability), which covers what stability guarantees are provided by the corresponding crates
+* [Safety guarantees](#safety-guarantees), which covers what is checked by a specific crate at compile time
+* [Flexibility](#flexibility), which covers what queries can by expressed by the corresponding crates
+* [Extensibility](#extensibility), which covers how easy you can extend a specific crate by additional functionality
+* [Usability](#usability), which covers how easy it is to use a specific crate
+* [Performance](#performance), which covers how well a specific crate performs
 
 ## Stability
 

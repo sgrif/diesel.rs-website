@@ -1,6 +1,6 @@
 %.html: venv
 	mkdir -p out/$(dir $@)
-	. $(VENV)/activate && pandoc -t html5 --template=template.html -F code-block-filter.py src/$*.md -o out/$*.html -s --syntax-definition=toml.xml --highlight-style=diesel.theme
+	. $(VENV)/activate && pandoc -t html5 --template=template.html -F code-block-filter.py --lua-filter=anchor-links.lua src/$*.md -o out/$*.html -s --syntax-definition=toml.xml --highlight-style=diesel.theme
 
 page: index.html compare_diesel.html guides docs news changelog
 	cp -R assets/ out
