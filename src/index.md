@@ -99,7 +99,7 @@ Still not sold? Have a look at an in-depth [comparison](/compare_diesel.html) wi
 
 ::: content-wrapper
 
-### See some examples {.demo__heading .section-heading}
+### See some examples {.demo__heading .section-heading .no-anchor}
 
 ::: vertical-tabs-container
 
@@ -414,7 +414,7 @@ sql_query(include_str!("complex_users_by_organization.sql"))
 ::: {#popular_projects_using_diesel .js-vertical-tab-content .vertical-tab-content}
 
 ::: {.community-project}
-### [crates.io](https://github.com/rust-lang/crates.io)
+### [crates.io](https://github.com/rust-lang/crates.io) {.no-anchor}
 ![](assets/images/crates_io.png){height=5em}
 
 crates.io serves as a central registry for sharing "crates", which are packages or libraries written in Rust that you can use to enhance your projects. This repository contains the source code and infrastructure for the crates.io website, including both frontend and backend components. It uses Diesel as central component to store crate metadata in a database.
@@ -423,7 +423,7 @@ crates.io serves as a central registry for sharing "crates", which are packages 
 
 ::: {.community-project}
 
-### [vaultwarden](https://github.com/dani-garcia/vaultwarden/)
+### [vaultwarden](https://github.com/dani-garcia/vaultwarden/) {.no-anchor}
 
 ![](assets/images/vaultwarden-logo-auto.svg){height=5em}
 
@@ -433,13 +433,15 @@ Vaultwarden is a alternative server implementation of the Bitwarden Client API, 
 
 ::: {.community-project}
 
-### [lemmy](https://github.com/LemmyNet/lemmy/)
+### [lemmy](https://github.com/LemmyNet/lemmy/) {.no-anchor}
 
 ![](assets/images/lemmy.svg){height=5em}
 
 Lemmy is a link aggregator and forum for the fediverse. It's to sites like Reddit, Lobste.rs, or Hacker News: you subscribe to forums you're interested in, post links and discussions, then vote, and comment on them. It's a well established software for the fediverse using Diesel in the backend.
 
 :::
+
+Do you have found some cool project that should be linked here? Submit an issue [here](https://github.com/sgrif/diesel.rs-website)
 
 :::
 
@@ -449,7 +451,7 @@ The community has made some utilities to help make diesel even easier to work wi
 
 ::: {.community-project}
 
-#### [`dsync`](https://github.com/Wulf/dsync) <a style="float:right" href="https://crates.io/crates/dsync"><img src="https://img.shields.io/crates/v/dsync.svg?style=for-the-badge" height="18" alt="License: MIT OR Apache-2.0" /></a>
+#### [`dsync`](https://github.com/Wulf/dsync) <a style="float:right" href="https://crates.io/crates/dsync"><img src="https://img.shields.io/crates/v/dsync.svg?style=for-the-badge" height="18" alt="License: MIT OR Apache-2.0" /></a> {.no-anchor}
 
 Generate rust structs & query functions from diesel schema files.
 
@@ -457,7 +459,7 @@ Generate rust structs & query functions from diesel schema files.
 
 ::: {.community-project}
 
-#### [`diesel-logger`](https://github.com/shssoichiro/diesel-logger) <a style="float:right" href="https://crates.io/crates/diesel-logger"><img src="https://img.shields.io/crates/v/diesel-logger.svg?style=for-the-badge" height="18" alt="License: MIT OR Apache-2.0" /></a>
+#### [`diesel-logger`](https://github.com/shssoichiro/diesel-logger) <a style="float:right" href="https://crates.io/crates/diesel-logger"><img src="https://img.shields.io/crates/v/diesel-logger.svg?style=for-the-badge" height="18" alt="License: MIT OR Apache-2.0" /></a> {.no-anchor}
 
 A generic diesel connection implementations that allows to log any executed query.
 
@@ -465,7 +467,7 @@ A generic diesel connection implementations that allows to log any executed quer
 
 ::: {.community-project}
 
-#### [`diesel-derive-enum`](http://github.com/adwhit/diesel-derive-enum) <a style="float:right" href="https://crates.io/crates/diesel-derive-enum"><img src="https://img.shields.io/crates/v/diesel-derive-enum.svg?style=for-the-badge" height="18" alt="License: MIT OR Apache-2.0" /></a>
+#### [`diesel-derive-enum`](http://github.com/adwhit/diesel-derive-enum) <a style="float:right" href="https://crates.io/crates/diesel-derive-enum"><img src="https://img.shields.io/crates/v/diesel-derive-enum.svg?style=for-the-badge" height="18" alt="License: MIT OR Apache-2.0" /></a> {.no-anchor}
 
 Use Rust enums directly with diesel.
 
@@ -473,7 +475,7 @@ Use Rust enums directly with diesel.
 
 ::: {.community-project}
 
-#### [`diesel-oci`](https://github.com/GiGainfosystems/diesel-oci) <a style="float:right" href="https://crates.io/crates/diesel-oci"><img src="https://img.shields.io/crates/v/diesel-oci.svg?style=for-the-badge" height="18" alt="License: MIT OR Apache-2.0" /></a>
+#### [`diesel-oci`](https://github.com/GiGainfosystems/diesel-oci) <a style="float:right" href="https://crates.io/crates/diesel-oci"><img src="https://img.shields.io/crates/v/diesel-oci.svg?style=for-the-badge" height="18" alt="License: MIT OR Apache-2.0" /></a> {.no-anchor}
 
 A diesel backend and connection implementation for oracles database system.
 
@@ -481,7 +483,7 @@ A diesel backend and connection implementation for oracles database system.
 
 ::: {.community-project}
 
-#### [`rsfbclient-diesel`](https://github.com/fernandobatels/rsfbclient) <a style="float:right" href="https://crates.io/crates/rsfbclient-diesel"><img src="https://img.shields.io/crates/v/rsfbclient-diesel.svg?style=for-the-badge" height="18" alt="License: MIT" /></a>
+#### [`rsfbclient-diesel`](https://github.com/fernandobatels/rsfbclient) <a style="float:right" href="https://crates.io/crates/rsfbclient-diesel"><img src="https://img.shields.io/crates/v/rsfbclient-diesel.svg?style=for-the-badge" height="18" alt="License: MIT" /></a> {.no-anchor}
 
 A diesel backend and connection implementation for the Firebird database system.
 
@@ -489,7 +491,7 @@ A diesel backend and connection implementation for the Firebird database system.
 
 ::: {.community-project}
 
-#### [`diesel-async`](https://github.com/weiznich/diesel_async) <a style="float:right" href="https://crates.io/crates/diesel-async"><img src="https://img.shields.io/crates/v/diesel-async.svg?style=for-the-badge" height="18" alt="License: AGPL3+" /></a>
+#### [`diesel-async`](https://github.com/weiznich/diesel_async) <a style="float:right" href="https://crates.io/crates/diesel-async"><img src="https://img.shields.io/crates/v/diesel-async.svg?style=for-the-badge" height="18" alt="License: AGPL3+" /></a> {.no-anchor}
 
 An experimental async diesel connection implementation for PostgreSQL and MySQL.
 
