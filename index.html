@@ -171,6 +171,7 @@ code span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
 </section>
 </section>
 </div>
+<p>Still not sold? Have a look at an in-depth <a href="/compare_diesel.html">comparison</a> with other rust database crates.</p>
 <div class="demo">
 <section id="see-some-examples" class="demo__heading section-heading content-wrapper">
 <h3 class="demo__heading section-heading">See some examples</h3>
@@ -182,7 +183,7 @@ code span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
 <!-- <button class = "js-vertical-tab vertical-tab" on-click = "change_tab(event, 'complex_queries')"> -->
 <!-- Complex Queries -->
 <!-- </button> -->
-<p><a href="javascript::void(0)" class="js-vertical-tab vertical-tab is-active" onclick="change_tab(event, &#39;simple_queries&#39;)">Simple Queries</a> <a href="javascript::void(0)" class="js-vertical-tab vertical-tab" onclick="change_tab(event, &#39;complex_queries&#39;)">Complex Queries</a> <a href="javascript::void(0)" class="js-vertical-tab vertical-tab" onclick="change_tab(event, &#39;less_boilerplate&#39;)">Less Boilerplate</a> <a href="javascript::void(0)" class="js-vertical-tab vertical-tab" onclick="change_tab(event, &#39;inserting_data&#39;)">Inserting Data</a> <a href="javascript::void(0)" class="js-vertical-tab vertical-tab" onclick="change_tab(event, &#39;updating_data&#39;)">Updating Data</a> <a href="javascript::void(0)" class="js-vertical-tab vertical-tab" onclick="change_tab(event, &#39;raw_sql&#39;)">Ergonomic Raw SQL</a> <a href="javascript::void(0)" class="js-vertical-tab vertical-tab" onclick="change_tab(event, &#39;community_projects&#39;)">Community Projects</a></p>
+<p><a href="javascript::void(0)" class="js-vertical-tab vertical-tab is-active" onclick="change_tab(event, &#39;simple_queries&#39;)">Simple Queries</a> <a href="javascript::void(0)" class="js-vertical-tab vertical-tab" onclick="change_tab(event, &#39;complex_queries&#39;)">Complex Queries</a> <a href="javascript::void(0)" class="js-vertical-tab vertical-tab" onclick="change_tab(event, &#39;less_boilerplate&#39;)">Less Boilerplate</a> <a href="javascript::void(0)" class="js-vertical-tab vertical-tab" onclick="change_tab(event, &#39;inserting_data&#39;)">Inserting Data</a> <a href="javascript::void(0)" class="js-vertical-tab vertical-tab" onclick="change_tab(event, &#39;updating_data&#39;)">Updating Data</a> <a href="javascript::void(0)" class="js-vertical-tab vertical-tab" onclick="change_tab(event, &#39;raw_sql&#39;)">Ergonomic Raw SQL</a> <a href="javascript::void(0)" class="js-vertical-tab vertical-tab" onclick="change_tab(event, &#39;popular_projects_using_diesel&#39;)">Popular Projects using Diesel</a> <a href="javascript::void(0)" class="js-vertical-tab vertical-tab" onclick="change_tab(event, &#39;community_extensions&#39;)">Community Extensions</a></p>
 </div>
 <div class="vertical-tab-content-container">
 <div id="simple_queries" class="js-vertical-tab-content vertical-tab-content" style="display: block;">
@@ -422,7 +423,24 @@ Running raw SQL
 </div>
 </div>
 </div>
-<div id="community_projects" class="js-vertical-tab-content vertical-tab-content">
+<div id="popular_projects_using_diesel" class="js-vertical-tab-content vertical-tab-content">
+<section id="crates.io" class="community-project">
+<h3><a href="https://github.com/rust-lang/crates.io">crates.io</a></h3>
+<p><img src="assets/images/crates_io.png" style="height:5em" /></p>
+<p>crates.io serves as a central registry for sharing “crates”, which are packages or libraries written in Rust that you can use to enhance your projects. This repository contains the source code and infrastructure for the crates.io website, including both frontend and backend components. It uses Diesel as central component to store crate metadata in a database.</p>
+</section>
+<section id="vaultwarden" class="community-project">
+<h3><a href="https://github.com/dani-garcia/vaultwarden/">vaultwarden</a></h3>
+<p><img src="assets/images/vaultwarden-logo-auto.svg" style="height:5em" /></p>
+<p>Vaultwarden is a alternative server implementation of the Bitwarden Client API, written in Rust and compatible with official Bitwarden clients [disclaimer], perfect for self-hosted deployment where running the official resource-heavy service might not be ideal. Diesel is used to store sensitive data in their backend application.</p>
+</section>
+<section id="lemmy" class="community-project">
+<h3><a href="https://github.com/LemmyNet/lemmy/">lemmy</a></h3>
+<p><img src="assets/images/lemmy.svg" style="height:5em" /></p>
+<p>Lemmy is a link aggregator and forum for the fediverse. It’s to sites like Reddit, Lobste.rs, or Hacker News: you subscribe to forums you’re interested in, post links and discussions, then vote, and comment on them. It’s a well established software for the fediverse using Diesel in the backend.</p>
+</section>
+</div>
+<div id="community_extensions" class="js-vertical-tab-content vertical-tab-content">
 <p>The community has made some utilities to help make diesel even easier to work with!</p>
 <section id="dsync" class="community-project">
 <h4><a href="https://github.com/Wulf/dsync"><code>dsync</code></a> <a style="float:right" href="https://crates.io/crates/dsync"><img src="https://img.shields.io/crates/v/dsync.svg?style=for-the-badge" height="18" alt="License: MIT OR Apache-2.0" /></a></h4>
