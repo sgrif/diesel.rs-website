@@ -437,7 +437,7 @@ Vaultwarden is a alternative server implementation of the Bitwarden Client API, 
 
 ![](assets/images/lemmy.svg){height=5em}
 
-Lemmy is a link aggregator and forum for the fediverse. It's to sites like Reddit, Lobste.rs, or Hacker News: you subscribe to forums you're interested in, post links and discussions, then vote, and comment on them. It's a well established software for the fediverse using Diesel in the backend.
+Lemmy is a link aggregator and forum for the fediverse. It's similar to sites like Reddit, Lobste.rs, or Hacker News: you subscribe to forums you're interested in, post links and discussions, then vote, and comment on them. It's a well established software for the fediverse using Diesel in the backend.
 
 :::
 
