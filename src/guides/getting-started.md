@@ -124,8 +124,9 @@ We provide pre-built binaries for diesel cli. You can install the command line t
 # Linux/MacOS
 curl --proto '=https' --tlsv1.2 -LsSf https://github.com/diesel-rs/diesel/releases/latest/download/diesel_cli-installer.sh | sh
 
-# Windows
-powershell -c "irm https://github.com/diesel-rs/diesel/releases/latest/download/diesel_cli-installer.ps1 | iex"
+# Windows (powershell)
+Set-ExecutionPolicy RemoteSigned -scope CurrentUser
+irm https://github.com/diesel-rs/diesel/releases/latest/download/diesel_cli-installer.ps1 | iex
 ```
 
 :::
