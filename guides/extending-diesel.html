@@ -10,8 +10,9 @@
   <title>Extending Diesel</title>
   <style type="text/css">
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
@@ -139,314 +140,472 @@ code span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
 <div class="demo">
 <div class="content-wrapper">
 <div class="guide-wrapper">
-<p>Diesel provides a lot of capabilities out of the box. However, it doesn’t necessarily provide everything your app may want to use. One of Diesel’s greatest strengths is that it can be extended to add new functionality.</p>
-<p>In this guide we’ll look at several ways to hook into Diesel’s query builder, both to add new capabilities, and to introduce new abstractions.</p>
-<p>This guide is only going to cover extending the query builder. How to add support for new SQL types will be covered in a future guide.</p>
-<h2 id="sql_function"><a href="#sql_function" class="anchor" aria-hidden="true"></a><code>sql_function!</code></h2>
-<p>The easiest and most common way to extend Diesel’s query builder is by declaring a new SQL function. This can be used for functions defined by your database, or for built-in functions that Diesel doesn’t support out of the box.</p>
-<p>Functions in SQL often have multiple signatures, making them difficult or impossible to represent in Rust. Because of this, Diesel only provides support for a small number of built-in SQL functions. Consider <code>COALESCE</code>. This function can take any number of arguments, and its return type changes based on whether any arguments are <code>NOT NULL</code>. While we can’t easily represent that in Rust, we can use <a href="https://docs.diesel.rs/2.2.x/diesel/expression/functions/macro.sql_function.html"><code>sql_function!</code></a> to declare it with the exact signature we’re using.</p>
+<p>Diesel provides a lot of capabilities out of the box. However, it
+doesn’t necessarily provide everything your app may want to use. One of
+Diesel’s greatest strengths is that it can be extended to add new
+functionality.</p>
+<p>In this guide we’ll look at several ways to hook into Diesel’s query
+builder, both to add new capabilities, and to introduce new
+abstractions.</p>
+<p>This guide is only going to cover extending the query builder. How to
+add support for new SQL types will be covered in a future guide.</p>
+<h2 id="sql_function"><a href="#sql_function" class="anchor"
+aria-hidden="true"></a><code>sql_function!</code></h2>
+<p>The easiest and most common way to extend Diesel’s query builder is
+by declaring a new SQL function. This can be used for functions defined
+by your database, or for built-in functions that Diesel doesn’t support
+out of the box.</p>
+<p>Functions in SQL often have multiple signatures, making them
+difficult or impossible to represent in Rust. Because of this, Diesel
+only provides support for a small number of built-in SQL functions.
+Consider <code>COALESCE</code>. This function can take any number of
+arguments, and its return type changes based on whether any arguments
+are <code>NOT NULL</code>. While we can’t easily represent that in Rust,
+we can use <a
+href="https://docs.diesel.rs/2.2.x/diesel/expression/functions/macro.sql_function.html"><code>sql_function!</code></a>
+to declare it with the exact signature we’re using.</p>
 <div class="demo__example">
 <div class="demo__example-browser">
 <div class="browser-bar">
 Example
 </div>
-<div class="sourceCode" id="cb1"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="kw">use</span> <span class="pp">diesel::sql_types::</span><span class="op">{</span>Nullable<span class="op">,</span> Text<span class="op">};</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="pp">sql_function!</span> <span class="op">{</span> <span class="kw">fn</span> coalesce(x<span class="op">:</span> Nullable<span class="op">&lt;</span>Text<span class="op">&gt;,</span> y<span class="op">:</span> Text) <span class="op">-&gt;</span> Text<span class="op">;</span> <span class="op">}</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a>users<span class="op">.</span>select(coalesce(hair_color<span class="op">,</span> <span class="st">&quot;blue&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode rust"><code class="sourceCode rust"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">use</span> <span class="pp">diesel::sql_types::</span><span class="op">{</span>Nullable<span class="op">,</span> Text<span class="op">};</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="pp">sql_function!</span> <span class="op">{</span> <span class="kw">fn</span> coalesce(x<span class="op">:</span> Nullable<span class="op">&lt;</span>Text<span class="op">&gt;,</span> y<span class="op">:</span> Text) <span class="op">-&gt;</span> Text<span class="op">;</span> <span class="op">}</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>users<span class="op">.</span>select(coalesce(hair_color<span class="op">,</span> <span class="st">&quot;blue&quot;</span>))</span></code></pre></div>
 </div>
 </div>
-<p>As this example shows, <a href="https://docs.diesel.rs/2.2.x/diesel/expression/functions/macro.sql_function.html"><code>sql_function!</code></a> converts its argument like other parts of the query builder. This means that the generated function can take both Diesel expressions, and Rust values to be sent with the query.</p>
-<p>The macro takes one argument: a function definition. However, the types in the function signature are SQL types, not concrete Rust types. This is what allows us to pass both columns and Rust strings. If we defined this function manually, it would look like this:</p>
+<p>As this example shows, <a
+href="https://docs.diesel.rs/2.2.x/diesel/expression/functions/macro.sql_function.html"><code>sql_function!</code></a>
+converts its argument like other parts of the query builder. This means
+that the generated function can take both Diesel expressions, and Rust
+values to be sent with the query.</p>
+<p>The macro takes one argument: a function definition. However, the
+types in the function signature are SQL types, not concrete Rust types.
+This is what allows us to pass both columns and Rust strings. If we
+defined this function manually, it would look like this:</p>
 <div class="demo__example">
 <div class="demo__example-browser">
 <div class="browser-bar">
 Example
 </div>
-<div class="sourceCode" id="cb2"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="kw">pub</span> <span class="kw">fn</span> coalesce<span class="op">&lt;</span>X<span class="op">,</span> Y<span class="op">&gt;</span>(x<span class="op">:</span> X<span class="op">,</span> y<span class="op">:</span> Y) <span class="op">-&gt;</span> <span class="pp">coalesce::</span>HelperType<span class="op">&lt;</span>X<span class="op">,</span> Y<span class="op">&gt;</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a><span class="kw">where</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a>    X<span class="op">:</span> AsExpression<span class="op">&lt;</span>Nullable<span class="op">&lt;</span>Text<span class="op">&gt;&gt;,</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a>    Y<span class="op">:</span> AsExpression<span class="op">&lt;</span>Text<span class="op">&gt;,</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true"></a><span class="op">{</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true"></a>    <span class="op">...</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true"></a><span class="op">}</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true"></a></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true"></a><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">mod</span> coalesce <span class="op">{</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true"></a>    <span class="kw">pub</span> <span class="kw">type</span> HelperType<span class="op">&lt;</span>X<span class="op">,</span> Y<span class="op">&gt;</span> <span class="op">=</span> <span class="op">...;</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true"></a><span class="op">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode rust"><code class="sourceCode rust"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">pub</span> <span class="kw">fn</span> coalesce<span class="op">&lt;</span>X<span class="op">,</span> Y<span class="op">&gt;</span>(x<span class="op">:</span> X<span class="op">,</span> y<span class="op">:</span> Y) <span class="op">-&gt;</span> <span class="pp">coalesce::</span>HelperType<span class="op">&lt;</span>X<span class="op">,</span> Y<span class="op">&gt;</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">where</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    X<span class="op">:</span> AsExpression<span class="op">&lt;</span>Nullable<span class="op">&lt;</span>Text<span class="op">&gt;&gt;,</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    Y<span class="op">:</span> AsExpression<span class="op">&lt;</span>Text<span class="op">&gt;,</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="op">...</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">mod</span> coalesce <span class="op">{</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">pub</span> <span class="kw">type</span> HelperType<span class="op">&lt;</span>X<span class="op">,</span> Y<span class="op">&gt;</span> <span class="op">=</span> <span class="op">...;</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 </div>
 </div>
-<p>A helper type is generated with the same name as the function. This helper type handles Diesel’s argument conversion. This lets us write <code>coalesce&lt;hair_color, &amp;str&gt;</code>. More information can be found in <a href="https://docs.diesel.rs/2.2.x/diesel/expression/functions/macro.sql_function.html">the API documentation</a></p>
-<h2 id="using-custom-sql-and-how-to-extend-the-query-dsl"><a href="#using-custom-sql-and-how-to-extend-the-query-dsl" class="anchor" aria-hidden="true"></a>Using Custom SQL and How to Extend the Query DSL</h2>
-<p>Often times it’s useful to encapsulate a common SQL pattern. For example, if you’re doing pagination on your queries, PostgreSQL is capable of loading the total count in a single query. The query you would want to execute would look like this:</p>
+<p>A helper type is generated with the same name as the function. This
+helper type handles Diesel’s argument conversion. This lets us write
+<code>coalesce&lt;hair_color, &amp;str&gt;</code>. More information can
+be found in <a
+href="https://docs.diesel.rs/2.2.x/diesel/expression/functions/macro.sql_function.html">the
+API documentation</a></p>
+<h2 id="using-custom-sql-and-how-to-extend-the-query-dsl"><a
+href="#using-custom-sql-and-how-to-extend-the-query-dsl" class="anchor"
+aria-hidden="true"></a>Using Custom SQL and How to Extend the Query
+DSL</h2>
+<p>Often times it’s useful to encapsulate a common SQL pattern. For
+example, if you’re doing pagination on your queries, PostgreSQL is
+capable of loading the total count in a single query. The query you
+would want to execute would look like this:</p>
 <div class="demo__example">
 <div class="demo__example-browser">
 <div class="browser-bar">
 Example
 </div>
-<div class="sourceCode" id="cb3"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="kw">SELECT</span> <span class="op">*</span>, <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">OVER</span> () <span class="kw">FROM</span> (subselect t) <span class="kw">as</span> paged_query_with <span class="kw">LIMIT</span> $<span class="dv">1</span> OFFSET $<span class="dv">2</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode sql"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span>, <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">OVER</span> () <span class="kw">FROM</span> (subselect t) <span class="kw">as</span> paged_query_with <span class="kw">LIMIT</span> $<span class="dv">1</span> OFFSET $<span class="dv">2</span></span></code></pre></div>
 </div>
 </div>
-<p>However, as of version 2.0, Diesel doesn’t support window functions, or selecting from a subselect. Even if Diesel’s query builder supported those things, this is a case that is easier to reason about in terms of the SQL we want to generate.</p>
-<p>Let’s look at how we would go about adding a <code>paginate</code> method to Diesel’s query builder, to generate that query. Let’s assume for the time being that we have a struct <code>Paginated&lt;T&gt;</code> already. We’ll look at the specifics of this struct shortly.</p>
-<p>If you are creating a struct where you want to manually define the SQL, you will need to implement a trait called <a href="https://docs.diesel.rs/2.2.x/diesel/query_builder/trait.QueryFragment.html"><code>QueryFragment</code></a>. The implementation will look like this:</p>
+<p>However, as of version 2.0, Diesel doesn’t support window functions,
+or selecting from a subselect. Even if Diesel’s query builder supported
+those things, this is a case that is easier to reason about in terms of
+the SQL we want to generate.</p>
+<p>Let’s look at how we would go about adding a <code>paginate</code>
+method to Diesel’s query builder, to generate that query. Let’s assume
+for the time being that we have a struct <code>Paginated&lt;T&gt;</code>
+already. We’ll look at the specifics of this struct shortly.</p>
+<p>If you are creating a struct where you want to manually define the
+SQL, you will need to implement a trait called <a
+href="https://docs.diesel.rs/2.2.x/diesel/query_builder/trait.QueryFragment.html"><code>QueryFragment</code></a>.
+The implementation will look like this:</p>
 <div class="demo__example">
 <div class="demo__example-browser">
 <div class="browser-bar">
 src/pagination.rs
 </div>
 <a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.2.x/examples/postgres/advanced-blog-cli/src/pagination.rs#L60-L73">View on GitHub</a>
-<div class="sourceCode" id="cb4"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="kw">impl</span><span class="op">&lt;</span>T<span class="op">&gt;</span> QueryFragment<span class="op">&lt;</span>Pg<span class="op">&gt;</span> <span class="kw">for</span> Paginated<span class="op">&lt;</span>T<span class="op">&gt;</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a><span class="kw">where</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true"></a>    T<span class="op">:</span> QueryFragment<span class="op">&lt;</span>Pg<span class="op">&gt;,</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true"></a><span class="op">{</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true"></a>    <span class="kw">fn</span> walk_ast<span class="op">&lt;</span><span class="ot">&#39;b</span><span class="op">&gt;</span>(<span class="op">&amp;</span><span class="ot">&#39;b</span> <span class="kw">self</span><span class="op">,</span> <span class="kw">mut</span> out<span class="op">:</span> AstPass<span class="op">&lt;</span><span class="ot">&#39;_</span><span class="op">,</span> <span class="ot">&#39;b</span><span class="op">,</span> Pg<span class="op">&gt;</span>) <span class="op">-&gt;</span> QueryResult<span class="op">&lt;</span>()<span class="op">&gt;</span> <span class="op">{</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true"></a>        out<span class="op">.</span>push_sql(<span class="st">&quot;SELECT *, COUNT(*) OVER () FROM (&quot;</span>)<span class="op">;</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true"></a>        <span class="kw">self</span><span class="op">.</span>query<span class="op">.</span>walk_ast(out<span class="op">.</span>reborrow())<span class="op">?;</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true"></a>        out<span class="op">.</span>push_sql(<span class="st">&quot;) as paged_query_with LIMIT &quot;</span>)<span class="op">;</span></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true"></a>        out<span class="op">.</span><span class="pp">push_bind_param::</span><span class="op">&lt;</span>BigInt<span class="op">,</span> _<span class="op">&gt;</span>(<span class="op">&amp;</span><span class="kw">self</span><span class="op">.</span>per_page)<span class="op">?;</span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true"></a>        out<span class="op">.</span>push_sql(<span class="st">&quot; OFFSET &quot;</span>)<span class="op">;</span></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true"></a>        out<span class="op">.</span><span class="pp">push_bind_param::</span><span class="op">&lt;</span>BigInt<span class="op">,</span> _<span class="op">&gt;</span>(<span class="op">&amp;</span><span class="kw">self</span><span class="op">.</span>offset)<span class="op">?;</span></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true"></a>        <span class="cn">Ok</span>(())</span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true"></a>    <span class="op">}</span></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true"></a><span class="op">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode rust"><code class="sourceCode rust"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">impl</span><span class="op">&lt;</span>T<span class="op">&gt;</span> QueryFragment<span class="op">&lt;</span>Pg<span class="op">&gt;</span> <span class="cf">for</span> Paginated<span class="op">&lt;</span>T<span class="op">&gt;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="kw">where</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    T<span class="op">:</span> QueryFragment<span class="op">&lt;</span>Pg<span class="op">&gt;,</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fn</span> walk_ast<span class="op">&lt;</span><span class="ot">&#39;b</span><span class="op">&gt;</span>(<span class="op">&amp;</span><span class="ot">&#39;b</span> <span class="kw">self</span><span class="op">,</span> <span class="kw">mut</span> out<span class="op">:</span> AstPass<span class="op">&lt;</span><span class="ot">&#39;_</span><span class="op">,</span> <span class="ot">&#39;b</span><span class="op">,</span> Pg<span class="op">&gt;</span>) <span class="op">-&gt;</span> QueryResult<span class="op">&lt;</span>()<span class="op">&gt;</span> <span class="op">{</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>        out<span class="op">.</span>push_sql(<span class="st">&quot;SELECT *, COUNT(*) OVER () FROM (&quot;</span>)<span class="op">;</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>        <span class="kw">self</span><span class="op">.</span>query<span class="op">.</span>walk_ast(out<span class="op">.</span>reborrow())<span class="op">?;</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>        out<span class="op">.</span>push_sql(<span class="st">&quot;) as paged_query_with LIMIT &quot;</span>)<span class="op">;</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>        out<span class="op">.</span><span class="pp">push_bind_param::</span><span class="op">&lt;</span>BigInt<span class="op">,</span> _<span class="op">&gt;</span>(<span class="op">&amp;</span><span class="kw">self</span><span class="op">.</span>per_page)<span class="op">?;</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>        out<span class="op">.</span>push_sql(<span class="st">&quot; OFFSET &quot;</span>)<span class="op">;</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>        out<span class="op">.</span><span class="pp">push_bind_param::</span><span class="op">&lt;</span>BigInt<span class="op">,</span> _<span class="op">&gt;</span>(<span class="op">&amp;</span><span class="kw">self</span><span class="op">.</span>offset)<span class="op">?;</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>        <span class="cn">Ok</span>(())</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 </div>
 </div>
-<p>For details on what each method does, see the documentation for <a href="https://docs.diesel.rs/2.2.x/diesel/query_builder/struct.AstPass.html"><code>AstPass</code></a>. One important question to ask whenever you implement <code>QueryFragment</code> is whether you are generating a query that is safe to cache. The way to answer this question is by asking “does this struct generate an unlimited number of potential SQL queries”? Typically that is only the case if the body of <code>walk_ast</code> contains a for loop. If your query is not safe to cache, you <em>must</em> call <a href="https://docs.diesel.rs/2.2.x/diesel/query_builder/struct.AstPass.html#method.unsafe_to_cache_prepared"><code>out.unsafe_to_cache_prepared</code></a>.</p>
-<p>Whenever you implement <code>QueryFragment</code>, you also need to implement <a href="https://docs.diesel.rs/2.2.x/diesel/query_builder/trait.QueryId.html"><code>QueryId</code></a>. - We can use <a href="https://docs.diesel.rs/2.2.x/diesel/query_builder/derive.QueryId.html"><code>#[derive(QueryId)]</code></a> for this. Since this struct represents a full query which can be executed, we will implement <a href="https://docs.diesel.rs/2.2.x/diesel/query_dsl/trait.RunQueryDsl.html"><code>RunQueryDsl</code></a> which adds methods like <a href="https://docs.diesel.rs/2.2.x/diesel/query_dsl/trait.RunQueryDsl.html#method.execute"><code>execute</code></a> and <a href="https://docs.diesel.rs/2.2.x/diesel/query_dsl/trait.RunQueryDsl.html#method.load"><code>load</code></a>. Since this query has a return type, we’ll implement <a href="https://docs.diesel.rs/2.2.x/diesel/query_builder/trait.Query.html"><code>Query</code></a> which states the return type as well.</p>
+<p>For details on what each method does, see the documentation for <a
+href="https://docs.diesel.rs/2.2.x/diesel/query_builder/struct.AstPass.html"><code>AstPass</code></a>.
+One important question to ask whenever you implement
+<code>QueryFragment</code> is whether you are generating a query that is
+safe to cache. The way to answer this question is by asking “does this
+struct generate an unlimited number of potential SQL queries”? Typically
+that is only the case if the body of <code>walk_ast</code> contains a
+for loop. If your query is not safe to cache, you <em>must</em> call <a
+href="https://docs.diesel.rs/2.2.x/diesel/query_builder/struct.AstPass.html#method.unsafe_to_cache_prepared"><code>out.unsafe_to_cache_prepared</code></a>.</p>
+<p>Whenever you implement <code>QueryFragment</code>, you also need to
+implement <a
+href="https://docs.diesel.rs/2.2.x/diesel/query_builder/trait.QueryId.html"><code>QueryId</code></a>.
+- We can use <a
+href="https://docs.diesel.rs/2.2.x/diesel/query_builder/derive.QueryId.html"><code>#[derive(QueryId)]</code></a>
+for this. Since this struct represents a full query which can be
+executed, we will implement <a
+href="https://docs.diesel.rs/2.2.x/diesel/query_dsl/trait.RunQueryDsl.html"><code>RunQueryDsl</code></a>
+which adds methods like <a
+href="https://docs.diesel.rs/2.2.x/diesel/query_dsl/trait.RunQueryDsl.html#method.execute"><code>execute</code></a>
+and <a
+href="https://docs.diesel.rs/2.2.x/diesel/query_dsl/trait.RunQueryDsl.html#method.load"><code>load</code></a>.
+Since this query has a return type, we’ll implement <a
+href="https://docs.diesel.rs/2.2.x/diesel/query_builder/trait.Query.html"><code>Query</code></a>
+which states the return type as well.</p>
 <div class="demo__example">
 <div class="demo__example-browser">
 <div class="browser-bar">
 src/pagination.rs
 </div>
 <a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.2.x/examples/postgres/advanced-blog-cli/src/pagination.rs#L54-L58">View on GitHub</a>
-<div class="sourceCode" id="cb5"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="kw">impl</span><span class="op">&lt;</span>T<span class="op">:</span> Query<span class="op">&gt;</span> Query <span class="kw">for</span> Paginated<span class="op">&lt;</span>T<span class="op">&gt;</span> <span class="op">{</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a>    <span class="kw">type</span> SqlType <span class="op">=</span> (<span class="pp">T::</span>SqlType<span class="op">,</span> BigInt)<span class="op">;</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a><span class="op">}</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true"></a></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true"></a><span class="kw">impl</span><span class="op">&lt;</span>T<span class="op">&gt;</span> RunQueryDsl<span class="op">&lt;</span>PgConnection<span class="op">&gt;</span> <span class="kw">for</span> Paginated<span class="op">&lt;</span>T<span class="op">&gt;</span> <span class="op">{}</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode rust"><code class="sourceCode rust"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">impl</span><span class="op">&lt;</span>T<span class="op">:</span> Query<span class="op">&gt;</span> Query <span class="cf">for</span> Paginated<span class="op">&lt;</span>T<span class="op">&gt;</span> <span class="op">{</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">type</span> SqlType <span class="op">=</span> (<span class="pp">T::</span>SqlType<span class="op">,</span> BigInt)<span class="op">;</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="kw">impl</span><span class="op">&lt;</span>T<span class="op">&gt;</span> RunQueryDsl<span class="op">&lt;</span>PgConnection<span class="op">&gt;</span> <span class="cf">for</span> Paginated<span class="op">&lt;</span>T<span class="op">&gt;</span> <span class="op">{}</span></span></code></pre></div>
 </div>
 </div>
-<p>Now that we’ve implemented all of these things, let’s look at how we would go about constructing this. We’ll want to add a <code>paginate</code> method to all Diesel queries, which specifies which page we’re on, as well as a <code>per_page</code> method which specifies the number of elements per page.</p>
-<p>In order to add new methods to existing types, we can use a trait.</p>
+<p>Now that we’ve implemented all of these things, let’s look at how we
+would go about constructing this. We’ll want to add a
+<code>paginate</code> method to all Diesel queries, which specifies
+which page we’re on, as well as a <code>per_page</code> method which
+specifies the number of elements per page.</p>
+<p>In order to add new methods to existing types, we can use a
+trait.</p>
 <div class="demo__example">
 <div class="demo__example-browser">
 <div class="browser-bar">
 src/pagination.rs
 </div>
 <a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.2.x/examples/postgres/advanced-blog-cli/src/pagination.rs#L7-L39">View on GitHub</a>
-<div class="sourceCode" id="cb6"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a><span class="kw">pub</span> <span class="kw">trait</span> Paginate<span class="op">:</span> <span class="bu">Sized</span> <span class="op">{</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a>    <span class="kw">fn</span> paginate(<span class="kw">self</span><span class="op">,</span> page<span class="op">:</span> <span class="dt">i64</span>) <span class="op">-&gt;</span> Paginated<span class="op">&lt;</span><span class="dt">Self</span><span class="op">&gt;;</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a><span class="op">}</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true"></a></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true"></a><span class="kw">impl</span><span class="op">&lt;</span>T<span class="op">&gt;</span> Paginate <span class="kw">for</span> T <span class="op">{</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true"></a>    <span class="kw">fn</span> paginate(<span class="kw">self</span><span class="op">,</span> page<span class="op">:</span> <span class="dt">i64</span>) <span class="op">-&gt;</span> Paginated<span class="op">&lt;</span><span class="dt">Self</span><span class="op">&gt;</span> <span class="op">{</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true"></a>        Paginated <span class="op">{</span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true"></a>            query<span class="op">:</span> <span class="kw">self</span><span class="op">,</span></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true"></a>            per_page<span class="op">:</span> DEFAULT_PER_PAGE<span class="op">,</span></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true"></a>            page<span class="op">,</span></span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true"></a>            offset<span class="op">:</span> (page <span class="op">-</span> <span class="dv">1</span>) <span class="op">*</span> DEFAULT_PER_PAGE<span class="op">,</span></span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true"></a>        <span class="op">}</span></span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true"></a>    <span class="op">}</span></span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true"></a><span class="op">}</span></span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true"></a></span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true"></a><span class="kw">const</span> DEFAULT_PER_PAGE<span class="op">:</span> <span class="dt">i64</span> <span class="op">=</span> <span class="dv">10</span><span class="op">;</span></span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true"></a></span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true"></a><span class="at">#[</span>derive<span class="at">(</span><span class="bu">Debug</span><span class="op">,</span> <span class="bu">Clone</span><span class="op">,</span> <span class="bu">Copy</span><span class="op">,</span> QueryId<span class="at">)]</span></span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true"></a><span class="kw">pub</span> <span class="kw">struct</span> Paginated<span class="op">&lt;</span>T<span class="op">&gt;</span> <span class="op">{</span></span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true"></a>    query<span class="op">:</span> T<span class="op">,</span></span>
-<span id="cb6-21"><a href="#cb6-21" aria-hidden="true"></a>    page<span class="op">:</span> <span class="dt">i64</span><span class="op">,</span></span>
-<span id="cb6-22"><a href="#cb6-22" aria-hidden="true"></a>    per_page<span class="op">:</span> <span class="dt">i64</span><span class="op">,</span></span>
-<span id="cb6-23"><a href="#cb6-23" aria-hidden="true"></a>    offset<span class="op">:</span> <span class="dt">i64</span><span class="op">,</span></span>
-<span id="cb6-24"><a href="#cb6-24" aria-hidden="true"></a><span class="op">}</span></span>
-<span id="cb6-25"><a href="#cb6-25" aria-hidden="true"></a></span>
-<span id="cb6-26"><a href="#cb6-26" aria-hidden="true"></a><span class="kw">impl</span><span class="op">&lt;</span>T<span class="op">&gt;</span> Paginated<span class="op">&lt;</span>T<span class="op">&gt;</span> <span class="op">{</span></span>
-<span id="cb6-27"><a href="#cb6-27" aria-hidden="true"></a>    <span class="kw">pub</span> <span class="kw">fn</span> per_page(<span class="kw">self</span><span class="op">,</span> per_page<span class="op">:</span> <span class="dt">i64</span>) <span class="op">-&gt;</span> <span class="dt">Self</span> <span class="op">{</span></span>
-<span id="cb6-28"><a href="#cb6-28" aria-hidden="true"></a>        Paginated <span class="op">{</span></span>
-<span id="cb6-29"><a href="#cb6-29" aria-hidden="true"></a>            per_page<span class="op">,</span></span>
-<span id="cb6-30"><a href="#cb6-30" aria-hidden="true"></a>            offset<span class="op">:</span> (<span class="kw">self</span><span class="op">.</span>page <span class="op">-</span> <span class="dv">1</span>) <span class="op">*</span> per_page<span class="op">,</span></span>
-<span id="cb6-31"><a href="#cb6-31" aria-hidden="true"></a>            <span class="op">..</span><span class="kw">self</span></span>
-<span id="cb6-32"><a href="#cb6-32" aria-hidden="true"></a>        <span class="op">}</span></span>
-<span id="cb6-33"><a href="#cb6-33" aria-hidden="true"></a>    <span class="op">}</span></span>
-<span id="cb6-34"><a href="#cb6-34" aria-hidden="true"></a><span class="op">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode rust"><code class="sourceCode rust"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">pub</span> <span class="kw">trait</span> Paginate<span class="op">:</span> <span class="bu">Sized</span> <span class="op">{</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fn</span> paginate(<span class="kw">self</span><span class="op">,</span> page<span class="op">:</span> <span class="dt">i64</span>) <span class="op">-&gt;</span> Paginated<span class="op">&lt;</span><span class="dt">Self</span><span class="op">&gt;;</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="kw">impl</span><span class="op">&lt;</span>T<span class="op">&gt;</span> Paginate <span class="cf">for</span> T <span class="op">{</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fn</span> paginate(<span class="kw">self</span><span class="op">,</span> page<span class="op">:</span> <span class="dt">i64</span>) <span class="op">-&gt;</span> Paginated<span class="op">&lt;</span><span class="dt">Self</span><span class="op">&gt;</span> <span class="op">{</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>        Paginated <span class="op">{</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>            query<span class="op">:</span> <span class="kw">self</span><span class="op">,</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>            per_page<span class="op">:</span> DEFAULT_PER_PAGE<span class="op">,</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>            page<span class="op">,</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>            offset<span class="op">:</span> (page <span class="op">-</span> <span class="dv">1</span>) <span class="op">*</span> DEFAULT_PER_PAGE<span class="op">,</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> DEFAULT_PER_PAGE<span class="op">:</span> <span class="dt">i64</span> <span class="op">=</span> <span class="dv">10</span><span class="op">;</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="at">#[</span>derive<span class="at">(</span><span class="bu">Debug</span><span class="op">,</span> <span class="bu">Clone</span><span class="op">,</span> <span class="bu">Copy</span><span class="op">,</span> QueryId<span class="at">)]</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a><span class="kw">pub</span> <span class="kw">struct</span> Paginated<span class="op">&lt;</span>T<span class="op">&gt;</span> <span class="op">{</span></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>    query<span class="op">:</span> T<span class="op">,</span></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>    page<span class="op">:</span> <span class="dt">i64</span><span class="op">,</span></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>    per_page<span class="op">:</span> <span class="dt">i64</span><span class="op">,</span></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>    offset<span class="op">:</span> <span class="dt">i64</span><span class="op">,</span></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a><span class="kw">impl</span><span class="op">&lt;</span>T<span class="op">&gt;</span> Paginated<span class="op">&lt;</span>T<span class="op">&gt;</span> <span class="op">{</span></span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>    <span class="kw">pub</span> <span class="kw">fn</span> per_page(<span class="kw">self</span><span class="op">,</span> per_page<span class="op">:</span> <span class="dt">i64</span>) <span class="op">-&gt;</span> <span class="dt">Self</span> <span class="op">{</span></span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>        Paginated <span class="op">{</span></span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>            per_page<span class="op">,</span></span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>            offset<span class="op">:</span> (<span class="kw">self</span><span class="op">.</span>page <span class="op">-</span> <span class="dv">1</span>) <span class="op">*</span> per_page<span class="op">,</span></span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>            <span class="op">..</span><span class="kw">self</span></span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 </div>
 </div>
-<p>Now we can get the third page of a query with 25 elements per page like this:</p>
+<p>Now we can get the third page of a query with 25 elements per page
+like this:</p>
 <div class="demo__example">
 <div class="demo__example-browser">
 <div class="browser-bar">
 Example
 </div>
-<div class="sourceCode" id="cb7"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a>    <span class="kw">let</span> results<span class="op">:</span> <span class="dt">Vec</span><span class="op">&lt;</span>(User<span class="op">,</span> <span class="dt">i64</span>)<span class="op">&gt;</span> <span class="op">=</span> <span class="pp">users::</span>table</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true"></a>        <span class="op">.</span>paginate(<span class="dv">3</span>)</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true"></a>        <span class="op">.</span>per_page(<span class="dv">25</span>)</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true"></a>        <span class="op">.</span>get_results(<span class="op">&amp;</span>conn)</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true"></a>        <span class="op">.</span>expect(<span class="st">&quot;error&quot;</span>)<span class="op">;</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode rust"><code class="sourceCode rust"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> results<span class="op">:</span> <span class="dt">Vec</span><span class="op">&lt;</span>(User<span class="op">,</span> <span class="dt">i64</span>)<span class="op">&gt;</span> <span class="op">=</span> <span class="pp">users::</span>table</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span>paginate(<span class="dv">3</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span>per_page(<span class="dv">25</span>)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span>get_results(<span class="op">&amp;</span>conn)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span>expect(<span class="st">&quot;error&quot;</span>)<span class="op">;</span></span></code></pre></div>
 </div>
 </div>
-<p>With this code, we could load any query into a <code>Vec&lt;(T, i64)&gt;</code>, but we can do better. When doing pagination, you usually want the records and the total number of pages. We can write that method.</p>
+<p>With this code, we could load any query into a
+<code>Vec&lt;(T, i64)&gt;</code>, but we can do better. When doing
+pagination, you usually want the records and the total number of pages.
+We can write that method.</p>
 <div class="demo__example">
 <div class="demo__example-browser">
 <div class="browser-bar">
 src/pagination.rs
 </div>
 <a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.2.x/examples/postgres/advanced-blog-cli/src/pagination.rs#L41-L51">View on GitHub</a>
-<div class="sourceCode" id="cb8"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a><span class="kw">impl</span><span class="op">&lt;</span>T<span class="op">&gt;</span> Paginated<span class="op">&lt;</span>T<span class="op">&gt;</span> <span class="op">{</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true"></a>    <span class="kw">pub</span> <span class="kw">fn</span> load_and_count_pages<span class="op">&lt;</span><span class="ot">&#39;a</span><span class="op">,</span> U<span class="op">&gt;</span>(<span class="kw">self</span><span class="op">,</span> conn<span class="op">:</span> <span class="op">&amp;</span><span class="kw">mut</span> PgConnection) <span class="op">-&gt;</span> QueryResult<span class="op">&lt;</span>(<span class="dt">Vec</span><span class="op">&lt;</span>U<span class="op">&gt;,</span> <span class="dt">i64</span>)<span class="op">&gt;</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true"></a>    <span class="kw">where</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true"></a>        <span class="dt">Self</span><span class="op">:</span> LoadQuery<span class="op">&lt;</span><span class="ot">&#39;a</span><span class="op">,</span> PgConnection<span class="op">,</span> (U<span class="op">,</span> <span class="dt">i64</span>)<span class="op">&gt;,</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true"></a>    <span class="op">{</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true"></a>        <span class="kw">let</span> per_page <span class="op">=</span> <span class="kw">self</span><span class="op">.</span>per_page<span class="op">;</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true"></a>        <span class="kw">let</span> results <span class="op">=</span> <span class="kw">self</span><span class="op">.</span><span class="pp">load::</span><span class="op">&lt;</span>(U<span class="op">,</span> <span class="dt">i64</span>)<span class="op">&gt;</span>(conn)<span class="op">?;</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true"></a>        <span class="kw">let</span> total <span class="op">=</span> results<span class="op">.</span>get(<span class="dv">0</span>)<span class="op">.</span>map(<span class="op">|</span>x<span class="op">|</span> x<span class="op">.</span><span class="dv">1</span>)<span class="op">.</span>unwrap_or(<span class="dv">0</span>)<span class="op">;</span></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true"></a>        <span class="kw">let</span> records <span class="op">=</span> results<span class="op">.</span>into_iter()<span class="op">.</span>map(<span class="op">|</span>x<span class="op">|</span> x<span class="op">.</span><span class="dv">0</span>)<span class="op">.</span>collect()<span class="op">;</span></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true"></a>        <span class="kw">let</span> total_pages <span class="op">=</span> (total <span class="kw">as</span> <span class="dt">f64</span> <span class="op">/</span> per_page <span class="kw">as</span> <span class="dt">f64</span>)<span class="op">.</span>ceil() <span class="kw">as</span> <span class="dt">i64</span><span class="op">;</span></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true"></a>        <span class="cn">Ok</span>((records<span class="op">,</span> total_pages))</span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true"></a>    <span class="op">}</span></span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true"></a><span class="op">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode rust"><code class="sourceCode rust"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">impl</span><span class="op">&lt;</span>T<span class="op">&gt;</span> Paginated<span class="op">&lt;</span>T<span class="op">&gt;</span> <span class="op">{</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">pub</span> <span class="kw">fn</span> load_and_count_pages<span class="op">&lt;</span><span class="ot">&#39;a</span><span class="op">,</span> U<span class="op">&gt;</span>(<span class="kw">self</span><span class="op">,</span> conn<span class="op">:</span> <span class="op">&amp;</span><span class="kw">mut</span> PgConnection) <span class="op">-&gt;</span> QueryResult<span class="op">&lt;</span>(<span class="dt">Vec</span><span class="op">&lt;</span>U<span class="op">&gt;,</span> <span class="dt">i64</span>)<span class="op">&gt;</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">where</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>        <span class="dt">Self</span><span class="op">:</span> LoadQuery<span class="op">&lt;</span><span class="ot">&#39;a</span><span class="op">,</span> PgConnection<span class="op">,</span> (U<span class="op">,</span> <span class="dt">i64</span>)<span class="op">&gt;,</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>        <span class="kw">let</span> per_page <span class="op">=</span> <span class="kw">self</span><span class="op">.</span>per_page<span class="op">;</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>        <span class="kw">let</span> results <span class="op">=</span> <span class="kw">self</span><span class="op">.</span><span class="pp">load::</span><span class="op">&lt;</span>(U<span class="op">,</span> <span class="dt">i64</span>)<span class="op">&gt;</span>(conn)<span class="op">?;</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>        <span class="kw">let</span> total <span class="op">=</span> results<span class="op">.</span>get(<span class="dv">0</span>)<span class="op">.</span>map(<span class="op">|</span>x<span class="op">|</span> x<span class="op">.</span><span class="dv">1</span>)<span class="op">.</span>unwrap_or(<span class="dv">0</span>)<span class="op">;</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>        <span class="kw">let</span> records <span class="op">=</span> results<span class="op">.</span>into_iter()<span class="op">.</span>map(<span class="op">|</span>x<span class="op">|</span> x<span class="op">.</span><span class="dv">0</span>)<span class="op">.</span>collect()<span class="op">;</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>        <span class="kw">let</span> total_pages <span class="op">=</span> (total <span class="kw">as</span> <span class="dt">f64</span> <span class="op">/</span> per_page <span class="kw">as</span> <span class="dt">f64</span>)<span class="op">.</span>ceil() <span class="kw">as</span> <span class="dt">i64</span><span class="op">;</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>        <span class="cn">Ok</span>((records<span class="op">,</span> total_pages))</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 </div>
 </div>
-<p>This is one of the rare cases where we want to define a function that takes a connection. One benefit of defining the function this way is that if we wanted to support backends other than PostgreSQL, we could have this function execute two queries.</p>
-<p>You can find the full code for this example in <a href="https://github.com/diesel-rs/diesel/tree/2.2.x/examples/postgres/advanced-blog-cli">the “advanced blog” example</a>.</p>
-<h2 id="custom-operators"><a href="#custom-operators" class="anchor" aria-hidden="true"></a>Custom Operators</h2>
-<p>If you’re adding support for a new type to Diesel, or working with a type that has incomplete support, you may wish to add support for the operators associated with that type. The term operator refers to anything that uses one of these syntaxes:</p>
+<p>This is one of the rare cases where we want to define a function that
+takes a connection. One benefit of defining the function this way is
+that if we wanted to support backends other than PostgreSQL, we could
+have this function execute two queries.</p>
+<p>You can find the full code for this example in <a
+href="https://github.com/diesel-rs/diesel/tree/2.2.x/examples/postgres/advanced-blog-cli">the
+“advanced blog” example</a>.</p>
+<h2 id="custom-operators"><a href="#custom-operators" class="anchor"
+aria-hidden="true"></a>Custom Operators</h2>
+<p>If you’re adding support for a new type to Diesel, or working with a
+type that has incomplete support, you may wish to add support for the
+operators associated with that type. The term operator refers to
+anything that uses one of these syntaxes:</p>
 <ul>
 <li>Infix (e.g. <code>left OP right</code>)</li>
 <li>Prefix (e.g. <code>OP expr</code>)</li>
 <li>Postfix (e.g. <code>expr OP</code>)</li>
 </ul>
-<p>Diesel provides helper macros for defining each of these kinds of operators. In fact, Diesel uses these macros to declare nearly all of the operators supported by the main crate. The macros are <a href="https://docs.diesel.rs/2.2.x/diesel/macro.infix_operator.html"><code>diesel::infix_operator!</code></a>, <a href="https://docs.diesel.rs/2.2.x/diesel/macro.postfix_operator.html"><code>diesel::postfix_operator!</code></a> and <a href="https://docs.diesel.rs/2.2.x/diesel/macro.prefix_operator.html"><code>diesel::prefix_operator!</code></a>.</p>
-<p>All of these macros have the same signature. They take between two and four arguments.</p>
-<p>The first is the name of the struct you want to represent this operator.</p>
+<p>Diesel provides helper macros for defining each of these kinds of
+operators. In fact, Diesel uses these macros to declare nearly all of
+the operators supported by the main crate. The macros are <a
+href="https://docs.diesel.rs/2.2.x/diesel/macro.infix_operator.html"><code>diesel::infix_operator!</code></a>,
+<a
+href="https://docs.diesel.rs/2.2.x/diesel/macro.postfix_operator.html"><code>diesel::postfix_operator!</code></a>
+and <a
+href="https://docs.diesel.rs/2.2.x/diesel/macro.prefix_operator.html"><code>diesel::prefix_operator!</code></a>.</p>
+<p>All of these macros have the same signature. They take between two
+and four arguments.</p>
+<p>The first is the name of the struct you want to represent this
+operator.</p>
 <p>The second is the actual SQL for this operator.</p>
-<p>The third argument is optional, and is the SQL type of the operator. If the SQL type is not specified, it will default to <code>Bool</code>. You can also pass the “magic” type <code>ReturnBasedOnArgs</code>, which will cause the SQL type to be the same as the type of its arguments. Diesel uses this to make the string concatenation operator <code>||</code> return <code>Nullable&lt;Text&gt;</code> if the arguments are nullable, or <code>Text</code> if they are not null.</p>
-<p>The fourth argument (or third if you didn’t specify the SQL type) is the backend this operator is used for. If you don’t specify a backend, the operator can be used on all backends.</p>
+<p>The third argument is optional, and is the SQL type of the operator.
+If the SQL type is not specified, it will default to <code>Bool</code>.
+You can also pass the “magic” type <code>ReturnBasedOnArgs</code>, which
+will cause the SQL type to be the same as the type of its arguments.
+Diesel uses this to make the string concatenation operator
+<code>||</code> return <code>Nullable&lt;Text&gt;</code> if the
+arguments are nullable, or <code>Text</code> if they are not null.</p>
+<p>The fourth argument (or third if you didn’t specify the SQL type) is
+the backend this operator is used for. If you don’t specify a backend,
+the operator can be used on all backends.</p>
 <p>Let’s look at some example usage from Diesel:</p>
 <div class="demo__example">
 <div class="demo__example-browser">
 <div class="browser-bar">
 Example
 </div>
-<div class="sourceCode" id="cb9"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a><span class="co">// A simple operator. It returns `Bool` and works on all backends.</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true"></a><span class="pp">diesel::infix_operator!</span>(<span class="bu">Eq</span><span class="op">,</span> <span class="st">&quot; = &quot;</span>)<span class="op">;</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true"></a></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true"></a><span class="co">// Here we&#39;ve specified the SQL type.</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true"></a><span class="co">// Since this operator is only used for ordering, and we don&#39;t want it used</span></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true"></a><span class="co">// elsewhere, we&#39;ve made it `()` which is normally useless.</span></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true"></a><span class="pp">diesel::postfix_operator!</span>(Asc<span class="op">,</span> <span class="st">&quot; ASC&quot;</span><span class="op">,</span> ())<span class="op">;</span></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true"></a></span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true"></a><span class="co">// Concat uses the magic `ReturnBasedOnArgs` return type</span></span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true"></a><span class="co">// so it can work with both `Text` and `Nullable&lt;Text&gt;`.</span></span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true"></a><span class="pp">diesel::infix_operator!</span>(Concat<span class="op">,</span> <span class="st">&quot; || &quot;</span><span class="op">,</span> ReturnBasedOnArgs)<span class="op">;</span></span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true"></a></span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true"></a><span class="co">// This operator is PG specific, so we specify the backend</span></span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true"></a><span class="pp">diesel::infix_operator!</span>(IsDistinctFrom<span class="op">,</span> <span class="st">&quot; IS DISTINCT FROM &quot;</span><span class="op">,</span> backend<span class="op">:</span> Pg)<span class="op">;</span></span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true"></a></span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true"></a><span class="co">// This operator is PG specific, and we are also specifying the SQL type.</span></span>
-<span id="cb9-17"><a href="#cb9-17" aria-hidden="true"></a><span class="pp">diesel::postfix_operator!</span>(NullsFirst<span class="op">,</span> <span class="st">&quot; NULLS FIRST&quot;</span><span class="op">,</span> ()<span class="op">,</span> backend<span class="op">:</span> Pg)<span class="op">;</span></span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre
+class="sourceCode rust"><code class="sourceCode rust"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">// A simple operator. It returns `Bool` and works on all backends.</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="pp">diesel::infix_operator!</span>(<span class="bu">Eq</span><span class="op">,</span> <span class="st">&quot; = &quot;</span>)<span class="op">;</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co">// Here we&#39;ve specified the SQL type.</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co">// Since this operator is only used for ordering, and we don&#39;t want it used</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="co">// elsewhere, we&#39;ve made it `()` which is normally useless.</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="pp">diesel::postfix_operator!</span>(Asc<span class="op">,</span> <span class="st">&quot; ASC&quot;</span><span class="op">,</span> ())<span class="op">;</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="co">// Concat uses the magic `ReturnBasedOnArgs` return type</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="co">// so it can work with both `Text` and `Nullable&lt;Text&gt;`.</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="pp">diesel::infix_operator!</span>(Concat<span class="op">,</span> <span class="st">&quot; || &quot;</span><span class="op">,</span> ReturnBasedOnArgs)<span class="op">;</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="co">// This operator is PG specific, so we specify the backend</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="pp">diesel::infix_operator!</span>(IsDistinctFrom<span class="op">,</span> <span class="st">&quot; IS DISTINCT FROM &quot;</span><span class="op">,</span> backend<span class="op">:</span> Pg)<span class="op">;</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="co">// This operator is PG specific, and we are also specifying the SQL type.</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a><span class="pp">diesel::postfix_operator!</span>(NullsFirst<span class="op">,</span> <span class="st">&quot; NULLS FIRST&quot;</span><span class="op">,</span> ()<span class="op">,</span> backend<span class="op">:</span> Pg)<span class="op">;</span></span></code></pre></div>
 </div>
 </div>
-<p>Diesel provides a proof-of-concept crate showing how to add new SQL types called <code>diesel_full_text_search</code>. These are the operators as they are defined in that crate. You’ll notice all of the operators specify the backend, and many of them specify the return type.</p>
+<p>Diesel provides a proof-of-concept crate showing how to add new SQL
+types called <code>diesel_full_text_search</code>. These are the
+operators as they are defined in that crate. You’ll notice all of the
+operators specify the backend, and many of them specify the return
+type.</p>
 <div class="demo__example">
 <div class="demo__example-browser">
 <div class="browser-bar">
 src/lib.rs
 </div>
 <a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel_full_text_search/blob/27b9946831caa8b08177c1818a50cb7f0563c9c0/src/lib.rs#L57-L62">View on GitHub</a>
-<div class="sourceCode" id="cb10"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true"></a><span class="pp">diesel::infix_operator!</span>(Matches<span class="op">,</span> <span class="st">&quot; @@ &quot;</span><span class="op">,</span> backend<span class="op">:</span> Pg)<span class="op">;</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true"></a><span class="pp">diesel::infix_operator!</span>(Concat<span class="op">,</span> <span class="st">&quot; || &quot;</span><span class="op">,</span> TsVector<span class="op">,</span> backend<span class="op">:</span> Pg)<span class="op">;</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true"></a><span class="pp">diesel::infix_operator!</span>(And<span class="op">,</span> <span class="st">&quot; &amp;&amp; &quot;</span><span class="op">,</span> TsQuery<span class="op">,</span> backend<span class="op">:</span> Pg)<span class="op">;</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true"></a><span class="pp">diesel::infix_operator!</span>(Or<span class="op">,</span> <span class="st">&quot; || &quot;</span><span class="op">,</span> TsQuery<span class="op">,</span> backend<span class="op">:</span> Pg)<span class="op">;</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true"></a><span class="pp">diesel::infix_operator!</span>(Contains<span class="op">,</span> <span class="st">&quot; @&gt; &quot;</span><span class="op">,</span> backend<span class="op">:</span> Pg)<span class="op">;</span></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true"></a><span class="pp">diesel::infix_operator!</span>(ContainedBy<span class="op">,</span> <span class="st">&quot; &lt;@ &quot;</span><span class="op">,</span> backend<span class="op">:</span> Pg)<span class="op">;</span></span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode rust"><code class="sourceCode rust"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="pp">diesel::infix_operator!</span>(Matches<span class="op">,</span> <span class="st">&quot; @@ &quot;</span><span class="op">,</span> backend<span class="op">:</span> Pg)<span class="op">;</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="pp">diesel::infix_operator!</span>(Concat<span class="op">,</span> <span class="st">&quot; || &quot;</span><span class="op">,</span> TsVector<span class="op">,</span> backend<span class="op">:</span> Pg)<span class="op">;</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="pp">diesel::infix_operator!</span>(And<span class="op">,</span> <span class="st">&quot; &amp;&amp; &quot;</span><span class="op">,</span> TsQuery<span class="op">,</span> backend<span class="op">:</span> Pg)<span class="op">;</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="pp">diesel::infix_operator!</span>(Or<span class="op">,</span> <span class="st">&quot; || &quot;</span><span class="op">,</span> TsQuery<span class="op">,</span> backend<span class="op">:</span> Pg)<span class="op">;</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="pp">diesel::infix_operator!</span>(Contains<span class="op">,</span> <span class="st">&quot; @&gt; &quot;</span><span class="op">,</span> backend<span class="op">:</span> Pg)<span class="op">;</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="pp">diesel::infix_operator!</span>(ContainedBy<span class="op">,</span> <span class="st">&quot; &lt;@ &quot;</span><span class="op">,</span> backend<span class="op">:</span> Pg)<span class="op">;</span></span></code></pre></div>
 </div>
 </div>
-<p>However, just declaring the operator by itself isn’t very useful. This creates the types required by Diesel’s query builder, but doesn’t provide anything to help use the operator in real code. The structs created by these macros will have a <code>new</code> method, but that’s not typically how you work with Diesel’s query builder.</p>
+<p>However, just declaring the operator by itself isn’t very useful.
+This creates the types required by Diesel’s query builder, but doesn’t
+provide anything to help use the operator in real code. The structs
+created by these macros will have a <code>new</code> method, but that’s
+not typically how you work with Diesel’s query builder.</p>
 <ul>
 <li>Infix operators are usually methods on the left hand side.</li>
 <li>Postfix operators are usually methods on the expression.</li>
 <li>Prefix operators are usually bare functions.</li>
 </ul>
-<p>For operators that you create with methods, you would typically create a trait for this. For example, here’s how the <a href="https://docs.diesel.rs/2.2.x/diesel/expression_methods/trait.ExpressionMethods.html#method.eq"><code>.eq</code></a> method gets defined by Diesel.</p>
+<p>For operators that you create with methods, you would typically
+create a trait for this. For example, here’s how the <a
+href="https://docs.diesel.rs/2.2.x/diesel/expression_methods/trait.ExpressionMethods.html#method.eq"><code>.eq</code></a>
+method gets defined by Diesel.</p>
 <div class="demo__example">
 <div class="demo__example-browser">
 <div class="browser-bar">
 src/expression_methods/global_expression_methods.rs
 </div>
 <a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.2.x/diesel/src/expression_methods/global_expression_methods.rs#L71-L77">View on GitHub</a>
-<div class="sourceCode" id="cb11"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true"></a><span class="kw">pub</span> <span class="kw">trait</span> ExpressionMethods<span class="op">:</span> Expression <span class="op">+</span> <span class="bu">Sized</span> <span class="op">{</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true"></a>    <span class="kw">fn</span> eq<span class="op">&lt;</span>T<span class="op">&gt;</span>(<span class="kw">self</span><span class="op">,</span> other<span class="op">:</span> T) <span class="op">-&gt;</span> <span class="pp">dsl::</span><span class="bu">Eq</span><span class="op">&lt;</span><span class="dt">Self</span><span class="op">,</span> T<span class="op">&gt;</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true"></a>    <span class="kw">where</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true"></a>        <span class="dt">Self</span><span class="pp">::</span>SqlType<span class="op">:</span> SqlType<span class="op">,</span></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true"></a>        T<span class="op">:</span> AsExpression<span class="op">&lt;</span><span class="dt">Self</span><span class="pp">::</span>SqlType<span class="op">&gt;,</span></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true"></a>    <span class="op">{</span></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true"></a>        Grouped(<span class="bu">Eq</span><span class="pp">::</span>new(<span class="kw">self</span><span class="op">,</span> other<span class="op">.</span>as_expression()))</span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true"></a>    <span class="op">}</span></span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true"></a><span class="op">}</span></span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true"></a></span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true"></a><span class="kw">impl</span><span class="op">&lt;</span>T<span class="op">:</span> Expression<span class="op">&gt;</span> ExpressionMethods <span class="kw">for</span> T <span class="op">{}</span></span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre
+class="sourceCode rust"><code class="sourceCode rust"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">pub</span> <span class="kw">trait</span> ExpressionMethods<span class="op">:</span> Expression <span class="op">+</span> <span class="bu">Sized</span> <span class="op">{</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fn</span> eq<span class="op">&lt;</span>T<span class="op">&gt;</span>(<span class="kw">self</span><span class="op">,</span> other<span class="op">:</span> T) <span class="op">-&gt;</span> <span class="pp">dsl::</span><span class="bu">Eq</span><span class="op">&lt;</span><span class="dt">Self</span><span class="op">,</span> T<span class="op">&gt;</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">where</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>        <span class="dt">Self</span><span class="pp">::</span>SqlType<span class="op">:</span> SqlType<span class="op">,</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>        T<span class="op">:</span> AsExpression<span class="op">&lt;</span><span class="dt">Self</span><span class="pp">::</span>SqlType<span class="op">&gt;,</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>        Grouped(<span class="bu">Eq</span><span class="pp">::</span>new(<span class="kw">self</span><span class="op">,</span> other<span class="op">.</span>as_expression()))</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="kw">impl</span><span class="op">&lt;</span>T<span class="op">:</span> Expression<span class="op">&gt;</span> ExpressionMethods <span class="cf">for</span> T <span class="op">{}</span></span></code></pre></div>
 </div>
 </div>
-<p>It’s important to note that these methods are where you should put any type constraints. The structs defined by <code>diesel::*_operator!</code> don’t know or care about what the types of the arguments should be. The <code>=</code> operator requires that both sides be of the same type, so we represent that in the type of <code>ExpressionMethods::eq</code>.</p>
-<p>You’ll also notice that our argument is <a href="https://docs.diesel.rs/2.2.x/diesel/expression/trait.AsExpression.html"><code>AsExpression&lt;Self::SqlType&gt;</code></a>, not <a href="https://docs.diesel.rs/2.2.x/diesel/prelude/trait.Expression.html"><code>Expression&lt;SqlType = Self::SqlType&gt;</code></a>. This allows Rust values to be passed as well as Diesel expressions. For example, we can do <code>text_col.eq(other_text_col)</code>, or <code>text_col.eq("Some Rust string")</code>.</p>
-<p>If the operator is specific to only one SQL type, we can represent that in our trait.</p>
+<p>It’s important to note that these methods are where you should put
+any type constraints. The structs defined by
+<code>diesel::*_operator!</code> don’t know or care about what the types
+of the arguments should be. The <code>=</code> operator requires that
+both sides be of the same type, so we represent that in the type of
+<code>ExpressionMethods::eq</code>.</p>
+<p>You’ll also notice that our argument is <a
+href="https://docs.diesel.rs/2.2.x/diesel/expression/trait.AsExpression.html"><code>AsExpression&lt;Self::SqlType&gt;</code></a>,
+not <a
+href="https://docs.diesel.rs/2.2.x/diesel/prelude/trait.Expression.html"><code>Expression&lt;SqlType = Self::SqlType&gt;</code></a>.
+This allows Rust values to be passed as well as Diesel expressions. For
+example, we can do <code>text_col.eq(other_text_col)</code>, or
+<code>text_col.eq("Some Rust string")</code>.</p>
+<p>If the operator is specific to only one SQL type, we can represent
+that in our trait.</p>
 <div class="demo__example">
 <div class="demo__example-browser">
 <div class="browser-bar">
 src/expression_methods/global_expression_methods.rs
 </div>
 <a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/master/diesel/src/expression_methods/bool_expression_methods.rs">View on GitHub</a>
-<div class="sourceCode" id="cb12"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true"></a><span class="kw">pub</span> <span class="kw">trait</span> BoolExpressionMethods</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true"></a><span class="kw">where</span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true"></a>    <span class="dt">Self</span><span class="op">:</span> Expression<span class="op">&lt;</span>SqlType <span class="op">=</span> Bool<span class="op">&gt;</span> <span class="op">+</span> <span class="bu">Sized</span><span class="op">,</span></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true"></a><span class="op">{</span></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true"></a>    <span class="kw">fn</span> and<span class="op">&lt;</span>T<span class="op">,</span> ST<span class="op">&gt;</span>(<span class="kw">self</span><span class="op">,</span> other<span class="op">:</span> T) <span class="op">-&gt;</span> <span class="pp">dsl::</span>And<span class="op">&lt;</span><span class="dt">Self</span><span class="op">,</span> T<span class="op">,</span> ST<span class="op">&gt;</span></span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true"></a>    <span class="kw">where</span></span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true"></a>        <span class="dt">Self</span><span class="pp">::</span>SqlType<span class="op">:</span> SqlType<span class="op">,</span></span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true"></a>        ST<span class="op">:</span> SqlType <span class="op">+</span> TypedExpressionType<span class="op">,</span></span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true"></a>        T<span class="op">:</span> AsExpression<span class="op">&lt;</span>ST<span class="op">&gt;,</span></span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true"></a>        And<span class="op">&lt;</span><span class="dt">Self</span><span class="op">,</span> <span class="pp">T::</span>Expression<span class="op">&gt;:</span> Expression<span class="op">,</span></span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true"></a>    <span class="op">{</span></span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true"></a>        Grouped(<span class="pp">And::</span>new(<span class="kw">self</span><span class="op">,</span> other<span class="op">.</span>as_expression()))</span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true"></a>    <span class="op">}</span></span>
-<span id="cb12-14"><a href="#cb12-14" aria-hidden="true"></a><span class="op">}</span></span>
-<span id="cb12-15"><a href="#cb12-15" aria-hidden="true"></a></span>
-<span id="cb12-16"><a href="#cb12-16" aria-hidden="true"></a><span class="kw">impl</span><span class="op">&lt;</span>T<span class="op">&gt;</span> BoolExpressionMethods <span class="kw">for</span> T</span>
-<span id="cb12-17"><a href="#cb12-17" aria-hidden="true"></a><span class="kw">where</span></span>
-<span id="cb12-18"><a href="#cb12-18" aria-hidden="true"></a>    T<span class="op">:</span> Expression<span class="op">,</span></span>
-<span id="cb12-19"><a href="#cb12-19" aria-hidden="true"></a>    <span class="pp">T::</span>SqlType<span class="op">:</span> BoolOrNullableBool<span class="op">,</span></span>
-<span id="cb12-20"><a href="#cb12-20" aria-hidden="true"></a><span class="op">{</span></span>
-<span id="cb12-21"><a href="#cb12-21" aria-hidden="true"></a><span class="op">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre
+class="sourceCode rust"><code class="sourceCode rust"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">pub</span> <span class="kw">trait</span> BoolExpressionMethods</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="kw">where</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">Self</span><span class="op">:</span> Expression<span class="op">&lt;</span>SqlType <span class="op">=</span> Bool<span class="op">&gt;</span> <span class="op">+</span> <span class="bu">Sized</span><span class="op">,</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fn</span> and<span class="op">&lt;</span>T<span class="op">,</span> ST<span class="op">&gt;</span>(<span class="kw">self</span><span class="op">,</span> other<span class="op">:</span> T) <span class="op">-&gt;</span> <span class="pp">dsl::</span>And<span class="op">&lt;</span><span class="dt">Self</span><span class="op">,</span> T<span class="op">,</span> ST<span class="op">&gt;</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">where</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>        <span class="dt">Self</span><span class="pp">::</span>SqlType<span class="op">:</span> SqlType<span class="op">,</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>        ST<span class="op">:</span> SqlType <span class="op">+</span> TypedExpressionType<span class="op">,</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>        T<span class="op">:</span> AsExpression<span class="op">&lt;</span>ST<span class="op">&gt;,</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>        And<span class="op">&lt;</span><span class="dt">Self</span><span class="op">,</span> <span class="pp">T::</span>Expression<span class="op">&gt;:</span> Expression<span class="op">,</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>        Grouped(<span class="pp">And::</span>new(<span class="kw">self</span><span class="op">,</span> other<span class="op">.</span>as_expression()))</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a><span class="kw">impl</span><span class="op">&lt;</span>T<span class="op">&gt;</span> BoolExpressionMethods <span class="cf">for</span> T</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a><span class="kw">where</span></span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>    T<span class="op">:</span> Expression<span class="op">,</span></span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>    <span class="pp">T::</span>SqlType<span class="op">:</span> BoolOrNullableBool<span class="op">,</span></span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 </div>
 </div>
-<p>Prefix operators are usually defined as bare functions. The code is very similar, but without the trait. Here’s how <a href="https://docs.diesel.rs/2.2.x/diesel/dsl/fn.not.html"><code>not</code></a> is defined in Diesel.</p>
+<p>Prefix operators are usually defined as bare functions. The code is
+very similar, but without the trait. Here’s how <a
+href="https://docs.diesel.rs/2.2.x/diesel/dsl/fn.not.html"><code>not</code></a>
+is defined in Diesel.</p>
 <div class="demo__example">
 <div class="demo__example-browser">
 <div class="browser-bar">
 src/expression/not.rs
 </div>
 <a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.2.x/diesel/src/expression/not.rs#L26-L32">View on GitHub</a>
-<div class="sourceCode" id="cb13"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true"></a><span class="kw">pub</span> <span class="kw">fn</span> not<span class="op">&lt;</span>T<span class="op">&gt;</span>(expr<span class="op">:</span> T) <span class="op">-&gt;</span> not<span class="op">&lt;</span>T<span class="op">&gt;</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true"></a><span class="kw">where</span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true"></a>    T<span class="op">:</span> Expression<span class="op">,</span></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true"></a>    <span class="op">&lt;</span>T <span class="kw">as</span> Expression<span class="op">&gt;</span><span class="pp">::</span>SqlType<span class="op">:</span> BoolOrNullableBool<span class="op">,</span></span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true"></a><span class="op">{</span></span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true"></a>    <span class="kw">super</span><span class="pp">::operators::</span><span class="bu">Not</span><span class="pp">::</span>new(Grouped(expr))</span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true"></a><span class="op">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre
+class="sourceCode rust"><code class="sourceCode rust"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">pub</span> <span class="kw">fn</span> not<span class="op">&lt;</span>T<span class="op">&gt;</span>(expr<span class="op">:</span> T) <span class="op">-&gt;</span> not<span class="op">&lt;</span>T<span class="op">&gt;</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="kw">where</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    T<span class="op">:</span> Expression<span class="op">,</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">&lt;</span>T <span class="kw">as</span> Expression<span class="op">&gt;</span><span class="pp">::</span>SqlType<span class="op">:</span> BoolOrNullableBool<span class="op">,</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">super</span><span class="pp">::operators::</span><span class="bu">Not</span><span class="pp">::</span>new(Grouped(expr))</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 </div>
 </div>
-<p>In this case we’re using <code>Grouped</code> (which is currently undocumented in Diesel and only used internally) to add parenthesis around our argument. This ensures that the operator precedence in SQL matches what’s expected. For example, we would expect <code>not(true.and(false))</code> to return <code>true</code>. However, <code>SELECT NOT TRUE AND FALSE</code> returns <code>FALSE</code>. Diesel does the same thing for most of the built-in operators.</p>
-<p>It’s also a best practice to expose a “helper type” for your method, which does the same type conversion as the method itself. Nobody wants to write <code>Eq&lt;text_col, &lt;&amp;str as AsExpression&lt;Text&gt;&gt;::Expression&gt;</code>. Instead, we provide a type that lets you write <a href="https://docs.diesel.rs/2.2.x/diesel/helper_types/type.Eq.html"><code>Eq&lt;text_col, &amp;str&gt;</code></a>.</p>
+<p>In this case we’re using <code>Grouped</code> (which is currently
+undocumented in Diesel and only used internally) to add parenthesis
+around our argument. This ensures that the operator precedence in SQL
+matches what’s expected. For example, we would expect
+<code>not(true.and(false))</code> to return <code>true</code>. However,
+<code>SELECT NOT TRUE AND FALSE</code> returns <code>FALSE</code>.
+Diesel does the same thing for most of the built-in operators.</p>
+<p>It’s also a best practice to expose a “helper type” for your method,
+which does the same type conversion as the method itself. Nobody wants
+to write
+<code>Eq&lt;text_col, &lt;&amp;str as AsExpression&lt;Text&gt;&gt;::Expression&gt;</code>.
+Instead, we provide a type that lets you write <a
+href="https://docs.diesel.rs/2.2.x/diesel/helper_types/type.Eq.html"><code>Eq&lt;text_col, &amp;str&gt;</code></a>.</p>
 <div class="demo__example">
 <div class="demo__example-browser">
 <div class="browser-bar">
 src/expression/helper_types.rs
 </div>
 <a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.2.x/diesel/src/expression/helper_types.rs#L21">View on GitHub</a>
-<div class="sourceCode" id="cb14"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true"></a><span class="kw">pub</span> <span class="kw">type</span> Eq<span class="op">&lt;</span>Lhs<span class="op">,</span> Rhs<span class="op">&gt;</span> <span class="op">=</span> Grouped<span class="op">&lt;</span><span class="kw">super</span><span class="pp">::operators::</span><span class="bu">Eq</span><span class="op">&lt;</span>Lhs<span class="op">,</span> AsExpr<span class="op">&lt;</span>Rhs<span class="op">,</span> Lhs<span class="op">&gt;&gt;&gt;;</span></span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre
+class="sourceCode rust"><code class="sourceCode rust"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">pub</span> <span class="kw">type</span> Eq<span class="op">&lt;</span>Lhs<span class="op">,</span> Rhs<span class="op">&gt;</span> <span class="op">=</span> Grouped<span class="op">&lt;</span><span class="kw">super</span><span class="pp">::operators::</span><span class="bu">Eq</span><span class="op">&lt;</span>Lhs<span class="op">,</span> AsExpr<span class="op">&lt;</span>Rhs<span class="op">,</span> Lhs<span class="op">&gt;&gt;&gt;;</span></span></code></pre></div>
 </div>
 </div>
-<p>For defining these types, you’ll usually want to make use of <a href="https://docs.diesel.rs/2.2.x/diesel/helper_types/type.SqlTypeOf.html"><code>SqlTypeOf</code></a>, <a href="https://docs.diesel.rs/2.2.x/diesel/helper_types/type.AsExpr.html"><code>AsExpr</code></a>, and <a href="https://docs.diesel.rs/2.2.x/diesel/helper_types/type.AsExprOf.html"><code>AsExprOf</code></a>.</p>
+<p>For defining these types, you’ll usually want to make use of <a
+href="https://docs.diesel.rs/2.2.x/diesel/helper_types/type.SqlTypeOf.html"><code>SqlTypeOf</code></a>,
+<a
+href="https://docs.diesel.rs/2.2.x/diesel/helper_types/type.AsExpr.html"><code>AsExpr</code></a>,
+and <a
+href="https://docs.diesel.rs/2.2.x/diesel/helper_types/type.AsExprOf.html"><code>AsExprOf</code></a>.</p>
 </div>
 </div>
 </div>

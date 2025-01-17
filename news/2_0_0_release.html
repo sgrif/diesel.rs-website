@@ -10,8 +10,9 @@
   <title>Diesel 2.0.0</title>
   <style type="text/css">
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
@@ -139,8 +140,14 @@ code span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
 <div class="demo">
 <div class="content-wrapper">
 <div class="guide-wrapper">
-<p>Diesel 2.0.0 contains the contributions of more than 130 people. More than 1700 commits were submitted over a span of 3 years.</p>
-<p>As part of this release we introduced numerous new features and rewrote large parts of the internal structure. Check out our <a href="/changelog.html">changelog for a complete list of changes</a>. As this is a new major Diesel release it contains a number of breaking changes. Checkout our <a href="/guides/migration_guide.html">migration guide</a> for details about how to handle those breaking changes.</p>
+<p>Diesel 2.0.0 contains the contributions of more than 130 people. More
+than 1700 commits were submitted over a span of 3 years.</p>
+<p>As part of this release we introduced numerous new features and
+rewrote large parts of the internal structure. Check out our <a
+href="/changelog.html">changelog for a complete list of changes</a>. As
+this is a new major Diesel release it contains a number of breaking
+changes. Checkout our <a href="/guides/migration_guide.html">migration
+guide</a> for details about how to handle those breaking changes.</p>
 <p>This release contains the following parts:</p>
 <ul>
 <li>diesel 2.0.0</li>
@@ -149,143 +156,278 @@ code span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
 <li>diesel_cli 2.0.0</li>
 <li>diesel_dynamic_schema 0.2.0</li>
 </ul>
-<p>Support the development of Diesel by <a href="https://github.com/diesel-rs/diesel">sponsoring our work on GitHub</a></p>
-<h2 id="features"><a href="#features" class="anchor" aria-hidden="true"></a>Features</h2>
-<p>As a highlight Diesel 2.0.0 adds support for the following features:</p>
+<p>Support the development of Diesel by <a
+href="https://github.com/diesel-rs/diesel">sponsoring our work on
+GitHub</a></p>
+<h2 id="features"><a href="#features" class="anchor"
+aria-hidden="true"></a>Features</h2>
+<p>As a highlight Diesel 2.0.0 adds support for the following
+features:</p>
 <ul>
 <li>Fully type checked <code>GROUP BY</code> support</li>
 <li>Support for table aliasing</li>
 <li>Support for defining select clauses via a corresponding type</li>
 <li>Support for <code>UNION</code>/<code>INTERSECT</code> queries</li>
 </ul>
-<p>In addition to the highlighted features Diesel 2.0.0 fixes several issues in our type level SQL representation such that it now correctly handles the following cases:</p>
+<p>In addition to the highlighted features Diesel 2.0.0 fixes several
+issues in our type level SQL representation such that it now correctly
+handles the following cases:</p>
 <ul>
-<li>Mixed nested <code>LEFT JOINS</code> and <code>INNER JOINS</code></li>
-<li>Chaining mixed nullable expressions via <code>AND</code>, <code>OR</code> and similar operators</li>
+<li>Mixed nested <code>LEFT JOINS</code> and
+<code>INNER JOINS</code></li>
+<li>Chaining mixed nullable expressions via <code>AND</code>,
+<code>OR</code> and similar operators</li>
 </ul>
-<h3 id="support-for-group-by-clauses"><a href="#support-for-group-by-clauses" class="anchor" aria-hidden="true"></a>Support for <code>GROUP BY</code> clauses</h3>
-<p>Diesel 2.0 adds support for <code>GROUP BY</code> clauses for select queries.</p>
+<h3 id="support-for-group-by-clauses"><a
+href="#support-for-group-by-clauses" class="anchor"
+aria-hidden="true"></a>Support for <code>GROUP BY</code> clauses</h3>
+<p>Diesel 2.0 adds support for <code>GROUP BY</code> clauses for select
+queries.</p>
 <p>This means queries like the following one will just work.</p>
 <div class="demo__example">
 <div class="demo__example-browser">
 <div class="browser-bar">
 Example
 </div>
-<div class="sourceCode" id="cb1"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a> <span class="pp">users::</span>table<span class="op">.</span>inner_join(<span class="pp">posts::</span>table)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a>    <span class="op">.</span>group_by(<span class="pp">users::</span>id)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a>    <span class="op">.</span>select((<span class="pp">users::</span>name<span class="op">,</span> count(<span class="pp">posts::</span>id)))</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode rust"><code class="sourceCode rust"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a> <span class="pp">users::</span>table<span class="op">.</span>inner_join(<span class="pp">posts::</span>table)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span>group_by(<span class="pp">users::</span>id)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span>select((<span class="pp">users::</span>name<span class="op">,</span> count(<span class="pp">posts::</span>id)))</span></code></pre></div>
 </div>
 </div>
-<p>As this is the case for all other Diesel built-in query dsl, this construct is fully checked at compile time. This means Diesel will ensure that the <code>GROUP BY</code> clause is valid for the current query and it will also ensure that expressions appearing inside of your <code>SELECT</code> clause will match the aggregation rules provided by the current <code>GROUP BY</code> clause. Checkout the documentation of <a href="https://docs.diesel.rs/2.0.x/diesel/prelude/trait.QueryDsl.html#method.group_by"><code>QueryDsl::group_by</code></a> for examples.</p>
-<h3 id="support-for-table-aliasing"><a href="#support-for-table-aliasing" class="anchor" aria-hidden="true"></a>Support for table aliasing</h3>
-<p>Diesel 2.0 adds support for table aliasing. This enables users to write queries, where a table appears more than once in the corresponding <code>FROM</code> clause. For this Diesel provides a <a href="https://docs.diesel.rs/2.0.x/diesel/macro.alias.html"><code>diesel::alias!</code></a> macro that allows to define new alias for existing tables.</p>
+<p>As this is the case for all other Diesel built-in query dsl, this
+construct is fully checked at compile time. This means Diesel will
+ensure that the <code>GROUP BY</code> clause is valid for the current
+query and it will also ensure that expressions appearing inside of your
+<code>SELECT</code> clause will match the aggregation rules provided by
+the current <code>GROUP BY</code> clause. Checkout the documentation of
+<a
+href="https://docs.diesel.rs/2.0.x/diesel/prelude/trait.QueryDsl.html#method.group_by"><code>QueryDsl::group_by</code></a>
+for examples.</p>
+<h3 id="support-for-table-aliasing"><a
+href="#support-for-table-aliasing" class="anchor"
+aria-hidden="true"></a>Support for table aliasing</h3>
+<p>Diesel 2.0 adds support for table aliasing. This enables users to
+write queries, where a table appears more than once in the corresponding
+<code>FROM</code> clause. For this Diesel provides a <a
+href="https://docs.diesel.rs/2.0.x/diesel/macro.alias.html"><code>diesel::alias!</code></a>
+macro that allows to define new alias for existing tables.</p>
 <p>The following query demonstrates the support for this feature:</p>
 <div class="demo__example">
 <div class="demo__example-browser">
 <div class="browser-bar">
 Example
 </div>
-<div class="sourceCode" id="cb2"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="co">// Define new table alias for the existing `users` table</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a><span class="kw">let</span> users1 <span class="op">=</span> <span class="pp">diesel::alias!</span>(<span class="pp">schema::</span>users <span class="kw">as</span> user1)<span class="op">;</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a><span class="co">// Use the corresponding alias inside any existing query</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true"></a><span class="pp">users::</span>table</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true"></a>    <span class="op">.</span>inner_join(users1<span class="op">.</span>on(<span class="pp">users::</span>id)<span class="op">.</span>eq(users1<span class="op">.</span>field(<span class="pp">users::</span>id))))</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true"></a>    <span class="op">.</span>select((<span class="pp">users::</span>id<span class="op">,</span> <span class="pp">users::</span>name<span class="op">,</span> users1<span class="op">.</span>field(<span class="pp">users::</span>name)))</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true"></a>    <span class="op">.</span>order_by(users1<span class="op">.</span>field(<span class="pp">users::</span>id))</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode rust"><code class="sourceCode rust"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Define new table alias for the existing `users` table</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> users1 <span class="op">=</span> <span class="pp">diesel::alias!</span>(<span class="pp">schema::</span>users <span class="kw">as</span> user1)<span class="op">;</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co">// Use the corresponding alias inside any existing query</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="pp">users::</span>table</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span>inner_join(users1<span class="op">.</span>on(<span class="pp">users::</span>id)<span class="op">.</span>eq(users1<span class="op">.</span>field(<span class="pp">users::</span>id))))</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span>select((<span class="pp">users::</span>id<span class="op">,</span> <span class="pp">users::</span>name<span class="op">,</span> users1<span class="op">.</span>field(<span class="pp">users::</span>name)))</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span>order_by(users1<span class="op">.</span>field(<span class="pp">users::</span>id))</span></code></pre></div>
 </div>
 </div>
-<p>Again all of this is checked at compile time. So similar to a normal table, columns from aliases are only allowed to appear if the corresponding query actually uses the alias.</p>
-<h3 id="implied-selection-via-the-new-selectable-trait"><a href="#implied-selection-via-the-new-selectable-trait" class="anchor" aria-hidden="true"></a>Implied selection via the new <code>Selectable</code> trait</h3>
-<p>Diesel 2.0 features a new <a href="https://docs.diesel.rs/2.0.x/diesel/expression/trait.Selectable.html"><code>Selectable</code></a> trait and derive that lets users declare that a type expects a certain kind of select clause. The major use case for this feature is to ensure that columns from a specific query are always requested in the right order for a corresponding type implementing <code>Queryable</code>. This also works for complex queries involving joins or other kinds of nesting.</p>
+<p>Again all of this is checked at compile time. So similar to a normal
+table, columns from aliases are only allowed to appear if the
+corresponding query actually uses the alias.</p>
+<h3 id="implied-selection-via-the-new-selectable-trait"><a
+href="#implied-selection-via-the-new-selectable-trait" class="anchor"
+aria-hidden="true"></a>Implied selection via the new
+<code>Selectable</code> trait</h3>
+<p>Diesel 2.0 features a new <a
+href="https://docs.diesel.rs/2.0.x/diesel/expression/trait.Selectable.html"><code>Selectable</code></a>
+trait and derive that lets users declare that a type expects a certain
+kind of select clause. The major use case for this feature is to ensure
+that columns from a specific query are always requested in the right
+order for a corresponding type implementing <code>Queryable</code>. This
+also works for complex queries involving joins or other kinds of
+nesting.</p>
 <div class="demo__example">
 <div class="demo__example-browser">
 <div class="browser-bar">
 Example
 </div>
-<div class="sourceCode" id="cb3"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="at">#[</span>derive<span class="at">(</span>Queryable<span class="op">,</span> Selectable<span class="at">)]</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="kw">struct</span> User <span class="op">{</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a>    id<span class="op">:</span> <span class="dt">i32</span><span class="op">,</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true"></a>    name<span class="op">:</span> <span class="dt">String</span><span class="op">,</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true"></a><span class="op">}</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true"></a></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true"></a><span class="kw">let</span> first_user <span class="op">=</span> users<span class="op">.</span>select(<span class="pp">User::</span>as_select())<span class="op">.</span>first(connection)<span class="op">?;</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode rust"><code class="sourceCode rust"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="at">#[</span>derive<span class="at">(</span>Queryable<span class="op">,</span> Selectable<span class="at">)]</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> User <span class="op">{</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    id<span class="op">:</span> <span class="dt">i32</span><span class="op">,</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    name<span class="op">:</span> <span class="dt">String</span><span class="op">,</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> first_user <span class="op">=</span> users<span class="op">.</span>select(<span class="pp">User::</span>as_select())<span class="op">.</span>first(connection)<span class="op">?;</span></span></code></pre></div>
 </div>
 </div>
-<p>Diesel enforces at type system level that once you provided such a select clause via <code>User::as_select()</code> you are only allowed to construct this type from the returned result of the corresponding query. This means there is no need to specify the <code>User</code> type twice in the query above.</p>
-<h3 id="support-for-unionintersectexcept-queries"><a href="#support-for-unionintersectexcept-queries" class="anchor" aria-hidden="true"></a>Support for <code>UNION</code>/<code>INTERSECT</code>/<code>EXCEPT</code> queries</h3>
-<p>Diesel 2.0 extents the query builder to support query combinations via <code>UNION</code>/<code>INTERSECT</code>/<code>EXCEPT</code>. This allows you to easily chain multiple queries together as long as they return fields of the same type. Queries like the following one are now supported:</p>
+<p>Diesel enforces at type system level that once you provided such a
+select clause via <code>User::as_select()</code> you are only allowed to
+construct this type from the returned result of the corresponding query.
+This means there is no need to specify the <code>User</code> type twice
+in the query above.</p>
+<h3 id="support-for-unionintersectexcept-queries"><a
+href="#support-for-unionintersectexcept-queries" class="anchor"
+aria-hidden="true"></a>Support for
+<code>UNION</code>/<code>INTERSECT</code>/<code>EXCEPT</code>
+queries</h3>
+<p>Diesel 2.0 extents the query builder to support query combinations
+via <code>UNION</code>/<code>INTERSECT</code>/<code>EXCEPT</code>. This
+allows you to easily chain multiple queries together as long as they
+return fields of the same type. Queries like the following one are now
+supported:</p>
 <div class="demo__example">
 <div class="demo__example-browser">
 <div class="browser-bar">
 Example
 </div>
-<div class="sourceCode" id="cb4"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a> users<span class="op">.</span>select(user_name<span class="op">.</span>nullable())</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a>    <span class="op">.</span><span class="kw">union</span>(animals<span class="op">.</span>select(animal_name)<span class="op">.</span>filter(animal_name<span class="op">.</span>is_not_null()))</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode rust"><code class="sourceCode rust"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a> users<span class="op">.</span>select(user_name<span class="op">.</span>nullable())</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="kw">union</span>(animals<span class="op">.</span>select(animal_name)<span class="op">.</span>filter(animal_name<span class="op">.</span>is_not_null()))</span></code></pre></div>
 </div>
 </div>
-<p>As always this is checked at compile time to reject invalid queries, like for example that ones containing select clauses with different fields. Checkout the documentation of <a href="https://docs.diesel.rs/2.0.x/diesel/prelude/trait.CombineDsl.html"><code>CombineDsl</code></a> for details.</p>
-<h2 id="call-for-participation"><a href="#call-for-participation" class="anchor" aria-hidden="true"></a>Call for Participation</h2>
-<p>The release of Diesel 2.0 does not only include the features listed above, but also marks the point where the following things can be provided by third party crates:</p>
+<p>As always this is checked at compile time to reject invalid queries,
+like for example that ones containing select clauses with different
+fields. Checkout the documentation of <a
+href="https://docs.diesel.rs/2.0.x/diesel/prelude/trait.CombineDsl.html"><code>CombineDsl</code></a>
+for details.</p>
+<h2 id="call-for-participation"><a href="#call-for-participation"
+class="anchor" aria-hidden="true"></a>Call for Participation</h2>
+<p>The release of Diesel 2.0 does not only include the features listed
+above, but also marks the point where the following things can be
+provided by third party crates:</p>
 <ul>
-<li>Custom <code>QueryDsl</code> extensions to support previously unsupported SQL features. Checkout <a href="https://github.com/diesel-rs/diesel_full_text_search"><code>diesel_full_text_search</code></a> for an example</li>
-<li>Alternative query dsl implementations reusing the existing <code>Connection</code> infrastructure</li>
-<li>Custom <a href="https://docs.diesel.rs/2.0.x/diesel/connection/trait.Connection.html#provide-a-new-connection-implementation-for-an-existing-backend"><code>Connection</code></a> implementations for existing backends</li>
-<li>Custom <a href="https://docs.diesel.rs/2.0.x/diesel/connection/trait.Connection.html#implement-support-for-an-unsupported-database-system"><code>Connection</code></a> and <a href="https://docs.diesel.rs/2.0.x/diesel/backend/trait.Backend.html#implementing-a-custom-backend"><code>Backend</code></a> implementations for previously unsupported backends. Checkout <a href="https://github.com/GiGainfosystems/diesel-oci">diesel-oci</a> for an example.</li>
+<li>Custom <code>QueryDsl</code> extensions to support previously
+unsupported SQL features. Checkout <a
+href="https://github.com/diesel-rs/diesel_full_text_search"><code>diesel_full_text_search</code></a>
+for an example</li>
+<li>Alternative query dsl implementations reusing the existing
+<code>Connection</code> infrastructure</li>
+<li>Custom <a
+href="https://docs.diesel.rs/2.0.x/diesel/connection/trait.Connection.html#provide-a-new-connection-implementation-for-an-existing-backend"><code>Connection</code></a>
+implementations for existing backends</li>
+<li>Custom <a
+href="https://docs.diesel.rs/2.0.x/diesel/connection/trait.Connection.html#implement-support-for-an-unsupported-database-system"><code>Connection</code></a>
+and <a
+href="https://docs.diesel.rs/2.0.x/diesel/backend/trait.Backend.html#implementing-a-custom-backend"><code>Backend</code></a>
+implementations for previously unsupported backends. Checkout <a
+href="https://github.com/GiGainfosystems/diesel-oci">diesel-oci</a> for
+an example.</li>
 </ul>
-<p>We encourage our community to try out those features. Especially we would like to see experimentation around:</p>
+<p>We encourage our community to try out those features. Especially we
+would like to see experimentation around:</p>
 <ul>
 <li>Previously unsupported database backends</li>
-<li>Pure rust implementations of existing backend implementations. Checkout <a href="https://github.com/sfackler/rust-postgres/issues/890">this</a> and <a href="https://github.com/blackbeam/rust-mysql-simple/discussions/320">this</a> discussion for starting points.</li>
-<li>Alternative query dsl implementations. Checkout <a href="https://github.com/SeaQL/sea-query/discussions/168">this discussion</a> as starting point.</li>
+<li>Pure rust implementations of existing backend implementations.
+Checkout <a
+href="https://github.com/sfackler/rust-postgres/issues/890">this</a> and
+<a
+href="https://github.com/blackbeam/rust-mysql-simple/discussions/320">this</a>
+discussion for starting points.</li>
+<li>Alternative query dsl implementations. Checkout <a
+href="https://github.com/SeaQL/sea-query/discussions/168">this
+discussion</a> as starting point.</li>
 </ul>
 <p>Please get in touch with us for pointers, help and details.</p>
-<h2 id="input-for-future-roadmap"><a href="#input-for-future-roadmap" class="anchor" aria-hidden="true"></a>Input for Future Roadmap</h2>
-<p>With the release of Diesel 2.0 the planing for our next releases start. Hopefully they will not take as long as Diesel 2.0. We are looking for input on which features are wanted by our community. Please open a discussion thread with your idea in our <a href="https://github.com/diesel-rs/diesel/discussions/categories/ideas">discussion forum</a>.</p>
-<p>Weiznich will work on improving error messages for trait heavy crates based on a Rust Foundation Project Grant. This work will hopefully improve error messages for Diesel as well. If you are aware of bad error messages please submit a minimal example <a href="https://github.com/weiznich/rust-foundation-community-grant">here</a>.</p>
-<h2 id="update-considerations"><a href="#update-considerations" class="anchor" aria-hidden="true"></a>Update considerations</h2>
-<p>Diesel 2.0 introduces substantial changes to Diesel’s inner workings. In some cases this impacts code written using Diesel 1.4.x. This document outlines notable changes and presents potential update strategies. We recommend to start the upgrade by removing the usage of all items that are marked as deprecated in Diesel 1.4.x.</p>
-<p>Any code base migrating from Diesel 1.4.x to Diesel 2.0 is expected to be affected at least by the following changes:</p>
+<h2 id="input-for-future-roadmap"><a href="#input-for-future-roadmap"
+class="anchor" aria-hidden="true"></a>Input for Future Roadmap</h2>
+<p>With the release of Diesel 2.0 the planing for our next releases
+start. Hopefully they will not take as long as Diesel 2.0. We are
+looking for input on which features are wanted by our community. Please
+open a discussion thread with your idea in our <a
+href="https://github.com/diesel-rs/diesel/discussions/categories/ideas">discussion
+forum</a>.</p>
+<p>Weiznich will work on improving error messages for trait heavy crates
+based on a Rust Foundation Project Grant. This work will hopefully
+improve error messages for Diesel as well. If you are aware of bad error
+messages please submit a minimal example <a
+href="https://github.com/weiznich/rust-foundation-community-grant">here</a>.</p>
+<h2 id="update-considerations"><a href="#update-considerations"
+class="anchor" aria-hidden="true"></a>Update considerations</h2>
+<p>Diesel 2.0 introduces substantial changes to Diesel’s inner workings.
+In some cases this impacts code written using Diesel 1.4.x. This
+document outlines notable changes and presents potential update
+strategies. We recommend to start the upgrade by removing the usage of
+all items that are marked as deprecated in Diesel 1.4.x.</p>
+<p>Any code base migrating from Diesel 1.4.x to Diesel 2.0 is expected
+to be affected at least by the following changes:</p>
 <ul>
-<li><a href="/guides/migration_guide.html#2-0-0-mutable-connection">Diesel now requires a mutable reference to the connection</a></li>
-<li><a href="/guides/migration_guide.html#2-0-0-derive-attributes">Changed derive attributes</a></li>
+<li><a
+href="/guides/migration_guide.html#2-0-0-mutable-connection">Diesel now
+requires a mutable reference to the connection</a></li>
+<li><a
+href="/guides/migration_guide.html#2-0-0-derive-attributes">Changed
+derive attributes</a></li>
 </ul>
-<p>Users of <code>diesel_migration</code> are additionally affected by the following change:</p>
+<p>Users of <code>diesel_migration</code> are additionally affected by
+the following change:</p>
 <ul>
-<li><a href="/guides/migration_guide.html#2-0-0-upgrade-migrations"><code>diesel_migration</code> rewrite</a></li>
+<li><a
+href="/guides/migration_guide.html#2-0-0-upgrade-migrations"><code>diesel_migration</code>
+rewrite</a></li>
 </ul>
-<p>Users of <code>BoxableExpression</code> might be affected by the following change:</p>
+<p>Users of <code>BoxableExpression</code> might be affected by the
+following change:</p>
 <ul>
-<li><a href="/guides/migration_guide.html#2-0-0-nullability-ops">Changed nullability of operators</a></li>
+<li><a href="/guides/migration_guide.html#2-0-0-nullability-ops">Changed
+nullability of operators</a></li>
 </ul>
-<p>Users of tables containing a column of the type <code>Array&lt;T&gt;</code> are affected by the following change:</p>
+<p>Users of tables containing a column of the type
+<code>Array&lt;T&gt;</code> are affected by the following change:</p>
 <ul>
-<li><a href="/guides/migration_guide.html#2-0-0-nullability-of-array-elements">Changed nullability of array elements</a></li>
+<li><a
+href="/guides/migration_guide.html#2-0-0-nullability-of-array-elements">Changed
+nullability of array elements</a></li>
 </ul>
-<p>Users that implement support for their SQL types or type mappings are affected by the following changes:</p>
+<p>Users that implement support for their SQL types or type mappings are
+affected by the following changes:</p>
 <ul>
-<li><a href="/guides/migration_guide.html#2-0-0-custom-type-implementation">Changed required traits for custom SQL types</a></li>
-<li><a href="/guides/migration_guide.html#2-0-0-to-sql">Changed <code>ToSql</code> implementations</a></li>
-<li><a href="/guides/migration_guide.html#2-0-0-from-sql">Changed <code>FromSql</code> implementations</a></li>
+<li><a
+href="/guides/migration_guide.html#2-0-0-custom-type-implementation">Changed
+required traits for custom SQL types</a></li>
+<li><a href="/guides/migration_guide.html#2-0-0-to-sql">Changed
+<code>ToSql</code> implementations</a></li>
+<li><a href="/guides/migration_guide.html#2-0-0-from-sql">Changed
+<code>FromSql</code> implementations</a></li>
 </ul>
-<p><code>no_arg_sql_function!</code> macro is now pending deprecation. Users of the macro are advised to consider <code>sql_function!</code> macro.</p>
+<p><code>no_arg_sql_function!</code> macro is now pending deprecation.
+Users of the macro are advised to consider <code>sql_function!</code>
+macro.</p>
 <ul>
-<li><a href="/guides/migration_guide.html#2-0-0-no_arg_sql_function">Deprecated usage of <code>no_arg_sql_function!</code> macro</a></li>
+<li><a
+href="/guides/migration_guide.html#2-0-0-no_arg_sql_function">Deprecated
+usage of <code>no_arg_sql_function!</code> macro</a></li>
 </ul>
-<p>Users of <code>eq_any</code> on the PostgreSQL backend might hit type rejection error in rare cases.</p>
+<p>Users of <code>eq_any</code> on the PostgreSQL backend might hit type
+rejection error in rare cases.</p>
 <ul>
-<li><a href="/guides/migration_guide.html#2-0-0-changed_eq_any">Changed accepted argument to <code>eq_any()</code> for the PostgreSQL backend</a></li>
+<li><a href="/guides/migration_guide.html#2-0-0-changed_eq_any">Changed
+accepted argument to <code>eq_any()</code> for the PostgreSQL
+backend</a></li>
 </ul>
-<p>Users that update generic Diesel code will also be affected by the following changes:</p>
+<p>Users that update generic Diesel code will also be affected by the
+following changes:</p>
 <ul>
-<li><a href="/guides/migration_guide.html#2-0-0-upgrade-non-aggregate">Removing <code>NonAggregate</code> in favor of <code>ValidGrouping</code></a></li>
-<li><a href="/guides/migration_guide.html#2-0-0-generic-changes">Changed generic bounds</a></li>
+<li><a
+href="/guides/migration_guide.html#2-0-0-upgrade-non-aggregate">Removing
+<code>NonAggregate</code> in favor of
+<code>ValidGrouping</code></a></li>
+<li><a href="/guides/migration_guide.html#2-0-0-generic-changes">Changed
+generic bounds</a></li>
 </ul>
-<p>Additionally this release contains many changes for users that implemented a custom backend/connection. We do not provide explicit migration steps but we encourage users to reach out with questions pertaining to these changes.</p>
-<h2 id="thanks"><a href="#thanks" class="anchor" aria-hidden="true"></a>Thanks</h2>
-<p>As part of this release we would like to welcome <span class="citation" data-cites="Ten0">@Ten0</span> as part of the diesel core team.</p>
-<p>Thank you to everyone who helped make this release happen through sponsoring, bug reports, and discussion on GitHub and Gitter. While we don’t have a way to collect stats on that form of contribution, it’s greatly appreciated.</p>
-<p>In addition to the Diesel core team, 141 people contributed code to this release. A huge thank you to:</p>
+<p>Additionally this release contains many changes for users that
+implemented a custom backend/connection. We do not provide explicit
+migration steps but we encourage users to reach out with questions
+pertaining to these changes.</p>
+<h2 id="thanks"><a href="#thanks" class="anchor"
+aria-hidden="true"></a>Thanks</h2>
+<p>As part of this release we would like to welcome <span
+class="citation" data-cites="Ten0">@Ten0</span> as part of the diesel
+core team.</p>
+<p>Thank you to everyone who helped make this release happen through
+sponsoring, bug reports, and discussion on GitHub and Gitter. While we
+don’t have a way to collect stats on that form of contribution, it’s
+greatly appreciated.</p>
+<p>In addition to the Diesel core team, 141 people contributed code to
+this release. A huge thank you to:</p>
 <ul>
 <li>Alessandro Menezes</li>
 <li>Alexander ‘z33ky’ Hirsch</li>

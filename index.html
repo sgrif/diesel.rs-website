@@ -10,8 +10,9 @@
   <title>Diesel is a Safe, Extensible ORM and Query Builder for Rust</title>
   <style type="text/css">
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
@@ -138,7 +139,9 @@ code span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
     <section class = "banner">
         <div class = "content-wrapper">
             <div class = "banner-wrapper">
-                <h2 class = "banner__heading">Diesel is a Safe, Extensible ORM and Query Builder for <a href="https://www.rust-lang.org/" target="_blank" class="rust-link">Rust</a></h2>
+                <h2 class = "banner__heading">Diesel is a Safe,
+Extensible ORM and Query Builder for
+<a href="https://www.rust-lang.org/" target="_blank" class="rust-link">Rust</a></h2>
             </div>
         </div>
     </section>
@@ -148,33 +151,58 @@ code span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
 </blockquote>
 <div class="main-page">
 <div class="banner-wrapper">
-<p>Diesel is the most productive way to interact with databases in Rust because of its safe and composable abstractions over queries.</p>
+<p>Diesel is the most productive way to interact with databases in Rust
+because of its safe and composable abstractions over queries.</p>
 <div class="btn-container">
-<p><a href="/guides/getting-started" class="btn btn-primary btn-download">Getting Started</a> <a href="https://github.com/diesel-rs/diesel" class="btn btn-secondary">View on GitHub</a></p>
+<p><a href="/guides/getting-started"
+class="btn btn-primary btn-download">Getting Started</a> <a
+href="https://github.com/diesel-rs/diesel"
+class="btn btn-secondary">View on GitHub</a></p>
 </div>
 </div>
 <div class="feature-list">
-<section id="why-did-we-make-diesel" class="feature-list__heading section-heading content-wrapper">
-<h3 class="feature-list__heading section-heading"><a href="#why-did-we-make-diesel" class="anchor" aria-hidden="true"></a>Why did we make Diesel?</h3>
+<section id="why-did-we-make-diesel"
+class="feature-list__heading section-heading content-wrapper">
+<h3 class="feature-list__heading section-heading"><a
+href="#why-did-we-make-diesel" class="anchor" aria-hidden="true"></a>Why
+did we make Diesel?</h3>
 <!-- {.feature-list__heading section-heading} -->
-<section id="preventing-runtime-errors" class="feature__heading feature-list__feature type-safe">
-<h4 class="feature__heading"><a href="#preventing-runtime-errors" class="anchor" aria-hidden="true"></a>Preventing Runtime Errors</h4>
-<p>We don’t want to waste time tracking down runtime errors. We achieve this by having Diesel eliminate the possibility of incorrect database interactions at compile time.</p>
+<section id="preventing-runtime-errors"
+class="feature__heading feature-list__feature type-safe">
+<h4 class="feature__heading"><a href="#preventing-runtime-errors"
+class="anchor" aria-hidden="true"></a>Preventing Runtime Errors</h4>
+<p>We don’t want to waste time tracking down runtime errors. We achieve
+this by having Diesel eliminate the possibility of incorrect database
+interactions at compile time.</p>
 </section>
-<section id="built-for-performance" class="feature__heading feature-list__feature performance">
-<h4 class="feature__heading"><a href="#built-for-performance" class="anchor" aria-hidden="true"></a>Built for Performance</h4>
-<p>Diesel offers a high level query builder and lets you think about your problems in Rust, not SQL. Our focus on zero-cost abstractions allows Diesel to run your query and load your data even faster than C.</p>
+<section id="built-for-performance"
+class="feature__heading feature-list__feature performance">
+<h4 class="feature__heading"><a href="#built-for-performance"
+class="anchor" aria-hidden="true"></a>Built for Performance</h4>
+<p>Diesel offers a high level query builder and lets you think about
+your problems in Rust, not SQL. Our focus on zero-cost abstractions
+allows Diesel to run your query and load your data even faster than
+C.</p>
 </section>
-<section id="productive-and-extensible" class="feature__heading feature-list__feature extensible">
-<h4 class="feature__heading"><a href="#productive-and-extensible" class="anchor" aria-hidden="true"></a>Productive and Extensible</h4>
-<p>Unlike Active Record and other ORMs, Diesel is designed to be abstracted over. Diesel enables you to write reusable code and think in terms of your problem domain and not SQL.</p>
+<section id="productive-and-extensible"
+class="feature__heading feature-list__feature extensible">
+<h4 class="feature__heading"><a href="#productive-and-extensible"
+class="anchor" aria-hidden="true"></a>Productive and Extensible</h4>
+<p>Unlike Active Record and other ORMs, Diesel is designed to be
+abstracted over. Diesel enables you to write reusable code and think in
+terms of your problem domain and not SQL.</p>
 </section>
 </section>
 </div>
-<p>Still not sold? Have a look at an in-depth <a href="/compare_diesel.html">comparison</a> with other rust database crates.</p>
+<p>Still not sold? Have a look at an in-depth <a
+href="/compare_diesel.html">comparison</a> with other rust database
+crates.</p>
 <div class="demo">
-<section id="see-some-examples" class="demo__heading section-heading no-anchor content-wrapper">
-<h3 class="demo__heading section-heading no-anchor"><a href="#see-some-examples" class="anchor" aria-hidden="true"></a>See some examples</h3>
+<section id="see-some-examples"
+class="demo__heading section-heading no-anchor content-wrapper">
+<h3 class="demo__heading section-heading no-anchor"><a
+href="#see-some-examples" class="anchor" aria-hidden="true"></a>See some
+examples</h3>
 <div class="vertical-tabs-container">
 <div class="vertical-tabs">
 <!-- <button class = "js-vertical-tab vertical-tab is-active" onclick = "change_tab(event, 'simple_queries')"> -->
@@ -183,17 +211,41 @@ code span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
 <!-- <button class = "js-vertical-tab vertical-tab" on-click = "change_tab(event, 'complex_queries')"> -->
 <!-- Complex Queries -->
 <!-- </button> -->
-<p><a href="javascript::void(0)" class="js-vertical-tab vertical-tab is-active" onclick="change_tab(event, &#39;simple_queries&#39;)">Simple Queries</a> <a href="javascript::void(0)" class="js-vertical-tab vertical-tab" onclick="change_tab(event, &#39;complex_queries&#39;)">Complex Queries</a> <a href="javascript::void(0)" class="js-vertical-tab vertical-tab" onclick="change_tab(event, &#39;less_boilerplate&#39;)">Less Boilerplate</a> <a href="javascript::void(0)" class="js-vertical-tab vertical-tab" onclick="change_tab(event, &#39;inserting_data&#39;)">Inserting Data</a> <a href="javascript::void(0)" class="js-vertical-tab vertical-tab" onclick="change_tab(event, &#39;updating_data&#39;)">Updating Data</a> <a href="javascript::void(0)" class="js-vertical-tab vertical-tab" onclick="change_tab(event, &#39;raw_sql&#39;)">Ergonomic Raw SQL</a> <a href="javascript::void(0)" class="js-vertical-tab vertical-tab" onclick="change_tab(event, &#39;popular_projects_using_diesel&#39;)">Popular Projects using Diesel</a> <a href="javascript::void(0)" class="js-vertical-tab vertical-tab" onclick="change_tab(event, &#39;community_extensions&#39;)">Community Extensions</a></p>
+<p><a href="javascript::void(0)"
+class="js-vertical-tab vertical-tab is-active"
+onclick="change_tab(event, &#39;simple_queries&#39;)">Simple Queries</a>
+<a href="javascript::void(0)" class="js-vertical-tab vertical-tab"
+onclick="change_tab(event, &#39;complex_queries&#39;)">Complex
+Queries</a> <a href="javascript::void(0)"
+class="js-vertical-tab vertical-tab"
+onclick="change_tab(event, &#39;less_boilerplate&#39;)">Less
+Boilerplate</a> <a href="javascript::void(0)"
+class="js-vertical-tab vertical-tab"
+onclick="change_tab(event, &#39;inserting_data&#39;)">Inserting Data</a>
+<a href="javascript::void(0)" class="js-vertical-tab vertical-tab"
+onclick="change_tab(event, &#39;updating_data&#39;)">Updating Data</a>
+<a href="javascript::void(0)" class="js-vertical-tab vertical-tab"
+onclick="change_tab(event, &#39;raw_sql&#39;)">Ergonomic Raw SQL</a> <a
+href="javascript::void(0)" class="js-vertical-tab vertical-tab"
+onclick="change_tab(event, &#39;popular_projects_using_diesel&#39;)">Popular
+Projects using Diesel</a> <a href="javascript::void(0)"
+class="js-vertical-tab vertical-tab"
+onclick="change_tab(event, &#39;community_extensions&#39;)">Community
+Extensions</a></p>
 </div>
 <div class="vertical-tab-content-container">
-<div id="simple_queries" class="js-vertical-tab-content vertical-tab-content" style="display: block;">
-<p>Simple queries are a complete breeze. Loading all users from a database:</p>
+<div id="simple_queries"
+class="js-vertical-tab-content vertical-tab-content"
+style="display: block;">
+<p>Simple queries are a complete breeze. Loading all users from a
+database:</p>
 <div class="demo__example">
 <div class="demo__example-browser">
 <div class="browser-bar">
 Rust code
 </div>
-<div class="sourceCode" id="cb1"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="pp">users::</span>table<span class="op">.</span>load(<span class="op">&amp;</span><span class="kw">mut</span> connection)</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode rust"><code class="sourceCode rust"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="pp">users::</span>table<span class="op">.</span>load(<span class="op">&amp;</span><span class="kw">mut</span> connection)</span></code></pre></div>
 </div>
 </div>
 <div class="demo__example">
@@ -201,7 +253,8 @@ Rust code
 <div class="browser-bar">
 Executed SQL
 </div>
-<div class="sourceCode" id="cb2"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> users;</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode sql"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> users;</span></code></pre></div>
 </div>
 </div>
 <p>Loading all the posts for a user:</p>
@@ -210,7 +263,8 @@ Executed SQL
 <div class="browser-bar">
 Rust code
 </div>
-<div class="sourceCode" id="cb3"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="pp">Post::</span>belonging_to(user)<span class="op">.</span>load(<span class="op">&amp;</span><span class="kw">mut</span> connection)</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode rust"><code class="sourceCode rust"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="pp">Post::</span>belonging_to(user)<span class="op">.</span>load(<span class="op">&amp;</span><span class="kw">mut</span> connection)</span></code></pre></div>
 </div>
 </div>
 <div class="demo__example">
@@ -218,26 +272,30 @@ Rust code
 <div class="browser-bar">
 Executed SQL
 </div>
-<div class="sourceCode" id="cb4"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> posts <span class="kw">WHERE</span> user_id <span class="op">=</span> <span class="dv">1</span>;</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode sql"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> posts <span class="kw">WHERE</span> user_id <span class="op">=</span> <span class="dv">1</span>;</span></code></pre></div>
 </div>
 </div>
 </div>
-<div id="complex_queries" class="js-vertical-tab-content vertical-tab-content">
-<p>Diesel’s powerful query builder helps you construct queries as simple or complex as you need, at zero cost.</p>
+<div id="complex_queries"
+class="js-vertical-tab-content vertical-tab-content">
+<p>Diesel’s powerful query builder helps you construct queries as simple
+or complex as you need, at zero cost.</p>
 <div class="demo__example">
 <div class="demo__example-browser">
 <div class="browser-bar">
 Rust code
 </div>
-<div class="sourceCode" id="cb5"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="kw">let</span> versions <span class="op">=</span> <span class="pp">Version::</span>belonging_to(krate)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a>  <span class="op">.</span>select(id)</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a>  <span class="op">.</span>order(num<span class="op">.</span>desc())</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true"></a>  <span class="op">.</span>limit(<span class="dv">5</span>)<span class="op">;</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true"></a><span class="kw">let</span> downloads <span class="op">=</span> version_downloads</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true"></a>  <span class="op">.</span>filter(date<span class="op">.</span>gt(now <span class="op">-</span> <span class="dv">90</span><span class="op">.</span>days()))</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true"></a>  <span class="op">.</span>filter(version_id<span class="op">.</span>eq(any(versions)))</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true"></a>  <span class="op">.</span>order(date)</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true"></a>  <span class="op">.</span><span class="pp">load::</span><span class="op">&lt;</span>Download<span class="op">&gt;</span>(<span class="op">&amp;</span><span class="kw">mut</span> conn)<span class="op">?;</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode rust"><code class="sourceCode rust"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> versions <span class="op">=</span> <span class="pp">Version::</span>belonging_to(krate)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="op">.</span>select(id)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="op">.</span>order(num<span class="op">.</span>desc())</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="op">.</span>limit(<span class="dv">5</span>)<span class="op">;</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> downloads <span class="op">=</span> version_downloads</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="op">.</span>filter(date<span class="op">.</span>gt(now <span class="op">-</span> <span class="dv">90</span><span class="op">.</span>days()))</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="op">.</span>filter(version_id<span class="op">.</span>eq(any(versions)))</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="op">.</span>order(date)</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="op">.</span><span class="pp">load::</span><span class="op">&lt;</span>Download<span class="op">&gt;</span>(<span class="op">&amp;</span><span class="kw">mut</span> conn)<span class="op">?;</span></span></code></pre></div>
 </div>
 </div>
 <div class="demo__example">
@@ -245,34 +303,38 @@ Rust code
 <div class="browser-bar">
 Executed SQL
 </div>
-<div class="sourceCode" id="cb6"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a><span class="kw">SELECT</span> version_downloads.<span class="op">*</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a>  <span class="kw">WHERE</span> <span class="dt">date</span> <span class="op">&gt;</span> (NOW() <span class="op">-</span> <span class="st">&#39;90 days&#39;</span>)</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a>    <span class="kw">AND</span> version_id <span class="op">=</span> <span class="kw">ANY</span>(</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true"></a>      <span class="kw">SELECT</span> <span class="kw">id</span> <span class="kw">FROM</span> versions</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true"></a>        <span class="kw">WHERE</span> crate_id <span class="op">=</span> <span class="dv">1</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true"></a>        <span class="kw">ORDER</span> <span class="kw">BY</span> num <span class="kw">DESC</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true"></a>        <span class="kw">LIMIT</span> <span class="dv">5</span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true"></a>    )</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true"></a>  <span class="kw">ORDER</span> <span class="kw">BY</span> <span class="dt">date</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode sql"><code class="sourceCode sql"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> version_downloads.<span class="op">*</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">WHERE</span> <span class="dt">date</span> <span class="op">&gt;</span> (NOW() <span class="op">-</span> <span class="st">&#39;90 days&#39;</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">AND</span> version_id <span class="op">=</span> <span class="kw">ANY</span>(</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>      <span class="kw">SELECT</span> <span class="kw">id</span> <span class="kw">FROM</span> versions</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>        <span class="kw">WHERE</span> crate_id <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>        <span class="kw">ORDER</span> <span class="kw">BY</span> num <span class="kw">DESC</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>        <span class="kw">LIMIT</span> <span class="dv">5</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">ORDER</span> <span class="kw">BY</span> <span class="dt">date</span></span></code></pre></div>
 </div>
 </div>
 </div>
-<div id="less_boilerplate" class="js-vertical-tab-content vertical-tab-content">
-<p>Diesel codegen generates boilerplate for you. It lets you focus on your business logic, not mapping to and from SQL rows.</p>
+<div id="less_boilerplate"
+class="js-vertical-tab-content vertical-tab-content">
+<p>Diesel codegen generates boilerplate for you. It lets you focus on
+your business logic, not mapping to and from SQL rows.</p>
 <p>That means you can write this:</p>
 <div class="demo__example">
 <div class="demo__example-browser">
 <div class="browser-bar">
 With Diesel
 </div>
-<div class="sourceCode" id="cb7"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a><span class="at">#[</span>derive<span class="at">(</span>Queryable<span class="at">)]</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true"></a><span class="kw">pub</span> <span class="kw">struct</span> Download <span class="op">{</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true"></a>    id<span class="op">:</span> <span class="dt">i32</span><span class="op">,</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true"></a>    version_id<span class="op">:</span> <span class="dt">i32</span><span class="op">,</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true"></a>    downloads<span class="op">:</span> <span class="dt">i32</span><span class="op">,</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true"></a>    counted<span class="op">:</span> <span class="dt">i32</span><span class="op">,</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true"></a>    date<span class="op">:</span> SystemTime<span class="op">,</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true"></a><span class="op">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode rust"><code class="sourceCode rust"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="at">#[</span>derive<span class="at">(</span>Queryable<span class="at">)]</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="kw">pub</span> <span class="kw">struct</span> Download <span class="op">{</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    id<span class="op">:</span> <span class="dt">i32</span><span class="op">,</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    version_id<span class="op">:</span> <span class="dt">i32</span><span class="op">,</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    downloads<span class="op">:</span> <span class="dt">i32</span><span class="op">,</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    counted<span class="op">:</span> <span class="dt">i32</span><span class="op">,</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    date<span class="op">:</span> SystemTime<span class="op">,</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 </div>
 </div>
 <p>Instead of this:</p>
@@ -281,50 +343,54 @@ With Diesel
 <div class="browser-bar">
 Without Diesel
 </div>
-<div class="sourceCode" id="cb8"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a><span class="kw">pub</span> <span class="kw">struct</span> Download <span class="op">{</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true"></a>    id<span class="op">:</span> <span class="dt">i32</span><span class="op">,</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true"></a>    version_id<span class="op">:</span> <span class="dt">i32</span><span class="op">,</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true"></a>    downloads<span class="op">:</span> <span class="dt">i32</span><span class="op">,</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true"></a>    counted<span class="op">:</span> <span class="dt">i32</span><span class="op">,</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true"></a>    date<span class="op">:</span> SystemTime<span class="op">,</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true"></a><span class="op">}</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true"></a></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true"></a><span class="kw">impl</span> Download <span class="op">{</span></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true"></a>    <span class="kw">fn</span> from_row(row<span class="op">:</span> <span class="op">&amp;</span>Row) <span class="op">-&gt;</span> Download <span class="op">{</span></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true"></a>        Download <span class="op">{</span></span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true"></a>            id<span class="op">:</span> row<span class="op">.</span>get(<span class="st">&quot;id&quot;</span>)<span class="op">,</span></span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true"></a>            version_id<span class="op">:</span> row<span class="op">.</span>get(<span class="st">&quot;version_id&quot;</span>)<span class="op">,</span></span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true"></a>            downloads<span class="op">:</span> row<span class="op">.</span>get(<span class="st">&quot;downloads&quot;</span>)<span class="op">,</span></span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true"></a>            counted<span class="op">:</span> row<span class="op">.</span>get(<span class="st">&quot;counted&quot;</span>)<span class="op">,</span></span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true"></a>            date<span class="op">:</span> row<span class="op">.</span>get(<span class="st">&quot;date&quot;</span>)<span class="op">,</span></span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true"></a>        <span class="op">}</span></span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true"></a>    <span class="op">}</span></span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true"></a><span class="op">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode rust"><code class="sourceCode rust"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">pub</span> <span class="kw">struct</span> Download <span class="op">{</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    id<span class="op">:</span> <span class="dt">i32</span><span class="op">,</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    version_id<span class="op">:</span> <span class="dt">i32</span><span class="op">,</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    downloads<span class="op">:</span> <span class="dt">i32</span><span class="op">,</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    counted<span class="op">:</span> <span class="dt">i32</span><span class="op">,</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    date<span class="op">:</span> SystemTime<span class="op">,</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="kw">impl</span> Download <span class="op">{</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fn</span> from_row(row<span class="op">:</span> <span class="op">&amp;</span>Row) <span class="op">-&gt;</span> Download <span class="op">{</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>        Download <span class="op">{</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>            id<span class="op">:</span> row<span class="op">.</span>get(<span class="st">&quot;id&quot;</span>)<span class="op">,</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>            version_id<span class="op">:</span> row<span class="op">.</span>get(<span class="st">&quot;version_id&quot;</span>)<span class="op">,</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>            downloads<span class="op">:</span> row<span class="op">.</span>get(<span class="st">&quot;downloads&quot;</span>)<span class="op">,</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>            counted<span class="op">:</span> row<span class="op">.</span>get(<span class="st">&quot;counted&quot;</span>)<span class="op">,</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>            date<span class="op">:</span> row<span class="op">.</span>get(<span class="st">&quot;date&quot;</span>)<span class="op">,</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 </div>
 </div>
 </div>
-<div id="inserting_data" class="js-vertical-tab-content vertical-tab-content">
-<p>It’s not just about reading data. Diesel makes it easy to use structs for new records.</p>
+<div id="inserting_data"
+class="js-vertical-tab-content vertical-tab-content">
+<p>It’s not just about reading data. Diesel makes it easy to use structs
+for new records.</p>
 <div class="demo__example">
 <div class="demo__example-browser">
 <div class="browser-bar">
 Rust code
 </div>
-<div class="sourceCode" id="cb9"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a><span class="at">#[</span>derive<span class="at">(</span>Insertable<span class="at">)]</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true"></a><span class="at">#[</span>diesel<span class="at">(</span>table_name <span class="op">=</span> users<span class="at">)]</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true"></a><span class="kw">struct</span> NewUser<span class="op">&lt;</span><span class="ot">&#39;a</span><span class="op">&gt;</span> <span class="op">{</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true"></a>    name<span class="op">:</span> <span class="op">&amp;</span><span class="ot">&#39;a</span> <span class="dt">str</span><span class="op">,</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true"></a>    hair_color<span class="op">:</span> <span class="dt">Option</span><span class="op">&lt;&amp;</span><span class="ot">&#39;a</span> <span class="dt">str</span><span class="op">&gt;,</span></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true"></a><span class="op">}</span></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true"></a></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true"></a><span class="kw">let</span> new_users <span class="op">=</span> <span class="pp">vec!</span>[</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true"></a>    NewUser <span class="op">{</span> name<span class="op">:</span> <span class="st">&quot;Sean&quot;</span><span class="op">,</span> hair_color<span class="op">:</span> <span class="cn">Some</span>(<span class="st">&quot;Black&quot;</span>) <span class="op">},</span></span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true"></a>    NewUser <span class="op">{</span> name<span class="op">:</span> <span class="st">&quot;Gordon&quot;</span><span class="op">,</span> hair_color<span class="op">:</span> <span class="cn">None</span> <span class="op">},</span></span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true"></a>]<span class="op">;</span></span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true"></a></span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true"></a>insert_into(users)</span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true"></a>    <span class="op">.</span>values(<span class="op">&amp;</span>new_users)</span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true"></a>    <span class="op">.</span>execute(<span class="op">&amp;</span><span class="kw">mut</span> connection)<span class="op">;</span></span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre
+class="sourceCode rust"><code class="sourceCode rust"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="at">#[</span>derive<span class="at">(</span>Insertable<span class="at">)]</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="at">#[</span>diesel<span class="at">(</span>table_name <span class="op">=</span> users<span class="at">)]</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> NewUser<span class="op">&lt;</span><span class="ot">&#39;a</span><span class="op">&gt;</span> <span class="op">{</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    name<span class="op">:</span> <span class="op">&amp;</span><span class="ot">&#39;a</span> <span class="dt">str</span><span class="op">,</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    hair_color<span class="op">:</span> <span class="dt">Option</span><span class="op">&lt;&amp;</span><span class="ot">&#39;a</span> <span class="dt">str</span><span class="op">&gt;,</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> new_users <span class="op">=</span> <span class="pp">vec!</span>[</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    NewUser <span class="op">{</span> name<span class="op">:</span> <span class="st">&quot;Sean&quot;</span><span class="op">,</span> hair_color<span class="op">:</span> <span class="cn">Some</span>(<span class="st">&quot;Black&quot;</span>) <span class="op">},</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    NewUser <span class="op">{</span> name<span class="op">:</span> <span class="st">&quot;Gordon&quot;</span><span class="op">,</span> hair_color<span class="op">:</span> <span class="cn">None</span> <span class="op">},</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>]<span class="op">;</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>insert_into(users)</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span>values(<span class="op">&amp;</span>new_users)</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span>execute(<span class="op">&amp;</span><span class="kw">mut</span> connection)<span class="op">;</span></span></code></pre></div>
 </div>
 </div>
 <div class="demo__example">
@@ -332,25 +398,29 @@ Rust code
 <div class="browser-bar">
 Executed SQL
 </div>
-<div class="sourceCode" id="cb10"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> users (name, hair_color) <span class="kw">VALUES</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true"></a>  (<span class="st">&#39;Sean&#39;</span>, <span class="st">&#39;Black&#39;</span>),</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true"></a>  (<span class="st">&#39;Gordon&#39;</span>, <span class="kw">DEFAULT</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode sql"><code class="sourceCode sql"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> users (name, hair_color) <span class="kw">VALUES</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  (<span class="st">&#39;Sean&#39;</span>, <span class="st">&#39;Black&#39;</span>),</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  (<span class="st">&#39;Gordon&#39;</span>, <span class="kw">DEFAULT</span>)</span></code></pre></div>
 </div>
 </div>
-<p>If you need data from the rows you inserted, just change <code>execute</code> to <code>get_result</code> or <code>get_results</code>. Diesel will take care of the rest.</p>
+<p>If you need data from the rows you inserted, just change
+<code>execute</code> to <code>get_result</code> or
+<code>get_results</code>. Diesel will take care of the rest.</p>
 <div class="demo__example">
 <div class="demo__example-browser">
 <div class="browser-bar">
 Rust code
 </div>
-<div class="sourceCode" id="cb11"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true"></a><span class="kw">let</span> new_users <span class="op">=</span> <span class="pp">vec!</span>[</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true"></a>    NewUser <span class="op">{</span> name<span class="op">:</span> <span class="st">&quot;Sean&quot;</span><span class="op">,</span> hair_color<span class="op">:</span> <span class="cn">Some</span>(<span class="st">&quot;Black&quot;</span>) <span class="op">},</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true"></a>    NewUser <span class="op">{</span> name<span class="op">:</span> <span class="st">&quot;Gordon&quot;</span><span class="op">,</span> hair_color<span class="op">:</span> <span class="cn">None</span> <span class="op">},</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true"></a>]<span class="op">;</span></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true"></a></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true"></a><span class="kw">let</span> inserted_users <span class="op">=</span> insert_into(users)</span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true"></a>    <span class="op">.</span>values(<span class="op">&amp;</span>new_users)</span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true"></a>    <span class="op">.</span><span class="pp">get_results::</span><span class="op">&lt;</span>User<span class="op">&gt;</span>(<span class="op">&amp;</span><span class="kw">mut</span> connection)<span class="op">;</span></span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre
+class="sourceCode rust"><code class="sourceCode rust"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> new_users <span class="op">=</span> <span class="pp">vec!</span>[</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    NewUser <span class="op">{</span> name<span class="op">:</span> <span class="st">&quot;Sean&quot;</span><span class="op">,</span> hair_color<span class="op">:</span> <span class="cn">Some</span>(<span class="st">&quot;Black&quot;</span>) <span class="op">},</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    NewUser <span class="op">{</span> name<span class="op">:</span> <span class="st">&quot;Gordon&quot;</span><span class="op">,</span> hair_color<span class="op">:</span> <span class="cn">None</span> <span class="op">},</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>]<span class="op">;</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> inserted_users <span class="op">=</span> insert_into(users)</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span>values(<span class="op">&amp;</span>new_users)</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="pp">get_results::</span><span class="op">&lt;</span>User<span class="op">&gt;</span>(<span class="op">&amp;</span><span class="kw">mut</span> connection)<span class="op">;</span></span></code></pre></div>
 </div>
 </div>
 <div class="demo__example">
@@ -358,22 +428,26 @@ Rust code
 <div class="browser-bar">
 Executed SQL
 </div>
-<div class="sourceCode" id="cb12"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> users (name, hair_color) <span class="kw">VALUES</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true"></a>  (<span class="st">&#39;Sean&#39;</span>, <span class="st">&#39;Black&#39;</span>),</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true"></a>  (<span class="st">&#39;Gordon&#39;</span>, <span class="kw">DEFAULT</span>)</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true"></a>  <span class="kw">RETURNING</span> <span class="op">*</span></span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre
+class="sourceCode sql"><code class="sourceCode sql"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> users (name, hair_color) <span class="kw">VALUES</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  (<span class="st">&#39;Sean&#39;</span>, <span class="st">&#39;Black&#39;</span>),</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  (<span class="st">&#39;Gordon&#39;</span>, <span class="kw">DEFAULT</span>)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">RETURNING</span> <span class="op">*</span></span></code></pre></div>
 </div>
 </div>
 </div>
-<div id="updating_data" class="js-vertical-tab-content vertical-tab-content">
-<p>Diesel’s codegen can generate several ways to update a row, letting you encapsulate your logic in the way that makes sense for your app.</p>
+<div id="updating_data"
+class="js-vertical-tab-content vertical-tab-content">
+<p>Diesel’s codegen can generate several ways to update a row, letting
+you encapsulate your logic in the way that makes sense for your app.</p>
 <div class="demo__example">
 <div class="demo__example-browser">
 <div class="browser-bar">
 Modifying a struct
 </div>
-<div class="sourceCode" id="cb13"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true"></a>post<span class="op">.</span>published <span class="op">=</span> <span class="cn">true</span><span class="op">;</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true"></a>post<span class="op">.</span>save_changes(<span class="op">&amp;</span><span class="kw">mut</span> connection)<span class="op">;</span></span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre
+class="sourceCode rust"><code class="sourceCode rust"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>post<span class="op">.</span>published <span class="op">=</span> <span class="cn">true</span><span class="op">;</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>post<span class="op">.</span>save_changes(<span class="op">&amp;</span><span class="kw">mut</span> connection)<span class="op">;</span></span></code></pre></div>
 </div>
 </div>
 <div class="demo__example">
@@ -381,9 +455,10 @@ Modifying a struct
 <div class="browser-bar">
 One-off batch changes
 </div>
-<div class="sourceCode" id="cb14"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true"></a>update(users<span class="op">.</span>filter(email<span class="op">.</span>like(<span class="st">&quot;%@spammer.com&quot;</span>)))</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true"></a>    <span class="op">.</span>set(banned<span class="op">.</span>eq(<span class="cn">true</span>))</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true"></a>    <span class="op">.</span>execute(<span class="op">&amp;</span><span class="kw">mut</span> connection)</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre
+class="sourceCode rust"><code class="sourceCode rust"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>update(users<span class="op">.</span>filter(email<span class="op">.</span>like(<span class="st">&quot;%@spammer.com&quot;</span>)))</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span>set(banned<span class="op">.</span>eq(<span class="cn">true</span>))</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span>execute(<span class="op">&amp;</span><span class="kw">mut</span> connection)</span></code></pre></div>
 </div>
 </div>
 <div class="demo__example">
@@ -391,83 +466,136 @@ One-off batch changes
 <div class="browser-bar">
 Using a struct for encapsulation
 </div>
-<div class="sourceCode" id="cb15"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true"></a>update(<span class="pp">Settings::</span>belonging_to(current_user))</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true"></a>    <span class="op">.</span>set(<span class="op">&amp;</span>settings_form)</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true"></a>    <span class="op">.</span>execute(<span class="op">&amp;</span><span class="kw">mut</span> connection)</span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre
+class="sourceCode rust"><code class="sourceCode rust"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>update(<span class="pp">Settings::</span>belonging_to(current_user))</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span>set(<span class="op">&amp;</span>settings_form)</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span>execute(<span class="op">&amp;</span><span class="kw">mut</span> connection)</span></code></pre></div>
 </div>
 </div>
 </div>
 <div id="raw_sql" class="js-vertical-tab-content vertical-tab-content">
-<p>There will always be certain queries that are just easier to write as raw SQL, or can’t be expressed with the query builder. Even in these cases, Diesel provides an easy to use API for writing raw SQL.</p>
+<p>There will always be certain queries that are just easier to write as
+raw SQL, or can’t be expressed with the query builder. Even in these
+cases, Diesel provides an easy to use API for writing raw SQL.</p>
 <div class="demo__example">
 <div class="demo__example-browser">
 <div class="browser-bar">
 Running raw SQL
 </div>
-<div class="sourceCode" id="cb16"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true"></a><span class="at">#[</span>derive<span class="at">(</span>QueryableByName<span class="at">)]</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true"></a><span class="at">#[</span>diesel<span class="at">(</span>table_name <span class="op">=</span> users<span class="at">)]</span></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true"></a><span class="kw">struct</span> User <span class="op">{</span></span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true"></a>    id<span class="op">:</span> <span class="dt">i32</span><span class="op">,</span></span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true"></a>    name<span class="op">:</span> <span class="dt">String</span><span class="op">,</span></span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true"></a>    organization_id<span class="op">:</span> <span class="dt">i32</span><span class="op">,</span></span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true"></a><span class="op">}</span></span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true"></a></span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true"></a><span class="co">// Using `include_str!` allows us to keep the SQL in a</span></span>
-<span id="cb16-10"><a href="#cb16-10" aria-hidden="true"></a><span class="co">// separate file, where our editor can give us SQL specific</span></span>
-<span id="cb16-11"><a href="#cb16-11" aria-hidden="true"></a><span class="co">// syntax highlighting.</span></span>
-<span id="cb16-12"><a href="#cb16-12" aria-hidden="true"></a>sql_query(<span class="pp">include_str!</span>(<span class="st">&quot;complex_users_by_organization.sql&quot;</span>))</span>
-<span id="cb16-13"><a href="#cb16-13" aria-hidden="true"></a>    <span class="op">.</span><span class="pp">bind::</span><span class="op">&lt;</span>Integer<span class="op">,</span> _<span class="op">&gt;</span>(organization_id)</span>
-<span id="cb16-14"><a href="#cb16-14" aria-hidden="true"></a>    <span class="op">.</span><span class="pp">bind::</span><span class="op">&lt;</span>BigInt<span class="op">,</span> _<span class="op">&gt;</span>(offset)</span>
-<span id="cb16-15"><a href="#cb16-15" aria-hidden="true"></a>    <span class="op">.</span><span class="pp">bind::</span><span class="op">&lt;</span>BigInt<span class="op">,</span> _<span class="op">&gt;</span>(limit)</span>
-<span id="cb16-16"><a href="#cb16-16" aria-hidden="true"></a>    <span class="op">.</span><span class="pp">load::</span><span class="op">&lt;</span>User<span class="op">&gt;</span>(<span class="op">&amp;</span><span class="kw">mut</span> conn)<span class="op">?;</span></span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre
+class="sourceCode rust"><code class="sourceCode rust"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="at">#[</span>derive<span class="at">(</span>QueryableByName<span class="at">)]</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="at">#[</span>diesel<span class="at">(</span>table_name <span class="op">=</span> users<span class="at">)]</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> User <span class="op">{</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    id<span class="op">:</span> <span class="dt">i32</span><span class="op">,</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    name<span class="op">:</span> <span class="dt">String</span><span class="op">,</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>    organization_id<span class="op">:</span> <span class="dt">i32</span><span class="op">,</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="co">// Using `include_str!` allows us to keep the SQL in a</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="co">// separate file, where our editor can give us SQL specific</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="co">// syntax highlighting.</span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>sql_query(<span class="pp">include_str!</span>(<span class="st">&quot;complex_users_by_organization.sql&quot;</span>))</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="pp">bind::</span><span class="op">&lt;</span>Integer<span class="op">,</span> _<span class="op">&gt;</span>(organization_id)</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="pp">bind::</span><span class="op">&lt;</span>BigInt<span class="op">,</span> _<span class="op">&gt;</span>(offset)</span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="pp">bind::</span><span class="op">&lt;</span>BigInt<span class="op">,</span> _<span class="op">&gt;</span>(limit)</span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="pp">load::</span><span class="op">&lt;</span>User<span class="op">&gt;</span>(<span class="op">&amp;</span><span class="kw">mut</span> conn)<span class="op">?;</span></span></code></pre></div>
 </div>
 </div>
 </div>
-<div id="popular_projects_using_diesel" class="js-vertical-tab-content vertical-tab-content">
+<div id="popular_projects_using_diesel"
+class="js-vertical-tab-content vertical-tab-content">
 <section id="crates.io" class="no-anchor community-project">
-<h3 class="no-anchor"><a href="#crates.io" class="anchor" aria-hidden="true"></a><a href="https://github.com/rust-lang/crates.io">crates.io</a></h3>
+<h3 class="no-anchor"><a href="#crates.io" class="anchor"
+aria-hidden="true"></a><a
+href="https://github.com/rust-lang/crates.io">crates.io</a></h3>
 <p><img src="assets/images/crates_io.png" style="height:5em" /></p>
-<p>crates.io serves as a central registry for sharing “crates”, which are packages or libraries written in Rust that you can use to enhance your projects. This repository contains the source code and infrastructure for the crates.io website, including both frontend and backend components. It uses Diesel as central component to store crate metadata in a database.</p>
+<p>crates.io serves as a central registry for sharing “crates”, which
+are packages or libraries written in Rust that you can use to enhance
+your projects. This repository contains the source code and
+infrastructure for the crates.io website, including both frontend and
+backend components. It uses Diesel as central component to store crate
+metadata in a database.</p>
 </section>
 <section id="vaultwarden" class="no-anchor community-project">
-<h3 class="no-anchor"><a href="#vaultwarden" class="anchor" aria-hidden="true"></a><a href="https://github.com/dani-garcia/vaultwarden/">vaultwarden</a></h3>
-<p><img src="assets/images/vaultwarden-logo-auto.svg" style="height:5em" /></p>
-<p>Vaultwarden is a alternative server implementation of the Bitwarden Client API, written in Rust and compatible with official Bitwarden clients [disclaimer], perfect for self-hosted deployment where running the official resource-heavy service might not be ideal. Diesel is used to store sensitive data in their backend application.</p>
+<h3 class="no-anchor"><a href="#vaultwarden" class="anchor"
+aria-hidden="true"></a><a
+href="https://github.com/dani-garcia/vaultwarden/">vaultwarden</a></h3>
+<p><img src="assets/images/vaultwarden-logo-auto.svg"
+style="height:5em" /></p>
+<p>Vaultwarden is a alternative server implementation of the Bitwarden
+Client API, written in Rust and compatible with official Bitwarden
+clients [disclaimer], perfect for self-hosted deployment where running
+the official resource-heavy service might not be ideal. Diesel is used
+to store sensitive data in their backend application.</p>
 </section>
 <section id="lemmy" class="no-anchor community-project">
-<h3 class="no-anchor"><a href="#lemmy" class="anchor" aria-hidden="true"></a><a href="https://github.com/LemmyNet/lemmy/">lemmy</a></h3>
+<h3 class="no-anchor"><a href="#lemmy" class="anchor"
+aria-hidden="true"></a><a
+href="https://github.com/LemmyNet/lemmy/">lemmy</a></h3>
 <p><img src="assets/images/lemmy.svg" style="height:5em" /></p>
-<p>Lemmy is a link aggregator and forum for the fediverse. It’s similar to sites like Reddit, Lobste.rs, or Hacker News: you subscribe to forums you’re interested in, post links and discussions, then vote, and comment on them. It’s a well established software for the fediverse using Diesel in the backend.</p>
+<p>Lemmy is a link aggregator and forum for the fediverse. It’s similar
+to sites like Reddit, Lobste.rs, or Hacker News: you subscribe to forums
+you’re interested in, post links and discussions, then vote, and comment
+on them. It’s a well established software for the fediverse using Diesel
+in the backend.</p>
 </section>
-<p>Do you have found some cool project that should be linked here? Submit an issue <a href="https://github.com/sgrif/diesel.rs-website">here</a></p>
+<p>Do you have found some cool project that should be linked here?
+Submit an issue <a
+href="https://github.com/sgrif/diesel.rs-website">here</a></p>
 </div>
-<div id="community_extensions" class="js-vertical-tab-content vertical-tab-content">
-<p>The community has made some utilities to help make diesel even easier to work with!</p>
+<div id="community_extensions"
+class="js-vertical-tab-content vertical-tab-content">
+<p>The community has made some utilities to help make diesel even easier
+to work with!</p>
 <section id="dsync" class="no-anchor community-project">
-<h4 class="no-anchor"><a href="#dsync" class="anchor" aria-hidden="true"></a><a href="https://github.com/Wulf/dsync"><code>dsync</code></a> <a style="float:right" href="https://crates.io/crates/dsync"><img src="https://img.shields.io/crates/v/dsync.svg?style=for-the-badge" height="18" alt="License: MIT OR Apache-2.0" /></a></h4>
-<p>Generate rust structs &amp; query functions from diesel schema files.</p>
+<h4 class="no-anchor"><a href="#dsync" class="anchor"
+aria-hidden="true"></a><a
+href="https://github.com/Wulf/dsync"><code>dsync</code></a>
+<a style="float:right" href="https://crates.io/crates/dsync"><img src="https://img.shields.io/crates/v/dsync.svg?style=for-the-badge" height="18" alt="License: MIT OR Apache-2.0" /></a></h4>
+<p>Generate rust structs &amp; query functions from diesel schema
+files.</p>
 </section>
 <section id="diesel-logger" class="no-anchor community-project">
-<h4 class="no-anchor"><a href="#diesel-logger" class="anchor" aria-hidden="true"></a><a href="https://github.com/shssoichiro/diesel-logger"><code>diesel-logger</code></a> <a style="float:right" href="https://crates.io/crates/diesel-logger"><img src="https://img.shields.io/crates/v/diesel-logger.svg?style=for-the-badge" height="18" alt="License: MIT OR Apache-2.0" /></a></h4>
-<p>A generic diesel connection implementations that allows to log any executed query.</p>
+<h4 class="no-anchor"><a href="#diesel-logger" class="anchor"
+aria-hidden="true"></a><a
+href="https://github.com/shssoichiro/diesel-logger"><code>diesel-logger</code></a>
+<a style="float:right" href="https://crates.io/crates/diesel-logger"><img src="https://img.shields.io/crates/v/diesel-logger.svg?style=for-the-badge" height="18" alt="License: MIT OR Apache-2.0" /></a></h4>
+<p>A generic diesel connection implementations that allows to log any
+executed query.</p>
 </section>
 <section id="diesel-derive-enum" class="no-anchor community-project">
-<h4 class="no-anchor"><a href="#diesel-derive-enum" class="anchor" aria-hidden="true"></a><a href="http://github.com/adwhit/diesel-derive-enum"><code>diesel-derive-enum</code></a> <a style="float:right" href="https://crates.io/crates/diesel-derive-enum"><img src="https://img.shields.io/crates/v/diesel-derive-enum.svg?style=for-the-badge" height="18" alt="License: MIT OR Apache-2.0" /></a></h4>
+<h4 class="no-anchor"><a href="#diesel-derive-enum" class="anchor"
+aria-hidden="true"></a><a
+href="http://github.com/adwhit/diesel-derive-enum"><code>diesel-derive-enum</code></a>
+<a style="float:right" href="https://crates.io/crates/diesel-derive-enum"><img src="https://img.shields.io/crates/v/diesel-derive-enum.svg?style=for-the-badge" height="18" alt="License: MIT OR Apache-2.0" /></a></h4>
 <p>Use Rust enums directly with diesel.</p>
 </section>
 <section id="diesel-oci" class="no-anchor community-project">
-<h4 class="no-anchor"><a href="#diesel-oci" class="anchor" aria-hidden="true"></a><a href="https://github.com/GiGainfosystems/diesel-oci"><code>diesel-oci</code></a> <a style="float:right" href="https://crates.io/crates/diesel-oci"><img src="https://img.shields.io/crates/v/diesel-oci.svg?style=for-the-badge" height="18" alt="License: MIT OR Apache-2.0" /></a></h4>
-<p>A diesel backend and connection implementation for oracles database system.</p>
+<h4 class="no-anchor"><a href="#diesel-oci" class="anchor"
+aria-hidden="true"></a><a
+href="https://github.com/GiGainfosystems/diesel-oci"><code>diesel-oci</code></a>
+<a style="float:right" href="https://crates.io/crates/diesel-oci"><img src="https://img.shields.io/crates/v/diesel-oci.svg?style=for-the-badge" height="18" alt="License: MIT OR Apache-2.0" /></a></h4>
+<p>A diesel backend and connection implementation for oracles database
+system.</p>
 </section>
 <section id="rsfbclient-diesel" class="no-anchor community-project">
-<h4 class="no-anchor"><a href="#rsfbclient-diesel" class="anchor" aria-hidden="true"></a><a href="https://github.com/fernandobatels/rsfbclient"><code>rsfbclient-diesel</code></a> <a style="float:right" href="https://crates.io/crates/rsfbclient-diesel"><img src="https://img.shields.io/crates/v/rsfbclient-diesel.svg?style=for-the-badge" height="18" alt="License: MIT" /></a></h4>
-<p>A diesel backend and connection implementation for the Firebird database system.</p>
+<h4 class="no-anchor"><a href="#rsfbclient-diesel" class="anchor"
+aria-hidden="true"></a><a
+href="https://github.com/fernandobatels/rsfbclient"><code>rsfbclient-diesel</code></a>
+<a style="float:right" href="https://crates.io/crates/rsfbclient-diesel"><img src="https://img.shields.io/crates/v/rsfbclient-diesel.svg?style=for-the-badge" height="18" alt="License: MIT" /></a></h4>
+<p>A diesel backend and connection implementation for the Firebird
+database system.</p>
 </section>
 <section id="diesel-async" class="no-anchor community-project">
-<h4 class="no-anchor"><a href="#diesel-async" class="anchor" aria-hidden="true"></a><a href="https://github.com/weiznich/diesel_async"><code>diesel-async</code></a> <a style="float:right" href="https://crates.io/crates/diesel-async"><img src="https://img.shields.io/crates/v/diesel-async.svg?style=for-the-badge" height="18" alt="License: AGPL3+" /></a></h4>
-<p>An experimental async diesel connection implementation for PostgreSQL and MySQL.</p>
+<h4 class="no-anchor"><a href="#diesel-async" class="anchor"
+aria-hidden="true"></a><a
+href="https://github.com/weiznich/diesel_async"><code>diesel-async</code></a>
+<a style="float:right" href="https://crates.io/crates/diesel-async"><img src="https://img.shields.io/crates/v/diesel-async.svg?style=for-the-badge" height="18" alt="License: AGPL3+" /></a></h4>
+<p>An experimental async diesel connection implementation for PostgreSQL
+and MySQL.</p>
 </section>
-<p>Something missing? Submit an issue <a href="https://github.com/sgrif/diesel.rs-website">here</a>.</p>
+<p>Something missing? Submit an issue <a
+href="https://github.com/sgrif/diesel.rs-website">here</a>.</p>
 </div>
 </div>
 </div>
