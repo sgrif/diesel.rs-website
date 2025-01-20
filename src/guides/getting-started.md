@@ -209,7 +209,7 @@ If you are unsure how to configure these dependencies checkout [diesel CI](https
 
 Diesel-cli also offers features to build and statically link these libraries during `cargo install`. Use the `postgres-bundled`, `mysql-bundled` and `sqlite-bundled` feature flags for this. You need to provide the build dependencies for these libraries in that case. This involves a C compiler for all of them and for mysql cmake + a C++ compiler. In turn it might simplify your setup process.
 
-There are no `*-bundled` features for diesel itself. If you want to utilise static linking there as well you need to add a dependency on the relevant sys crate (`pq-sy` for PostgreSQL, `mysqlclient-sys` for MySQL and `libsqlite3-sys` for SQLite) and enable the `bundled` feature for this crate. See the uncommented lines in the example `Cargo.toml` files above for the corresponding setup.
+There are no `*-bundled` features for diesel itself. If you want to utilise static linking there as well you need to add a dependency on the relevant sys crate (`pq-sys` for PostgreSQL, `mysqlclient-sys` for MySQL and `libsqlite3-sys` for SQLite) and enable the `bundled` feature for this crate. See the uncommented lines in the example `Cargo.toml` files above for the corresponding setup.
 :::
 </aside>
 
@@ -1018,7 +1018,7 @@ Published post Diesel demo
 ```
 
 Additionally, let's implement a possibility of fetching a single post. We will display the post id with its title.
-Notice [`.optional()`] call. This returns `Option<Post>` instead of throwing an error, which we can then use in our matching pattern. For additional methods to modify the constructed select statements refer to the [`documentation` of `QueryDsl`]
+Notice the [`.optional()`] call. This returns `Option<Post>` instead of throwing an error, which we can then use in our matching pattern. For additional methods to modify the constructed select statements refer to the [`documentation` of `QueryDsl`]
 
 
 [`.optional()`]: https://docs.diesel.rs/2.2.x/diesel/result/trait.OptionalExtension.html#tymethod.optional
