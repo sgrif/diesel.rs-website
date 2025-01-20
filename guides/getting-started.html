@@ -344,11 +344,12 @@ C compiler for all of them and for mysql cmake + a C++ compiler. In turn
 it might simplify your setup process.</p>
 <p>There are no <code>*-bundled</code> features for diesel itself. If
 you want to utilise static linking there as well you need to add a
-dependency on the relevant sys crate (<code>pq-sy</code> for PostgreSQL,
-<code>mysqlclient-sys</code> for MySQL and <code>libsqlite3-sys</code>
-for SQLite) and enable the <code>bundled</code> feature for this crate.
-See the uncommented lines in the example <code>Cargo.toml</code> files
-above for the corresponding setup.</p>
+dependency on the relevant sys crate (<code>pq-sys</code> for
+PostgreSQL, <code>mysqlclient-sys</code> for MySQL and
+<code>libsqlite3-sys</code> for SQLite) and enable the
+<code>bundled</code> feature for this crate. See the uncommented lines
+in the example <code>Cargo.toml</code> files above for the corresponding
+setup.</p>
 </div>
 </aside>
 <h2 id="setup-diesel-for-your-project"><a
@@ -1446,7 +1447,7 @@ class="sourceCode rust"><code class="sourceCode rust"><span id="cb57-1"><a href=
    Running `target/debug/publish_post 1`
 Published post Diesel demo</code></pre>
 <p>Additionally, let’s implement a possibility of fetching a single
-post. We will display the post id with its title. Notice <a
+post. We will display the post id with its title. Notice the <a
 href="https://docs.diesel.rs/2.2.x/diesel/result/trait.OptionalExtension.html#tymethod.optional"><code>.optional()</code></a>
 call. This returns <code>Option&lt;Post&gt;</code> instead of throwing
 an error, which we can then use in our matching pattern. For additional
