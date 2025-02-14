@@ -491,9 +491,18 @@ A diesel backend and connection implementation for the Firebird database system.
 
 ::: {.community-project}
 
-#### [`diesel-async`](https://github.com/weiznich/diesel_async) <a style="float:right" href="https://crates.io/crates/diesel-async"><img src="https://img.shields.io/crates/v/diesel-async.svg?style=for-the-badge" height="18" alt="License: AGPL3+" /></a> {.no-anchor}
+#### [`diesel-async`](https://github.com/weiznich/diesel_async) <a style="float:right" href="https://crates.io/crates/diesel-async"><img src="https://img.shields.io/crates/v/diesel-async.svg?style=for-the-badge" height="18" alt="License: MIT OR Apache-2+" /></a> {.no-anchor}
 
-An experimental async diesel connection implementation for PostgreSQL and MySQL.
+An async diesel connection implementation for PostgreSQL and MySQL.
+
+:::
+
+::: {.community-project}
+
+#### [`jiff-diesel`](https://crates.io/crates/jiff-diesel) <a style="float:right" href="https://crates.io/crates/jiff-diesel"><img src="https://img.shields.io/crates/v/jiff-diesel.svg?style=for-the-badge" height="18" alt="License:  Unlicense OR MIT" /></a> {.no-anchor}
+
+A helper crate to integrate `jiff` datetime types with diesel.
+
 
 :::
 
