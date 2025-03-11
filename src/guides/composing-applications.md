@@ -13,14 +13,14 @@ include-after: |
 One of the main benefits of using a query builder over raw SQL
 is that you can pull bits of your query out into functions and reuse them.
 In this guide,
-we'll look at common patterns for extracting your code into re-usable pieces.
-We'll also look at best practices for how to structure your code.
+we'll look at common patterns for extracting your code into reusable pieces.
+We'll also look at best practices for structuring your code.
 
 All of our code examples are based on code from [crates.io](https://github.com/rust-lang/crates.io/),
-a real world application which uses Diesel extensively.
+a real-world application that uses Diesel extensively.
 All of our examples will be focused on functions which *return*
 queries or pieces of queries.
-None of these examples will include a function which takes a database
+None of these examples will include a function that takes a database
 connection.
 We will go into the benefits of this structure at the end of the guide.
 
@@ -85,8 +85,8 @@ where
 :::
 
 The [`AsExpression`](https://docs.diesel.rs/2.2.x/diesel/dsl/index.html) trait describes any type that 
-can be converted to a expression of the SQL type `Text`. In this particular case it extends to function to 
-accept `String`, `Cow<str>` and any SQL side text expression (e.g. `crates::name`) as argument.
+can be converted to an expression of the SQL type `Text`. In this particular case it extends to function to 
+accept `String`, `Cow<str>` and any SQL side text expression (e.g. `crates::name`) as an argument.
 
 It's up to you whether you make your functions generic,
 or only take a single type.
@@ -136,7 +136,7 @@ In order to use [`BoxableExpression`], Diesel needs to know three things:
 - The backend you plan to execute it against
 - The SQL type it represents
 
-This is all the information Diesel uses to type check your query.
+This is all the information Diesel uses to type-check your query.
 Normally we can get this information from the type,
 but since we've erased the type by boxing,
 we have to supply it.
@@ -310,11 +310,11 @@ impl Crate {
 In this case the `#[auto_type]` macro needs additional type expressions to work correctly.
 
 Note that in all of our examples,
-we are writing functions which *return* queries or expressions.
+we are writing functions that *return* queries or expressions.
 None of these functions execute the query.
-In general you should always prefer functions which return queries,
-and avoid functions which take a connection as an argument.
-This allows you to re-use and compose your queries.
+In general, you should always prefer functions that return queries,
+and avoid functions that take a connection as an argument.
+This allows you to reuse and compose your queries.
 
 For example, if we had written our `by_name` function like this:
 
