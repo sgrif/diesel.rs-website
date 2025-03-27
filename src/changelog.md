@@ -2174,20 +2174,20 @@ queries or set `PIPES_AS_CONCAT` manually.
 [1.4.6]: https://github.com/diesel-rs/diesel/compare/v1.4.5...v1.4.6
 [1.4.7]: https://github.com/diesel-rs/diesel/compare/v1.4.6...v1.4.7
 [1.4.8]: https://github.com/diesel-rs/diesel/compare/v1.4.7...v1.4.8
-[2.0.0]: https://github.com/diesel-rs/diesel/compare/v.1.4.0...v2.0.0
-[2.0.1]: https://github.com/diesel-rs/diesel/compare/v.2.0.0...v2.0.1
-[2.0.2]: https://github.com/diesel-rs/diesel/compare/v.2.0.1...v2.0.2
-[diesel_derives 2.0.2]: https://github.com/diesel-rs/diesel/compare/v.2.0.2...diesel_derives_v2.0.2
-[2.0.3]: https://github.com/diesel-rs/diesel/compare/v.2.0.2...v2.0.3
-[2.0.4]: https://github.com/diesel-rs/diesel/compare/v.2.0.3...v2.0.4
-[2.1.0]: https://github.com/diesel-rs/diesel/compare/v.2.0.0...v2.1.0
-[2.1.1]: https://github.com/diesel-rs/diesel/compare/v.2.1.0...v2.1.1
-[2.1.2]: https://github.com/diesel-rs/diesel/compare/v.2.1.1...v2.1.2
-[2.1.3]: https://github.com/diesel-rs/diesel/compare/v.2.1.2...v2.1.3
-[2.1.4]: https://github.com/diesel-rs/diesel/compare/v.2.1.3...v2.1.4
-[2.1.5]: https://github.com/diesel-rs/diesel/compare/v.2.1.4...v2.1.5
-[2.1.6]: https://github.com/diesel-rs/diesel/compare/v.2.1.5...v2.1.6
-[2.2.0]: https://github.com/diesel-rs/diesel/compare/v.2.1.0...v2.2.0
+[2.0.0]: https://github.com/diesel-rs/diesel/compare/v1.4.0...v2.0.0
+[2.0.1]: https://github.com/diesel-rs/diesel/compare/v2.0.0...v2.0.1
+[2.0.2]: https://github.com/diesel-rs/diesel/compare/v2.0.1...v2.0.2
+[diesel_derives 2.0.2]: https://github.com/diesel-rs/diesel/compare/v2.0.2...diesel_derives_v2.0.2
+[2.0.3]: https://github.com/diesel-rs/diesel/compare/v2.0.2...v2.0.3
+[2.0.4]: https://github.com/diesel-rs/diesel/compare/v2.0.3...v2.0.4
+[2.1.0]: https://github.com/diesel-rs/diesel/compare/v2.0.0...v2.1.0
+[2.1.1]: https://github.com/diesel-rs/diesel/compare/v2.1.0...v2.1.1
+[2.1.2]: https://github.com/diesel-rs/diesel/compare/v2.1.1...v2.1.2
+[2.1.3]: https://github.com/diesel-rs/diesel/compare/v2.1.2...v2.1.3
+[2.1.4]: https://github.com/diesel-rs/diesel/compare/v2.1.3...v2.1.4
+[2.1.5]: https://github.com/diesel-rs/diesel/compare/v2.1.4...v2.1.5
+[2.1.6]: https://github.com/diesel-rs/diesel/compare/v2.1.5...v2.1.6
+[2.2.0]: https://github.com/diesel-rs/diesel/compare/v2.1.0...v2.2.0
 [2.2.1]: https://github.com/diesel-rs/diesel/compare/v2.2.0...v2.2.1
 [2.2.2]: https://github.com/diesel-rs/diesel/compare/v2.2.1...v2.2.2
 [2.2.3]: https://github.com/diesel-rs/diesel/compare/v2.2.2...v2.2.3
