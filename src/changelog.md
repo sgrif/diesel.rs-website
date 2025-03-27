@@ -20,6 +20,83 @@ Increasing the minimal supported Rust version will always be coupled at least wi
 
 ## Unreleased
 
+## [2.2.8] 2025-03-03
+
+### Fixed
+
+* Allow `#[diesel(check_for_backend(_))]` to check fields with `#[diesel(embed)]` annotations
+* Improve custom compile error message around `CompatibleType`
+* Fix a bug that restricted the number of allowed columns in `COPY FROM` statements to 12
+* Expose some SqliteValue helper functions
+* Use consistent whitespace in `ASC`/`DESC`, `DISTINCT ON`, and `DELETE FROM` clauses
+
+## [2.2.7] 2025-01-31
+
+### Fixed
+
+* Fixed diesel thinking `a.eq_any(b)` was non-nullable even if `a` and `b` were nullable.
+* Generate `InstrumentationEvent::BeginTransaction` for immediate and exclusive transactions in SQLite
+* Minimize the amount of duplicated code generated for `diesel::debug_query`
+* Updated `ipnetwork` to allow version 0.21.
+* Updated `libsqlite3-sys` to allow version 0.31.0
+* Updated `pq-sys` to allow version 0.7.0
+* Add support for numeric operators (+-*/) in `#[diesel::auto_type]`
+* Add support for joins to sub-jons to aliases
+
+## [2.2.6] 2024-12-03
+
+### Fixed 
+
+* Remove more mentions of gitter from the documentation
+
+## [2.2.5] 2024-11-21
+
+### Fixed
+
+* Add a typedef for `Returning` and `Count` so that `#[auto_type]` works with such queries
+* Fixed an issue that allowed to pass non-boolean expressions to `.and()` and `.or()` which would
+  result in queries failing at runtime
+* Officially deprecating the gitter room
+
+### Removed
+
+* Do not mention the gitter channel in our docs anymore
+
+## [2.2.4] 2024-09-03
+
+### Fixed
+
+* Fix an issue where empty queries could trigger undefined behaviour in the sqlite backend
+
+## [2.2.3] 2024-08-23
+
+### Fixed
+
+* Support for libsqlite3-sys 0.30.0
+* Fixed a possible vulnerability in how Diesel handled protocol level bind parameters. 
+  See the [SQL Injection isn't Dead: Smuggling Queries at Protocol Level](http://web.archive.org/web/20240812130923/https://media.defcon.org/DEF%20CON%2032/DEF%20CON%2032%20presentations/DEF%20CON%2032%20-%20Paul%20Gerste%20-%20SQL%20Injection%20Isn't%20Dead%20Smuggling%20Queries%20at%20the%20Protocol%20Level.pdf>) presentation from DEF CON for details
+* Fixed an issue with a possibly ambiguous trait resolution in `#[derive(QueryableByName)]`
+
+## [2.2.2] 2024-07-19
+
+### Fixed
+
+* Support for libsqlite3-sys 0.29.0
+* Fixed a potential panic in the sqlite cursor implementation
+* Fixed support for rust numeric operators with columns of the type `Numeric`
+* Removed the `SerializedDatabase::new` function due to unsoundness
+
+## [2.2.1] 2024-06-12
+
+## Fixed
+
+* Fixed using `#[dsl::auto_type]` with functions that accept reference arguments
+* Fixed using `#[derive(Queryable)]` with structs that use a type named `Row` as field type
+* Fixed a regression that prevented using `mysqlclient-sys` 0.2.x with diesel 2.2
+* Fixed connecting to postgres database using the scram-sha-256 authentication method on windows while using the bundled postgres builds
+* Improved the error messages in diesel-cli for cases where a file/folder was not found
+* Fixed several version detection bugs in mysqlclient-sys to use pre-generated bindings in more situations
+
 ## [2.2.0] 2024-05-31
 
 ### Added
@@ -2097,19 +2174,27 @@ queries or set `PIPES_AS_CONCAT` manually.
 [1.4.6]: https://github.com/diesel-rs/diesel/compare/v1.4.5...v1.4.6
 [1.4.7]: https://github.com/diesel-rs/diesel/compare/v1.4.6...v1.4.7
 [1.4.8]: https://github.com/diesel-rs/diesel/compare/v1.4.7...v1.4.8
-[2.0.0]: https://github.com/diesel-rs/diesel/compare/v.1.4.0...v2.0.0
-[2.0.1]: https://github.com/diesel-rs/diesel/compare/v.2.0.0...v2.0.1
-[2.0.2]: https://github.com/diesel-rs/diesel/compare/v.2.0.1...v2.0.2
-[diesel_derives 2.0.2]: https://github.com/diesel-rs/diesel/compare/v.2.0.2...diesel_derives_v2.0.2
-[2.0.3]: https://github.com/diesel-rs/diesel/compare/v.2.0.2...v2.0.3
-[2.0.4]: https://github.com/diesel-rs/diesel/compare/v.2.0.3...v2.0.4
-[2.1.0]: https://github.com/diesel-rs/diesel/compare/v.2.0.0...v2.1.0
-[2.1.1]: https://github.com/diesel-rs/diesel/compare/v.2.1.0...v2.1.1
-[2.1.2]: https://github.com/diesel-rs/diesel/compare/v.2.1.1...v2.1.2
-[2.1.3]: https://github.com/diesel-rs/diesel/compare/v.2.1.2...v2.1.3
-[2.1.4]: https://github.com/diesel-rs/diesel/compare/v.2.1.3...v2.1.4
-[2.1.5]: https://github.com/diesel-rs/diesel/compare/v.2.1.4...v2.1.5
-[2.1.6]: https://github.com/diesel-rs/diesel/compare/v.2.1.5...v2.1.6
-[2.2.0]: https://github.com/diesel-rs/diesel/compare/v.2.1.0...v2.2.0
+[2.0.0]: https://github.com/diesel-rs/diesel/compare/v1.4.0...v2.0.0
+[2.0.1]: https://github.com/diesel-rs/diesel/compare/v2.0.0...v2.0.1
+[2.0.2]: https://github.com/diesel-rs/diesel/compare/v2.0.1...v2.0.2
+[diesel_derives 2.0.2]: https://github.com/diesel-rs/diesel/compare/v2.0.2...diesel_derives_v2.0.2
+[2.0.3]: https://github.com/diesel-rs/diesel/compare/v2.0.2...v2.0.3
+[2.0.4]: https://github.com/diesel-rs/diesel/compare/v2.0.3...v2.0.4
+[2.1.0]: https://github.com/diesel-rs/diesel/compare/v2.0.0...v2.1.0
+[2.1.1]: https://github.com/diesel-rs/diesel/compare/v2.1.0...v2.1.1
+[2.1.2]: https://github.com/diesel-rs/diesel/compare/v2.1.1...v2.1.2
+[2.1.3]: https://github.com/diesel-rs/diesel/compare/v2.1.2...v2.1.3
+[2.1.4]: https://github.com/diesel-rs/diesel/compare/v2.1.3...v2.1.4
+[2.1.5]: https://github.com/diesel-rs/diesel/compare/v2.1.4...v2.1.5
+[2.1.6]: https://github.com/diesel-rs/diesel/compare/v2.1.5...v2.1.6
+[2.2.0]: https://github.com/diesel-rs/diesel/compare/v2.1.0...v2.2.0
+[2.2.1]: https://github.com/diesel-rs/diesel/compare/v2.2.0...v2.2.1
+[2.2.2]: https://github.com/diesel-rs/diesel/compare/v2.2.1...v2.2.2
+[2.2.3]: https://github.com/diesel-rs/diesel/compare/v2.2.2...v2.2.3
+[2.2.4]: https://github.com/diesel-rs/diesel/compare/v2.2.3...v2.2.4
+[2.2.5]: https://github.com/diesel-rs/diesel/compare/v2.2.4...v2.2.5
+[2.2.6]: https://github.com/diesel-rs/diesel/compare/v2.2.5...v2.2.6
+[2.2.7]: https://github.com/diesel-rs/diesel/compare/v2.2.6...v2.2.7
+[2.2.8]: https://github.com/diesel-rs/diesel/compare/v2.2.7...v2.2.8
 :::
 :::
