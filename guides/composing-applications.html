@@ -417,7 +417,7 @@ src/models/krate.rs
 <a class = "btn-demo-example" href = "https://github.com/rust-lang/crates.io/blob/12e75f1a0480f86b7b2efc76e155f449b3be9287/src/models/krate.rs#L172-L177">View on GitHub</a>
 <div class="sourceCode" id="cb8"><pre
 class="sourceCode rust"><code class="sourceCode rust"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">impl</span> Crate <span class="op">{</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">#[</span><span class="pp">diesel::dsl::</span>auto_type<span class="at">(</span>no_type_alias<span class="at">)]</span>`</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">#[</span><span class="pp">diesel::dsl::</span>auto_type<span class="at">(</span>no_type_alias<span class="at">)]</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fn</span> by_name(name<span class="op">:</span> <span class="op">&amp;</span><span class="dt">str</span>) <span class="op">-&gt;</span> _ <span class="op">{</span></span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>        <span class="kw">let</span> all<span class="op">:</span> All <span class="op">=</span> <span class="pp">Crate::</span>all()<span class="op">;</span></span>
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>        <span class="kw">let</span> filter<span class="op">:</span> WithName<span class="op">&lt;</span><span class="ot">&#39;a</span><span class="op">&gt;</span> <span class="op">=</span> <span class="dt">Self</span><span class="pp">::</span>with_name(name)<span class="op">;</span></span>
