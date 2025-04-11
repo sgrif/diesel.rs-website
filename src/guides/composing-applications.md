@@ -296,7 +296,7 @@ infer the correct return type for you.
 
 ```rust
 impl Crate {
-    #[diesel::dsl::auto_type(no_type_alias)]`
+    #[diesel::dsl::auto_type(no_type_alias)]
     fn by_name(name: &str) -> _ {
         let all: All = Crate::all();
         let filter: WithName<'a> = Self::with_name(name);
