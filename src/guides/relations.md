@@ -423,7 +423,7 @@ println!("Book-Page pairs (including empty books): {book_without_pages:?}");
 ```
 :::
 
-This works similar to `QueryDsl::inner_join` with the notable difference that any column returned form a joined table is considered to be nullable. This has several consequences:
+This works similar to `QueryDsl::inner_join` with the notable difference that any column returned from a joined table is considered to be nullable. This has several consequences:
 
 * A query like `books::table.left_join(pages::table).load(conn)` returns `(Book, Option<Page>)` or any compatible type
 * Explicit calls to [`QueryDsl::select`](https://docs.diesel.rs/2.2.x/diesel/prelude/trait.QueryDsl.html#method.select) require
