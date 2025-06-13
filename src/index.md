@@ -61,7 +61,7 @@ Diesel is the most productive way to interact with databases in Rust because of 
 
 ::: {.feature-list__feature .type-safe}
 
-#### Preventing Runtime Errors {.feature__heading}
+#### Preventing Runtime Errors {.feature__heading .no-anchor}
 
 We don't want to waste time tracking down runtime errors.
 We achieve this by having
@@ -72,7 +72,7 @@ at compile time.
 
 ::: {.feature-list__feature .performance}
 
-#### Built for Performance {.feature__heading}
+#### Built for Performance {.feature__heading .no-anchor}
 
 Diesel offers a high level query builder and lets you think about your problems in Rust, not SQL.
 Our focus on zero-cost abstractions allows
@@ -82,7 +82,7 @@ Diesel to run your query and load your data even faster than C.
 
 ::: {.feature-list__feature .extensible}
 
-#### Productive and Extensible {.feature__heading}
+#### Productive and Extensible {.feature__heading .no-anchor}
 
 Unlike Active Record and other ORMs, Diesel is designed to be abstracted over.
 Diesel enables you to write reusable code
@@ -119,6 +119,7 @@ Still not sold? Have a look at an in-depth [comparison](/compare_diesel.html) wi
 [Inserting Data](javascript::void(0)){.js-vertical-tab .vertical-tab onclick="change_tab(event, 'inserting_data')"}
 [Updating Data](javascript::void(0)){.js-vertical-tab .vertical-tab
 onclick="change_tab(event, 'updating_data')"}
+[Ergonomic Multidatabase support](javascript::void(0)){.js-vertical-tab .vertical-tab onclick="change_tab(event, 'ergonomic_multidatabase')"}
 [Ergonomic Raw SQL](javascript::void(0)){.js-vertical-tab .vertical-tab onclick="change_tab(event, 'raw_sql')"}
 [Popular Projects using Diesel](javascript::void(0)){.js-vertical-tab .vertical-tab onclick="change_tab(event, 'popular_projects_using_diesel')"}
 [Community Extensions](javascript::void(0)){.js-vertical-tab .vertical-tab onclick="change_tab(event, 'community_extensions')"}
@@ -380,6 +381,36 @@ update(Settings::belonging_to(current_user))
 
 :::
 
+:::{#ergonomic_multidatabase .js-vertical-tab-content .vertical-tab-content}
+Diesel allows to ergonomically abstract over different database backends while keeping all of it's compile time guarantees.
+
+:::code-block
+[Ergonomic multidatabase abstractions](https://docs.diesel.rs/2.2.x/diesel/derive.MultiConnection.html)
+
+```rust
+#[derive(diesel::MultiConnection)]
+enum DatabaseConnection {
+    Sqlite(diesel::SqliteConnection),
+    Postgres(diesel::PgConnection),
+}
+
+let mut connection =
+    DatabaseConnection::establish("postgres://localhost/diesel")?;
+
+let all_users = users::table.load::<User>(connection)?;
+
+match connection {
+    DatabaseConnection::Sqlite(connection) => {
+        perform_sqlite_specific_query(connection)?;
+    }
+    DatabaseConnection::Postgres(connection) => {
+        perform_postgres_specific_query(connection)?;
+    }
+}
+```
+:::
+:::
+
 :::{#raw_sql .js-vertical-tab-content .vertical-tab-content}
 
 There will always be certain queries that are just easier to write as raw SQL, or can't be expressed with the query builder. Even in these cases, Diesel provides an easy to use API for writing raw SQL.
@@ -514,6 +545,26 @@ Something missing? Submit an issue [here](https://github.com/sgrif/diesel.rs-web
 :::
 
 :::
+:::
+
+::: 
+## Notable Sponsors and Supporters
+
+We would like to thank all of the sponsors supporting the work on Diesel. Notable large sponsors are:
+
+![[NLNet Foundation](https://nlnet.nl/project/Diesel/)](assets/images/nl_net_foundation_logo.svg){width=20em}
+
+![[NGI Zero Core](https://nlnet.nl/project/Diesel/)](assets/images/NGI0Core_tag.svg){width=20em}
+
+
+![[Prototype Fund](https://www.prototypefund.de/projects/diesel-databaseviews)](assets/images/PrototypeFund_logo_dark.png){width=20em}
+
+![[Federal Ministry of Research, Technology and Space (Germany)](https://www.prototypefund.de/projects/diesel-databaseviews)](assets/images/bmbf_logo.jpg){width=20em}
+
+![[GiGa Infosystems GmbH](https://giga-infosystems.com/)](assets/images/logo_giga.svg){width=20em}
+
+Additionally we would like to thank all persons sponsoring the project on [GitHub](https://github.com/sponsors/weiznich#sponsors). Without them developing Diesel wouldn't be possible.
+
 :::
 :::
 :::
