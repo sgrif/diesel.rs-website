@@ -168,16 +168,17 @@ href="#why-did-we-make-diesel" class="anchor" aria-hidden="true"></a>Why
 did we make Diesel?</h3>
 <!-- {.feature-list__heading section-heading} -->
 <section id="preventing-runtime-errors"
-class="feature__heading feature-list__feature type-safe">
-<h4 class="feature__heading"><a href="#preventing-runtime-errors"
-class="anchor" aria-hidden="true"></a>Preventing Runtime Errors</h4>
+class="feature__heading no-anchor feature-list__feature type-safe">
+<h4 class="feature__heading no-anchor"><a
+href="#preventing-runtime-errors" class="anchor"
+aria-hidden="true"></a>Preventing Runtime Errors</h4>
 <p>We don’t want to waste time tracking down runtime errors. We achieve
 this by having Diesel eliminate the possibility of incorrect database
 interactions at compile time.</p>
 </section>
 <section id="built-for-performance"
-class="feature__heading feature-list__feature performance">
-<h4 class="feature__heading"><a href="#built-for-performance"
+class="feature__heading no-anchor feature-list__feature performance">
+<h4 class="feature__heading no-anchor"><a href="#built-for-performance"
 class="anchor" aria-hidden="true"></a>Built for Performance</h4>
 <p>Diesel offers a high level query builder and lets you think about
 your problems in Rust, not SQL. Our focus on zero-cost abstractions
@@ -185,9 +186,10 @@ allows Diesel to run your query and load your data even faster than
 C.</p>
 </section>
 <section id="productive-and-extensible"
-class="feature__heading feature-list__feature extensible">
-<h4 class="feature__heading"><a href="#productive-and-extensible"
-class="anchor" aria-hidden="true"></a>Productive and Extensible</h4>
+class="feature__heading no-anchor feature-list__feature extensible">
+<h4 class="feature__heading no-anchor"><a
+href="#productive-and-extensible" class="anchor"
+aria-hidden="true"></a>Productive and Extensible</h4>
 <p>Unlike Active Record and other ORMs, Diesel is designed to be
 abstracted over. Diesel enables you to write reusable code and think in
 terms of your problem domain and not SQL.</p>
@@ -225,6 +227,9 @@ onclick="change_tab(event, &#39;inserting_data&#39;)">Inserting Data</a>
 <a href="javascript::void(0)" class="js-vertical-tab vertical-tab"
 onclick="change_tab(event, &#39;updating_data&#39;)">Updating Data</a>
 <a href="javascript::void(0)" class="js-vertical-tab vertical-tab"
+onclick="change_tab(event, &#39;ergonomic_multidatabase&#39;)">Ergonomic
+Multidatabase support</a> <a href="javascript::void(0)"
+class="js-vertical-tab vertical-tab"
 onclick="change_tab(event, &#39;raw_sql&#39;)">Ergonomic Raw SQL</a> <a
 href="javascript::void(0)" class="js-vertical-tab vertical-tab"
 onclick="change_tab(event, &#39;popular_projects_using_diesel&#39;)">Popular
@@ -473,6 +478,39 @@ class="sourceCode rust"><code class="sourceCode rust"><span id="cb15-1"><a href=
 </div>
 </div>
 </div>
+<div id="ergonomic_multidatabase"
+class="js-vertical-tab-content vertical-tab-content">
+<p>Diesel allows to ergonomically abstract over different database
+backends while keeping all of it’s compile time guarantees.</p>
+<div class="demo__example">
+<div class="demo__example-browser">
+<div class="browser-bar">
+Ergonomic multidatabase abstractions
+</div>
+<a class = "btn-demo-example" href = "https://docs.diesel.rs/2.2.x/diesel/derive.MultiConnection.html">View on GitHub</a>
+<div class="sourceCode" id="cb16"><pre
+class="sourceCode rust"><code class="sourceCode rust"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="at">#[</span>derive<span class="at">(</span><span class="pp">diesel::</span>MultiConnection<span class="at">)]</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="kw">enum</span> DatabaseConnection <span class="op">{</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    Sqlite(<span class="pp">diesel::</span>SqliteConnection)<span class="op">,</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    Postgres(<span class="pp">diesel::</span>PgConnection)<span class="op">,</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> <span class="kw">mut</span> connection <span class="op">=</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>    <span class="pp">DatabaseConnection::</span>establish(<span class="st">&quot;postgres://localhost/diesel&quot;</span>)<span class="op">?;</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> all_users <span class="op">=</span> <span class="pp">users::</span>table<span class="op">.</span><span class="pp">load::</span><span class="op">&lt;</span>User<span class="op">&gt;</span>(connection)<span class="op">?;</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a><span class="cf">match</span> connection <span class="op">{</span></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>    <span class="pp">DatabaseConnection::</span>Sqlite(connection) <span class="op">=&gt;</span> <span class="op">{</span></span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>        perform_sqlite_specific_query(connection)<span class="op">?;</span></span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>    <span class="pp">DatabaseConnection::</span>Postgres(connection) <span class="op">=&gt;</span> <span class="op">{</span></span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>        perform_postgres_specific_query(connection)<span class="op">?;</span></span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+</div>
+</div>
+</div>
 <div id="raw_sql" class="js-vertical-tab-content vertical-tab-content">
 <p>There will always be certain queries that are just easier to write as
 raw SQL, or can’t be expressed with the query builder. Even in these
@@ -482,23 +520,23 @@ cases, Diesel provides an easy to use API for writing raw SQL.</p>
 <div class="browser-bar">
 Running raw SQL
 </div>
-<div class="sourceCode" id="cb16"><pre
-class="sourceCode rust"><code class="sourceCode rust"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="at">#[</span>derive<span class="at">(</span>QueryableByName<span class="at">)]</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="at">#[</span>diesel<span class="at">(</span>table_name <span class="op">=</span> users<span class="at">)]</span></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> User <span class="op">{</span></span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    id<span class="op">:</span> <span class="dt">i32</span><span class="op">,</span></span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    name<span class="op">:</span> <span class="dt">String</span><span class="op">,</span></span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>    organization_id<span class="op">:</span> <span class="dt">i32</span><span class="op">,</span></span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="co">// Using `include_str!` allows us to keep the SQL in a</span></span>
-<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="co">// separate file, where our editor can give us SQL specific</span></span>
-<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="co">// syntax highlighting.</span></span>
-<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>sql_query(<span class="pp">include_str!</span>(<span class="st">&quot;complex_users_by_organization.sql&quot;</span>))</span>
-<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="pp">bind::</span><span class="op">&lt;</span>Integer<span class="op">,</span> _<span class="op">&gt;</span>(organization_id)</span>
-<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="pp">bind::</span><span class="op">&lt;</span>BigInt<span class="op">,</span> _<span class="op">&gt;</span>(offset)</span>
-<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="pp">bind::</span><span class="op">&lt;</span>BigInt<span class="op">,</span> _<span class="op">&gt;</span>(limit)</span>
-<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="pp">load::</span><span class="op">&lt;</span>User<span class="op">&gt;</span>(<span class="op">&amp;</span><span class="kw">mut</span> conn)<span class="op">?;</span></span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre
+class="sourceCode rust"><code class="sourceCode rust"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="at">#[</span>derive<span class="at">(</span>QueryableByName<span class="at">)]</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="at">#[</span>diesel<span class="at">(</span>table_name <span class="op">=</span> users<span class="at">)]</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> User <span class="op">{</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    id<span class="op">:</span> <span class="dt">i32</span><span class="op">,</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>    name<span class="op">:</span> <span class="dt">String</span><span class="op">,</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>    organization_id<span class="op">:</span> <span class="dt">i32</span><span class="op">,</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="co">// Using `include_str!` allows us to keep the SQL in a</span></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a><span class="co">// separate file, where our editor can give us SQL specific</span></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a><span class="co">// syntax highlighting.</span></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>sql_query(<span class="pp">include_str!</span>(<span class="st">&quot;complex_users_by_organization.sql&quot;</span>))</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="pp">bind::</span><span class="op">&lt;</span>Integer<span class="op">,</span> _<span class="op">&gt;</span>(organization_id)</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="pp">bind::</span><span class="op">&lt;</span>BigInt<span class="op">,</span> _<span class="op">&gt;</span>(offset)</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="pp">bind::</span><span class="op">&lt;</span>BigInt<span class="op">,</span> _<span class="op">&gt;</span>(limit)</span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="pp">load::</span><span class="op">&lt;</span>User<span class="op">&gt;</span>(<span class="op">&amp;</span><span class="kw">mut</span> conn)<span class="op">?;</span></span></code></pre></div>
 </div>
 </div>
 </div>
@@ -609,7 +647,51 @@ href="https://github.com/sgrif/diesel.rs-website">here</a>.</p>
 </div>
 </section>
 </div>
+<h2 id="notable-sponsors-and-supporters"><a
+href="#notable-sponsors-and-supporters" class="anchor"
+aria-hidden="true"></a>Notable Sponsors and Supporters</h2>
+<p>We would like to thank all of the sponsors supporting the work on
+Diesel. Notable large sponsors are:</p>
+<figure>
+<img src="assets/images/nl_net_foundation_logo.svg" style="width:20em"
+alt="NLNet Foundation" />
+<figcaption aria-hidden="true"><a
+href="https://nlnet.nl/project/Diesel/">NLNet
+Foundation</a></figcaption>
+</figure>
+<figure>
+<img src="assets/images/NGI0Core_tag.svg" style="width:20em"
+alt="NGI Zero Core" />
+<figcaption aria-hidden="true"><a
+href="https://nlnet.nl/project/Diesel/">NGI Zero Core</a></figcaption>
+</figure>
+<figure>
+<img src="assets/images/PrototypeFund_logo_dark.png" style="width:20em"
+alt="Prototype Fund" />
+<figcaption aria-hidden="true"><a
+href="https://www.prototypefund.de/projects/diesel-databaseviews">Prototype
+Fund</a></figcaption>
+</figure>
+<figure>
+<img src="assets/images/bmbf_logo.jpg" style="width:20em"
+alt="Federal Ministry of Research, Technology and Space (Germany)" />
+<figcaption aria-hidden="true"><a
+href="https://www.prototypefund.de/projects/diesel-databaseviews">Federal
+Ministry of Research, Technology and Space (Germany)</a></figcaption>
+</figure>
+<figure>
+<img src="assets/images/logo_giga.svg" style="width:20em"
+alt="GiGa Infosystems GmbH" />
+<figcaption aria-hidden="true"><a
+href="https://giga-infosystems.com/">GiGa Infosystems
+GmbH</a></figcaption>
+</figure>
+<p>Additionally we would like to thank all persons sponsoring the
+project on <a
+href="https://github.com/sponsors/weiznich#sponsors">GitHub</a>. Without
+them developing Diesel wouldn’t be possible.</p>
 </div>
+<p>::: :::</p>
 <script src="assets/javascripts/application.js"></script>
 <script type = "text/javascript">
     function change_tab(evt, tab) {
