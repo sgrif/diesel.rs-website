@@ -428,7 +428,9 @@ diesel::table! {
 
 * Run `diesel migration generate --diff-schema create_posts`
 
-This will generate both the `up.sql` and the `down.sql` files of your migration pre-populated with the relevant SQL. After that, you should continue with the `diesel migration run` step.
+This will generate both the `up.sql` and the `down.sql` files of your migration pre-populated with the relevant SQL.
+Note that, for this example, the migration generated from the schema does not add a `DEFAULT` attribute for the `published` field, so you'll have to add it yourself for
+the rest of this example to work. After that, you should continue with the `diesel migration run` step.
 :::
 </aside>
 
