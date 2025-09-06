@@ -582,8 +582,12 @@ SQL side types used to define the relevant columns.</p>
 </ul>
 <p>This will generate both the <code>up.sql</code> and the
 <code>down.sql</code> files of your migration pre-populated with the
-relevant SQL. After that, you should continue with the
-<code>diesel migration run</code> step.</p>
+relevant SQL. These pre-populated migration files can serve as starting
+point to adjust the generated SQL to your needs. You as as user need to
+decide which modifications are relevant for your use case as Diesel will
+never generate a completly perfect migration for you. For this guide for
+example you need to add a <code>DEFAULT</code> clause to the
+<code>published</code> field to match the migration shown earlier.</p>
 </div>
 </aside>
 <aside class="aside aside--note">
