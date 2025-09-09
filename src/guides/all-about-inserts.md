@@ -260,6 +260,15 @@ On backends that support the `DEFAULT` keyword (all backends except SQLite),
 the data will be inserted in a single query.
 On SQLite, one query will be performed per row.
 
+<aside class = "aside aside--note">
+<header class = "aside__header">Customizing the usage of `DEFAULT` values:</header>
+
+::: aside__text
+You can use the `#[diesel(treat_none_as_default_value = false)]` attribute on a struct to disable using `DEFAULT` in place of `None` 
+values and rather use `NULL` values for such fields. This enables for example real batch inserts with the SQLite backend.
+:::
+</aside>
+
 For example, if we wanted to insert two rows with a single value,
 we can just use a `Vec`.
 
