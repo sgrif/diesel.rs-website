@@ -22,7 +22,7 @@ setting the `DIESEL_CONFIG_FILE` environment variable, or passing
 `--config-file` on the command line. You can get a basic config file
 with some defaults provided by running `diesel setup`.
 
-As of Diesel 2.0, the file contains a single section,
+As of Diesel 2.3, the file contains a single section,
 `[print_schema]`. All fields in this file are optional.
 
 ## The `file` field

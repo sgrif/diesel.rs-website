@@ -9,6 +9,10 @@ include-after: |
 ::: content-wrapper
 ::: guide-wrapper
 
+#### [Diesel 2.3.0](./2_3_0_release.htm)
+
+Diesel 2.3 introduces a new `#[derive(HasQuery)]` derive, support for WINDOW functions and the ability to use the SQLite backend with the `wasm32-unknown-unknown` target.
+
 #### [Diesel 2.2.0](./2_2_0_release.html)
 
 Diesel 2.2 introduces a new `#[diesel::dsl::auto_type]` macro to automatically infer query dsl types. Additionally it provides support for connection instrumentation and PostgreSQL's `COPY` syntax.

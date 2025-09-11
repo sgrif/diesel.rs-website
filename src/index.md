@@ -46,7 +46,7 @@ Diesel is the most productive way to interact with databases in Rust because of 
 
 ::: btn-container
 
-[Getting Started](/guides/getting-started){.btn .btn-primary .btn-download}    [View on GitHub](https://github.com/diesel-rs/diesel){.btn .btn-secondary}
+[Getting Started](/guides/getting-started){.btn .btn-primary .btn-download}    [Contribute to Diesel](#contribute){.btn .btn-secondary}
 
 :::
 
@@ -548,6 +548,28 @@ Something missing? Submit an issue [here](https://github.com/sgrif/diesel.rs-web
 :::
 
 ::: 
+
+## Contribute
+
+
+
+:::content-wrapper
+::: guide-wrapper
+:::contribute
+
+The Diesel project is always looking for people to help with various parts of the project. 
+If you would like to help here are different ways to contribute to the project:
+
+* Contributing Code, Documentation or Guides. Checkout the planing for [Diesel 2.4](https://github.com/orgs/diesel-rs/projects/1) for open tasks.
+* Providing knowledge and help to maintain the MySQL/MariaDB backend. This is currently the only in-tree backend that is not used by any maintainers, so having someone around that actually uses this backend would be very helpful for the Diesel project.
+* Answering questions in our [discussion forum](https://github.com/diesel-rs/diesel/discussions)
+* Reporting bugs in our [issue tracker](https://github.com/diesel-rs/diesel/issues)
+* Helping triaging issues in our [issue tracker](https://github.com/diesel-rs/diesel/issues)
+* [Sponsoring](https://github.com/weiznich) the maintainers
+:::
+:::
+:::
+
 ## Notable Sponsors and Supporters
 
 We would like to thank all of the sponsors supporting the work on Diesel. Notable large sponsors are:
@@ -560,6 +582,8 @@ We would like to thank all of the sponsors supporting the work on Diesel. Notabl
 ![[Prototype Fund](https://www.prototypefund.de/projects/diesel-databaseviews)](assets/images/PrototypeFund_logo_dark.png){width=20em}
 
 ![[Federal Ministry of Research, Technology and Space (Germany)](https://www.prototypefund.de/projects/diesel-databaseviews)](assets/images/bmbf_logo.jpg){width=20em}
+
+![[GitHub Secure Open Source Fund](https://github.blog/open-source/maintainers/securing-the-supply-chain-at-scale-starting-with-71-important-open-source-projects/)](assets/images/GitHub_Logo.png){width=20em}
 
 ![[GiGa Infosystems GmbH](https://giga-infosystems.com/)](assets/images/logo_giga.svg){width=20em}
 
