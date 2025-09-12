@@ -21,6 +21,8 @@ This release includes a several large extensions to the query DSL provided by Di
 * [Extended support for various types, functions and operators in the PostgreSQL backend](#extended-support-for-various-types-functions-and-operators-in-the-postgresql-backend)
 * [Support for `JSON` and `JSONB` in the SQLite backend](#support-for-jsonjsonb-types-and-functions-for-sqlite)
 
+Checkout [the full change log](../changelog.html) for a complete list of changes.
+
 This release wouldn't be possible without the support of our contributors and sponsors. We would like to especially call out NLNet Foundation which funded the development of the newly added support for window functions via their [NGI Zero Core](https://nlnet.nl/project/Diesel/) initiative. We would also like to call out GitHub for providing additional training security and resources for the Diesel project as part of their [GitHub Secure Open Source Fund](https://github.blog/open-source/maintainers/securing-the-supply-chain-at-scale-starting-with-71-important-open-source-projects/) initiative.
 
 Nevertheless is the Diesel project always looking for support. You can help by:
