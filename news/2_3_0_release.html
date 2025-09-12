@@ -7,7 +7,7 @@
     <link rel="icon" type="image/png" href="/assets/images/diesel_logo_favicon_32.png" sizes="32x32">
     <link rel="icon" type="image/png" href="/assets/images/diesel_logo_favicon_96.png" sizes="96x96">
     <link rel="icon" type="image/png" href="/assets/images/diesel_logo_favicon.png" sizes="192x192">
-  <title>Diesel 2.2.0</title>
+  <title>Diesel 2.3.0</title>
   <style type="text/css">
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { line-height: 1.25; }
@@ -135,7 +135,7 @@ code span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
     <section class = "banner">
         <div class = "content-wrapper">
             <div class = "banner-wrapper">
-                <h2 class = "banner__heading">Diesel 2.2.0</h2>
+                <h2 class = "banner__heading">Diesel 2.3.0</h2>
             </div>
         </div>
     </section>
@@ -143,271 +143,330 @@ code span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
 <div class="demo">
 <div class="content-wrapper">
 <div class="guide-wrapper">
-<p>Diesel 2.2.0 contains the contributions of 42 people. More than 560
-commits were submitted over a span of 12 months.</p>
-<p>This release contains several new features and improves existing
-features. Diesel now provides a procedural macro attribute that infers
-the correct return type for your query. It’s now possible to instrument
-connection implementations provided by diesel to perform logging and
-performance measurements. We added support for PostgreSQL’s
-<code>COPY FROM</code> and <code>COPY TO</code> syntax which can be used
-to send and receive large amounts of data efficiently. Our dependencies
-wrapping the native database drivers support now all building the
-database driver as part of your <code>cargo build</code>. This enables
-us to distribute static precompiled versions of diesel-cli easily.
-Finally we worked with the <a
-href="https://blog.weiznich.de/blog/diagnostic-namespace-10-23/">Rust
-team to stabilize</a> attributes to customize error messages emitted by
-the compiler. This is now used by diesel to improve the quality of
-certain otherwise hard to understand error messages. Check out our <a
-href="/changelog.html">changelog for a complete list of changes</a>.</p>
+<p>Diesel 2.3.0 contains the contributions of 95 people. More than 1142
+commits were submitted over a span of 16 months.</p>
+<p>This release includes a several large extensions to the query DSL
+provided by Diesel and also helps increases the number of platforms you
+can use Diesel on out of the box. Notable changes include:</p>
+<ul>
+<li><a href="#hasquery-derive-for-easier-query-construction">Improved
+query construction via <code>#[derive(HasQuery)]</code></a></li>
+<li><a href="#support-for-window-functions">Added support for window
+functions</a></li>
+<li><a href="#using-sqlite-with-wasm">Using SQLite with WASM in your
+browser</a></li>
+<li><a
+href="#extended-support-for-various-types-functions-and-operators-in-the-postgresql-backend">Extended
+support for various types, functions and operators in the PostgreSQL
+backend</a></li>
+<li><a
+href="#support-for-jsonjsonb-types-and-functions-for-sqlite">Support for
+<code>JSON</code> and <code>JSONB</code> in the SQLite backend</a></li>
+</ul>
 <p>This release wouldn’t be possible without the support of our
-contributors and sponsors. If you want to support diesels development,
-consider <a
-href="https://github.com/diesel-rs/diesel/issues/1186">joining the
-reviewer team</a>, submitting <a
-href="https://github.com/diesel-rs/diesel/issues?q=is%3Aissue+is%3Aopen++label%3A%22help+wanted%22+">PR’s</a>,
-help writing documentation or <a
-href="https://github.com/sponsors/weiznich">sponsor the
-maintainers</a>.</p>
-<h2 id="automatic-return-type-inference-for-querydsl-types"><a
-href="#automatic-return-type-inference-for-querydsl-types"
-class="anchor" aria-hidden="true"></a>Automatic return type inference
-for QueryDSL types</h2>
-<p>Diesel’s QueryDSL is designed to be composable through several
-functions since even before diesel 1.0. This enables you to move common
-parts of your query into a function and reuse that function from several
-places.</p>
-<p>In practice that requires specifying the return type of your query
-part, which is a complex composed highly nested type for anything that’s
-not a trivial query. That made it hard for users to refactor their code
-to move common query parts into shared functions. Diesel 2.2 introduces
-the <a
-href="https://docs.diesel.rs/2.2.x/diesel/dsl/attr.auto_type.html"><code>#[diesel::dsl::auto_type]</code></a>
-procedural macro attribute, which infers the correct return type for
-you.</p>
-<p>Without this attribute you would need to write code like this:</p>
+contributors and sponsors. We would like to especially call out NLNet
+Foundation which funded the development of the newly added support for
+window functions via their <a
+href="https://nlnet.nl/project/Diesel/">NGI Zero Core</a> initiative. We
+would also like to call out GitHub for providing additional training
+security and resources for the Diesel project as part of their <a
+href="https://github.blog/open-source/maintainers/securing-the-supply-chain-at-scale-starting-with-71-important-open-source-projects/">GitHub
+Secure Open Source Fund</a> initiative.</p>
+<p>Nevertheless is the Diesel project always looking for support. You
+can help by:</p>
+<ul>
+<li>Contributing Code, Documentation or Guides. Checkout the planing for
+<a href="https://github.com/orgs/diesel-rs/projects/1">Diesel 2.4</a>
+for open tasks.</li>
+<li>Providing knowledge and help to maintain the MySQL/MariaDB backend.
+This is currently the only in-tree backend that is not used by any
+maintainers, so having someone around that actually uses this backend
+would be very helpful for the Diesel project.</li>
+<li>Answering questions in our <a
+href="https://github.com/diesel-rs/diesel/discussions">discussion
+forum</a></li>
+<li>Reporting bugs in our <a
+href="https://github.com/diesel-rs/diesel/issues">issue tracker</a></li>
+<li>Helping triaging issues in our <a
+href="https://github.com/diesel-rs/diesel/issues">issue tracker</a></li>
+<li><a href="https://github.com/weiznich">Sponsoring</a> the
+maintainers.</li>
+</ul>
+<h2 id="hasquery-derive-for-easier-query-construction"><a
+href="#hasquery-derive-for-easier-query-construction" class="anchor"
+aria-hidden="true"></a>HasQuery derive for easier query
+construction</h2>
+<p>Diesel 2.3 provides a new <a
+href="https://docs.diesel.rs/2.3.x/diesel/prelude/derive.HasQuery.html"><code>#[derive(HasQuery)]</code></a>
+attribute to construct query more directly from a Rust struct. This new
+derives extends the existing abilities of <a
+href="https://docs.diesel.rs/2.3.x/diesel/expression/derive.Selectable.html"><code>#[derive(Selectable)]</code></a>
+by associating a specific <code>FROM</code> clause and possible other
+clauses with the given struct. This derive also ensures that the query
+result can actually be loaded into this specific Rust type.</p>
+<p>For the most simple case you can use this derive as follows:</p>
 <div class="sourceCode" id="cb1"><pre
-class="sourceCode rust"><code class="sourceCode rust"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">fn</span> users_filtered_by_name(name<span class="op">:</span> <span class="op">&amp;</span><span class="dt">str</span>) <span class="op">-&gt;</span> <span class="pp">dsl::</span>Filter<span class="op">&lt;</span><span class="pp">users::</span>table<span class="op">,</span> <span class="pp">dsl::</span><span class="bu">Eq</span><span class="op">&lt;</span><span class="pp">users::</span>name<span class="op">,</span> <span class="op">&amp;</span><span class="dt">str</span><span class="op">&gt;&gt;</span> <span class="op">{</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="pp">users::</span>table<span class="op">.</span>filter(<span class="pp">users::</span>name<span class="op">.</span>eq(name))</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
-<p>The new attribute enables you to write just:</p>
+class="sourceCode rust"><code class="sourceCode rust"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">use</span> <span class="kw">crate</span><span class="pp">::schema::</span>users<span class="op">;</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="at">#[</span>derive<span class="at">(</span>HasQuery<span class="at">)]</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> User <span class="op">{</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    id<span class="op">:</span> <span class="dt">i32</span><span class="op">,</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    name<span class="op">:</span> <span class="dt">String</span><span class="op">,</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> users <span class="op">=</span> <span class="pp">User::</span>query()<span class="op">.</span>load(connection)<span class="op">?</span></span></code></pre></div>
+<p>which would be equivalent to deriving <a
+href="https://docs.diesel.rs/2.3.x/diesel/deserialize/derive.Queryable.html"><code>#[derive(Queryable)]</code></a>
++ <a
+href="https://docs.diesel.rs/2.3.x/diesel/expression/derive.Selectable.html"><code>#[derive(Selectable)]</code></a>
+and constructing the query via
+<code>users::table.select(User::as_select())</code> in older Diesel
+versions.</p>
+<p>For more advanced usages you can also specify custom select
+expressions and <code>FROM</code> clauses as part of the derive like
+this:</p>
 <div class="sourceCode" id="cb2"><pre
-class="sourceCode rust"><code class="sourceCode rust"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="at">#[</span><span class="pp">dsl::</span>auto_type<span class="at">]</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">fn</span> users_filtered_by_name(name<span class="op">:</span> <span class="op">&amp;</span><span class="dt">str</span>) <span class="op">-&gt;</span> _ <span class="op">{</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="pp">users::</span>table<span class="op">.</span>filter(<span class="pp">users::</span>name<span class="op">.</span>eq(name))</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
-<p>The <code>#[dsl::auto_type]</code> attribute macro replace the
-<code>_</code> placeholder with the correct return type. See the <a
-href="https://docs.diesel.rs/2.2.x/diesel/dsl/attr.auto_type.html">documentation</a>
-for more advanced examples and limitations.</p>
-<h2 id="instrumentation-support"><a href="#instrumentation-support"
-class="anchor" aria-hidden="true"></a>Instrumentation Support</h2>
-<p>Diesel now provides support for instrumenting the built-in
-connections. This enables users to customize logging for these
-connection types. Diesel provides the <a
-href="https://docs.diesel.rs/2.2.x/diesel/connection/trait.Connection.html#tymethod.set_instrumentation"><code>Connection::set_instrumentation</code></a>
-method that allows to set connection specific instrumentations. It also
-provides a global <a
-href="https://docs.diesel.rs/2.2.x/diesel/connection/fn.set_default_instrumentation.html"><code>diesel::connection::set_global_instrumentation</code></a>
-that allows to set an instrumentation constructor that is used by all
-supported connection types.</p>
-<p>An <a
-href="https://docs.diesel.rs/2.2.x/diesel/connection/trait.Instrumentation.html"><code>Instrumentation</code></a>
-is a user defined hook that allows to get notified for certain <a
-href="https://docs.diesel.rs/2.2.x/diesel/connection/enum.InstrumentationEvent.html"><code>InstrumentationEvent</code></a>.
-By default the <code>Instrumentation</code> trait is implemented for
-closures with a single <code>InstrumentationEvent</code> argument, but
-it is possible to provide custom implementations for this trait. This
-enables our users to customize logging based on their preferences in
-terms of used logging crate, log levels and similar preferences.</p>
-<p>Example of a simple <code>println!</code> based instrumentation that
-just logs everything to the standard output:</p>
+class="sourceCode rust"><code class="sourceCode rust"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">use</span> <span class="kw">crate</span><span class="pp">::schema::</span><span class="op">{</span>employees<span class="op">,</span> departments<span class="op">};</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="at">#[</span>derive<span class="at">(</span>HasQuery<span class="at">)]</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="at">#[</span>diesel<span class="at">(</span>base_query <span class="op">=</span> <span class="pp">employees::</span>table<span class="op">.</span>inner_join<span class="at">(</span><span class="pp">departments::</span>table<span class="at">))]</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> Employe <span class="op">{</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    name<span class="op">:</span> <span class="dt">String</span><span class="op">,</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">#[</span>diesel<span class="at">(</span>select_expression <span class="op">=</span> <span class="pp">departments::</span>name<span class="at">)]</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    department<span class="op">:</span> <span class="dt">String</span><span class="op">,</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    salary<span class="op">:</span> <span class="dt">f64</span><span class="op">,</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">#[</span>diesel<span class="at">(</span>select_expression <span class="op">=</span> <span class="pp">dsl::</span>avg<span class="at">(</span><span class="pp">employees::</span>salary<span class="at">)</span><span class="op">.</span>partition_by<span class="at">(</span><span class="pp">department::</span>name<span class="at">))]</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    avg_salary_per_department<span class="op">:</span> <span class="dt">f64</span><span class="op">,</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> employees_with_salary <span class="op">=</span> <span class="pp">Employe::</span>query()</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span>filter(<span class="pp">departments::</span>name<span class="op">.</span>eq_any([<span class="st">&quot;Developers&quot;</span><span class="op">,</span> <span class="st">&quot;Maintainers&quot;</span>]))</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span>load(connection)<span class="op">?;</span></span></code></pre></div>
+<p>which would be equivalent to the following query:</p>
 <div class="sourceCode" id="cb3"><pre
-class="sourceCode rust"><code class="sourceCode rust"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> <span class="kw">mut</span> connection <span class="op">=</span> <span class="pp">PgConnection::</span>establish(<span class="st">&quot;postgres://localhost/diesel&quot;</span>)<span class="op">?;</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>connection<span class="op">.</span>set_instrumentation(<span class="op">|</span>event<span class="op">:</span> InstrumentationEvent<span class="op">&lt;</span><span class="ot">&#39;_</span><span class="op">&gt;|</span> <span class="pp">println!</span>(<span class="st">&quot;{event:?}&quot;</span>))<span class="op">;</span></span></code></pre></div>
-<h2 id="postgresql-copy-fromto-support"><a
-href="#postgresql-copy-fromto-support" class="anchor"
-aria-hidden="true"></a>PostgreSQL COPY FROM/TO Support</h2>
-<p>Diesel now supports <a
-href="https://www.postgresql.org/docs/current/sql-copy.html">PostgreSQL’s
-<code>COPY FROM STDIN</code> and <code>COPY TO STDOUT</code></a> syntax.
-This allows to efficiently transfer large amounts of data between the
-database and your application. Diesel supports two ways to use these
-commands, one for using the Diesel model structs as source or target for
-an optimised binary transfer and one that allows you to configure the
-low level statement in detail and provide your own input/output
-stream.</p>
-<p>Example <code>COPY FROM</code> statement using an
-<code>Insertable</code> struct:</p>
+class="sourceCode rust"><code class="sourceCode rust"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="pp">employees::</span>table</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span>inner_join(<span class="pp">departments::</span>table)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span>filter(<span class="pp">departments::</span>name<span class="op">.</span>eq_any([<span class="st">&quot;Developers&quot;</span><span class="op">,</span> <span class="st">&quot;Maintainers&quot;</span>]))</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span>select(<span class="pp">Employe::</span>as_select())</span></code></pre></div>
+<p>The idea behind this feature is to provide an easier query entry
+point and also make it easier to share the same base query between
+different query construction sides all returning the same data
+structure.</p>
+<h2 id="support-for-window-functions"><a
+href="#support-for-window-functions" class="anchor"
+aria-hidden="true"></a>Support for Window Functions</h2>
+<p>Diesel 2.3 introduces support for constructing <a
+href="https://www.postgresql.org/docs/current/tutorial-window.html">Window
+function expressions</a> via the built-in DSL. This feature is supported
+on all built-in backends and allows to construct complex analytical
+queries using the provided DSL.</p>
+<p>Diesel provides a set of <a
+href="https://docs.diesel.rs/2.3.x/diesel/dsl/index.html">built-in
+Window</a> functions and also allows to use most of the built-in
+aggregate functions as window functions. To construct a Window function
+call it is required to chain at least one <a
+href="https://docs.diesel.rs/2.3.x/diesel/expression_methods/trait.WindowExpressionMethods.html"><code>WindowExpressionMethods</code></a>
+method after the actual function call. For example</p>
 <div class="sourceCode" id="cb4"><pre
-class="sourceCode rust"><code class="sourceCode rust"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="at">#[</span>derive<span class="at">(</span>Insertable<span class="at">)]</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="at">#[</span>diesel<span class="at">(</span>table_name <span class="op">=</span> users<span class="at">)]</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="at">#[</span>diesel<span class="at">(</span>treat_none_as_default_value <span class="op">=</span> <span class="cn">false</span><span class="at">)]</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> NewUser <span class="op">{</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    name<span class="op">:</span> <span class="op">&amp;</span><span class="ot">&#39;static</span> <span class="dt">str</span><span class="op">,</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> data <span class="op">=</span> <span class="pp">vec!</span>[</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    NewUser <span class="op">{</span> name<span class="op">:</span> <span class="st">&quot;Diva Plavalaguna&quot;</span> <span class="op">},</span></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    NewUser <span class="op">{</span> name<span class="op">:</span> <span class="st">&quot;Father Vito Cornelius&quot;</span> <span class="op">},</span></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>]<span class="op">;</span></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> count <span class="op">=</span> <span class="pp">diesel::</span>copy_from(<span class="pp">users::</span>table)</span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span>from_insertable(<span class="op">&amp;</span>data)</span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span>execute(connection)<span class="op">?;</span></span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="pp">assert_eq!</span>(count<span class="op">,</span> <span class="dv">2</span>)<span class="op">;</span></span></code></pre></div>
-<p>Example <code>COPY FROM</code> statement using the low level
-interface to provide a CSV stream:</p>
+class="sourceCode rust"><code class="sourceCode rust"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="pp">employees::</span>table</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span>select(</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>        <span class="pp">dsl::</span>rank()</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>            <span class="op">.</span>partition_by(<span class="pp">employees::</span>department)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>            <span class="op">.</span>window_order(<span class="pp">employees::</span>salary<span class="op">.</span>desc())</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>            <span class="op">.</span>frame_by(<span class="pp">dsl::frame::</span>Rows<span class="op">.</span>frame_starts_with(<span class="pp">dsl::frame::</span>UnboundedPreceding))</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    )</span></code></pre></div>
+<p>corresponds to the following SQL query:</p>
 <div class="sourceCode" id="cb5"><pre
-class="sourceCode rust"><code class="sourceCode rust"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">use</span> <span class="pp">diesel::pg::</span>CopyFormat<span class="op">;</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> count <span class="op">=</span> <span class="pp">diesel::</span>copy_from(<span class="pp">users::</span>table)</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span>from_raw_data(<span class="pp">users::</span>table<span class="op">,</span> <span class="op">|</span>copy<span class="op">|</span> <span class="op">{</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>        <span class="pp">writeln!</span>(copy<span class="op">,</span> <span class="st">&quot;3,Diva Plavalaguna&quot;</span>)<span class="op">.</span>unwrap()<span class="op">;</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>        <span class="pp">writeln!</span>(copy<span class="op">,</span> <span class="st">&quot;4,Father Vito Cornelius&quot;</span>)<span class="op">.</span>unwrap()<span class="op">;</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>        <span class="pp">diesel::QueryResult::</span><span class="cn">Ok</span>(())</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span>)</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span>with_format(<span class="pp">CopyFormat::</span>Csv)</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span>execute(connection)<span class="op">?;</span></span></code></pre></div>
-<p>See the documentation of <a
-href="https://docs.diesel.rs/2.2.x/diesel/fn.copy_to.html"><code>diesel::copy_to</code></a>
-and <a
-href="https://docs.diesel.rs/2.2.x/diesel/fn.copy_from.html"><code>diesel::copy_from</code></a>
-for more details.</p>
+class="sourceCode rust"><code class="sourceCode rust"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>SELECT</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>   RANK() OVER(PARTITION BY department ORDER BY salary DESC ROWS UNBOUNDED PRECEDING</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>FROM </span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>   employees</span></code></pre></div>
+<p>Diesel ensures at compile time that the formed query is valid by
+restricting that window only function are used with an actual WINDOW
+clause, by restricting locations where you can use window functions and
+by restricting which constructs are supported by which backends.</p>
+<p>Finally you can also define your own window functions via the <a
+href="https://docs.diesel.rs/2.3.x/diesel/expression/functions/attr.declare_sql_function.html"><code>#[declare_sql_function]</code></a>
+procedural macro like this:</p>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode rust"><code class="sourceCode rust"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="at">#[</span>declare_sql_function<span class="at">]</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="kw">extern</span> <span class="st">&quot;SQL&quot;</span> <span class="op">{</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">#[</span>window<span class="at">]</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fn</span> row_number() <span class="op">-&gt;</span> BigInt<span class="op">;</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>We would like to thank the NLNet Foundation again for funding the
+development of this feature as part of their <a
+href="https://nlnet.nl/project/Diesel">NGI Zero Core</a> initiative.</p>
+<h2 id="using-sqlite-with-wasm"><a href="#using-sqlite-with-wasm"
+class="anchor" aria-hidden="true"></a>Using SQLite with WASM</h2>
+<p>Diesel 2.3 adds support for using the SQLite target with a
+<code>wasm32-unknown-unknown</code> compilation target. This enables
+using Diesel in a web browser or in any other WASM-runtime.</p>
+<p>This functionality works out of the box by just switching the
+compilation target to <code>wasm32-unknown-unknown</code>, although you
+might want to consider using a special VFS for actually store data in
+your web browser.</p>
+<p>See <a
+href="https://docs.diesel.rs/2.3.x/diesel/expression_methods/trait.WindowExpressionMethods.html">the
+complete example for more details</a></p>
 <h2
-id="bundling-support-for-all-native-drives-and-perbuild-binaries-for-diesel-cli"><a
-href="#bundling-support-for-all-native-drives-and-perbuild-binaries-for-diesel-cli"
-class="anchor" aria-hidden="true"></a>Bundling support for all native
-drives and perbuild binaries for diesel-cli</h2>
-<p>We updated the <a
-href="https://blog.weiznich.de/blog/pq-sys-05/">pq-sys</a> and <a
-href="https://blog.weiznich.de/blog/mysqlclient-sys-03/">mysqlclient-sys</a>
-crates to provide a feature that allows to build both libraries as part
-of your local <code>cargo build</code> command. This simplifies the
-setup of diesel in new environments and also makes it easier to cross
-compile applications using diesel. As with the existing bundling support
-for the SQLite backend you need to add the relevant crate to your
-<code>Cargo.toml</code> and enable the <code>bundled</code> feature for
-this crate. For <code>diesel-cli</code> we now provide a
-<code>postgres-bundled</code> and a <code>mysql-bundled</code> feature
-flag as well.</p>
-<p>As a result of this work we are now able to build fully static
-binaries for <code>diesel-cli</code>. Such builds are now provided as
-part of each release as prebuild binaries. This hopefully streamlines
-the setup process for new users, although you can continue to use
-<code>cargo install diesel_cli</code> to locally build your version of
-diesel-cli.</p>
-<h2 id="improved-error-messages"><a href="#improved-error-messages"
-class="anchor" aria-hidden="true"></a>Improved Error Messages</h2>
-<p>We worked with the <a
-href="https://blog.weiznich.de/blog/diagnostic-namespace-10-23/">Rust
-team to stabilize</a> attributes to customize error messages emitted by
-the compiler. This allows us to include custom messages directly in the
-compiler error message to hint possible solutions.</p>
-<p>The following two examples demonstrate the new error messages:</p>
-<p>For type mismatches between your query and the result type we now
-include explicit hints to use <code>#[derive(Selectable)]</code> +
-<code>#[diesel(check_for_backend(…))]</code>:</p>
-<pre><code>error[E0277]: the trait bound `(diesel::sql_types::Integer, diesel::sql_types::Text): load_dsl::private::CompatibleType&lt;User, _&gt;` is not satisfied
-  --&gt; tests/fail/queryable_with_typemismatch.rs:21:31
-   |
-21 |     users::table.load::&lt;User&gt;(&amp;mut conn).unwrap();
-   |                  ----         ^^^^^^^^^ the trait `load_dsl::private::CompatibleType&lt;User, _&gt;` is not implemented for `(diesel::sql_types::Integer, diesel::sql_types::Text)`, which is required by `users::table: LoadQuery&lt;&#39;_, _, User&gt;`
-   |                  |
-   |                  required by a bound introduced by this call
-   |
-   = note: this is a mismatch between what your query returns and what your type expects the query to return
-   = note: the fields in your struct need to match the fields returned by your query in count, order and type
-   = note: consider using `#[derive(Selectable)]` + `#[diesel(check_for_backend(_))]` on your struct `User` and
-           in your query `.select(UserWithToManyFields::as_select())` to get a better error message</code></pre>
-<p>For field type mismatches rustc now explicitly tells you that this
-mapping is not supported:</p>
-<pre><code>
-error[E0277]: cannot deserialize a value of the database type `diesel::sql_types::Integer` as `*const str`
-  --&gt; tests/fail/broken_queryable_by_name.rs:16:5
-   |
-16 |     id: String,
-   |     ^^^^^^^^^^ the trait `FromSql&lt;diesel::sql_types::Integer, Pg&gt;` is not implemented for `*const str`, which is required by `std::string::String: FromSqlRow&lt;diesel::sql_types::Integer, Pg&gt;`
-   |
-   = note: double check your type mappings via the documentation of `diesel::sql_types::Integer`</code></pre>
-<p>Diesel 2.2 includes similar improvements for many more error
-messages. Improving hard to understand error messages is still an
-ongoing project so please reach out with examples if you hit a
-particular bad error message. This enables us to further improve the
-messages by either adding the new attribute there as well or by working
-with the Rust team to introduce additional attributes to cover more
-cases.</p>
+id="extended-support-for-various-types-functions-and-operators-in-the-postgresql-backend"><a
+href="#extended-support-for-various-types-functions-and-operators-in-the-postgresql-backend"
+class="anchor" aria-hidden="true"></a>Extended support for various
+types, functions and operators in the PostgreSQL backend</h2>
+<p>We extended Diesel to provide support for the PostgreSQL specific <a
+href="https://www.postgresql.org/docs/current/rangetypes.html"><code>MULTIRANGE</code></a>
+type and also to provide support for a large number of
+<code>RANGE</code> and <code>MULTIRANGE</code> specific operators and
+functions. This feature allows you to construct queries like these:</p>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode rust"><code class="sourceCode rust"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="pp">diesel::</span>select(<span class="pp">dsl::</span>int4range(<span class="dv">1</span><span class="op">,</span> <span class="dv">5</span><span class="op">,</span> <span class="pp">RangeBound::</span>LowerBoundInclusiveUpperBoundExclusive)<span class="op">.</span>contains(<span class="dv">4</span>))</span></code></pre></div>
+<p>which would be equivalent to the following SQL:</p>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode sql"><code class="sourceCode sql"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> int4range(<span class="dv">1</span>,<span class="dv">5</span>) @<span class="op">&gt;</span> <span class="dv">4</span>;</span></code></pre></div>
+<p>You can find a list of all supported functions in the documentation
+of the <a
+href="https://docs.diesel.rs/2.3.x/diesel/expression_methods/trait.PgRangeExpressionMethods.html"><code>PgRangeExpressionMethods</code></a>
+and a list of supported type mappings for the <code>MULTIRANGE</code>
+types in the documentation of the corresponding <a
+href="https://docs.diesel.rs/2.3.x/diesel/pg/sql_types/struct.Multirange.html">SQL
+type</a></p>
+<p>In addition to the extended support for <code>RANGE</code> and
+<code>MULTIRANGE</code> types we also worked on adding a lot new
+functions for working with <code>ARRAY</code>, <code>JSON</code> and
+<code>JSONB</code> types. This now covers the majority of functions
+provided by default by PostgreSQL for these types. See the <a
+href="https://docs.diesel.rs/2.3.x/diesel/pg/expression/dsl/index.html">documentation</a>
+for a complete list.</p>
+<h2 id="support-for-jsonjsonb-types-and-functions-for-sqlite"><a
+href="#support-for-jsonjsonb-types-and-functions-for-sqlite"
+class="anchor" aria-hidden="true"></a>Support for
+<code>JSON</code>/<code>JSONB</code> types and functions for SQLite</h2>
+<p>Finally we worked on extending the SQLite backend to support <a
+href="https://sqlite.org/json1.html">their built-in JSON types and
+functions</a>. As a result both the <code>Json</code> and
+<code>Jsonb</code> SQL types provided by Diesel are now supported in the
+SQLite backend. The SQLite backend does not support these types as
+<em>column</em> types, but requires you to use either the <a
+href="https://docs.diesel.rs/2.3.x/diesel/sqlite/expression/functions/fn.json.html"><code>json</code></a>
+or <a
+href="https://docs.diesel.rs/2.3.x/diesel/sqlite/expression/functions/fn.jsonb.html"><code>jsonb</code></a>
+function to turn a <code>TEXT</code> or <code>BINARY</code> value into a
+JSON value. The later value then can be used for manipulating the
+content of the JSON value, constructing filters or loading values from
+the database.</p>
+<p>You can use this functionality like this:</p>
+<div class="sourceCode" id="cb9"><pre
+class="sourceCode rust"><code class="sourceCode rust"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> value <span class="op">=</span> <span class="pp">diesel::</span>select(<span class="pp">jsonb::</span><span class="op">&lt;</span><span class="bu">Binary</span><span class="op">,</span> _<span class="op">&gt;</span>(<span class="st">br#&quot;{&quot;this&quot;:&quot;is&quot;,&quot;a&quot;:[&quot;test&quot;]}&quot;#</span>))</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="pp">get_result::</span><span class="op">&lt;</span><span class="pp">serde_json::</span>Value<span class="op">&gt;</span>(connection)<span class="op">?;</span></span></code></pre></div>
+<p>to load JSON values from the database.</p>
+<p>See the <a
+href="https://docs.diesel.rs/2.3.x/diesel/sqlite/expression/functions/index.html">documentation</a>
+for a list of supported functions and detailed examples.</p>
 <h2 id="thanks"><a href="#thanks" class="anchor"
 aria-hidden="true"></a>Thanks</h2>
 <p>Thank you to everyone who helped to make this release happen through
-sponsoring, bug reports, and discussion on GitHub and Gitter. While we
-don’t have a way to collect stats on that form of contribution, it’s
-greatly appreciated.</p>
-<p>In addition to the Diesel core team, 60 people contributed code to
+sponsoring, bug reports, and discussion on GitHub. While we don’t have a
+way to collect stats on that form of contribution, it’s greatly
+appreciated.</p>
+<p>In addition to the Diesel core team, 95 people contributed code to
 this release. A huge thank you to:</p>
 <ul>
-<li>Alexander ‘z33ky’ Hirsch</li>
-<li>aumetra</li>
+<li>Abhishek Chanda</li>
+<li>accestfromim</li>
+<li>Albert Oudompheng</li>
+<li>Alex Steele</li>
+<li>Ali Tariq</li>
+<li>Ananth Prathap</li>
+<li>André</li>
+<li>Andrew Plaza</li>
+<li>Anna Ahmed</li>
+<li>Anton Vella</li>
+<li>Arpad Müller</li>
+<li>Azan Ali</li>
 <li>BlackDex</li>
+<li>bwqr</li>
 <li>Caio</li>
-<li>Daniel Sousa</li>
-<li>Danilo Bargen</li>
-<li>Danny Goldberg</li>
-<li>David Soria Parra</li>
-<li>Davis Muro</li>
-<li>Denny Biasiolli</li>
-<li>Dessalines</li>
-<li>Drew Vogel</li>
-<li>dullbananas</li>
+<li>Caleb Bourg</li>
+<li>Carlos Carral C.</li>
+<li>Cole</li>
+<li>Daniele</li>
+<li>danila-b</li>
+<li>Delfi Sehidic</li>
+<li>Dhiren Serai</li>
+<li>Diana Alazzam</li>
+<li>Ed Cradock</li>
+<li>edwinlzs</li>
 <li>Elrendio</li>
-<li>Emile Fugulin</li>
-<li>Ernest Rudnicki</li>
 <li>Everett Pompeii</li>
-<li>forest1102</li>
-<li>George Manning</li>
-<li>hasezoey</li>
-<li>Henry Zimmerman</li>
-<li>ISibboI</li>
-<li>Jonathan Boyle</li>
-<li>Junghyun Nam</li>
+<li>Gary Coady</li>
+<li>Geoffroy Jaffa Planquart</li>
+<li>Guilherme Salustiano</li>
+<li>Hamir Mahal</li>
+<li>insky7</li>
+<li>Jakob K</li>
+<li>Jason White</li>
+<li>Jean-Marc Le Roux</li>
+<li>Jonas Schäfer</li>
+<li>Jonathan Alter</li>
+<li>Joona Brückner</li>
+<li>Julien Rouhaud</li>
 <li>Kevin GRONDIN</li>
-<li>kirk</li>
-<li>Kornel</li>
+<li>Konrad Pagacz</li>
+<li>Kristof Mattei</li>
 <li>Kristopher Wuollett</li>
-<li>Marc Coleman</li>
-<li>Maxi Barmetler</li>
-<li>Michael Bachmann</li>
-<li>Minsung Kim</li>
-<li>Mohamed Belaouad</li>
-<li>Moulins</li>
-<li>obsoleszenz</li>
-<li>Omid Rad</li>
-<li>Orne Brocaar</li>
+<li>liamw1</li>
+<li>Logan Grosz</li>
+<li>LucaCappelletti94</li>
+<li>Lucas Sunsi Abreu</li>
+<li>Ludea</li>
+<li>Marvin Hansen</li>
+<li>meeshal</li>
+<li>mertwole</li>
+<li>Milo Moisson</li>
+<li>Mindaugas Vinkelis</li>
+<li>Moritz Pflanzer</li>
+<li>Nur</li>
+<li>Oleg Gushul</li>
+<li>Oliver Cooper</li>
 <li>Paolo Barbolini</li>
+<li>Pavan K Sunkara</li>
 <li>Pavan Kumar Sunkara</li>
-<li>Peter C. S. Scholtens</li>
-<li>retro</li>
-<li>sabati</li>
+<li>philippuryas</li>
+<li>Pierre Fenoll</li>
+<li>Pratik Fandade</li>
+<li>Ramzi Sabra</li>
+<li>Randolf J.</li>
+<li>Renato Lochetti</li>
 <li>Saber Haj Rabiee</li>
 <li>Samuel Batissou</li>
-<li>Sean Klein</li>
-<li>Sebastian Fritsch</li>
-<li>Sebastian N. Fernandez</li>
-<li>Sebastian Schmidt</li>
-<li>Sebastian Urban</li>
-<li>Serhii Potapov</li>
-<li>Simon Eisenmann</li>
-<li>snf</li>
-<li>Tal Pressman</li>
+<li>schitcrafter</li>
+<li>Sebastian Goll</li>
+<li>Sebastian Thiel</li>
+<li>shray sharma</li>
+<li>Sindbad-Walter</li>
+<li>Sofía Aritz</li>
+<li>Spxg</li>
+<li>Stephen Thomas-Dorin</li>
+<li>Sugar</li>
 <li>Tanguille</li>
-<li>Thomas Constantine Moore</li>
-<li>Tommy McCallig</li>
-<li>Viktor Szépe</li>
-<li>yagince</li>
-<li>Zhai Xiang</li>
-<li>森田一世</li>
+<li>Tatounee</li>
+<li>Teoh Han Hui</li>
+<li>Thomas ARCHAMBEAU</li>
+<li>Thomas B</li>
+<li>Thomas Koch</li>
+<li>Tobias Bieniek</li>
+<li>VicVerevita</li>
+<li>vijair</li>
+<li>Vitaly Miniakhmetov</li>
+<li>Vladislav Dyachenko</li>
+<li>Vo Van Nghia</li>
+<li>Willow “Wolveric” Catkin</li>
+<li>Wolveric</li>
+<li>wowinter13</li>
+<li>xanonid</li>
+<li>Xue Haonan</li>
+<li>Zaira Bibi</li>
 </ul>
 </div>
 </div>

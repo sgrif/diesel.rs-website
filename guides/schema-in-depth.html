@@ -124,6 +124,9 @@ code span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
                     <li class="nav-item">
                       <a href="/changelog.html">Changelog</a>
                     </li>
+                    <li class="nav-item">
+                      <a href="https://github.com/diesel-rs/diesel"><img src="/assets/images/github-mark.svg" style="height: 2em;"/></a>
+                    </li>
                 </ul>
             </nav>
         </div>
@@ -142,7 +145,7 @@ code span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
 <div class="guide-wrapper">
 <p>In this guide we’re going to look at what exactly
 <code>diesel print-schema</code> and <a
-href="https://docs.diesel.rs/2.2.x/diesel/macro.table.html"><code>table!</code></a>
+href="https://docs.diesel.rs/2.3.x/diesel/macro.table.html"><code>table!</code></a>
 do. For <code>table!</code>, we will show a simplified version of the
 actual code that gets generated, and explain how each piece is relevant
 to you. If you’ve ever been confused about what exactly is getting
@@ -197,7 +200,7 @@ class="sourceCode rust"><code class="sourceCode rust"><span id="cb3-1"><a href="
 <p>Each of these structs uniquely represents each column of the table
 for the purpose of constructing SQL queries. Each of these structs will
 implement a trait called <a
-href="https://docs.diesel.rs/2.2.x/diesel/expression/trait.Expression.html"><code>Expression</code></a>,
+href="https://docs.diesel.rs/2.3.x/diesel/expression/trait.Expression.html"><code>Expression</code></a>,
 which indicates the SQL type of the column.</p>
 <div class="sourceCode" id="cb4"><pre
 class="sourceCode rust"><code class="sourceCode rust"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">impl</span> Expression <span class="cf">for</span> id <span class="op">{</span></span>
@@ -213,10 +216,10 @@ class="sourceCode rust"><code class="sourceCode rust"><span id="cb4-1"><a href="
 <span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <p>The <code>SqlType</code> type is at the core of how Diesel ensures
 that your queries are correct. This type will be used by <a
-href="https://docs.diesel.rs/2.2.x/diesel/expression_methods/trait.ExpressionMethods.html"><code>ExpressionMethods</code></a>
+href="https://docs.diesel.rs/2.3.x/diesel/expression_methods/trait.ExpressionMethods.html"><code>ExpressionMethods</code></a>
 to determine what things can and cannot be passed to methods like
 <code>eq</code>. It will also be used by <a
-href="https://docs.diesel.rs/2.2.x/diesel/deserialize/trait.Queryable.html"><code>Queryable</code></a>
+href="https://docs.diesel.rs/2.3.x/diesel/deserialize/trait.Queryable.html"><code>Queryable</code></a>
 to determine what types can be deserialized when this column appears in
 the select clause.</p>
 <p>In the columns module you’ll also see a special column called
@@ -283,7 +286,7 @@ class="sourceCode rust"><code class="sourceCode rust"><span id="cb10-1"><a href=
 <code>table</code>. You generally will never interact with these
 directly, but they are what enable most of the query builder functions
 found in <a
-href="https://docs.diesel.rs/2.2.x/diesel/query_dsl/index.html">the
+href="https://docs.diesel.rs/2.3.x/diesel/query_dsl/index.html">the
 <code>query_dsl</code> module</a>, as well as use with
 <code>insert</code>, <code>update</code>, and <code>delete</code>.</p>
 <div class="sourceCode" id="cb11"><pre
@@ -403,5 +406,6 @@ class="sourceCode rust"><code class="sourceCode rust"><span id="cb13-1"><a href=
 <script type="text/javascript">
 
 </script>
+<script defer src="https://umami.weiznich.de/script.js" data-website-id="cbfc6769-b0b4-4256-9fbc-f5c053b55bed"></script>
 </body>
 </html>

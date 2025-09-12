@@ -124,6 +124,9 @@ code span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
                     <li class="nav-item">
                       <a href="/changelog.html">Changelog</a>
                     </li>
+                    <li class="nav-item">
+                      <a href="https://github.com/diesel-rs/diesel"><img src="/assets/images/github-mark.svg" style="height: 2em;"/></a>
+                    </li>
                 </ul>
             </nav>
         </div>
@@ -148,7 +151,7 @@ ways to go about creating <code>INSERT</code> statements.</p>
 you can follow along with any backend. The full code examples for all
 backends are linked at the bottom of this guide.</p>
 <p>An insert statement always starts with <a
-href="https://docs.diesel.rs/2.2.x/diesel/fn.insert_into.html"><code>insert_into</code></a>.
+href="https://docs.diesel.rs/2.3.x/diesel/fn.insert_into.html"><code>insert_into</code></a>.
 The first argument to this function is the table you’re inserting
 into.</p>
 <p>For this guide, our schema will look like this:</p>
@@ -157,7 +160,7 @@ into.</p>
 <div class="browser-bar">
 src/lib.rs
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.2.x/examples/postgres/all_about_inserts/src/lib.rs#L11-L21">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_inserts/src/lib.rs#L11-L21">View on GitHub</a>
 <div class="sourceCode" id="cb1"><pre
 class="sourceCode rust"><code class="sourceCode rust"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="pp">diesel::table!</span> <span class="op">{</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    users <span class="op">{</span></span>
@@ -179,14 +182,14 @@ which will let us write <code>insert_into(users)</code> instead of
 the top of your module.</p>
 <p>If all of the columns on a table have a default, the simplest thing
 we can do is call <a
-href="https://docs.diesel.rs/2.2.x/diesel/query_builder/insert_statement/struct.IncompleteInsertStatement.html#method.default_values"><code>.default_values</code></a>.
+href="https://docs.diesel.rs/2.3.x/diesel/query_builder/insert_statement/struct.IncompleteInsertStatement.html#method.default_values"><code>.default_values</code></a>.
 We could write a function that ran that query like this:</p>
 <div class="demo__example">
 <div class="demo__example-browser">
 <div class="browser-bar">
 src/lib.rs
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.2.x/examples/postgres/all_about_inserts/src/lib.rs#L41-L45">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_inserts/src/lib.rs#L41-L45">View on GitHub</a>
 <div class="sourceCode" id="cb2"><pre
 class="sourceCode rust"><code class="sourceCode rust"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">use</span> <span class="pp">schema::users::dsl::</span><span class="op">*;</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -199,7 +202,7 @@ that the value you’re assigning has the right type, but it can’t
 validate whether the column has a default, any constraints that could
 fail, or any triggers that could fire.</p>
 <p>We can use <a
-href="https://docs.diesel.rs/2.2.x/diesel/fn.debug_query.html"><code>debug_query</code></a>
+href="https://docs.diesel.rs/2.3.x/diesel/fn.debug_query.html"><code>debug_query</code></a>
 to inspect the generated SQL. The exact SQL that is generated may differ
 depending on the backend you’re using. If we run
 <code>println!("{}", debug_query::&lt;Pg, _&gt;(&amp;our_query));</code>,
@@ -209,22 +212,22 @@ we’ll see the following:</p>
 <div class="browser-bar">
 Generated SQL
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.2.x/examples/postgres/all_about_inserts/src/lib.rs#L47-L54">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_inserts/src/lib.rs#L47-L54">View on GitHub</a>
 <div class="sourceCode" id="cb3"><pre
 class="sourceCode sql"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> <span class="ot">&quot;users&quot;</span> <span class="kw">DEFAULT</span> <span class="kw">VALUES</span> <span class="co">-- binds: []</span></span></code></pre></div>
 </div>
 </div>
 <p>If we want to actually provide values, we can call <a
-href="https://docs.diesel.rs/2.2.x/diesel/query_builder/insert_statement/struct.IncompleteInsertStatement.html#method.values"><code>.values</code></a>
+href="https://docs.diesel.rs/2.3.x/diesel/query_builder/insert_statement/struct.IncompleteInsertStatement.html#method.values"><code>.values</code></a>
 instead. There are a lot of different arguments we can provide here. The
 simplest is a single column/value pair using <a
-href="https://docs.diesel.rs/2.2.x/diesel/expression_methods/trait.ExpressionMethods.html#method.eq"><code>.eq</code></a>.</p>
+href="https://docs.diesel.rs/2.3.x/diesel/expression_methods/trait.ExpressionMethods.html#method.eq"><code>.eq</code></a>.</p>
 <div class="demo__example">
 <div class="demo__example-browser">
 <div class="browser-bar">
 src/lib.rs
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.2.x/examples/postgres/all_about_inserts/src/lib.rs#L56-L60">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_inserts/src/lib.rs#L56-L60">View on GitHub</a>
 <div class="sourceCode" id="cb4"><pre
 class="sourceCode rust"><code class="sourceCode rust"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">use</span> <span class="pp">schema::users::dsl::</span><span class="op">*;</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -237,7 +240,7 @@ class="sourceCode rust"><code class="sourceCode rust"><span id="cb4-1"><a href="
 <div class="browser-bar">
 Generated SQL
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.2.x/examples/postgres/all_about_inserts/src/lib.rs#L62-L70">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_inserts/src/lib.rs#L62-L70">View on GitHub</a>
 <div class="sourceCode" id="cb5"><pre
 class="sourceCode sql"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> <span class="ot">&quot;users&quot;</span> (<span class="ot">&quot;name&quot;</span>) <span class="kw">VALUES</span> ($<span class="dv">1</span>)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co">-- binds [&quot;Sean&quot;]</span></span></code></pre></div>
@@ -250,7 +253,7 @@ tuple.</p>
 <div class="browser-bar">
 src/lib.rs
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.2.x/examples/postgres/all_about_inserts/src/lib.rs#L72-L78">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_inserts/src/lib.rs#L72-L78">View on GitHub</a>
 <div class="sourceCode" id="cb6"><pre
 class="sourceCode rust"><code class="sourceCode rust"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>insert_into(users)</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span>values((name<span class="op">.</span>eq(<span class="st">&quot;Tess&quot;</span>)<span class="op">,</span> hair_color<span class="op">.</span>eq(<span class="st">&quot;Brown&quot;</span>)))</span>
@@ -263,7 +266,7 @@ class="sourceCode rust"><code class="sourceCode rust"><span id="cb6-1"><a href="
 <div class="browser-bar">
 Generated SQL
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.2.x/examples/postgres/all_about_inserts/src/lib.rs#L80-L88">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_inserts/src/lib.rs#L80-L88">View on GitHub</a>
 <div class="sourceCode" id="cb7"><pre
 class="sourceCode sql"><code class="sourceCode sql"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> <span class="ot">&quot;users&quot;</span> (<span class="ot">&quot;name&quot;</span>, <span class="ot">&quot;hair_color&quot;</span>) <span class="kw">VALUES</span> ($<span class="dv">1</span>, $<span class="dv">2</span>)</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co">-- binds: [&quot;Tess&quot;, &quot;Brown&quot;]</span></span></code></pre></div>
@@ -277,17 +280,17 @@ your data is coming from another source, like a web form deserialized by
 Serde? It’d be annoying to have to write
 <code>(name.eq(user.name), hair_color.eq(user.hair_color))</code>.</p>
 <p>Diesel provides the <a
-href="https://docs.diesel.rs/2.2.x/diesel/prelude/trait.Insertable.html"><code>Insertable</code></a>
+href="https://docs.diesel.rs/2.3.x/diesel/prelude/trait.Insertable.html"><code>Insertable</code></a>
 trait for this case. <code>Insertable</code> maps your struct to columns
 in the database. We can derive this automatically by adding <a
-href="https://docs.diesel.rs/2.2.x/diesel/prelude/derive.Insertable.html"><code>#[derive(Insertable)]</code></a>
+href="https://docs.diesel.rs/2.3.x/diesel/prelude/derive.Insertable.html"><code>#[derive(Insertable)]</code></a>
 to our type.</p>
 <div class="demo__example">
 <div class="demo__example-browser">
 <div class="browser-bar">
 src/lib.rs
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.2.x/examples/postgres/all_about_inserts/src/lib.rs#L23-L30">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_inserts/src/lib.rs#L23-L30">View on GitHub</a>
 <div class="sourceCode" id="cb8"><pre
 class="sourceCode rust"><code class="sourceCode rust"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">use</span> <span class="pp">schema::</span>users<span class="op">;</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -304,7 +307,7 @@ class="sourceCode rust"><code class="sourceCode rust"><span id="cb8-1"><a href="
 <div class="browser-bar">
 src/lib.rs
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.2.x/examples/postgres/all_about_inserts/src/lib.rs#L90-L99">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_inserts/src/lib.rs#L90-L99">View on GitHub</a>
 <div class="sourceCode" id="cb9"><pre
 class="sourceCode rust"><code class="sourceCode rust"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">use</span> <span class="pp">schema::users::dsl::</span><span class="op">*;</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -322,7 +325,7 @@ class="sourceCode rust"><code class="sourceCode rust"><span id="cb9-1"><a href="
 <div class="browser-bar">
 Generated SQL
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.2.x/examples/postgres/all_about_inserts/src/lib.rs#L101-L111">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_inserts/src/lib.rs#L101-L111">View on GitHub</a>
 <div class="sourceCode" id="cb10"><pre
 class="sourceCode sql"><code class="sourceCode sql"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> <span class="ot">&quot;users&quot;</span> (<span class="ot">&quot;name&quot;</span>, <span class="ot">&quot;hair_color&quot;</span>) <span class="kw">VALUES</span> ($<span class="dv">1</span>, $<span class="dv">2</span>)</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co">-- binds: [&quot;Sean&quot;, &quot;Black&quot;]</span></span></code></pre></div>
@@ -335,7 +338,7 @@ inserted for that field.</p>
 <div class="browser-bar">
 src/lib.rs
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.2.x/examples/postgres/all_about_inserts/src/lib.rs#L113-L122">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_inserts/src/lib.rs#L113-L122">View on GitHub</a>
 <div class="sourceCode" id="cb11"><pre
 class="sourceCode rust"><code class="sourceCode rust"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">use</span> <span class="pp">schema::users::dsl::</span><span class="op">*;</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -353,7 +356,7 @@ class="sourceCode rust"><code class="sourceCode rust"><span id="cb11-1"><a href=
 <div class="browser-bar">
 Generated SQL
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.2.x/examples/postgres/all_about_inserts/src/lib.rs#L124-L134">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_inserts/src/lib.rs#L124-L134">View on GitHub</a>
 <div class="sourceCode" id="cb12"><pre
 class="sourceCode sql"><code class="sourceCode sql"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> <span class="ot">&quot;users&quot;</span> (<span class="ot">&quot;name&quot;</span>, <span class="ot">&quot;hair_color&quot;</span>) <span class="kw">VALUES</span> ($<span class="dv">1</span>, <span class="kw">DEFAULT</span>)</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co">-- binds: [&quot;Ruby&quot;]</span></span></code></pre></div>
@@ -374,7 +377,7 @@ can just use a <code>Vec</code>.</p>
 <div class="browser-bar">
 src/lib.rs
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.2.x/examples/postgres/all_about_inserts/src/lib.rs#L136-L142">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_inserts/src/lib.rs#L136-L142">View on GitHub</a>
 <div class="sourceCode" id="cb13"><pre
 class="sourceCode rust"><code class="sourceCode rust"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">use</span> <span class="pp">schema::users::dsl::</span><span class="op">*;</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -389,7 +392,7 @@ class="sourceCode rust"><code class="sourceCode rust"><span id="cb13-1"><a href=
 <div class="browser-bar">
 Generated SQL
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.2.x/examples/postgres/all_about_inserts/src/lib.rs#L144-L153">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_inserts/src/lib.rs#L144-L153">View on GitHub</a>
 <div class="sourceCode" id="cb14"><pre
 class="sourceCode sql"><code class="sourceCode sql"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> <span class="ot">&quot;users&quot;</span> (<span class="ot">&quot;name&quot;</span>) <span class="kw">VALUES</span> ($<span class="dv">1</span>), ($<span class="dv">2</span>)</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co">-- binds [&quot;Sean&quot;, &quot;Tess&quot;]</span></span></code></pre></div>
@@ -402,7 +405,7 @@ use an option here.</p>
 <div class="browser-bar">
 src/lib.rs
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.2.x/examples/postgres/all_about_inserts/src/lib.rs#L155-L161">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_inserts/src/lib.rs#L155-L161">View on GitHub</a>
 <div class="sourceCode" id="cb15"><pre
 class="sourceCode rust"><code class="sourceCode rust"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">use</span> <span class="pp">schema::users::dsl::</span><span class="op">*;</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -421,7 +424,7 @@ class="sourceCode rust"><code class="sourceCode rust"><span id="cb15-1"><a href=
 <div class="browser-bar">
 Generated SQL
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.2.x/examples/postgres/all_about_inserts/src/lib.rs#L163-L172">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_inserts/src/lib.rs#L163-L172">View on GitHub</a>
 <div class="sourceCode" id="cb16"><pre
 class="sourceCode sql"><code class="sourceCode sql"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> <span class="ot">&quot;users&quot;</span> (<span class="ot">&quot;name&quot;</span>) <span class="kw">VALUES</span> ($<span class="dv">1</span>), (<span class="kw">DEFAULT</span>)</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="co">-- binds [&quot;Sean&quot;]</span></span></code></pre></div>
@@ -433,7 +436,7 @@ class="sourceCode sql"><code class="sourceCode sql"><span id="cb16-1"><a href="#
 <div class="browser-bar">
 src/lib.rs
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.2.x/examples/postgres/all_about_inserts/src/lib.rs#L174-L183">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_inserts/src/lib.rs#L174-L183">View on GitHub</a>
 <div class="sourceCode" id="cb17"><pre
 class="sourceCode rust"><code class="sourceCode rust"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">use</span> <span class="pp">schema::users::dsl::</span><span class="op">*;</span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -451,7 +454,7 @@ class="sourceCode rust"><code class="sourceCode rust"><span id="cb17-1"><a href=
 <div class="browser-bar">
 Generated SQL
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.2.x/examples/postgres/all_about_inserts/src/lib.rs#L185-L198">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_inserts/src/lib.rs#L185-L198">View on GitHub</a>
 <div class="sourceCode" id="cb18"><pre
 class="sourceCode sql"><code class="sourceCode sql"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> <span class="ot">&quot;users&quot;</span> (<span class="ot">&quot;name&quot;</span>, <span class="ot">&quot;hair_color&quot;</span>)</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="kw">VALUES</span> ($<span class="dv">1</span>, $<span class="dv">2</span>), ($<span class="dv">3</span>, $<span class="dv">4</span>)</span>
@@ -465,7 +468,7 @@ to insert <code>DEFAULT</code>.</p>
 <div class="browser-bar">
 src/lib.rs
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.2.x/examples/postgres/all_about_inserts/src/lib.rs#L200-L209">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_inserts/src/lib.rs#L200-L209">View on GitHub</a>
 <div class="sourceCode" id="cb19"><pre
 class="sourceCode rust"><code class="sourceCode rust"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="kw">use</span> <span class="pp">schema::users::dsl::</span><span class="op">*;</span></span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -483,7 +486,7 @@ class="sourceCode rust"><code class="sourceCode rust"><span id="cb19-1"><a href=
 <div class="browser-bar">
 Generated SQL
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.2.x/examples/postgres/all_about_inserts/src/lib.rs#L211-L224">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_inserts/src/lib.rs#L211-L224">View on GitHub</a>
 <div class="sourceCode" id="cb20"><pre
 class="sourceCode sql"><code class="sourceCode sql"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> <span class="ot">&quot;users&quot;</span> (<span class="ot">&quot;name&quot;</span>, <span class="ot">&quot;hair_color&quot;</span>)</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="kw">VALUES</span> ($<span class="dv">1</span>, $<span class="dv">2</span>), ($<span class="dv">3</span>, <span class="kw">DEFAULT</span>)</span>
@@ -497,7 +500,7 @@ as well.</p>
 <div class="browser-bar">
 src/lib.rs
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.2.x/examples/postgres/all_about_inserts/src/lib.rs#L226-L238">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_inserts/src/lib.rs#L226-L238">View on GitHub</a>
 <div class="sourceCode" id="cb21"><pre
 class="sourceCode rust"><code class="sourceCode rust"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="kw">use</span> <span class="pp">schema::users::dsl::</span><span class="op">*;</span></span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -518,7 +521,7 @@ class="sourceCode rust"><code class="sourceCode rust"><span id="cb21-1"><a href=
 <div class="browser-bar">
 Generated SQL
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.2.x/examples/postgres/all_about_inserts/src/lib.rs#L211-L224">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_inserts/src/lib.rs#L211-L224">View on GitHub</a>
 <div class="sourceCode" id="cb22"><pre
 class="sourceCode sql"><code class="sourceCode sql"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> <span class="ot">&quot;users&quot;</span> (<span class="ot">&quot;name&quot;</span>, <span class="ot">&quot;hair_color&quot;</span>)</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="kw">VALUES</span> ($<span class="dv">1</span>, $<span class="dv">2</span>), ($<span class="dv">3</span>, $<span class="dv">4</span>)</span>
@@ -535,16 +538,16 @@ enabled with a feature flag,
 <code>returning_clauses_for_sqlite_3_35</code>. MySQL does not support
 <code>RETURNING</code> clauses. To get back all of the inserted rows, we
 can call <a
-href="https://docs.diesel.rs/2.2.x/diesel/query_dsl/trait.RunQueryDsl.html#method.get_results"><code>.get_results</code></a>
+href="https://docs.diesel.rs/2.3.x/diesel/query_dsl/trait.RunQueryDsl.html#method.get_results"><code>.get_results</code></a>
 instead of <a
-href="https://docs.diesel.rs/2.2.x/diesel/query_dsl/trait.RunQueryDsl.html#method.execute"><code>.execute</code></a>.</p>
+href="https://docs.diesel.rs/2.3.x/diesel/query_dsl/trait.RunQueryDsl.html#method.execute"><code>.execute</code></a>.</p>
 <p>Given this struct:</p>
 <div class="demo__example">
 <div class="demo__example-browser">
 <div class="browser-bar">
 src/lib.rs
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.2.x/examples/postgres/all_about_inserts/src/lib.rs#L32-L39">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_inserts/src/lib.rs#L32-L39">View on GitHub</a>
 <div class="sourceCode" id="cb23"><pre
 class="sourceCode rust"><code class="sourceCode rust"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="at">#[</span>derive<span class="at">(</span>Queryable<span class="op">,</span> <span class="bu">PartialEq</span><span class="op">,</span> <span class="bu">Debug</span><span class="at">)]</span></span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> User <span class="op">{</span></span>
@@ -562,7 +565,7 @@ class="sourceCode rust"><code class="sourceCode rust"><span id="cb23-1"><a href=
 <div class="browser-bar">
 src/lib.rs
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.2.x/examples/postgres/all_about_inserts/src/lib.rs#L256-L292">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_inserts/src/lib.rs#L256-L292">View on GitHub</a>
 <div class="sourceCode" id="cb24"><pre
 class="sourceCode rust"><code class="sourceCode rust"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="kw">use</span> <span class="pp">diesel::</span>select<span class="op">;</span></span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="kw">use</span> <span class="pp">schema::users::dsl::</span><span class="op">*;</span></span>
@@ -604,7 +607,7 @@ test generates the following SQL:</p>
 <div class="browser-bar">
 Generated SQL
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.2.x/examples/postgres/all_about_inserts/src/lib.rs#L294-L306">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_inserts/src/lib.rs#L294-L306">View on GitHub</a>
 <div class="sourceCode" id="cb25"><pre
 class="sourceCode sql"><code class="sourceCode sql"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> <span class="ot">&quot;users&quot;</span> (<span class="ot">&quot;id&quot;</span>, <span class="ot">&quot;name&quot;</span>) <span class="kw">VALUES</span> ($<span class="dv">1</span>, $<span class="dv">2</span>), ($<span class="dv">3</span>, $<span class="dv">4</span>)</span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="kw">RETURNING</span> <span class="ot">&quot;users&quot;</span>.<span class="ot">&quot;id&quot;</span>, <span class="ot">&quot;users&quot;</span>.<span class="ot">&quot;name&quot;</span>, <span class="ot">&quot;users&quot;</span>.<span class="ot">&quot;hair_color&quot;</span>,</span>
@@ -628,7 +631,7 @@ migration.</p>
 <div class="browser-bar">
 src/lib.rs
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.2.x/examples/postgres/all_about_inserts/src/lib.rs#L308-L332">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_inserts/src/lib.rs#L308-L332">View on GitHub</a>
 <div class="sourceCode" id="cb26"><pre
 class="sourceCode rust"><code class="sourceCode rust"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="kw">use</span> <span class="pp">diesel::</span>select<span class="op">;</span></span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="kw">use</span> <span class="pp">schema::users::dsl::</span><span class="op">*;</span></span>
@@ -655,7 +658,7 @@ class="sourceCode rust"><code class="sourceCode rust"><span id="cb26-1"><a href=
 <div class="browser-bar">
 Generated SQL
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.2.x/examples/postgres/all_about_inserts/src/lib.rs#L334-L347">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_inserts/src/lib.rs#L334-L347">View on GitHub</a>
 <div class="sourceCode" id="cb27"><pre
 class="sourceCode sql"><code class="sourceCode sql"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> <span class="ot">&quot;users&quot;</span> (<span class="ot">&quot;id&quot;</span>, <span class="ot">&quot;name&quot;</span>) <span class="kw">VALUES</span> ($<span class="dv">1</span>, $<span class="dv">2</span>)</span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="kw">RETURNING</span> <span class="ot">&quot;users&quot;</span>.<span class="ot">&quot;id&quot;</span>, <span class="ot">&quot;users&quot;</span>.<span class="ot">&quot;name&quot;</span>, <span class="ot">&quot;users&quot;</span>.<span class="ot">&quot;hair_color&quot;</span>,</span>
@@ -671,7 +674,7 @@ inserted ID:</p>
 <div class="browser-bar">
 src/lib.rs
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.2.x/examples/postgres/all_about_inserts/src/lib.rs#L349-L356">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_inserts/src/lib.rs#L349-L356">View on GitHub</a>
 <div class="sourceCode" id="cb28"><pre
 class="sourceCode rust"><code class="sourceCode rust"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="kw">use</span> <span class="pp">schema::users::dsl::</span><span class="op">*;</span></span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -687,7 +690,7 @@ class="sourceCode rust"><code class="sourceCode rust"><span id="cb28-1"><a href=
 <div class="browser-bar">
 Generated SQL
 </div>
-<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.2.x/examples/postgres/all_about_inserts/src/lib.rs#L358-L367">View on GitHub</a>
+<a class = "btn-demo-example" href = "https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_inserts/src/lib.rs#L358-L367">View on GitHub</a>
 <div class="sourceCode" id="cb29"><pre
 class="sourceCode sql"><code class="sourceCode sql"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> <span class="ot">&quot;users&quot;</span> (<span class="ot">&quot;name&quot;</span>) <span class="kw">VALUES</span> ($<span class="dv">1</span>)</span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="kw">RETURNING</span> <span class="ot">&quot;users&quot;</span>.<span class="ot">&quot;id&quot;</span></span>
@@ -700,9 +703,9 @@ aria-hidden="true"></a>“Upsert”</h2>
 for “insert or update” queries, also known as “upsert”. The specifics of
 upsert are covered extensively in the API documentation.</p>
 <p>For PostgreSQL and SQLite, see the <a
-href="https://docs.diesel.rs/2.2.x/diesel/upsert/index.html"><code>diesel::upsert</code></a>
+href="https://docs.diesel.rs/2.3.x/diesel/upsert/index.html"><code>diesel::upsert</code></a>
 module. For MySQL, upsert is done via <code>REPLACE</code>. See <a
-href="https://docs.diesel.rs/2.2.x/diesel/fn.replace_into.html"><code>replace_into</code></a>
+href="https://docs.diesel.rs/2.3.x/diesel/fn.replace_into.html"><code>replace_into</code></a>
 for details.</p>
 <h2 id="conclusion"><a href="#conclusion" class="anchor"
 aria-hidden="true"></a>Conclusion</h2>
@@ -713,11 +716,11 @@ passed to <code>.values</code>.</p>
 You can find the full code examples for each backend at these links:</p>
 <ul>
 <li><a
-href="https://github.com/diesel-rs/diesel/tree/2.2.x/examples/postgres/all_about_inserts">PostgreSQL</a></li>
+href="https://github.com/diesel-rs/diesel/tree/2.3.x/examples/postgres/all_about_inserts">PostgreSQL</a></li>
 <li><a
-href="https://github.com/diesel-rs/diesel/tree/2.2.x/examples/mysql/all_about_inserts">MySQL</a></li>
+href="https://github.com/diesel-rs/diesel/tree/2.3.x/examples/mysql/all_about_inserts">MySQL</a></li>
 <li><a
-href="https://github.com/diesel-rs/diesel/tree/2.2.x/examples/sqlite/all_about_inserts">SQLite</a></li>
+href="https://github.com/diesel-rs/diesel/tree/2.3.x/examples/sqlite/all_about_inserts">SQLite</a></li>
 </ul>
 </div>
 </div>
@@ -736,5 +739,6 @@ href="https://github.com/diesel-rs/diesel/tree/2.2.x/examples/sqlite/all_about_i
 <script type="text/javascript">
 
 </script>
+<script defer src="https://umami.weiznich.de/script.js" data-website-id="cbfc6769-b0b4-4256-9fbc-f5c053b55bed"></script>
 </body>
 </html>

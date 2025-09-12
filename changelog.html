@@ -124,6 +124,9 @@ code span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
                     <li class="nav-item">
                       <a href="/changelog.html">Changelog</a>
                     </li>
+                    <li class="nav-item">
+                      <a href="https://github.com/diesel-rs/diesel"><img src="/assets/images/github-mark.svg" style="height: 2em;"/></a>
+                    </li>
                 </ul>
             </nav>
         </div>
@@ -143,20 +146,164 @@ code span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
 file. This project adheres to <a href="http://semver.org/">Semantic
 Versioning</a>, as described for Rust libraries in <a
 href="https://github.com/rust-lang/rfcs/blob/master/text/1105-api-evolution.md">RFC
-#1105</a> For any named minimal supported Rust version we guarantee that
-it is possible to build Diesel with the default features enabled using
-some set of dependencies. Those set of dependencies is not necessarily
-an up to date version of the specific dependency. We check this by using
-the unstable <code>-Z minimal-version</code> cargo flag. Increasing the
+#1105</a> We explicitly reserve the right to perform breaking changes in
+minor releases to fix build breaking changes from the Rust project. For
+any named minimal supported Rust version we guarantee that it is
+possible to build Diesel with the default features enabled using some
+set of dependencies. Those set of dependencies is not necessarily an up
+to date version of the specific dependency. We check this by using the
+unstable <code>-Z minimal-version</code> cargo flag. Increasing the
 minimal supported Rust version will always be coupled at least with a
 minor release.</p>
-<h2 id="unreleased"><a href="#unreleased" class="anchor"
-aria-hidden="true"></a>Unreleased</h2>
 <h2 id="section"><a href="#section" class="anchor"
+aria-hidden="true"></a><a
+href="https://github.com/diesel-rs/diesel/compare/v2.2.0...v2.3.0">2.3.0</a>
+2025-09-12</h2>
+<h3 id="added"><a href="#added" class="anchor"
+aria-hidden="true"></a>Added</h3>
+<ul>
+<li>Added <code>limit()</code> and <code>offset()</code> DSL to
+combination clauses such as <code>UNION</code></li>
+<li>Fixed <code>#[derive(Identifiable)]</code> ignoring attribute
+<code>#[diesel(serialize_as)]</code> on primary keys</li>
+<li>Added embedded struct support for <code>AsChangeset</code> via
+<code>#[diesel(embed)]</code></li>
+<li>Added a <code>#[diesel(skip_update)]</code> attribute for the
+<code>AsChangeset</code> derive to skip updating a field present in the
+struct</li>
+<li>Support for libsqlite3-sys 0.35.0</li>
+<li>Add support for built-in PostgreSQL range operators and
+functions</li>
+<li>Support for postgres multirange type</li>
+<li>Added <code>diesel::r2d2::TestCustomizer</code>, which allows users
+to customize their <code>diesel::r2d2::Pool</code>s in a way that makes
+the pools suitable for use in parallel tests.</li>
+<li>Added support for built-in PostgreSQL range operators and
+functions</li>
+<li>Added support for various built-in PostgreSQL array functions</li>
+<li>Added <code>Json</code> and <code>Jsonb</code> support for the
+SQLite backend.</li>
+<li>Added a <code>#[diesel::declare_sql_function]</code> attribute macro
+to easily define support for multiple sql functions at once via an
+<code>extern "SQL"</code> block</li>
+<li>Support
+<code>[print_schema] allow_tables_to_appear_in_same_query_config = "fk_related_tables"</code>
+to generate separate <code>allow_tables_to_appear_in_same_query!</code>
+calls containing only tables that are related through foreign keys.
+(Default: <code>"all_tables"</code>.) It is not possible to build
+queries using two tables that don’t appear in the same
+<code>allow_tables_to_appear_in_same_query!</code> call, but that macro
+generates O(n²) rust code, so this option may be useful to reduce
+compilation time. (<a
+href="https://github.com/diesel-rs/diesel/issues/4333">#4333</a>)</li>
+<li>Added <code>wasm32-unknown-unknown</code> target support for sqlite
+backend.</li>
+<li>Add support for the <code>CAST</code> operator</li>
+<li>Support
+<code>[print_schema] allow_tables_to_appear_in_same_query_config = "none"</code>
+to generate no <code>allow_tables_to_appear_in_same_query!</code> calls.
+(Default: <code>"all_tables"</code>.). (<a
+href="https://github.com/diesel-rs/diesel/issues/4333">#4333</a>)</li>
+<li>Add <code>[print_schema] pg_domains_as_custom_types</code> parameter
+to generate custom types for <a
+href="https://www.postgresql.org/docs/current/domains.html">PostgreSQL
+domains</a> that matches any of the regexes in the given list. (Default:
+<code>[]</code>.) This option allows an application to selectively give
+special meaning for the serialization/deserialization of these types,
+avoiding the default behavior of treating the domain as the underlying
+type. (<a
+href="https://github.com/diesel-rs/diesel/discussions/4592">#4592</a>)</li>
+<li>Add support for batch insert and upsert statements with returning
+for SQLite</li>
+<li>Add support for window functions and aggregate expressions.</li>
+</ul>
+<h3 id="fixed"><a href="#fixed" class="anchor"
+aria-hidden="true"></a>Fixed</h3>
+<ul>
+<li>Fixed diesel thinking <code>a.eq_any(b)</code> was non-nullable even
+if <code>a</code> and <code>b</code> were nullable.</li>
+<li>Generate <code>InstrumentationEvent::BeginTransaction</code> for
+immediate and exclusive transactions in SQLite</li>
+<li>Use a single space instead of two spaces between
+<code>DELETE FROM</code>.</li>
+<li>Diesel CLI now ensures that migration versions are always unique. If
+it fails to generate a unique version, it will return an error. The new
+version format remains compatible with older Diesel versions.</li>
+<li>Updated <code>ipnetwork</code> to allow version 0.21.</li>
+</ul>
+<h3 id="changed"><a href="#changed" class="anchor"
+aria-hidden="true"></a>Changed</h3>
+<ul>
+<li>Use distinct <code>DIESEL_LOG</code> logging filter env variable
+instead of the default <code>RUST_LOG</code> one (#4575)</li>
+<li>The minimal supported Rust version is now 1.86.0</li>
+</ul>
+<h2 id="section-1"><a href="#section-1" class="anchor"
+aria-hidden="true"></a><a
+href="https://github.com/diesel-rs/diesel/compare/v2.2.11...v2.2.12">2.2.12</a>
+2025-07-11</h2>
+<h2 id="fixed-1"><a href="#fixed-1" class="anchor"
+aria-hidden="true"></a>Fixed</h2>
+<ul>
+<li>Added support for libsqlite3-sys 0.35.0</li>
+<li>Fixed a wrong oid for the <code>oid[]</code> type in the PostgreSQL
+backend</li>
+<li>Worked around an issue with broken nullable detection with certain
+versions of libmysqlclient shipped by ubuntu</li>
+<li>Improved compiler errors in many more cases</li>
+</ul>
+<h2 id="section-2"><a href="#section-2" class="anchor"
+aria-hidden="true"></a><a
+href="https://github.com/diesel-rs/diesel/compare/v2.2.10...v2.2.11">2.2.11</a>
+2025-06-12</h2>
+<h2 id="fixed-2"><a href="#fixed-2" class="anchor"
+aria-hidden="true"></a>Fixed</h2>
+<ul>
+<li>Disallow mixing aggregate and non-aggregate expressions in
+<code>DISTINCT ON</code> clauses</li>
+<li>Fixed an item referenced by a non-absolute path in
+<code>#[derive(MultiConnection)]</code></li>
+<li>Improved compiler errors in some cases</li>
+<li>Improved the documentation for creating SqliteConnections for
+concurrent applications</li>
+</ul>
+<h2 id="section-3"><a href="#section-3" class="anchor"
+aria-hidden="true"></a><a
+href="https://github.com/diesel-rs/diesel/compare/v2.2.9...v2.2.10">2.2.10</a>
+2025-04-25</h2>
+<h2 id="fixed-3"><a href="#fixed-3" class="anchor"
+aria-hidden="true"></a>Fixed</h2>
+<ul>
+<li>Support for libsqlite3-sys 0.35.0</li>
+<li>Fixed potential ambiguities in code generated by various
+derives</li>
+</ul>
+<h2 id="section-4"><a href="#section-4" class="anchor"
+aria-hidden="true"></a><a
+href="https://github.com/diesel-rs/diesel/compare/v2.2.8...v2.2.9">2.2.9</a>
+2025-04-04</h2>
+<h3 id="fixed-4"><a href="#fixed-4" class="anchor"
+aria-hidden="true"></a>Fixed</h3>
+<ul>
+<li>Fix an issue where
+<code>diesel migration generate --diff-schema</code> incorrectly uses
+the primary key of table B as the referenced column rather than the
+primary key of table A when B has a foreign key pointing to table
+A.</li>
+<li>Bump maximal supported libsqlite3-sys version to 0.32.0 and add
+explicit feature entries for the <code>uuid</code> and
+<code>serde_json</code> feature.</li>
+<li>Fixed an issue where diesel generated unnamed prepared statements
+would fail with an <code>unanmed prepared statement not found</code>
+error with pgbouncer.</li>
+<li>Fix an issue with converting <code>ipnet::Ipnet</code> values with
+an subnet to SQL values</li>
+</ul>
+<h2 id="section-5"><a href="#section-5" class="anchor"
 aria-hidden="true"></a><a
 href="https://github.com/diesel-rs/diesel/compare/v2.2.7...v2.2.8">2.2.8</a>
 2025-03-03</h2>
-<h3 id="fixed"><a href="#fixed" class="anchor"
+<h3 id="fixed-5"><a href="#fixed-5" class="anchor"
 aria-hidden="true"></a>Fixed</h3>
 <ul>
 <li>Allow <code>#[diesel(check_for_backend(_))]</code> to check fields
@@ -169,11 +316,11 @@ with <code>#[diesel(embed)]</code> annotations</li>
 <li>Use consistent whitespace in <code>ASC</code>/<code>DESC</code>,
 <code>DISTINCT ON</code>, and <code>DELETE FROM</code> clauses</li>
 </ul>
-<h2 id="section-1"><a href="#section-1" class="anchor"
+<h2 id="section-6"><a href="#section-6" class="anchor"
 aria-hidden="true"></a><a
 href="https://github.com/diesel-rs/diesel/compare/v2.2.6...v2.2.7">2.2.7</a>
 2025-01-31</h2>
-<h3 id="fixed-1"><a href="#fixed-1" class="anchor"
+<h3 id="fixed-6"><a href="#fixed-6" class="anchor"
 aria-hidden="true"></a>Fixed</h3>
 <ul>
 <li>Fixed diesel thinking <code>a.eq_any(b)</code> was non-nullable even
@@ -189,20 +336,20 @@ immediate and exclusive transactions in SQLite</li>
 <code>#[diesel::auto_type]</code></li>
 <li>Add support for joins to sub-jons to aliases</li>
 </ul>
-<h2 id="section-2"><a href="#section-2" class="anchor"
+<h2 id="section-7"><a href="#section-7" class="anchor"
 aria-hidden="true"></a><a
 href="https://github.com/diesel-rs/diesel/compare/v2.2.5...v2.2.6">2.2.6</a>
 2024-12-03</h2>
-<h3 id="fixed-2"><a href="#fixed-2" class="anchor"
+<h3 id="fixed-7"><a href="#fixed-7" class="anchor"
 aria-hidden="true"></a>Fixed</h3>
 <ul>
 <li>Remove more mentions of gitter from the documentation</li>
 </ul>
-<h2 id="section-3"><a href="#section-3" class="anchor"
+<h2 id="section-8"><a href="#section-8" class="anchor"
 aria-hidden="true"></a><a
 href="https://github.com/diesel-rs/diesel/compare/v2.2.4...v2.2.5">2.2.5</a>
 2024-11-21</h2>
-<h3 id="fixed-3"><a href="#fixed-3" class="anchor"
+<h3 id="fixed-8"><a href="#fixed-8" class="anchor"
 aria-hidden="true"></a>Fixed</h3>
 <ul>
 <li>Add a typedef for <code>Returning</code> and <code>Count</code> so
@@ -217,21 +364,21 @@ aria-hidden="true"></a>Removed</h3>
 <ul>
 <li>Do not mention the gitter channel in our docs anymore</li>
 </ul>
-<h2 id="section-4"><a href="#section-4" class="anchor"
+<h2 id="section-9"><a href="#section-9" class="anchor"
 aria-hidden="true"></a><a
 href="https://github.com/diesel-rs/diesel/compare/v2.2.3...v2.2.4">2.2.4</a>
 2024-09-03</h2>
-<h3 id="fixed-4"><a href="#fixed-4" class="anchor"
+<h3 id="fixed-9"><a href="#fixed-9" class="anchor"
 aria-hidden="true"></a>Fixed</h3>
 <ul>
 <li>Fix an issue where empty queries could trigger undefined behaviour
 in the sqlite backend</li>
 </ul>
-<h2 id="section-5"><a href="#section-5" class="anchor"
+<h2 id="section-10"><a href="#section-10" class="anchor"
 aria-hidden="true"></a><a
 href="https://github.com/diesel-rs/diesel/compare/v2.2.2...v2.2.3">2.2.3</a>
 2024-08-23</h2>
-<h3 id="fixed-5"><a href="#fixed-5" class="anchor"
+<h3 id="fixed-10"><a href="#fixed-10" class="anchor"
 aria-hidden="true"></a>Fixed</h3>
 <ul>
 <li>Support for libsqlite3-sys 0.30.0</li>
@@ -243,11 +390,11 @@ presentation from DEF CON for details</li>
 <li>Fixed an issue with a possibly ambiguous trait resolution in
 <code>#[derive(QueryableByName)]</code></li>
 </ul>
-<h2 id="section-6"><a href="#section-6" class="anchor"
+<h2 id="section-11"><a href="#section-11" class="anchor"
 aria-hidden="true"></a><a
 href="https://github.com/diesel-rs/diesel/compare/v2.2.1...v2.2.2">2.2.2</a>
 2024-07-19</h2>
-<h3 id="fixed-6"><a href="#fixed-6" class="anchor"
+<h3 id="fixed-11"><a href="#fixed-11" class="anchor"
 aria-hidden="true"></a>Fixed</h3>
 <ul>
 <li>Support for libsqlite3-sys 0.29.0</li>
@@ -257,11 +404,11 @@ aria-hidden="true"></a>Fixed</h3>
 <li>Removed the <code>SerializedDatabase::new</code> function due to
 unsoundness</li>
 </ul>
-<h2 id="section-7"><a href="#section-7" class="anchor"
+<h2 id="section-12"><a href="#section-12" class="anchor"
 aria-hidden="true"></a><a
 href="https://github.com/diesel-rs/diesel/compare/v2.2.0...v2.2.1">2.2.1</a>
 2024-06-12</h2>
-<h2 id="fixed-7"><a href="#fixed-7" class="anchor"
+<h2 id="fixed-12"><a href="#fixed-12" class="anchor"
 aria-hidden="true"></a>Fixed</h2>
 <ul>
 <li>Fixed using <code>#[dsl::auto_type]</code> with functions that
@@ -278,11 +425,11 @@ file/folder was not found</li>
 <li>Fixed several version detection bugs in mysqlclient-sys to use
 pre-generated bindings in more situations</li>
 </ul>
-<h2 id="section-8"><a href="#section-8" class="anchor"
+<h2 id="section-13"><a href="#section-13" class="anchor"
 aria-hidden="true"></a><a
 href="https://github.com/diesel-rs/diesel/compare/v2.1.0...v2.2.0">2.2.0</a>
 2024-05-31</h2>
-<h3 id="added"><a href="#added" class="anchor"
+<h3 id="added-1"><a href="#added-1" class="anchor"
 aria-hidden="true"></a>Added</h3>
 <ul>
 <li>Support
@@ -327,7 +474,7 @@ database that is dynamically allocated by calling
 the memory when it goes out of scope with
 <code>sqlite3_free</code>.</li>
 </ul>
-<h3 id="changed"><a href="#changed" class="anchor"
+<h3 id="changed-1"><a href="#changed-1" class="anchor"
 aria-hidden="true"></a>Changed</h3>
 <ul>
 <li>The minimal officially supported rustc version is now 1.78.0</li>
@@ -337,7 +484,7 @@ aria-hidden="true"></a>Changed</h3>
 <li>Deserialization error messages now contain information about the
 field that failed to deserialize</li>
 </ul>
-<h2 id="section-9"><a href="#section-9" class="anchor"
+<h2 id="section-14"><a href="#section-14" class="anchor"
 aria-hidden="true"></a><a
 href="https://github.com/diesel-rs/diesel/compare/v2.1.5...v2.1.6">2.1.6</a>
 2024-04-19</h2>
@@ -346,7 +493,7 @@ href="https://github.com/diesel-rs/diesel/compare/v2.1.5...v2.1.6">2.1.6</a>
 <li>Fix using numeric expressions with aliased fields</li>
 <li>Minor documentation fixes</li>
 </ul>
-<h2 id="section-10"><a href="#section-10" class="anchor"
+<h2 id="section-15"><a href="#section-15" class="anchor"
 aria-hidden="true"></a><a
 href="https://github.com/diesel-rs/diesel/compare/v2.1.4...v2.1.5">2.1.5</a>
 2024-03-15</h2>
@@ -361,7 +508,7 @@ names.</li>
 <li>Update <code>libsqlite3-sys</code> to allow version 0.28 as
 well</li>
 </ul>
-<h2 id="section-11"><a href="#section-11" class="anchor"
+<h2 id="section-16"><a href="#section-16" class="anchor"
 aria-hidden="true"></a><a
 href="https://github.com/diesel-rs/diesel/compare/v2.1.3...v2.1.4">2.1.4</a>
 2023-11-14</h2>
@@ -369,7 +516,7 @@ href="https://github.com/diesel-rs/diesel/compare/v2.1.3...v2.1.4">2.1.4</a>
 <li>Update <code>libsqlite3-sys</code> to allow version 0.27 as
 well</li>
 </ul>
-<h2 id="section-12"><a href="#section-12" class="anchor"
+<h2 id="section-17"><a href="#section-17" class="anchor"
 aria-hidden="true"></a><a
 href="https://github.com/diesel-rs/diesel/compare/v2.1.2...v2.1.3">2.1.3</a>
 2023-10-05</h2>
@@ -378,11 +525,11 @@ href="https://github.com/diesel-rs/diesel/compare/v2.1.2...v2.1.3">2.1.3</a>
 <code>DISTINCT ON</code> and <code>ORDER BY</code> clauses again as that
 broke existing code</li>
 </ul>
-<h2 id="section-13"><a href="#section-13" class="anchor"
+<h2 id="section-18"><a href="#section-18" class="anchor"
 aria-hidden="true"></a><a
 href="https://github.com/diesel-rs/diesel/compare/v2.1.1...v2.1.2">2.1.2</a>
 2023-09-25</h2>
-<h2 id="fixed-8"><a href="#fixed-8" class="anchor"
+<h2 id="fixed-13"><a href="#fixed-13" class="anchor"
 aria-hidden="true"></a>Fixed</h2>
 <ul>
 <li>Fixed another potential breaking chaneg around queries containing
@@ -392,11 +539,11 @@ custom sql expressions (e.g. <code>.nullable()</code>)</li>
 <code>#[diesel(check_for_backend)]</code> generates invalid rust code if
 the struct contains lifetimes/generic types</li>
 </ul>
-<h2 id="section-14"><a href="#section-14" class="anchor"
+<h2 id="section-19"><a href="#section-19" class="anchor"
 aria-hidden="true"></a><a
 href="https://github.com/diesel-rs/diesel/compare/v2.1.0...v2.1.1">2.1.1</a>
 2023-08-25</h2>
-<h2 id="fixed-9"><a href="#fixed-9" class="anchor"
+<h2 id="fixed-14"><a href="#fixed-14" class="anchor"
 aria-hidden="true"></a>Fixed</h2>
 <ul>
 <li>Fixed an issue in diesel-cli that lead to using unquoted table names
@@ -421,21 +568,21 @@ table filters as setup for <code>print-schema</code> via
 <code>DISTINCT ON</code> and <code>ORDER BY</code> clauses consisting of
 custom sql expressions (e.g. <code>diesel::dsl::sql</code>)</li>
 </ul>
-<h2 id="added-1"><a href="#added-1" class="anchor"
+<h2 id="added-2"><a href="#added-2" class="anchor"
 aria-hidden="true"></a>Added</h2>
 <ul>
 <li>Support for bigdecimal 0.4</li>
 </ul>
-<h2 id="section-15"><a href="#section-15" class="anchor"
+<h2 id="section-20"><a href="#section-20" class="anchor"
 aria-hidden="true"></a><a
 href="https://github.com/diesel-rs/diesel/compare/v2.0.0...v2.1.0">2.1.0</a>
 2023-05-26</h2>
-<h3 id="changed-1"><a href="#changed-1" class="anchor"
+<h3 id="changed-2"><a href="#changed-2" class="anchor"
 aria-hidden="true"></a>Changed</h3>
 <ul>
 <li>The minimal officially supported rustc version is now 1.65.0</li>
 </ul>
-<h3 id="added-2"><a href="#added-2" class="anchor"
+<h3 id="added-3"><a href="#added-3" class="anchor"
 aria-hidden="true"></a>Added</h3>
 <ul>
 <li>Added the <code>custom_type_derives</code> config option to
@@ -458,11 +605,11 @@ syntax through the existing upsert functions.</li>
 <li>Added column size restrictions to the generated
 <code>schema.rs</code> file</li>
 </ul>
-<h2 id="section-16"><a href="#section-16" class="anchor"
+<h2 id="section-21"><a href="#section-21" class="anchor"
 aria-hidden="true"></a><a
 href="https://github.com/diesel-rs/diesel/compare/v2.0.3...v2.0.4">2.0.4</a>
 2023-04-18</h2>
-<h2 id="fixed-10"><a href="#fixed-10" class="anchor"
+<h2 id="fixed-15"><a href="#fixed-15" class="anchor"
 aria-hidden="true"></a>Fixed</h2>
 <ul>
 <li>Workaround the missing name resolution in rust-analyzer. This should
@@ -479,7 +626,7 @@ backend</li>
 <code>mysql</code> instead of the <code>mysql_backend</code> feature
 flag</li>
 </ul>
-<h2 id="added-3"><a href="#added-3" class="anchor"
+<h2 id="added-4"><a href="#added-4" class="anchor"
 aria-hidden="true"></a>Added</h2>
 <ul>
 <li>Support for <code>libsqlite3-sys</code> 0.26</li>
@@ -489,17 +636,17 @@ href="#diesel_derives-2.0.2-2023-03-13" class="anchor"
 aria-hidden="true"></a><a
 href="https://github.com/diesel-rs/diesel/compare/v2.0.2...diesel_derives_v2.0.2">diesel_derives
 2.0.2</a> 2023-03-13</h2>
-<h2 id="fixed-11"><a href="#fixed-11" class="anchor"
+<h2 id="fixed-16"><a href="#fixed-16" class="anchor"
 aria-hidden="true"></a>Fixed</h2>
 <ul>
 <li>Fixing the fallout of a breaking change from <code>quote</code> by
 not using their internal API</li>
 </ul>
-<h2 id="section-17"><a href="#section-17" class="anchor"
+<h2 id="section-22"><a href="#section-22" class="anchor"
 aria-hidden="true"></a><a
 href="https://github.com/diesel-rs/diesel/compare/v2.0.2...v2.0.3">2.0.3</a>
 2023-01-24</h2>
-<h2 id="fixed-12"><a href="#fixed-12" class="anchor"
+<h2 id="fixed-17"><a href="#fixed-17" class="anchor"
 aria-hidden="true"></a>Fixed</h2>
 <ul>
 <li>Fixed a bug with our transaction manager implementation that caused
@@ -507,21 +654,21 @@ by marking transactions as broken which could be recovered.</li>
 <li>Fixed an issue with the combination of
 <code>BoxableExpression</code> and order clauses</li>
 </ul>
-<h2 id="section-18"><a href="#section-18" class="anchor"
+<h2 id="section-23"><a href="#section-23" class="anchor"
 aria-hidden="true"></a><a
 href="https://github.com/diesel-rs/diesel/compare/v2.0.1...v2.0.2">2.0.2</a>
 2022-10-11</h2>
-<h3 id="fixed-13"><a href="#fixed-13" class="anchor"
+<h3 id="fixed-18"><a href="#fixed-18" class="anchor"
 aria-hidden="true"></a>Fixed</h3>
 <ul>
 <li>Reverted a fix from the 2.0.1 release that breaks valid
 <code>INSERT … ON CONFLICT</code> queries</li>
 </ul>
-<h2 id="section-19"><a href="#section-19" class="anchor"
+<h2 id="section-24"><a href="#section-24" class="anchor"
 aria-hidden="true"></a><a
 href="https://github.com/diesel-rs/diesel/compare/v2.0.0...v2.0.1">2.0.1</a>
 2022-10-07</h2>
-<h3 id="fixed-14"><a href="#fixed-14" class="anchor"
+<h3 id="fixed-19"><a href="#fixed-19" class="anchor"
 aria-hidden="true"></a>Fixed</h3>
 <ul>
 <li>Fixed an issue with <code>diesel_cli</code> generating incompatible
@@ -536,11 +683,11 @@ after hitting a database error in certain situations</li>
 <li>Fixed <code>diesel_derives</code> generating code that triggers the
 disabled by default <code>unused_qualifications</code> lint</li>
 </ul>
-<h2 id="section-20"><a href="#section-20" class="anchor"
+<h2 id="section-25"><a href="#section-25" class="anchor"
 aria-hidden="true"></a><a
 href="https://github.com/diesel-rs/diesel/compare/v1.4.0...v2.0.0">2.0.0</a>
 2022-08-29</h2>
-<h3 id="added-4"><a href="#added-4" class="anchor"
+<h3 id="added-5"><a href="#added-5" class="anchor"
 aria-hidden="true"></a>Added</h3>
 <ul>
 <li><p><code>MysqlConnection::establish</code> is able to initiate an
@@ -666,7 +813,7 @@ for now. We are happy to add this support back as soon as
 (<code>diesel bash-completions</code>) has been removed. Use
 <code>diesel completions &lt;shell&gt;</code> instead.</li>
 </ul>
-<h3 id="changed-2"><a href="#changed-2" class="anchor"
+<h3 id="changed-3"><a href="#changed-3" class="anchor"
 aria-hidden="true"></a>Changed</h3>
 <ul>
 <li><p>The minimal officially supported rustc version is now
@@ -801,7 +948,7 @@ using MySQL and executing raw queries with the <code>||</code> operator,
 you will need to rewrite your queries or set
 <code>PIPES_AS_CONCAT</code> manually.</p></li>
 </ul>
-<h3 id="fixed-15"><a href="#fixed-15" class="anchor"
+<h3 id="fixed-20"><a href="#fixed-20" class="anchor"
 aria-hidden="true"></a>Fixed</h3>
 <ul>
 <li><p>Many types were incorrectly considered non-aggregate when they
@@ -870,11 +1017,11 @@ upsert queries on more than one backend. Please use
 are now deprecated in favour of <code>ExpressionMethods::eq_any()</code>
 and <code>ExpressionMethods::ne_all()</code></p></li>
 </ul>
-<h2 id="section-21"><a href="#section-21" class="anchor"
+<h2 id="section-26"><a href="#section-26" class="anchor"
 aria-hidden="true"></a><a
 href="https://github.com/diesel-rs/diesel/compare/v1.4.7...v1.4.8">1.4.8</a>
 - 2021-09-20</h2>
-<h3 id="fixed-16"><a href="#fixed-16" class="anchor"
+<h3 id="fixed-21"><a href="#fixed-21" class="anchor"
 aria-hidden="true"></a>Fixed</h3>
 <ul>
 <li>Fixed a incompatibly between <code>diesel</code> and
@@ -882,32 +1029,32 @@ aria-hidden="true"></a>Fixed</h3>
 <code>resolver = "2"</code> enabled. This change ensures compatibility
 with the upcomming 2021 rust edition.</li>
 </ul>
-<h2 id="section-22"><a href="#section-22" class="anchor"
+<h2 id="section-27"><a href="#section-27" class="anchor"
 aria-hidden="true"></a><a
 href="https://github.com/diesel-rs/diesel/compare/v1.4.6...v1.4.7">1.4.7</a>
 - 2021-06-08</h2>
-<h3 id="fixed-17"><a href="#fixed-17" class="anchor"
+<h3 id="fixed-22"><a href="#fixed-22" class="anchor"
 aria-hidden="true"></a>Fixed</h3>
 <ul>
 <li>Updated <code>libsqlite3-sys</code> to allow version 0.22</li>
 <li>Updated <code>ipnetwork</code> to allow version 0.18</li>
 </ul>
-<h2 id="section-23"><a href="#section-23" class="anchor"
+<h2 id="section-28"><a href="#section-28" class="anchor"
 aria-hidden="true"></a><a
 href="https://github.com/diesel-rs/diesel/compare/v1.4.5...v1.4.6">1.4.6</a>
 - 2021-03-05</h2>
-<h3 id="fixed-18"><a href="#fixed-18" class="anchor"
+<h3 id="fixed-23"><a href="#fixed-23" class="anchor"
 aria-hidden="true"></a>Fixed</h3>
 <ul>
 <li>Fixed a use-after-free issue in the <code>QueryableByName</code>
 implementation of our <code>Sqlite</code> backend</li>
 <li>Updated several dependencies</li>
 </ul>
-<h2 id="section-24"><a href="#section-24" class="anchor"
+<h2 id="section-29"><a href="#section-29" class="anchor"
 aria-hidden="true"></a><a
 href="https://github.com/diesel-rs/diesel/compare/v1.4.4...v1.4.5">1.4.5</a>
 - 2020-06-09</h2>
-<h3 id="fixed-19"><a href="#fixed-19" class="anchor"
+<h3 id="fixed-24"><a href="#fixed-24" class="anchor"
 aria-hidden="true"></a>Fixed</h3>
 <ul>
 <li>Update several dependencies</li>
@@ -921,21 +1068,21 @@ versions</li>
 <li>Remove some potential harmful usages of
 <code>mem::uninitialized</code></li>
 </ul>
-<h2 id="section-25"><a href="#section-25" class="anchor"
+<h2 id="section-30"><a href="#section-30" class="anchor"
 aria-hidden="true"></a><a
 href="https://github.com/diesel-rs/diesel/compare/v1.4.3...v1.4.4">1.4.4</a>
 - 2020-03-22</h2>
-<h3 id="fixed-20"><a href="#fixed-20" class="anchor"
+<h3 id="fixed-25"><a href="#fixed-25" class="anchor"
 aria-hidden="true"></a>Fixed</h3>
 <ul>
 <li>Update several dependencies</li>
 <li>Fixed a bug with printing embeded migrations</li>
 </ul>
-<h2 id="section-26"><a href="#section-26" class="anchor"
+<h2 id="section-31"><a href="#section-31" class="anchor"
 aria-hidden="true"></a><a
 href="https://github.com/diesel-rs/diesel/compare/v1.4.2...v1.4.3">1.4.3</a>
 - 2019-10-11</h2>
-<h3 id="fixed-21"><a href="#fixed-21" class="anchor"
+<h3 id="fixed-26"><a href="#fixed-26" class="anchor"
 aria-hidden="true"></a>Fixed</h3>
 <ul>
 <li>Updated several dependencies</li>
@@ -945,11 +1092,11 @@ defined behaviour</li>
 <li><code>diesel_derives</code> and <code>diesel_migrations</code> are
 updated to syn 1.0</li>
 </ul>
-<h2 id="section-27"><a href="#section-27" class="anchor"
+<h2 id="section-32"><a href="#section-32" class="anchor"
 aria-hidden="true"></a><a
 href="https://github.com/diesel-rs/diesel/compare/v1.4.1...v1.4.2">1.4.2</a>
 - 2019-03-19</h2>
-<h3 id="fixed-22"><a href="#fixed-22" class="anchor"
+<h3 id="fixed-27"><a href="#fixed-27" class="anchor"
 aria-hidden="true"></a>Fixed</h3>
 <ul>
 <li>Parenthesis are now inserted around all mathematical operations.
@@ -959,22 +1106,22 @@ evaluated to 14. This could even result in runtime errors if multiple
 types were involved (for example,
 <code>interval *   (integer + 1)</code>)</li>
 </ul>
-<h2 id="section-28"><a href="#section-28" class="anchor"
+<h2 id="section-33"><a href="#section-33" class="anchor"
 aria-hidden="true"></a><a
 href="https://github.com/diesel-rs/diesel/compare/v1.4.0...v1.4.1">1.4.1</a>
 - 2019-01-24</h2>
-<h3 id="fixed-23"><a href="#fixed-23" class="anchor"
+<h3 id="fixed-28"><a href="#fixed-28" class="anchor"
 aria-hidden="true"></a>Fixed</h3>
 <ul>
 <li>This release fixes a minor memory safety issue in SQLite. This bug
 would only occur in an error handling branch that should never occur in
 practice.</li>
 </ul>
-<h2 id="section-29"><a href="#section-29" class="anchor"
+<h2 id="section-34"><a href="#section-34" class="anchor"
 aria-hidden="true"></a><a
 href="https://github.com/diesel-rs/diesel/compare/v1.3.0...v1.4.0">1.4.0</a>
 - 2019-01-20</h2>
-<h3 id="fixed-24"><a href="#fixed-24" class="anchor"
+<h3 id="fixed-29"><a href="#fixed-29" class="anchor"
 aria-hidden="true"></a>Fixed</h3>
 <ul>
 <li><code>embed_migrations!</code> will no longer emit an unused import
@@ -982,7 +1129,7 @@ warning</li>
 <li>Diesel now supports uuid 0.7 by adding the new feature flag
 <code>uuidv07</code></li>
 </ul>
-<h3 id="added-5"><a href="#added-5" class="anchor"
+<h3 id="added-6"><a href="#added-6" class="anchor"
 aria-hidden="true"></a>Added</h3>
 <ul>
 <li><p>Diesel CLI can be configured to error if a command would result
@@ -1015,7 +1162,7 @@ available on SQLite. This function can be called in your migrations to
 create a trigger which automatically sets the <code>updated_at</code>
 column, unless that column was updated in the query.</p></li>
 </ul>
-<h3 id="changed-3"><a href="#changed-3" class="anchor"
+<h3 id="changed-4"><a href="#changed-4" class="anchor"
 aria-hidden="true"></a>Changed</h3>
 <ul>
 <li><p>Diesel’s derives now require that
@@ -1027,11 +1174,11 @@ an alias has been created from <code>Tinyint</code> to
 <li><p>The minimal officially supported rustc version is now
 1.31.0</p></li>
 </ul>
-<h2 id="section-30"><a href="#section-30" class="anchor"
+<h2 id="section-35"><a href="#section-35" class="anchor"
 aria-hidden="true"></a><a
 href="https://github.com/diesel-rs/diesel/compare/v1.3.2...v1.3.3">1.3.3</a>
 - 2018-09-12</h2>
-<h3 id="fixed-25"><a href="#fixed-25" class="anchor"
+<h3 id="fixed-30"><a href="#fixed-30" class="anchor"
 aria-hidden="true"></a>Fixed</h3>
 <ul>
 <li>Fixed an issue that occurred with MySQL 8.0 when calling
@@ -1039,11 +1186,11 @@ aria-hidden="true"></a>Fixed</h3>
 that returned a result set (such as our <code>SELECT 1</code> health
 check in <code>r2d2</code>).</li>
 </ul>
-<h2 id="section-31"><a href="#section-31" class="anchor"
+<h2 id="section-36"><a href="#section-36" class="anchor"
 aria-hidden="true"></a><a
 href="https://github.com/diesel-rs/diesel/compare/v1.3.1...v1.3.2">1.3.2</a>
 - 2018-06-13</h2>
-<h3 id="fixed-26"><a href="#fixed-26" class="anchor"
+<h3 id="fixed-31"><a href="#fixed-31" class="anchor"
 aria-hidden="true"></a>Fixed</h3>
 <ul>
 <li><p>The behavior of unsigned types in MySQL has been corrected to
@@ -1052,21 +1199,21 @@ properly set the <code>is_unsigned</code> flag.</p></li>
 <code>#[sql_name]</code> was used on functions with no return
 type.</p></li>
 </ul>
-<h2 id="section-32"><a href="#section-32" class="anchor"
+<h2 id="section-37"><a href="#section-37" class="anchor"
 aria-hidden="true"></a><a
 href="https://github.com/diesel-rs/diesel/compare/v1.3.0...v1.3.1">1.3.1</a>
 - 2018-05-23</h2>
-<h3 id="fixed-27"><a href="#fixed-27" class="anchor"
+<h3 id="fixed-32"><a href="#fixed-32" class="anchor"
 aria-hidden="true"></a>Fixed</h3>
 <ul>
 <li>Fixed an issue with Diesel CLI’s use of temp files that caused
 errors on Windows.</li>
 </ul>
-<h2 id="section-33"><a href="#section-33" class="anchor"
+<h2 id="section-38"><a href="#section-38" class="anchor"
 aria-hidden="true"></a><a
 href="https://github.com/diesel-rs/diesel/compare/v1.2.2...v1.3.0">1.3.0</a>
 - 2018-05-22</h2>
-<h3 id="added-6"><a href="#added-6" class="anchor"
+<h3 id="added-7"><a href="#added-7" class="anchor"
 aria-hidden="true"></a>Added</h3>
 <ul>
 <li><p>Diesel CLI now supports a configuration file. See
@@ -1113,7 +1260,7 @@ and more. See <a
 href="http://docs.diesel.rs/diesel/query_dsl/trait.QueryDsl.html#method.for_update"><code>QueryDsl</code></a>
 for details.</li>
 </ul>
-<h3 id="changed-4"><a href="#changed-4" class="anchor"
+<h3 id="changed-5"><a href="#changed-5" class="anchor"
 aria-hidden="true"></a>Changed</h3>
 <ul>
 <li><code>sql_function!</code> has been redesigned. The syntax is now
@@ -1128,7 +1275,7 @@ documentation for <code>sql_function!</code></a> for more details.</li>
 true, but it is now tested and enforced. Any future changes to our
 minimum supported version will be listed in this change log.</li>
 </ul>
-<h3 id="fixed-28"><a href="#fixed-28" class="anchor"
+<h3 id="fixed-33"><a href="#fixed-33" class="anchor"
 aria-hidden="true"></a>Fixed</h3>
 <ul>
 <li><code>diesel print-schema</code> and <code>infer_schema!</code> now
@@ -1155,11 +1302,11 @@ recommend attempting to build your app with
 to <code>diesel print-schema</code> have been deprecated and renamed
 <code>--only-tables</code> and <code>--exclude-tables</code>.</p></li>
 </ul>
-<h2 id="section-34"><a href="#section-34" class="anchor"
+<h2 id="section-39"><a href="#section-39" class="anchor"
 aria-hidden="true"></a><a
 href="https://github.com/diesel-rs/diesel/compare/v1.2.1...v1.2.2">1.2.2</a>
 - 2018-04-12</h2>
-<h3 id="changed-5"><a href="#changed-5" class="anchor"
+<h3 id="changed-6"><a href="#changed-6" class="anchor"
 aria-hidden="true"></a>Changed</h3>
 <ul>
 <li>Warnings are now allowed inside the crate. The way we had attempted
@@ -1167,11 +1314,11 @@ to deprecate old feature names caused builds to break. We are still not
 happy with how this deprecation gets communicated, and will revisit it
 in the future.</li>
 </ul>
-<h2 id="section-35"><a href="#section-35" class="anchor"
+<h2 id="section-40"><a href="#section-40" class="anchor"
 aria-hidden="true"></a><a
 href="https://github.com/diesel-rs/diesel/compare/v1.2.0...v1.2.1">1.2.1</a>
 - 2018-04-11</h2>
-<h3 id="changed-6"><a href="#changed-6" class="anchor"
+<h3 id="changed-7"><a href="#changed-7" class="anchor"
 aria-hidden="true"></a>Changed</h3>
 <ul>
 <li>Renamed <code>x32-column-tables</code>,
@@ -1181,11 +1328,11 @@ aria-hidden="true"></a>Changed</h3>
 bug in crates.io discovered while publishing 1.2.0. The bug has since
 been fixed.</li>
 </ul>
-<h2 id="section-36"><a href="#section-36" class="anchor"
+<h2 id="section-41"><a href="#section-41" class="anchor"
 aria-hidden="true"></a><a
 href="https://github.com/diesel-rs/diesel/compare/v1.1.2...v1.2.0">1.2.0</a>
 - 2018-04-06</h2>
-<h3 id="added-7"><a href="#added-7" class="anchor"
+<h3 id="added-8"><a href="#added-8" class="anchor"
 aria-hidden="true"></a>Added</h3>
 <ul>
 <li><p>Added <code>SqlLiteral::bind()</code>. This is intended to be
@@ -1264,7 +1411,7 @@ type, so the result will still have floating point rounding issues. This
 is primarily to support things like <code>avg(int_col)</code>, which we
 define as returning <code>Numeric</code></p></li>
 </ul>
-<h3 id="changed-7"><a href="#changed-7" class="anchor"
+<h3 id="changed-8"><a href="#changed-8" class="anchor"
 aria-hidden="true"></a>Changed</h3>
 <ul>
 <li><p>The bounds on <code>impl ToSql for Cow&lt;'a, T&gt;</code> have
@@ -1285,7 +1432,7 @@ to <code>32-column-tables</code>.</p></li>
 <li><p><code>IncompleteUpdateStatement</code> has been removed. Use
 <code>UpdateStatement</code> instead.</p></li>
 </ul>
-<h3 id="fixed-29"><a href="#fixed-29" class="anchor"
+<h3 id="fixed-34"><a href="#fixed-34" class="anchor"
 aria-hidden="true"></a>Fixed</h3>
 <ul>
 <li><p><code>diesel database setup</code> now correctly handles database
@@ -1309,29 +1456,29 @@ aria-hidden="true"></a>Jokes</h3>
 <ul>
 <li>Diesel is now powered by the blockchain because it’s 2018.</li>
 </ul>
-<h2 id="section-37"><a href="#section-37" class="anchor"
+<h2 id="section-42"><a href="#section-42" class="anchor"
 aria-hidden="true"></a><a
 href="https://github.com/diesel-rs/diesel/compare/v1.1.1...v1.1.2">1.1.2</a>
 - 2018-04-05</h2>
 <ul>
 <li>No changes</li>
 </ul>
-<h2 id="section-38"><a href="#section-38" class="anchor"
+<h2 id="section-43"><a href="#section-43" class="anchor"
 aria-hidden="true"></a><a
 href="https://github.com/diesel-rs/diesel/compare/v1.1.0...v1.1.1">1.1.1</a>
 - 2018-01-16</h2>
-<h3 id="added-8"><a href="#added-8" class="anchor"
+<h3 id="added-9"><a href="#added-9" class="anchor"
 aria-hidden="true"></a>Added</h3>
 <ul>
 <li>Added <code>diesel::r2d2::PoolError</code> as an alias for
 <code>r2d2::Error</code>. Previously this type was inaccessible due to
 <code>diesel::r2d2::Error</code>.</li>
 </ul>
-<h2 id="section-39"><a href="#section-39" class="anchor"
+<h2 id="section-44"><a href="#section-44" class="anchor"
 aria-hidden="true"></a><a
 href="https://github.com/diesel-rs/diesel/compare/v1.0.0...v1.1.0">1.1.0</a>
 - 2018-01-15</h2>
-<h3 id="added-9"><a href="#added-9" class="anchor"
+<h3 id="added-10"><a href="#added-10" class="anchor"
 aria-hidden="true"></a>Added</h3>
 <ul>
 <li><p><code>r2d2-diesel</code> has been merged into Diesel proper. You
@@ -1414,17 +1561,17 @@ renamed to <code>serialize::Output</code>.</p></li>
 <li><p><code>helper_types::Not</code> is now
 <code>helper_types::not</code></p></li>
 </ul>
-<h3 id="fixed-30"><a href="#fixed-30" class="anchor"
+<h3 id="fixed-35"><a href="#fixed-35" class="anchor"
 aria-hidden="true"></a>Fixed</h3>
 <ul>
 <li><code>infer_schema!</code> generates valid code when run against a
 database with no tables.</li>
 </ul>
-<h2 id="section-40"><a href="#section-40" class="anchor"
+<h2 id="section-45"><a href="#section-45" class="anchor"
 aria-hidden="true"></a><a
 href="https://github.com/diesel-rs/diesel/compare/v0.99.1...v1.0.0">1.0.0</a>
 - 2018-01-02</h2>
-<h3 id="added-10"><a href="#added-10" class="anchor"
+<h3 id="added-11"><a href="#added-11" class="anchor"
 aria-hidden="true"></a>Added</h3>
 <ul>
 <li><p><code>#[derive(QueryableByName)]</code> can now handle structs
@@ -1439,7 +1586,7 @@ add the annotation <code>#[diesel(embed)]</code></p></li>
 traits that were previously in the <code>query_dsl</code>
 module.</p></li>
 </ul>
-<h3 id="fixed-31"><a href="#fixed-31" class="anchor"
+<h3 id="fixed-36"><a href="#fixed-36" class="anchor"
 aria-hidden="true"></a>Fixed</h3>
 <ul>
 <li><p>Executing select statements on SQLite will no longer panic when
@@ -1453,7 +1600,7 @@ scope.</p></li>
 <li><p><code>BoxableExpression</code> can now be used with types that
 are not <code>'static</code></p></li>
 </ul>
-<h3 id="changed-8"><a href="#changed-8" class="anchor"
+<h3 id="changed-9"><a href="#changed-9" class="anchor"
 aria-hidden="true"></a>Changed</h3>
 <ul>
 <li><p><code>Connection::test_transaction</code> now requires that the
@@ -1487,21 +1634,21 @@ aria-hidden="true"></a>Removed</h3>
 <li><p><code>LoadDsl</code> and <code>FirstDsl</code> have been removed.
 Their functionality now lives in <code>LoadQuery</code>.</p></li>
 </ul>
-<h2 id="section-41"><a href="#section-41" class="anchor"
+<h2 id="section-46"><a href="#section-46" class="anchor"
 aria-hidden="true"></a><a
 href="https://github.com/diesel-rs/diesel/compare/v0.99.0...v0.99.1">0.99.1</a>
 - 2017-12-01</h2>
-<h3 id="changed-9"><a href="#changed-9" class="anchor"
+<h3 id="changed-10"><a href="#changed-10" class="anchor"
 aria-hidden="true"></a>Changed</h3>
 <ul>
 <li>Diesel CLI now properly restricts its <code>clap</code> dependency.
 0.99.0 mistakenly had no upper bound on the version.</li>
 </ul>
-<h2 id="section-42"><a href="#section-42" class="anchor"
+<h2 id="section-47"><a href="#section-47" class="anchor"
 aria-hidden="true"></a><a
 href="https://github.com/diesel-rs/diesel/compare/v0.16.0...v0.99.0">0.99.0</a>
 - 2017-11-28</h2>
-<h3 id="added-11"><a href="#added-11" class="anchor"
+<h3 id="added-12"><a href="#added-12" class="anchor"
 aria-hidden="true"></a>Added</h3>
 <ul>
 <li><p>The <code>.for_update()</code> method has been added to select
@@ -1549,7 +1696,7 @@ with <code>#[sql_name="the_table_name"]</code></p></li>
 href="http://docs.diesel.rs/diesel/query_dsl/trait.DistinctOnDsl.html#tymethod.distinct_on"><code>.distinct_on()</code></a>
 for more details</p></li>
 </ul>
-<h3 id="changed-10"><a href="#changed-10" class="anchor"
+<h3 id="changed-11"><a href="#changed-11" class="anchor"
 aria-hidden="true"></a>Changed</h3>
 <ul>
 <li><p>The signatures of <code>QueryId</code>, <code>Column</code>, and
@@ -1612,7 +1759,7 @@ been removed. Writing <code>citext_column.eq("foo")</code> would perform
 a case-sensitive comparison. More fleshed out support will be
 required.</p></li>
 </ul>
-<h3 id="fixed-32"><a href="#fixed-32" class="anchor"
+<h3 id="fixed-37"><a href="#fixed-37" class="anchor"
 aria-hidden="true"></a>Fixed</h3>
 <ul>
 <li><p>When using MySQL and SQLite, dates which cannot be represented by
@@ -1628,11 +1775,11 @@ SQLite will now handle any value that is in a format documented as valid
 for SQLite’s <code>strftime</code> function except for the string
 <code>'now'</code>.</p></li>
 </ul>
-<h2 id="section-43"><a href="#section-43" class="anchor"
+<h2 id="section-48"><a href="#section-48" class="anchor"
 aria-hidden="true"></a><a
 href="https://github.com/diesel-rs/diesel/compare/v0.15.2...v0.16.0">0.16.0</a>
 - 2017-08-24</h2>
-<h3 id="added-12"><a href="#added-12" class="anchor"
+<h3 id="added-13"><a href="#added-13" class="anchor"
 aria-hidden="true"></a>Added</h3>
 <ul>
 <li><p>Added helper types for inner join and left outer join</p></li>
@@ -1672,7 +1819,7 @@ conflict with a Rust keyword by placing a _ at the end of the name. For
 example, a column called <code>type</code> will be referenced as
 <code>type_</code> in Rust.</p></li>
 </ul>
-<h3 id="changed-11"><a href="#changed-11" class="anchor"
+<h3 id="changed-12"><a href="#changed-12" class="anchor"
 aria-hidden="true"></a>Changed</h3>
 <ul>
 <li><p>The deprecated <code>debug_sql!</code> and
@@ -1697,7 +1844,7 @@ aria-hidden="true"></a>Removed</h3>
 replacement.</p></li>
 <li><p><code>diesel::backend::Debug</code> has been removed.</p></li>
 </ul>
-<h3 id="fixed-33"><a href="#fixed-33" class="anchor"
+<h3 id="fixed-38"><a href="#fixed-38" class="anchor"
 aria-hidden="true"></a>Fixed</h3>
 <ul>
 <li><p>Diesel now properly supports joins in the form:
@@ -1706,11 +1853,11 @@ aria-hidden="true"></a>Fixed</h3>
 <li><p>When encoding a <code>BigDecimal</code> on PG, <code>1.0</code>
 is no longer encoded as if it were <code>1</code>.</p></li>
 </ul>
-<h2 id="section-44"><a href="#section-44" class="anchor"
+<h2 id="section-49"><a href="#section-49" class="anchor"
 aria-hidden="true"></a><a
 href="https://github.com/diesel-rs/diesel/compare/v0.15.1...v0.15.2">0.15.2</a>
 - 2017-07-28</h2>
-<h3 id="fixed-34"><a href="#fixed-34" class="anchor"
+<h3 id="fixed-39"><a href="#fixed-39" class="anchor"
 aria-hidden="true"></a>Fixed</h3>
 <ul>
 <li><code>BigDecimal</code> now properly encodes numbers starting with
@@ -1718,18 +1865,18 @@ aria-hidden="true"></a>Fixed</h3>
 href="https://github.com/diesel-rs/diesel/issues/1044">issue #1044</a>
 for details.</li>
 </ul>
-<h2 id="section-45"><a href="#section-45" class="anchor"
+<h2 id="section-50"><a href="#section-50" class="anchor"
 aria-hidden="true"></a><a
 href="https://github.com/diesel-rs/diesel/compare/v0.15.0...v0.15.1">0.15.1</a>
 - 2017-07-24</h2>
 <ul>
 <li>No changes to public API</li>
 </ul>
-<h2 id="section-46"><a href="#section-46" class="anchor"
+<h2 id="section-51"><a href="#section-51" class="anchor"
 aria-hidden="true"></a><a
 href="https://github.com/diesel-rs/diesel/compare/v0.14.1...v0.15.0">0.15.0</a>
 - 2017-07-23</h2>
-<h3 id="added-13"><a href="#added-13" class="anchor"
+<h3 id="added-14"><a href="#added-14" class="anchor"
 aria-hidden="true"></a>Added</h3>
 <ul>
 <li><p>Added support for the PG <code>IS DISTINCT FROM</code>
@@ -1739,7 +1886,7 @@ specified. See <a
 href="https://docs.diesel.rs/diesel/prelude/trait.JoinOnDsl.html#method.on">the
 docs</a> for details.</p></li>
 </ul>
-<h3 id="changed-12"><a href="#changed-12" class="anchor"
+<h3 id="changed-13"><a href="#changed-13" class="anchor"
 aria-hidden="true"></a>Changed</h3>
 <ul>
 <li><p>Diesel will now automatically invoke <code>numeric_expr!</code>
@@ -1755,22 +1902,22 @@ nullable)</p></li>
 <li><p>Connections will now explicitly set the session time zone to UTC
 when the connection is established</p></li>
 </ul>
-<h2 id="section-47"><a href="#section-47" class="anchor"
+<h2 id="section-52"><a href="#section-52" class="anchor"
 aria-hidden="true"></a><a
 href="https://github.com/diesel-rs/diesel/compare/v0.14.0...v0.14.1">0.14.1</a>
 - 2017-07-10</h2>
-<h3 id="changed-13"><a href="#changed-13" class="anchor"
+<h3 id="changed-14"><a href="#changed-14" class="anchor"
 aria-hidden="true"></a>Changed</h3>
 <ul>
 <li>The return type of <code>sum</code> and <code>avg</code> is now
 always considered to be <code>Nullable</code>, as these functions return
 <code>NULL</code> when against on an empty table.</li>
 </ul>
-<h2 id="section-48"><a href="#section-48" class="anchor"
+<h2 id="section-53"><a href="#section-53" class="anchor"
 aria-hidden="true"></a><a
 href="https://github.com/diesel-rs/diesel/compare/v0.13.0...v0.14.0">0.14.0</a>
 - 2017-07-04</h2>
-<h3 id="added-14"><a href="#added-14" class="anchor"
+<h3 id="added-15"><a href="#added-15" class="anchor"
 aria-hidden="true"></a>Added</h3>
 <ul>
 <li>Added support for joining between more than two tables. The query
@@ -1799,7 +1946,7 @@ to <code>diesel_postfix_operator!</code> (previously
 <code>postfix_predicate!</code>), but for operators like
 <code>NOT</code> which use prefix notation.</li>
 </ul>
-<h3 id="changed-14"><a href="#changed-14" class="anchor"
+<h3 id="changed-15"><a href="#changed-15" class="anchor"
 aria-hidden="true"></a>Changed</h3>
 <ul>
 <li><p><code>infix_predicate!</code> and <code>infix_expression!</code>
@@ -1822,11 +1969,11 @@ provided by <code>#[belongs_to]</code> on the child struct. If there is
 no child struct to put <code>#[belongs_to]</code> on, you can invoke
 <code>joinable!</code> directly instead.</li>
 </ul>
-<h2 id="section-49"><a href="#section-49" class="anchor"
+<h2 id="section-54"><a href="#section-54" class="anchor"
 aria-hidden="true"></a><a
 href="https://github.com/diesel-rs/diesel/compare/v0.12.1...v0.13.0">0.13.0</a>
 - 2017-05-15</h2>
-<h3 id="added-15"><a href="#added-15" class="anchor"
+<h3 id="added-16"><a href="#added-16" class="anchor"
 aria-hidden="true"></a>Added</h3>
 <ul>
 <li><p>Added support for chrono types with SQLite.</p></li>
@@ -1851,7 +1998,7 @@ types.</p></li>
 <li><p>Added <a
 href="https://docs.diesel.rs/diesel/migrations/fn.any_pending_migrations.html"><code>migrations::any_pending_migrations</code></a>.</p></li>
 </ul>
-<h3 id="fixed-35"><a href="#fixed-35" class="anchor"
+<h3 id="fixed-40"><a href="#fixed-40" class="anchor"
 aria-hidden="true"></a>Fixed</h3>
 <ul>
 <li><p>Diesel CLI now respects the <code>--migration-dir</code> argument
@@ -1859,11 +2006,11 @@ or the <code>MIGRATION_DIRECTORY</code> environment variable for all
 commands.</p></li>
 <li><p>Diesel CLI now properly escapes the database name.</p></li>
 </ul>
-<h2 id="section-50"><a href="#section-50" class="anchor"
+<h2 id="section-55"><a href="#section-55" class="anchor"
 aria-hidden="true"></a><a
 href="https://github.com/diesel-rs/diesel/compare/v0.12.0...v0.12.1">0.12.1</a>
 - 2017-05-07</h2>
-<h3 id="changed-15"><a href="#changed-15" class="anchor"
+<h3 id="changed-16"><a href="#changed-16" class="anchor"
 aria-hidden="true"></a>Changed</h3>
 <ul>
 <li>Locked the chrono dependency to require exactly <code>0.3.0</code>
@@ -1871,11 +2018,11 @@ instead of a semver restriction. This restriction is required for the
 0.12 line of releases to continue compiling, as the chrono project is
 including breaking changes in patch releases.</li>
 </ul>
-<h2 id="section-51"><a href="#section-51" class="anchor"
+<h2 id="section-56"><a href="#section-56" class="anchor"
 aria-hidden="true"></a><a
 href="https://github.com/diesel-rs/diesel/compare/v0.11.4...v0.12.0">0.12.0</a>
 - 2017-03-16</h2>
-<h3 id="added-16"><a href="#added-16" class="anchor"
+<h3 id="added-17"><a href="#added-17" class="anchor"
 aria-hidden="true"></a>Added</h3>
 <ul>
 <li>Added support for the majority of PG upsert
@@ -1907,7 +2054,7 @@ from by doing:
 specifying any any modules is equivalent to
 <code>use diesel::types::*;</code>.</p></li>
 </ul>
-<h3 id="fixed-36"><a href="#fixed-36" class="anchor"
+<h3 id="fixed-41"><a href="#fixed-41" class="anchor"
 aria-hidden="true"></a>Fixed</h3>
 <ul>
 <li><p><code>diesel_codegen</code> will provide a more useful error
@@ -1933,25 +2080,25 @@ delete the line that was calling it.</p></li>
 that don’t normally take nullable columns (e.g.
 <code>lower(name).nullable()</code>).</p></li>
 </ul>
-<h2 id="section-52"><a href="#section-52" class="anchor"
+<h2 id="section-57"><a href="#section-57" class="anchor"
 aria-hidden="true"></a><a
 href="https://github.com/diesel-rs/diesel/compare/v0.11.2...v0.11.4">0.11.4</a>
 - 2017-02-21</h2>
-<h3 id="fixed-37"><a href="#fixed-37" class="anchor"
+<h3 id="fixed-42"><a href="#fixed-42" class="anchor"
 aria-hidden="true"></a>Fixed</h3>
 <ul>
 <li>Corrected a memory safety violation when using MySQL.</li>
 </ul>
-<h2 id="section-53"><a href="#section-53" class="anchor"
+<h2 id="section-58"><a href="#section-58" class="anchor"
 aria-hidden="true"></a>0.11.3 - 2017-02-21</h2>
 <ul>
 <li>No changes</li>
 </ul>
-<h2 id="section-54"><a href="#section-54" class="anchor"
+<h2 id="section-59"><a href="#section-59" class="anchor"
 aria-hidden="true"></a><a
 href="https://github.com/diesel-rs/diesel/compare/v0.11.1...v0.11.2">0.11.2</a>
 - 2017-02-19</h2>
-<h3 id="changed-16"><a href="#changed-16" class="anchor"
+<h3 id="changed-17"><a href="#changed-17" class="anchor"
 aria-hidden="true"></a>Changed</h3>
 <ul>
 <li><code>pq-sys</code> and <code>mysqlclient-sys</code> will no longer
@@ -1959,11 +2106,11 @@ attempt to generate bindings at compile time. Generating the bindings
 required a bleeding edge version of clang, which caused too many
 issues.</li>
 </ul>
-<h2 id="section-55"><a href="#section-55" class="anchor"
+<h2 id="section-60"><a href="#section-60" class="anchor"
 aria-hidden="true"></a><a
 href="https://github.com/diesel-rs/diesel/compare/v0.11.0...v0.11.1">0.11.1</a>
 - 2017-02-17</h2>
-<h3 id="fixed-38"><a href="#fixed-38" class="anchor"
+<h3 id="fixed-43"><a href="#fixed-43" class="anchor"
 aria-hidden="true"></a>Fixed</h3>
 <ul>
 <li><p><code>.on_conflict_do_nothing()</code> now interacts with slices
@@ -1971,11 +2118,11 @@ properly.</p></li>
 <li><p><code>MysqlConnection</code> now implements <code>Send</code>,
 which is required for connection pooling.</p></li>
 </ul>
-<h2 id="section-56"><a href="#section-56" class="anchor"
+<h2 id="section-61"><a href="#section-61" class="anchor"
 aria-hidden="true"></a><a
 href="https://github.com/diesel-rs/diesel/compare/v0.10.1...v0.11.0">0.11.0</a>
 - 2017-02-16</h2>
-<h3 id="added-17"><a href="#added-17" class="anchor"
+<h3 id="added-18"><a href="#added-18" class="anchor"
 aria-hidden="true"></a>Added</h3>
 <ul>
 <li>Added support for MySQL as an additional backend. Diesel CLI will
@@ -2014,7 +2161,7 @@ without generating code for performing a join.</p></li>
 on PostgreSQL. To use it, add
 <code>features = ["deprecated-time"]</code></li>
 </ul>
-<h3 id="changed-17"><a href="#changed-17" class="anchor"
+<h3 id="changed-18"><a href="#changed-18" class="anchor"
 aria-hidden="true"></a>Changed</h3>
 <ul>
 <li><p>It is no longer possible to exhaustively match against
@@ -2052,26 +2199,26 @@ aria-hidden="true"></a>Removed</h3>
 <li><code>result::TransactionError</code></li>
 <li><code>result::TransactionResult</code></li>
 </ul>
-<h2 id="section-57"><a href="#section-57" class="anchor"
+<h2 id="section-62"><a href="#section-62" class="anchor"
 aria-hidden="true"></a><a
 href="https://github.com/diesel-rs/diesel/compare/v0.10.0...v0.10.1">0.10.1</a>
 - 2017-02-08</h2>
-<h3 id="fixed-39"><a href="#fixed-39" class="anchor"
+<h3 id="fixed-44"><a href="#fixed-44" class="anchor"
 aria-hidden="true"></a>Fixed</h3>
 <ul>
 <li><code>infer_table_from_schema!</code> properly handles table names
 with a custom schema specified.</li>
 </ul>
-<h3 id="changed-18"><a href="#changed-18" class="anchor"
+<h3 id="changed-19"><a href="#changed-19" class="anchor"
 aria-hidden="true"></a>Changed</h3>
 <ul>
 <li>Updated uuid to version 0.4.</li>
 </ul>
-<h2 id="section-58"><a href="#section-58" class="anchor"
+<h2 id="section-63"><a href="#section-63" class="anchor"
 aria-hidden="true"></a><a
 href="https://github.com/diesel-rs/diesel/compare/v0.9.1...v0.10.0">0.10.0</a>
 - 2017-02-02</h2>
-<h3 id="added-18"><a href="#added-18" class="anchor"
+<h3 id="added-19"><a href="#added-19" class="anchor"
 aria-hidden="true"></a>Added</h3>
 <ul>
 <li>Added support for the PostgreSQL <a
@@ -2085,7 +2232,7 @@ enabled to use the JSON types.</li>
 command will print the output of the <code>infer_schema!</code> macro.
 For more information run <code>diesel help   print-schema</code>.</li>
 </ul>
-<h3 id="changed-19"><a href="#changed-19" class="anchor"
+<h3 id="changed-20"><a href="#changed-20" class="anchor"
 aria-hidden="true"></a>Changed</h3>
 <ul>
 <li><p>When possible, we will use deprecation warnings for breaking
@@ -2098,7 +2245,7 @@ by <code>diesel</code> or <code>diesel_codegen_syntex</code>. Add
 <li><p>The <code>persistable</code> module has been renamed to
 <code>insertable</code>.</p></li>
 </ul>
-<h3 id="fixed-40"><a href="#fixed-40" class="anchor"
+<h3 id="fixed-45"><a href="#fixed-45" class="anchor"
 aria-hidden="true"></a>Fixed</h3>
 <ul>
 <li><code>#[derive(Insertable)]</code> allows fields of type
@@ -2112,11 +2259,11 @@ aria-hidden="true"></a>Removed</h3>
 <code>diesel_codegen</code> can now be used on stable Rust.</p></li>
 <li><p>Dropped support for Rust 1.14 and earlier</p></li>
 </ul>
-<h2 id="section-59"><a href="#section-59" class="anchor"
+<h2 id="section-64"><a href="#section-64" class="anchor"
 aria-hidden="true"></a><a
 href="https://github.com/diesel-rs/diesel/compare/v0.9.0...v0.9.1">0.9.1</a>
 - 2016-12-09</h2>
-<h3 id="fixed-41"><a href="#fixed-41" class="anchor"
+<h3 id="fixed-46"><a href="#fixed-46" class="anchor"
 aria-hidden="true"></a>Fixed</h3>
 <ul>
 <li><p>Added missing impls for loading
@@ -2130,11 +2277,11 @@ aria-hidden="true"></a>Fixed</h3>
 query which could not be transmitted to the server (such as a query with
 greater than 65535 bind parameters) will no longer panic.</p></li>
 </ul>
-<h2 id="section-60"><a href="#section-60" class="anchor"
+<h2 id="section-65"><a href="#section-65" class="anchor"
 aria-hidden="true"></a><a
 href="https://github.com/diesel-rs/diesel/compare/v0.8.2...v0.9.0">0.9.0</a>
 - 2016-12-08</h2>
-<h3 id="added-19"><a href="#added-19" class="anchor"
+<h3 id="added-20"><a href="#added-20" class="anchor"
 aria-hidden="true"></a>Added</h3>
 <ul>
 <li><p>Added support for SQL <code>NOT IN</code> using the
@@ -2175,14 +2322,14 @@ composite primary keys. You can now annotate the struct with
 <code>#[primary_key(nonstandard)]</code> or
 <code>#[primary_key(foo,   bar)]</code>.</li>
 </ul>
-<h3 id="changed-20"><a href="#changed-20" class="anchor"
+<h3 id="changed-21"><a href="#changed-21" class="anchor"
 aria-hidden="true"></a>Changed</h3>
 <ul>
 <li>All macros with the same name as traits we can derive
 (e.g. <code>Queryable!</code>) have been renamed to
 <code>impl_Queryable!</code> or similar.</li>
 </ul>
-<h3 id="fixed-42"><a href="#fixed-42" class="anchor"
+<h3 id="fixed-47"><a href="#fixed-47" class="anchor"
 aria-hidden="true"></a>Fixed</h3>
 <ul>
 <li><p><code>#[derive(Identifiable)]</code> now works on structs with
@@ -2200,11 +2347,11 @@ handled by applications.</p></li>
 array no longer panics. <code>eq_any(vec![])</code> will return no rows.
 <code>ne_any(vec![])</code> will return all rows.</p></li>
 </ul>
-<h2 id="section-61"><a href="#section-61" class="anchor"
+<h2 id="section-66"><a href="#section-66" class="anchor"
 aria-hidden="true"></a><a
 href="https://github.com/diesel-rs/diesel/compare/v0.8.1...v0.8.2">0.8.2</a>
 - 2016-11-22</h2>
-<h3 id="changed-21"><a href="#changed-21" class="anchor"
+<h3 id="changed-22"><a href="#changed-22" class="anchor"
 aria-hidden="true"></a>Changed</h3>
 <ul>
 <li><p>Fixed support for nightlies later than 2016-11-07</p></li>
@@ -2218,27 +2365,27 @@ class="sourceCode rust"><code class="sourceCode rust"><span id="cb3-1"><a href="
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="kw">pub</span> <span class="kw">use</span> <span class="kw">self</span><span class="pp">::infer_users::</span><span class="op">*;</span></span></code></pre></div></li>
 </ul>
-<h2 id="section-62"><a href="#section-62" class="anchor"
+<h2 id="section-67"><a href="#section-67" class="anchor"
 aria-hidden="true"></a><a
 href="https://github.com/diesel-rs/diesel/compare/v0.8.0...v0.8.1">0.8.1</a>
 - 2016-11-01</h2>
-<h3 id="added-20"><a href="#added-20" class="anchor"
+<h3 id="added-21"><a href="#added-21" class="anchor"
 aria-hidden="true"></a>Added</h3>
 <ul>
 <li>SQLite date and time columns can be deserialized to/from
 strings.</li>
 </ul>
-<h3 id="fixed-43"><a href="#fixed-43" class="anchor"
+<h3 id="fixed-48"><a href="#fixed-48" class="anchor"
 aria-hidden="true"></a>Fixed</h3>
 <ul>
 <li>Fixed an issue with <code>diesel_codegen</code> on nightlies &gt;=
 2016-10-20</li>
 </ul>
-<h2 id="section-63"><a href="#section-63" class="anchor"
+<h2 id="section-68"><a href="#section-68" class="anchor"
 aria-hidden="true"></a><a
 href="https://github.com/diesel-rs/diesel/compare/v0.7.2...v0.8.0">0.8.0</a>
 - 2016-10-10</h2>
-<h3 id="added-21"><a href="#added-21" class="anchor"
+<h3 id="added-22"><a href="#added-22" class="anchor"
 aria-hidden="true"></a>Added</h3>
 <ul>
 <li><p>Added partial support for composite primary keys.</p></li>
@@ -2263,7 +2410,7 @@ use of <code>dotenv</code> requires the <code>dotenv</code> feature on
 <code>diesel_codegen_syntex</code>, but that crate will be deprecated
 when Macros 1.1 is in the beta channel for Rust.</p></li>
 </ul>
-<h3 id="changed-22"><a href="#changed-22" class="anchor"
+<h3 id="changed-23"><a href="#changed-23" class="anchor"
 aria-hidden="true"></a>Changed</h3>
 <ul>
 <li><p>Structs annotated with <code>#[has_many]</code> or
@@ -2275,7 +2422,7 @@ Macros 1.1.</p></li>
 This change is required to allow this macro to work with Macros
 1.1.</p></li>
 </ul>
-<h3 id="fixed-44"><a href="#fixed-44" class="anchor"
+<h3 id="fixed-49"><a href="#fixed-49" class="anchor"
 aria-hidden="true"></a>Fixed</h3>
 <ul>
 <li><code>diesel migrations run</code> will now respect migration
@@ -2286,7 +2433,7 @@ alongside with tables. This was a source of trouble for people that had
 created views or are using any extension that automatically creates
 views (e.g. PostGIS)</li>
 </ul>
-<h3 id="changed-23"><a href="#changed-23" class="anchor"
+<h3 id="changed-24"><a href="#changed-24" class="anchor"
 aria-hidden="true"></a>Changed</h3>
 <ul>
 <li><code>#[changeset_for(foo)]</code> should now be written as
@@ -2297,36 +2444,36 @@ additionally have
 <li><code>#[insertable_into(foo)]</code> should now be written as
 <code>#[derive(Insertable)] #[table_name="foo"]</code>.</li>
 </ul>
-<h2 id="section-64"><a href="#section-64" class="anchor"
+<h2 id="section-69"><a href="#section-69" class="anchor"
 aria-hidden="true"></a><a
 href="https://github.com/diesel-rs/diesel/compare/v0.7.1...v0.7.2">0.7.2</a>
 - 2016-08-20</h2>
 <ul>
 <li>Updated nightly version and syntex support.</li>
 </ul>
-<h2 id="section-65"><a href="#section-65" class="anchor"
+<h2 id="section-70"><a href="#section-70" class="anchor"
 aria-hidden="true"></a><a
 href="https://github.com/diesel-rs/diesel/compare/v0.7.0...v0.7.1">0.7.1</a>
 - 2016-08-11</h2>
-<h3 id="changed-24"><a href="#changed-24" class="anchor"
+<h3 id="changed-25"><a href="#changed-25" class="anchor"
 aria-hidden="true"></a>Changed</h3>
 <ul>
 <li>The <code>Copy</code> constraint has been removed from
 <code>Identifiable::Id</code>, and <code>Identifiable#id</code> now
 returns <code>&amp;Identifiable::Id</code>.</li>
 </ul>
-<h3 id="fixed-45"><a href="#fixed-45" class="anchor"
+<h3 id="fixed-50"><a href="#fixed-50" class="anchor"
 aria-hidden="true"></a>Fixed</h3>
 <ul>
 <li><code>#[belongs_to]</code> now respects the <code>foreign_key</code>
 option when using <code>diesel_codegen</code> or
 <code>diesel_codegen_syntex</code>.</li>
 </ul>
-<h2 id="section-66"><a href="#section-66" class="anchor"
+<h2 id="section-71"><a href="#section-71" class="anchor"
 aria-hidden="true"></a><a
 href="https://github.com/diesel-rs/diesel/compare/v0.6.1...v0.7.0">0.7.0</a>
 - 2016-08-01</h2>
-<h3 id="added-22"><a href="#added-22" class="anchor"
+<h3 id="added-23"><a href="#added-23" class="anchor"
 aria-hidden="true"></a>Added</h3>
 <ul>
 <li><p>The initial APIs have been added in the form of
@@ -2360,7 +2507,7 @@ details.</p></li>
 <code>DELETE</code> statements. Implicitly these queries will use
 <code>RETURNING *</code>.</p></li>
 </ul>
-<h3 id="changed-25"><a href="#changed-25" class="anchor"
+<h3 id="changed-26"><a href="#changed-26" class="anchor"
 aria-hidden="true"></a>Changed</h3>
 <ul>
 <li><p>Diesel now targets <code>nightly-2016-07-07</code>. Future
@@ -2393,17 +2540,17 @@ can now write <code>delete(&amp;user).execute(&amp;connection)</code>
 instead of
 <code>delete(users.find(user.id)).execute(&amp;connection)</code></p></li>
 </ul>
-<h3 id="fixed-46"><a href="#fixed-46" class="anchor"
+<h3 id="fixed-51"><a href="#fixed-51" class="anchor"
 aria-hidden="true"></a>Fixed</h3>
 <ul>
 <li><code>&amp;&amp;[T]</code> can now be used in queries. This allows
 using slices with things like <code>#[insertable_into]</code>.</li>
 </ul>
-<h2 id="section-67"><a href="#section-67" class="anchor"
+<h2 id="section-72"><a href="#section-72" class="anchor"
 aria-hidden="true"></a><a
 href="https://github.com/diesel-rs/diesel/compare/v0.6.0...v0.6.1">0.6.1</a>
 2016-04-14</h2>
-<h3 id="added-23"><a href="#added-23" class="anchor"
+<h3 id="added-24"><a href="#added-24" class="anchor"
 aria-hidden="true"></a>Added</h3>
 <ul>
 <li>Added the <code>escape</code> method to <code>Like</code> and
@@ -2412,7 +2559,7 @@ pattern. See <a
 href="https://docs.diesel.rs/diesel/expression/expression_methods/escape_expression_methods/trait.EscapeExpressionMethods.html">EscapeExpressionMethods</a>
 for details.</li>
 </ul>
-<h3 id="fixed-47"><a href="#fixed-47" class="anchor"
+<h3 id="fixed-52"><a href="#fixed-52" class="anchor"
 aria-hidden="true"></a>Fixed</h3>
 <ul>
 <li><p><code>diesel_codegen</code> and <code>diesel_cli</code> now
@@ -2423,11 +2570,11 @@ on SQLite.</p></li>
 <li><p><code>infer_schema!</code> now properly maps types on
 SQLite.</p></li>
 </ul>
-<h2 id="section-68"><a href="#section-68" class="anchor"
+<h2 id="section-73"><a href="#section-73" class="anchor"
 aria-hidden="true"></a><a
 href="https://github.com/diesel-rs/diesel/compare/v0.5.4...v0.6.0">0.6.0</a>
 2016-04-12</h2>
-<h3 id="added-24"><a href="#added-24" class="anchor"
+<h3 id="added-25"><a href="#added-25" class="anchor"
 aria-hidden="true"></a>Added</h3>
 <ul>
 <li><p>Queries can now be boxed using the <code>into_boxed()</code>
@@ -2445,7 +2592,7 @@ the <code>distinct()</code> method.</p></li>
 <li><p><code>SqliteConnection</code> now implements
 <code>Send</code></p></li>
 </ul>
-<h3 id="changed-26"><a href="#changed-26" class="anchor"
+<h3 id="changed-27"><a href="#changed-27" class="anchor"
 aria-hidden="true"></a>Changed</h3>
 <ul>
 <li><p><code>diesel::result::Error</code> now implements
@@ -2457,7 +2604,7 @@ bounds as well.</p></li>
 helpful error message when you accidentally try to pass an owned value
 instead of a reference.</p></li>
 </ul>
-<h3 id="fixed-48"><a href="#fixed-48" class="anchor"
+<h3 id="fixed-53"><a href="#fixed-53" class="anchor"
 aria-hidden="true"></a>Fixed</h3>
 <ul>
 <li><p><code>#[insertable_into]</code> can now be used with structs that
@@ -2477,7 +2624,7 @@ aria-hidden="true"></a>Removed</h3>
 Diesel’s philosophies. You can write a function that calls
 <code>select</code> for you if you need this functionality.</li>
 </ul>
-<h2 id="section-69"><a href="#section-69" class="anchor"
+<h2 id="section-74"><a href="#section-74" class="anchor"
 aria-hidden="true"></a><a
 href="https://github.com/diesel-rs/diesel/compare/v0.5.3...v0.5.4">0.5.4</a>
 2016-03-23</h2>
@@ -2485,11 +2632,11 @@ href="https://github.com/diesel-rs/diesel/compare/v0.5.3...v0.5.4">0.5.4</a>
 <li>Updated <code>diesel_codegen</code> to allow syntex versions up to
 0.30.0.</li>
 </ul>
-<h2 id="section-70"><a href="#section-70" class="anchor"
+<h2 id="section-75"><a href="#section-75" class="anchor"
 aria-hidden="true"></a><a
 href="https://github.com/diesel-rs/diesel/compare/v0.5.2...v0.5.3">0.5.3</a>
 2016-03-12</h2>
-<h3 id="added-25"><a href="#added-25" class="anchor"
+<h3 id="added-26"><a href="#added-26" class="anchor"
 aria-hidden="true"></a>Added</h3>
 <ul>
 <li><p>Added helper function
@@ -2502,19 +2649,19 @@ that automatically updates the <code>updated_at</code> column to the
 <code>INSERT</code> and <code>UPDATE</code> queries. Implicitly these
 queries will still use <code>RETURNING *</code>.</p></li>
 </ul>
-<h3 id="fixed-49"><a href="#fixed-49" class="anchor"
+<h3 id="fixed-54"><a href="#fixed-54" class="anchor"
 aria-hidden="true"></a>Fixed</h3>
 <ul>
 <li>Updated to work on nightly from early March</li>
 </ul>
-<h2 id="section-71"><a href="#section-71" class="anchor"
+<h2 id="section-76"><a href="#section-76" class="anchor"
 aria-hidden="true"></a><a
 href="https://github.com/diesel-rs/diesel/compare/v0.5.1...v0.5.2">0.5.2</a>
 2016-02-27</h2>
 <ul>
 <li>Updated to work on nightly from late February</li>
 </ul>
-<h2 id="section-72"><a href="#section-72" class="anchor"
+<h2 id="section-77"><a href="#section-77" class="anchor"
 aria-hidden="true"></a><a
 href="https://github.com/diesel-rs/diesel/compare/v0.5.0...v0.5.1">0.5.1</a>
 2016-02-11</h2>
@@ -2526,11 +2673,11 @@ doesn’t have one or the other, you can install it with
 or
 <code>cargo install diesel_cli   --no-default-features --features sqlite</code></li>
 </ul>
-<h2 id="section-73"><a href="#section-73" class="anchor"
+<h2 id="section-78"><a href="#section-78" class="anchor"
 aria-hidden="true"></a><a
 href="https://github.com/diesel-rs/diesel/compare/v0.4.1...v0.5.0">0.5.0</a>
 2016-02-05</h2>
-<h3 id="added-26"><a href="#added-26" class="anchor"
+<h3 id="added-27"><a href="#added-27" class="anchor"
 aria-hidden="true"></a>Added</h3>
 <ul>
 <li><p>Added support for SQLite. Diesel still uses postgres by default.
@@ -2574,7 +2721,7 @@ specific case. Use of this function in any production code is
 discouraged as it is inherently unsafe and avoids real type
 checking.</p></li>
 </ul>
-<h3 id="changed-27"><a href="#changed-27" class="anchor"
+<h3 id="changed-28"><a href="#changed-28" class="anchor"
 aria-hidden="true"></a>Changed</h3>
 <ul>
 <li><p>Moved most of our top level trait exports into a prelude module,
@@ -2619,22 +2766,22 @@ any crate, so the removal has been noted here. Their usage can be
 replaced with bare <code>select</code> and
 <code>expression::dsl::sql</code>.</li>
 </ul>
-<h2 id="section-74"><a href="#section-74" class="anchor"
+<h2 id="section-79"><a href="#section-79" class="anchor"
 aria-hidden="true"></a><a
 href="https://github.com/diesel-rs/diesel/compare/v0.4.0...v0.4.1">0.4.1</a>
 2016-01-11</h2>
-<h3 id="changed-28"><a href="#changed-28" class="anchor"
+<h3 id="changed-29"><a href="#changed-29" class="anchor"
 aria-hidden="true"></a>Changed</h3>
 <ul>
 <li><p>Diesel CLI will no longer output notices about
 <code>__diesel_schema_migrations</code> already existing.</p></li>
 <li><p>Relicensed under MIT/Apache dual</p></li>
 </ul>
-<h2 id="section-75"><a href="#section-75" class="anchor"
+<h2 id="section-80"><a href="#section-80" class="anchor"
 aria-hidden="true"></a><a
 href="https://github.com/diesel-rs/diesel/compare/v0.3.0...v0.4.0">0.4.0</a>
 2016-01-08</h2>
-<h3 id="added-27"><a href="#added-27" class="anchor"
+<h3 id="added-28"><a href="#added-28" class="anchor"
 aria-hidden="true"></a>Added</h3>
 <ul>
 <li><p>Added Diesel CLI, a tool for managing your schema. See <a
@@ -2649,7 +2796,7 @@ connection.</p></li>
 <li><p>Add print_sql! and debug_sql! macros to print out and return sql
 strings from QueryFragments.</p></li>
 </ul>
-<h3 id="fixed-50"><a href="#fixed-50" class="anchor"
+<h3 id="fixed-55"><a href="#fixed-55" class="anchor"
 aria-hidden="true"></a>Fixed</h3>
 <ul>
 <li><p><code>#[changeset_for]</code> can now be used with structs
@@ -2665,11 +2812,11 @@ href="https://github.com/diesel-rs/diesel/issues/66">#66</a>.</p></li>
 Fixes <a
 href="https://github.com/diesel-rs/diesel/issues/65">#65</a>.</p></li>
 </ul>
-<h2 id="section-76"><a href="#section-76" class="anchor"
+<h2 id="section-81"><a href="#section-81" class="anchor"
 aria-hidden="true"></a><a
 href="https://github.com/diesel-rs/diesel/compare/v0.2.0...v0.3.0">0.3.0</a>
 2015-12-04</h2>
-<h3 id="changed-29"><a href="#changed-29" class="anchor"
+<h3 id="changed-30"><a href="#changed-30" class="anchor"
 aria-hidden="true"></a>Changed</h3>
 <ul>
 <li><p><code>#[changeset_for(table)]</code> now treats
@@ -2682,7 +2829,7 @@ the database field. It now does not update the field if the value is
 mutating <code>self</code>. The returned struct can be any type that
 implements <code>Queryable</code> for the right SQL type</p></li>
 </ul>
-<h3 id="fixed-51"><a href="#fixed-51" class="anchor"
+<h3 id="fixed-56"><a href="#fixed-56" class="anchor"
 aria-hidden="true"></a>Fixed</h3>
 <ul>
 <li><p><code>#[derive(Queryable)]</code> now allows generic parameters
@@ -2692,7 +2839,7 @@ increases our compile time by 3x,
 <code>features = ["large-tables"]</code> is needed to support table
 definitions above 16 columns.</p></li>
 </ul>
-<h3 id="added-28"><a href="#added-28" class="anchor"
+<h3 id="added-29"><a href="#added-29" class="anchor"
 aria-hidden="true"></a>Added</h3>
 <ul>
 <li><p>Quickcheck is now an optional dependency. When
@@ -2717,11 +2864,11 @@ schema. <code>infer_schema!</code> queries for the table names, while
 <code>infer_table_from_schema!</code> takes a table name as the second
 argument.</p></li>
 </ul>
-<h2 id="section-77"><a href="#section-77" class="anchor"
+<h2 id="section-82"><a href="#section-82" class="anchor"
 aria-hidden="true"></a><a
 href="https://github.com/diesel-rs/diesel/compare/v0.1.0...v0.2.0">0.2.0</a>
 - 2015-11-30</h2>
-<h3 id="added-29"><a href="#added-29" class="anchor"
+<h3 id="added-30"><a href="#added-30" class="anchor"
 aria-hidden="true"></a>Added</h3>
 <ul>
 <li><p>Added an <code>execute</code> method to
@@ -2740,7 +2887,7 @@ href="https://docs.diesel.rs/diesel/fn.insert.html"><code>insert</code></a>,
 which mirrors the pattern of <code>update</code> and
 <code>delete</code>.</p></li>
 </ul>
-<h3 id="changed-30"><a href="#changed-30" class="anchor"
+<h3 id="changed-31"><a href="#changed-31" class="anchor"
 aria-hidden="true"></a>Changed</h3>
 <ul>
 <li><p>Added a hidden <code>__Nonexhaustive</code> variant to
@@ -2763,7 +2910,7 @@ aria-hidden="true"></a>Deprecated</h3>
 favor of <a
 href="https://docs.diesel.rs/diesel/fn.insert.html"><code>insert</code></a></li>
 </ul>
-<h2 id="section-78"><a href="#section-78" class="anchor"
+<h2 id="section-83"><a href="#section-83" class="anchor"
 aria-hidden="true"></a>0.1.0 - 2015-11-29</h2>
 <ul>
 <li>Initial release</li>
@@ -2784,5 +2931,6 @@ aria-hidden="true"></a>0.1.0 - 2015-11-29</h2>
 <script type="text/javascript">
 
 </script>
+<script defer src="https://umami.weiznich.de/script.js" data-website-id="cbfc6769-b0b4-4256-9fbc-f5c053b55bed"></script>
 </body>
 </html>
