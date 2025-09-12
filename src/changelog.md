@@ -9,6 +9,7 @@ include-after: |
 
 ::: demo
 ::: content-wrapper
+::: guide-wrapper
 
 All user visible changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/), as described
@@ -2273,5 +2274,6 @@ queries or set `PIPES_AS_CONCAT` manually.
 [2.2.11]: https://github.com/diesel-rs/diesel/compare/v2.2.10...v2.2.11
 [2.2.12]: https://github.com/diesel-rs/diesel/compare/v2.2.11...v2.2.12
 [2.3.0]: https://github.com/diesel-rs/diesel/compare/v2.2.0...v2.3.0
+:::
 :::
 :::
