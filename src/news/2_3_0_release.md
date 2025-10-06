@@ -132,7 +132,7 @@ Diesel 2.3 adds support for using the SQLite target with a `wasm32-unknown-unkno
 
 This functionality works out of the box by just switching the compilation target to `wasm32-unknown-unknown`, although you might want to consider using a special VFS for actually store data in your web browser.
 
-See [the complete example for more details](https://docs.diesel.rs/2.3.x/diesel/expression_methods/trait.WindowExpressionMethods.html)
+See [the complete example for more details](https://github.com/diesel-rs/diesel/tree/master/examples/sqlite/wasm)
 
 ## Extended support for various types, functions and operators in the PostgreSQL backend
 
