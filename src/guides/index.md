@@ -13,6 +13,10 @@ include-after: |
 
 Everything you need to know to install and configure Diesel, and create your first application.
 
+#### [All About Selects](./all-about-selects.html)
+
+In this guide you will learn how to build Diesel queries and how query results are mapped to your Rust data structures.
+
 #### [All About Updates](./all-about-updates.html)
 
 This guide covers everything you need to know about constructing UPDATE queries with Diesel.
