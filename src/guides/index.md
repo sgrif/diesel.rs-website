@@ -52,6 +52,7 @@ This guide contains information about how to resolve breaking changes while upda
 
 ### Valuable third party resources
 
+* [RustWeek 2025 Diesel Workshop](https://blog.weiznich.de/rustweek_2025.html)
 * [EuroRust 2024 Diesel Workshop](https://blog.weiznich.de/eurorust_2024.html)
 
 Do you have found some valuable resource that should be linked here? Submit an issue [here](https://github.com/sgrif/diesel.rs-website)
