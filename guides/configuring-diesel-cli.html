@@ -340,6 +340,76 @@ class="sourceCode toml"><code class="sourceCode toml"><span id="cb6-1"><a href="
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="dt">sqlite_integer_primary_key_is_bigint</span> <span class="op">=</span> <span class="cn">true</span></span></code></pre></div>
 </div>
 </div>
+<h2 id="the-allow_tables_to_appear_in_same_query_config-field"><a
+href="#the-allow_tables_to_appear_in_same_query_config-field"
+class="anchor" aria-hidden="true"></a>The
+<code>allow_tables_to_appear_in_same_query_config</code> field</h2>
+<p>This field allows you to configure diesel-cli to generate an
+<code>allow_tables_to_appear_in_same_query!</code> call for all tables
+in your schema or only for those that can reasonably be joined via
+existing foreign key references. Only tables appearing in this macro
+call can be joined by diesel. Possible options are:</p>
+<ul>
+<li><code>fk_related_tables</code> only generate
+<code>allow_tables_to_appear_in_same_query!</code> calls for tables that
+can be joined via foreign key relations</li>
+<li><code>all_tables</code> list all tables in a single
+<code>allow_tables_to_appear_in_same_query!</code> call (default if not
+set)</li>
+<li><code>none</code> do not generate a
+<code>allow_tables_to_appear_in_same_query!</code> call at all</li>
+</ul>
+<div class="demo__example">
+<div class="demo__example-browser">
+<div class="browser-bar">
+diesel.toml
+</div>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode toml"><code class="sourceCode toml"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[</span><span class="dt">print_schema</span><span class="kw">]</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="dt">allow_tables_to_appear_in_same_query_config</span> <span class="op">=</span> <span class="st">&quot;fk_related_tables&quot;</span></span></code></pre></div>
+</div>
+</div>
+<h2 id="the-column_sorting-field"><a href="#the-column_sorting-field"
+class="anchor" aria-hidden="true"></a>The <code>column_sorting</code>
+field</h2>
+<p>This field allows you to configure how diesel-cli orders column names
+in your <code>table!</code> declarations. It allows the following
+options:</p>
+<ul>
+<li><code>ordinal_position</code> to sort by the ordinal position given
+by the database. Note that this might be an unstable sorting depending
+on your migration order. This is the default value if this field is not
+set.</li>
+<li><code>name</code> to sort by the actual field name.</li>
+</ul>
+<div class="demo__example">
+<div class="demo__example-browser">
+<div class="browser-bar">
+diesel.toml
+</div>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode toml"><code class="sourceCode toml"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[</span><span class="dt">print_schema</span><span class="kw">]</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="dt">column_sorting</span> <span class="op">=</span> <span class="st">&quot;name&quot;</span></span></code></pre></div>
+</div>
+</div>
+<h2 id="the-pg_domains_as_custom_types-field"><a
+href="#the-pg_domains_as_custom_types-field" class="anchor"
+aria-hidden="true"></a>The <code>pg_domains_as_custom_types</code>
+field</h2>
+<p>This field allows you to define a list of PostgreSQL domain type
+names that should be infered as custom SQL types by diesel-cli. This
+list can contain regular expressions to match on multiple domain types
+at once.</p>
+<div class="demo__example">
+<div class="demo__example-browser">
+<div class="browser-bar">
+diesel.toml
+</div>
+<div class="sourceCode" id="cb9"><pre
+class="sourceCode toml"><code class="sourceCode toml"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[</span><span class="dt">print_schema</span><span class="kw">]</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="dt">pg_domains_as_custom_types</span> <span class="op">=</span> <span class="op">[</span><span class="st">&quot;int&quot;</span><span class="op">,</span> <span class="st">&quot;longtext&quot;</span><span class="op">]</span></span></code></pre></div>
+</div>
+</div>
 <h2 id="nested-sub-schemas"><a href="#nested-sub-schemas" class="anchor"
 aria-hidden="true"></a>Nested sub schemas</h2>
 <p>Diesel-CLI allows to configure nested subschemas via
@@ -355,19 +425,19 @@ given it default to the top level <code>[print_schema]</code> entry.</p>
 <div class="browser-bar">
 diesel.toml
 </div>
-<div class="sourceCode" id="cb7"><pre
-class="sourceCode toml"><code class="sourceCode toml"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># defines a subschema `user1` including the `user1` table</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="kw">[</span><span class="dt">print_schema</span><span class="kw">.</span><span class="dt">user1</span><span class="kw">]</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="dt">file</span> <span class="op">=</span> <span class="st">&quot;src/schema1.rs&quot;</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="dt">with_docs</span> <span class="op">=</span> <span class="cn">true</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="dt">filter</span> <span class="op">=</span> <span class="op">{ </span><span class="dt">only_tables</span><span class="op"> =</span> <span class="op">[</span><span class="st">&quot;users1&quot;</span><span class="op">]</span> <span class="op">}</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co"># defines a subschema `user2` including the `user2` table</span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="kw">[</span><span class="dt">print_schema</span><span class="kw">.</span><span class="dt">user2</span><span class="kw">]</span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="dt">file</span> <span class="op">=</span> <span class="st">&quot;src/schema2.rs&quot;</span></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="dt">with_docs</span> <span class="op">=</span> <span class="cn">true</span></span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="dt">filter</span> <span class="op">=</span> <span class="op">{ </span><span class="dt">only_tables</span><span class="op"> =</span> <span class="op">[</span><span class="st">&quot;users2&quot;</span><span class="op">]</span> <span class="op">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode toml"><code class="sourceCode toml"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># defines a subschema `user1` including the `user1` table</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="kw">[</span><span class="dt">print_schema</span><span class="kw">.</span><span class="dt">user1</span><span class="kw">]</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="dt">file</span> <span class="op">=</span> <span class="st">&quot;src/schema1.rs&quot;</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="dt">with_docs</span> <span class="op">=</span> <span class="cn">true</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="dt">filter</span> <span class="op">=</span> <span class="op">{ </span><span class="dt">only_tables</span><span class="op"> =</span> <span class="op">[</span><span class="st">&quot;users1&quot;</span><span class="op">]</span> <span class="op">}</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="co"># defines a subschema `user2` including the `user2` table</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="kw">[</span><span class="dt">print_schema</span><span class="kw">.</span><span class="dt">user2</span><span class="kw">]</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="dt">file</span> <span class="op">=</span> <span class="st">&quot;src/schema2.rs&quot;</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="dt">with_docs</span> <span class="op">=</span> <span class="cn">true</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="dt">filter</span> <span class="op">=</span> <span class="op">{ </span><span class="dt">only_tables</span><span class="op"> =</span> <span class="op">[</span><span class="st">&quot;users2&quot;</span><span class="op">]</span> <span class="op">}</span></span></code></pre></div>
 </div>
 </div>
 </div>
