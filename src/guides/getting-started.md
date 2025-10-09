@@ -114,7 +114,7 @@ Instead, we just install it on our system.
 
 [CLI]: https://github.com/diesel-rs/diesel/tree/2.3.x/diesel_cli
 
-We provide pre-built binaries for diesel cli. You can install the command line tool via:
+We provide pre-built binaries for the Diesel CLI. You can install the command line tool via:
 
 :::code-block
 
@@ -131,7 +131,7 @@ irm https://github.com/diesel-rs/diesel/releases/latest/download/diesel_cli-inst
 
 :::
 
-You also can use [`cargo-binstall`](https://github.com/cargo-bins/cargo-binstall) for this. To install diesel cli with `cargo binstall` run the following command:
+You also can use [`cargo-binstall`](https://github.com/cargo-bins/cargo-binstall) for this. To install the Diesel CLI with `cargo binstall`, run the following command:
 
 ::: code-block
 
@@ -144,7 +144,7 @@ cargo binstall diesel_cli
 
 This automatically finds the right binary for your system.
 
-Alternatively you can manually install diesel cli by using `cargo install:`
+Alternatively you can manually install the Diesel CLI by using `cargo install:`
 
 ::: code-block
 
@@ -172,13 +172,13 @@ This means you are missing the client library needed for a database backend
 (using the usual way to do this depending on your operating system) or by excluding
 the undesired default library with the `--no-default-features` flag. 
 
-By default diesel CLI depends on the following client libraries:
+By default the Diesel CLI depends on the following client libraries:
 
 * [`libpq`](https://www.postgresql.org/docs/current/libpq.html) for the PostgreSQL backend
-* [`libmysqlclient`](https://dev.mysql.com/doc/c-api/8.0/en/c-api-implementations.html) for the Mysql backend
+* [`libmysqlclient`](https://dev.mysql.com/doc/c-api/8.0/en/c-api-implementations.html) for the MySQL backend
 * [`libsqlite3`](https://www.sqlite.org/index.html) for the SQLite backend
 
-If you are not sure on how to install those dependencies please consult the documentation of the corresponding dependency or your distribution package manager. By default diesel will dynamically link these libraries, which means they need to be present on your system at build and runtime.
+If you are not sure how to install those dependencies, please consult the documentation of the corresponding dependency or your distribution package manager. By default Diesel will dynamically link these libraries, which means they need to be present on your system at build and runtime.
 
 ::: postgres-example
 For example, if you only have PostgreSQL installed, you can use this to install `diesel_cli`
@@ -205,11 +205,11 @@ cargo install diesel_cli --no-default-features --features mysql
 ```
 :::
 
-If you are unsure how to configure these dependencies checkout [diesel CI](https://github.com/diesel-rs/diesel/blob/master/.github/workflows/ci.yml#L63-L222) configuration for a working setup for different operating systems.
+If you are unsure how to configure these dependencies checkout the [diesel CI](https://github.com/diesel-rs/diesel/blob/master/.github/workflows/ci.yml#L63-L222) configuration for a working setup for different operating systems.
 
-Diesel-cli also offers features to build and statically link these libraries during `cargo install`. Use the `postgres-bundled`, `mysql-bundled` and `sqlite-bundled` feature flags for this. You need to provide the build dependencies for these libraries in that case. This involves a C compiler for all of them and for mysql cmake + a C++ compiler. In turn it might simplify your setup process.
+The Diesel CLI also offers features to build and statically link these libraries during `cargo install`. Use the `postgres-bundled`, `mysql-bundled` and `sqlite-bundled` feature flags for this. You need to provide the build dependencies for these libraries in that case. This involves a C compiler for all of them and for MySQL cmake + a C++ compiler. In turn it might simplify your setup process.
 
-There are no `*-bundled` features for diesel itself. If you want to utilise static linking there as well you need to add a dependency on the relevant sys crate (`pq-sys` for PostgreSQL, `mysqlclient-sys` for MySQL and `libsqlite3-sys` for SQLite) and enable the `bundled` feature for this crate. See the uncommented lines in the example `Cargo.toml` files above for the corresponding setup.
+There are no `*-bundled` features for Diesel itself. If you want to utilise static linking there as well you need to add a dependency on the relevant sys crate (`pq-sys` for PostgreSQL, `mysqlclient-sys` for MySQL and `libsqlite3-sys` for SQLite) and enable the `bundled` feature for this crate. See the uncommented lines in the example `Cargo.toml` files above for the corresponding setup.
 :::
 </aside>
 
@@ -253,7 +253,7 @@ a table to store our posts. Let's create a migration for that:
 diesel migration generate create_posts
 ```
 
-Diesel CLI will create two empty files for us in the required structure.
+Diesel CLI will create two empty files for us in the migrations directory.
 You'll see output that looks something like this:
 
 ```
@@ -371,10 +371,10 @@ diesel migration redo
 ::: aside__text
 Since migrations are written in raw SQL, they can contain specific features of the database system you use.
 For example, the `CREATE TABLE` statement above uses PostgreSQL's `SERIAL` type. If you want to use SQLite instead,
-you need to use `INTEGER` instead. The [diesel GitHub repository](https://github.com/diesel-rs/diesel/tree/master/examples) 
-contains modified examples for all supported backends. Be sure to select the backend you are using at the top of the page to see examples specific for that backend.
+you need to use `INTEGER` instead. The [Diesel GitHub repository](https://github.com/diesel-rs/diesel/tree/master/examples) 
+contains modified examples for all supported backends. Be sure to select the backend you are using at the top of the page to see examples specific to that backend.
 
-If you prefer to generate your migrations based on Rust code instead, the diesel CLI tool provides an additional `--diff-schema`  on the `diesel migration generate` command that allows to generate migrations based on the current schema definition and your database. To generate a migration equivalent to the shown Raw SQL migration you need to 
+If you prefer to generate your migrations based on Rust code instead, the Diesel CLI tool provides an additional `--diff-schema` on the `diesel migration generate` command that allows you to generate migrations based on the current schema definition and your database. To generate a migration equivalent to the Raw SQL migration shown above, you need to 
 
 * Create a `schema.rs` file with the following content:
 
@@ -424,12 +424,12 @@ diesel::table! {
 :::
 :::
 
-[The documentation of the `table!` macro](https://docs.diesel.rs/2.3.x/diesel/macro.table.html) contains the syntax used for this macros. [The `diesel::sql_types` module](https://docs.diesel.rs/2.3.x/diesel/sql_types/index.html) provides documentation for the SQL side types used to define the relevant columns.
+Check out the [documentation of the `table!` macro](https://docs.diesel.rs/2.3.x/diesel/macro.table.html) for more details about the syntax. [The `diesel::sql_types` module](https://docs.diesel.rs/2.3.x/diesel/sql_types/index.html) provides documentation for the SQL side types used to define the relevant columns.
 
 * Run `diesel migration generate --diff-schema create_posts`
 
 This will generate both the `up.sql` and the `down.sql` files of your migration pre-populated with the relevant SQL.
-These pre-populated migration files can serve as starting point to adjust the generated SQL to your needs. You as as user need to decide which modifications are relevant for your use case as Diesel will never generate a completly perfect migration for you. For this guide for example you need to add a `DEFAULT` clause to the `published` field to match the migration shown earlier.
+These pre-populated migration files can serve as starting point to adjust the generated SQL to your needs. You need to decide which modifications are relevant for your use case as Diesel will never generate a completly perfect migration for you. For example, for this guide you need to add a `DEFAULT` clause to the `published` field to match the migration shown earlier.
 :::
 </aside>
 
@@ -520,7 +520,7 @@ pub fn establish_connection() -> MysqlConnection {
 :::
 :::
 
-We'll also want to create a `Post` struct into which we can read our data, and have diesel generate the names
+We'll also want to create a `Post` struct into which we can read our data, and have Diesel generate the names
 we'll use to reference tables and columns in our queries.
 
 We'll add the following lines to the top of `src/lib.rs`:
@@ -614,7 +614,7 @@ the generated compiler error messages.
 [`#[derive(Queryable)]`]: https://docs.diesel.rs/master/diesel/prelude/derive.Queryable.html
 [`#[derive(Selectable)]`]: https://docs.diesel.rs/master/diesel/prelude/derive.Selectable.html
 
-Typically the schema module isn't created by hand, it gets generated by diesel CLI. When we ran `diesel setup`,
+Typically the schema module isn't created by hand, it gets generated by Diesel CLI. When we ran `diesel setup`,
 a file called [diesel.toml] was created which tells Diesel to maintain a file at `src/schema.rs` for us.
 The file should look like this:
 
@@ -857,8 +857,7 @@ If you follow this guide on a different database system be sure to checkout [the
 
 Diesel can insert more than one record in a single query. Just pass a `Vec` or slice to [`insert_into`],
 and then call [`get_results`] instead of `get_result`. If you don't actually want to do anything
-with the row that was just inserted, call [`.execute`] instead. The compiler won't complain
-at you, that way. :)
+with the row that was just inserted, call [`.execute`] instead. The compiler won't complain! :)
 
 [`.get_result`]: https://docs.diesel.rs/2.3.x/diesel/prelude/trait.RunQueryDsl.html#method.get_result
 [`.execute`]: https://docs.diesel.rs/2.3.x/diesel/prelude/trait.RunQueryDsl.html#method.execute
@@ -889,7 +888,7 @@ fn main() {
     println!("\nOk! Let's write {title} (Press {EOF} when finished)\n",);
     stdin().read_to_string(&mut body).unwrap();
 
-    let post = create_post(connection, title, &body);
+    let post = create_post(connection, &title, &body);
     println!("\nSaved draft {title} with id {}", post.id);
 }
 
@@ -1018,8 +1017,8 @@ That's it! Let's try it out with `cargo run --bin publish_post 1`.
 Published post Diesel demo
 ```
 
-Additionally, let's implement a possibility of fetching a single post. We will display the post id with its title.
-Notice the [`.optional()`] call. This returns `Option<Post>` instead of throwing an error, which we can then use in our matching pattern. For additional methods to modify the constructed select statements refer to the [`documentation` of `QueryDsl`]
+Additionally, let's write a script that shows a single post. We will display the post id with its title.
+Notice the [`.optional()`] call. This returns `Option<Post>` instead of throwing an error, which we can then use in our matching pattern. For additional methods to modify the constructed select statements, refer to the [`documentation` of `QueryDsl`]
 
 
 [`.optional()`]: https://docs.diesel.rs/2.3.x/diesel/result/trait.OptionalExtension.html#tymethod.optional
@@ -1130,8 +1129,9 @@ Deleted 1 posts
 ```
 
 When we try to run `cargo run --bin show_posts` again, we can see that the post was in fact deleted.
+
 This barely scratches the surface of what you can do with Diesel, but hopefully this tutorial
-has given you a good foundation to build off of. We recommend exploring the [API docs] to see more.
+has given you a good foundation to build from. We recommend exploring the [API docs] to see more.
 The final code for this tutorial can be found here for [PostgreSQL][final], [SQLite][final code sqlite], and [MySQL][final code mysql].
 
 [API docs]: https://docs.diesel.rs/2.3.x/diesel/index.html
