@@ -136,10 +136,6 @@ according to the Semver spec. This happened the first time with the
 version while such a change would either require a major version bump,
 or remaining compatibility with the older <code>sqlx</code> versions as
 well.</li>
-<li><code>sqlx</code> is regularly bumping their public dependency on
-the <code>libsqlite3-sys</code> crate in patch versions. They document
-this as SemVer exempt, nevertheless this might break other crates and is
-usually considered to need at major version bump.</li>
 <li><code>diesel</code> has a disabled-by-default
 <code>i-implement-a-third-party-backend-and-opt-into-breaking-changes</code>
 feature flag, that allows you to explicitly opt into an unstable API. In
