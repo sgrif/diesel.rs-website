@@ -41,7 +41,6 @@ From the listed crates `diesel` and `sea-orm` have a version greater than 1.0. `
 In addition the author of this document is aware of the following potential SemVer violations:
 
 * `sea-orm` plans to regularly bump their public dependency on `sqlx` to newer version which is a breaking change according to the Semver spec. This happened the first time with the `sea-orm` 1.1 release, which  is **minor** version while such a change would either require a major version bump, or remaining compatibility with the older `sqlx` versions as well.
-* `sqlx` is regularly bumping their public dependency on the `libsqlite3-sys` crate in patch versions. They document this as SemVer exempt, nevertheless this might break other crates and is usually considered to need at major version bump. 
 * `diesel` has a disabled-by-default `i-implement-a-third-party-backend-and-opt-into-breaking-changes` feature flag, that allows you to explicitly opt into an unstable API. In addition it also moves deprecated functionality behind an enabled by default `with-deprecated` feature flag. Depending on your point of view these feature flags might also be considered to be breaking changes.
 :::
 

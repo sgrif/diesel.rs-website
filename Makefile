@@ -5,7 +5,7 @@
 page: index.html compare_diesel.html guides docs news changelog
 	cp -R assets/ out
 
-guides: guides/all-about-updates.html guides/all-about-inserts.html guides/composing-applications.html guides/configuring-diesel-cli.html guides/extending-diesel.html guides/getting-started.html guides/index.html guides/schema-in-depth.html guides/migration_guide.html guides/relations.html
+guides: guides/all-about-updates.html guides/all-about-inserts.html guides/composing-applications.html guides/configuring-diesel-cli.html guides/extending-diesel.html guides/getting-started.html guides/index.html guides/schema-in-depth.html guides/migration_guide.html guides/relations.html guides/all-about-selects.html
 	cp -R src/guides/all-about-inserts/ out/guides/all-about-inserts/ 
 	cp -R src/guides/all-about-updates/ out/guides/all-about-updates/
 	cp -R src/guides/composing-applications/ out/guides/composing-applications/

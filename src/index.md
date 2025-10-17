@@ -570,6 +570,16 @@ If you would like to help here are different ways to contribute to the project:
 :::
 :::
 
+## Security Reviews
+
+::: content-wrapper
+::: guide-wrapper
+::: contribute
+- October 2025 (Diesel 2.3): [Review](/assets/NGICore Diesel penetration test report 2025 1.0.pdf) by [RadicallyOpenSecurity](https://www.radicallyopensecurity.com/) as part of the [NLNet](https://nlnet.nl/project/Diesel/) funding.
+:::
+:::
+:::
+
 ## Notable Sponsors and Supporters
 
 We would like to thank all of the sponsors supporting the work on Diesel. Notable large sponsors are:

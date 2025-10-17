@@ -13,6 +13,10 @@ include-after: |
 
 Everything you need to know to install and configure Diesel, and create your first application.
 
+#### [All About Selects](./all-about-selects.html)
+
+In this guide you will learn how to build Diesel queries and how query results are mapped to your Rust data structures.
+
 #### [All About Updates](./all-about-updates.html)
 
 This guide covers everything you need to know about constructing UPDATE queries with Diesel.
@@ -52,6 +56,7 @@ This guide contains information about how to resolve breaking changes while upda
 
 ### Valuable third party resources
 
+* [RustWeek 2025 Diesel Workshop](https://blog.weiznich.de/rustweek_2025.html)
 * [EuroRust 2024 Diesel Workshop](https://blog.weiznich.de/eurorust_2024.html)
 
 Do you have found some valuable resource that should be linked here? Submit an issue [here](https://github.com/sgrif/diesel.rs-website)
