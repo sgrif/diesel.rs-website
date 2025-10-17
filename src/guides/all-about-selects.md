@@ -352,7 +352,7 @@ For queries returning more than one field you can use tuples to represent the re
 use diesel::prelude::*;
 use crate::schema::users;
 
-let id_and_name: Vec<(i32, String)> = users::table.select((users::id, users::name)).load::<i32>(connection)?;
+let id_and_name: Vec<(i32, String)> = users::table.select((users::id, users::name)).load(connection)?;
 ```
 :::
 
