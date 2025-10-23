@@ -741,7 +741,7 @@ Documentation</a> of the trait provides several examples for these
 attributes.</p>
 <p>The <a
 href="https://docs.diesel.rs/2.3.x/diesel/expression/derive.Selectable.html"><code>#[derive(Seletable)]</code></a>
-marco still requires you to take care to manually apply the right select
+macro still requires you to take care to manually apply the right select
 clause and line it up with <a
 href="https://docs.diesel.rs/2.3.x/diesel/deserialize/derive.Queryable.html"><code>#[derive(Queryable)]</code></a>.
 The <a
@@ -761,7 +761,7 @@ class="sourceCode rust"><code class="sourceCode rust"><span id="cb18-1"><a href=
 <span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
 <span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> users<span class="op">:</span> <span class="dt">Vec</span><span class="op">&lt;</span>User<span class="op">&gt;</span> <span class="op">=</span> <span class="pp">User::</span>query()<span class="op">.</span>load(connection)<span class="op">?;</span></span></code></pre></div>
-<p>Notable differences are to <code>#[derive(Selectable)]</code> and
+<p>Notable differences to <code>#[derive(Selectable)]</code> and
 <code>#[derive(Queryable)]</code> are:</p>
 <ul>
 <li><a
