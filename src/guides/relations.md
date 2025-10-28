@@ -46,7 +46,7 @@ Your `Cargo.toml` file should now contain entries similar to the following ones:
 
 ::: code-block
 
-[Cargo.toml](https://github.com/diesel-rs/diesel/blob/master/examples/postgres/relations/Cargo.toml#L8-L10)
+[Cargo.toml](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/relations/Cargo.toml#L8-L10)
 
 ```toml
 [dependencies]

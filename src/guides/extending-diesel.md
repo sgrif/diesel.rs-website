@@ -444,7 +444,7 @@ we can represent that in our trait.
 
 ::: code-block
 
-[src/expression_methods/global_expression_methods.rs](https://github.com/diesel-rs/diesel/blob/master/diesel/src/expression_methods/bool_expression_methods.rs)
+[src/expression_methods/global_expression_methods.rs](https://github.com/diesel-rs/diesel/blob/main/diesel/src/expression_methods/bool_expression_methods.rs)
 
 ```rust
 pub trait BoolExpressionMethods
