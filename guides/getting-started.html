@@ -335,7 +335,7 @@ install <code>diesel_cli</code> with only MySQL:</p>
 class="sourceCode sh"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">cargo</span> install diesel_cli <span class="at">--no-default-features</span> <span class="at">--features</span> mysql</span></code></pre></div>
 </div>
 <p>If you are unsure how to configure these dependencies checkout <a
-href="https://github.com/diesel-rs/diesel/blob/master/.github/workflows/ci.yml#L63-L222">diesel
+href="https://github.com/diesel-rs/diesel/blob/main/.github/workflows/ci.yml#L63-L222">diesel
 CI</a> configuration for a working setup for different operating
 systems.</p>
 <p>Diesel-cli also offers features to build and statically link these
@@ -502,7 +502,7 @@ features of the database system you use. For example, the
 <code>CREATE TABLE</code> statement above uses PostgreSQL’s
 <code>SERIAL</code> type. If you want to use SQLite instead, you need to
 use <code>INTEGER</code> instead. The <a
-href="https://github.com/diesel-rs/diesel/tree/master/examples">diesel
+href="https://github.com/diesel-rs/diesel/tree/main/examples">diesel
 GitHub repository</a> contains modified examples for all supported
 backends. Be sure to select the backend you are using at the top of the
 page to see examples specific for that backend.</p>
@@ -798,10 +798,10 @@ class="sourceCode rust"><code class="sourceCode rust"><span id="cb37-1"><a href=
 </div>
 </div>
 <p><a
-href="https://docs.diesel.rs/master/diesel/prelude/derive.Queryable.html"><code>#[derive(Queryable)]</code></a>
+href="https://docs.diesel.rs/2.3.x/diesel/prelude/derive.Queryable.html"><code>#[derive(Queryable)]</code></a>
 will generate all of the code needed to load a <code>Post</code> struct
 from a SQL query. <a
-href="https://docs.diesel.rs/master/diesel/prelude/derive.Selectable.html"><code>#[derive(Selectable)]</code></a>
+href="https://docs.diesel.rs/2.3.x/diesel/prelude/derive.Selectable.html"><code>#[derive(Selectable)]</code></a>
 will generate code to construct a matching select clause based on your
 model type based on the table defined via
 <code>#[diesel(table_name = crate::schema::posts)]</code>.
