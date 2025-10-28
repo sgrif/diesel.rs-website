@@ -8,7 +8,7 @@ include-after: |
 ::: content-wrapper 
 ::: guide-wrapper
 
-[API Documentation (master branch)](https://docs.diesel.rs/master/diesel/index.html){.guides-link}
+[API Documentation (main branch)](https://docs.diesel.rs/main/diesel/index.html){.guides-link}
 [API Documentation (2.3.x release)](https://docs.diesel.rs/2.3.x/diesel/index.html){.guides-link}
 [API Documentation (2.2.x release)](https://docs.diesel.rs/2.2.x/diesel/index.html){.guides-link}
 [API Documentation (2.1.x release)](https://docs.diesel.rs/2.1.x/diesel/index.html){.guides-link}
