@@ -560,7 +560,7 @@ Something missing? Submit an issue [here](https://github.com/sgrif/diesel.rs-web
 The Diesel project is always looking for people to help with various parts of the project. 
 If you would like to help here are different ways to contribute to the project:
 
-* Contributing Code, Documentation or Guides. Checkout the planing for [Diesel 2.4](https://github.com/orgs/diesel-rs/projects/1) for open tasks.
+* Contributing Code, Documentation or Guides. Checkout the planning for [Diesel 2.4](https://github.com/orgs/diesel-rs/projects/1) for open tasks.
 * Providing knowledge and help to maintain the MySQL/MariaDB backend. This is currently the only in-tree backend that is not used by any maintainers, so having someone around that actually uses this backend would be very helpful for the Diesel project.
 * Answering questions in our [discussion forum](https://github.com/diesel-rs/diesel/discussions)
 * Reporting bugs in our [issue tracker](https://github.com/diesel-rs/diesel/issues)
