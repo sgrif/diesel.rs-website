@@ -537,6 +537,14 @@ A helper crate to integrate `jiff` datetime types with diesel.
 
 :::
 
+::: {.community-project}
+
+#### [`diesel-guard`](https://github.com/ayarotsky/diesel-guard) <a style="float:right" href="https://crates.io/crates/diesel-guard"><img src="https://img.shields.io/crates/v/diesel-guard.svg?style=for-the-badge" height="18" alt="License: MIT" /></a> {.no-anchor}
+
+Catch dangerous PostgreSQL migrations before they take down production.
+
+:::
+
 
 Something missing? Submit an issue [here](https://github.com/sgrif/diesel.rs-website).
 
