@@ -1,3 +1,10 @@
 .DS_Store
 /.venv
 /out
+
+
+/starlight/node_modules
+/starlight/.vscode
+
+
+https://github.com/diesel-rs/diesel

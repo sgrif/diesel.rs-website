@@ -1,0 +1,331 @@
+---
+title: 'Diesel is a Safe, Extensible ORM and Query Builder for <a href="https://www.rust-lang.org/" target="_blank" class="rust-link">Rust</a>'
+description: Diesel is the most productive way to interact with databases in Rust because of its safe and composable abstractions over queries.
+template: splash
+hero:
+  tagline: Diesel is the most productive way to interact with databases in Rust because of its safe and composable abstractions over queries.
+  image:
+    file: ../../assets/images/logo.svg
+  actions:
+    - text: Getting Started
+      link: /guides/getting-started
+      icon: right-arrow
+      variant: primary
+    - text: Contribute to Diesel
+      link: "#contribute"
+      icon: external
+      variant: secondary
+---
+
+import { Card, CardGrid, Tabs, TabItem } from '@astrojs/starlight/components';
+import { features, communityProjects, sponsors, projects } from '../../data/data.js';
+
+<div style="text-align: center; margin-bottom: 4rem;">
+    ## Why did we make Diesel? 
+</div>
+
+
+<CardGrid stagger>
+  {features.map((feature) => (
+    <Card 
+      key={feature.title}
+      title={`<img src="${feature.img}" style="width:2.5rem; display:inline; margin-right:8px; vertical-align:middle;"> ${feature.title}`}
+    >
+      {feature.text}
+    </Card>
+  ))}
+</CardGrid>
+
+
+<div style="text-align: center; margin-bottom: 4rem;">
+    Still not sold? Have a look at an in-depth [comparison](/compare_diesel.html) with other rust database crates.
+</div>
+
+
+<div style="text-align: center; margin-top: 4rem;">
+    ## See some examples
+</div>
+
+
+<Tabs>
+  <TabItem label="Simple Queries">
+    Simple queries are a complete breeze. Loading all users from a database:
+
+    ```rust
+    // Rust code
+    users::table.load(&mut connection)
+    ```
+
+    ```sql
+    -- Executed SQL
+    SELECT * FROM users;
+    ```
+
+    Loading all the posts for a user:
+
+    ```rust
+    // Rust code
+    Post::belonging_to(user).load(&mut connection)
+    ```
+
+    ```sql
+    -- Executed SQL
+    SELECT * FROM posts WHERE user_id = 1;
+    ```
+  </TabItem>
+
+  <TabItem label="Complex Queries">
+    Diesel's powerful query builder helps you construct queries as simple or complex as you need, at zero cost.
+
+    ```rust
+    // Rust code
+    let versions = Version::belonging_to(krate)
+      .select(id)
+      .order(num.desc())
+      .limit(5);
+    let downloads = version_downloads
+      .filter(date.gt(now - 90.days()))
+      .filter(version_id.eq(any(versions)))
+      .order(date)
+      .load::<Download>(&mut conn)?;
+    ```
+
+    ```sql
+    -- Executed SQL
+    SELECT version_downloads.*
+      WHERE date > (NOW() - '90 days')
+        AND version_id = ANY(
+          SELECT id FROM versions
+            WHERE crate_id = 1
+            ORDER BY num DESC
+            LIMIT 5
+        )
+      ORDER BY date
+    ```
+  </TabItem>
+
+  <TabItem label="Less Boilerplate">
+    Diesel codegen generates boilerplate for you. It lets you focus on your business logic, not mapping to and from SQL rows.
+
+    **With Diesel:**
+    ```rust
+    #[derive(Queryable)]
+    pub struct Download {
+        id: i32,
+        version_id: i32,
+        downloads: i32,
+        counted: i32,
+        date: SystemTime,
+    }
+    ```
+
+    **Without Diesel:**
+    ```rust
+    pub struct Download {
+        id: i32,
+        version_id: i32,
+        downloads: i32,
+        counted: i32,
+        date: SystemTime,
+    }
+
+    impl Download {
+        fn from_row(row: &Row) -> Download {
+            Download {
+                id: row.get("id"),
+                version_id: row.get("version_id"),
+                downloads: row.get("downloads"),
+                counted: row.get("counted"),
+                date: row.get("date"),
+            }
+        }
+    }
+    ```
+  </TabItem>
+
+  <TabItem label="Inserting Data">
+    It's not just about reading data. Diesel makes it easy to use structs for new records.
+
+    ```rust
+    // Rust code
+    #[derive(Insertable)]
+    #[diesel(table_name = users)]
+    struct NewUser<'a> {
+        name: &'a str,
+        hair_color: Option<&'a str>,
+    }
+
+    let new_users = vec![
+        NewUser { name: "Sean", hair_color: Some("Black") },
+        NewUser { name: "Gordon", hair_color: None },
+    ];
+
+    insert_into(users)
+        .values(&new_users)
+        .execute(&mut connection);
+    ```
+
+    ```sql
+    -- Executed SQL
+    INSERT INTO users (name, hair_color) VALUES
+      ('Sean', 'Black'),
+      ('Gordon', DEFAULT)
+    ```
+  </TabItem>
+
+  <TabItem label="Updating Data">
+    Diesel's codegen can generate several ways to update a row, letting you encapsulate your logic in the way that makes sense for your app.
+
+    **Modifying a struct:**
+    ```rust
+    post.published = true;
+    post.save_changes(&mut connection);
+    ```
+
+    **One-off batch changes:**
+    ```rust
+    update(users.filter(email.like("%@spammer.com")))
+        .set(banned.eq(true))
+        .execute(&mut connection)
+    ```
+
+    **Using a struct for encapsulation:**
+    ```rust
+    update(Settings::belonging_to(current_user))
+        .set(&settings_form)
+        .execute(&mut connection)
+    ```
+  </TabItem>
+
+  <TabItem label="Ergonomic Multidatabase support">
+    Diesel allows to ergonomically abstract over different database backends while keeping all of it's compile time guarantees.
+
+    ```rust
+    #[derive(diesel::MultiConnection)]
+    enum DatabaseConnection {
+        Sqlite(diesel::SqliteConnection),
+        Postgres(diesel::PgConnection),
+    }
+
+    let mut connection =
+        DatabaseConnection::establish("postgres://localhost/diesel")?;
+
+    let all_users = users::table.load::<User>(connection)?;
+
+    match connection {
+        DatabaseConnection::Sqlite(connection) => {
+            perform_sqlite_specific_query(connection)?;
+        }
+        DatabaseConnection::Postgres(connection) => {
+            perform_postgres_specific_query(connection)?;
+        }
+    }
+    ```
+  </TabItem>
+
+  <TabItem label="Ergonomic Raw SQL">
+    There will always be certain queries that are just easier to write as raw SQL, or can't be expressed with the query builder. Even in these cases, Diesel provides an easy to use API for writing raw SQL.
+
+    ```rust
+    #[derive(QueryableByName)]
+    #[diesel(table_name = users)]
+    struct User {
+        id: i32,
+        name: String,
+        organization_id: i32,
+    }
+
+    sql_query(include_str!("complex_users_by_organization.sql"))
+        .bind::<Integer, _>(organization_id)
+        .bind::<BigInt, _>(offset)
+        .bind::<BigInt, _>(limit)
+        .load::<User>(&mut conn)?;
+    ```
+  </TabItem>
+
+  <TabItem label="Popular Projects using Diesel">
+    {projects.map((project) => (
+      <Card 
+        key={project.name}
+        title={`<a href="${project.url}" target="_blank" style="text-decoration: none; color: inherit;">${project.name}</a>`}
+      >
+        <img src={project.img} style={project.imgStyles} alt={project.name} />
+        {project.description}
+      </Card>
+    ))}
+
+    Do you have found some cool project that should be linked here? Submit an issue [here](https://github.com/sgrif/diesel.rs-website).
+  </TabItem>
+
+  <TabItem label="Community Extensions">
+
+
+<div style="display: flex; flex-direction: column; gap: 1rem;">
+  {communityProjects.map((project) => (
+    <Card key={project.name}>
+      <div style="display: flex; justify-content: space-between; align-items: center; gap: 1rem;">
+        <h4 style="margin: 0;">
+          <a href={project.githubUrl} target="_blank" style="text-decoration: underline; color: inherit;">
+            <code>{project.name}</code>
+          </a>
+        </h4>
+        <a href={project.crateUrl} target="_blank">
+          <img src={project.badge} height="20" alt={`${project.name} on crates.io`} />
+        </a>
+      </div>
+      <p style="margin-top: 0.75rem; margin-bottom: 0;">
+        {project.description}
+      </p>
+    </Card>
+  ))}
+</div>
+
+    Something missing? Submit an issue [here](https://github.com/sgrif/diesel.rs-website).
+
+  </TabItem>
+</Tabs>
+
+
+<div style="text-align: center; margin-top: 4rem;">
+    ## Contribute
+</div>
+
+The Diesel project is always looking for people to help with various parts of the project. If you would like to help here are different ways to contribute to the project:
+
+* Contributing Code, Documentation or Guides. Checkout the planning for [Diesel 2.4](https://github.com/orgs/diesel-rs/projects/1) for open tasks.
+* Providing knowledge and help to maintain the MySQL/MariaDB backend. This is currently the only in-tree backend that is not used by any maintainers, so having someone around that actually uses this backend would be very helpful for the Diesel project.
+* Answering questions in our [discussion forum](https://github.com/diesel-rs/diesel/discussions).
+* Reporting bugs in our [issue tracker](https://github.com/diesel-rs/diesel/issues).
+* Helping triaging issues in our [issue tracker](https://github.com/diesel-rs/diesel/issues).
+* [Sponsoring](https://github.com/weiznich) the maintainers.
+
+
+<div style="text-align: center; margin-top: 4rem;">
+    ## Security Reviews
+</div>
+
+* October 2025 (Diesel 2.3): [Review](/assets/NGICore Diesel penetration test report 2025 1.0.pdf) by [RadicallyOpenSecurity](https://www.radicallyopensecurity.com/) as part of the [NLNet](https://nlnet.nl/project/Diesel/) funding.
+
+
+<div style="text-align: center; margin-top: 4rem;">
+    ## Notable Sponsors and Supporters
+</div>
+
+We would like to thank all of the sponsors supporting the work on Diesel. Notable large sponsors are:
+
+<div style="display: flex; flex-direction: column; gap: 1rem;">
+  {sponsors.map((sponsor) => (
+    <Card key={sponsor.name}>
+      <a href={sponsor.url} target="_blank" rel="noopener noreferrer" style="display: block; text-align: center;">
+        <img 
+          src={sponsor.img} 
+          alt={sponsor.name} 
+          style="width: 20rem; max-width: 100%; height: auto; margin: 0 auto;" 
+        />
+      </a>
+    </Card>
+  ))}
+</div>
+
+Additionally we would like to thank all persons sponsoring the project on [GitHub](https://github.com/sponsors/weiznich#sponsors). Without them developing Diesel wouldn't be possible.
+
