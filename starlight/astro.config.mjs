@@ -24,6 +24,9 @@ export default defineConfig({
 					autogenerate: { directory: 'reference' },
 				},
 			],
+			components: {
+				Footer: './src/components/Footer.astro',
+			}
 		}),
 	],
 });

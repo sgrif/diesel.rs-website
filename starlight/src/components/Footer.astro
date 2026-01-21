@@ -1,0 +1,31 @@
+---
+// src/components/Footer.astro
+const currentYear = new Date().getFullYear();
+---
+
+<footer>    
+    
+    <div>
+        <p> Found a mistake on this website? Submit an issue or send a pull request
+            <a href = "https://github.com/sgrif/diesel.rs-website">here</a>! </p>
+        
+        <br/>
+
+        <p>Copyright © 2015-{currentYear} The Diesel Core Team</p>
+    
+    </div>
+
+</footer>
+
+<style>
+    footer {
+        margin-top: 2rem;
+        border-top: 1px solid var(--sl-color-gray-5);
+        padding-top: 2rem;
+    }
+
+    footer div {
+        text-align: center;
+        margin: 3rem;
+    }
+</style>
