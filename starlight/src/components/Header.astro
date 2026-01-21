@@ -1,0 +1,33 @@
+---
+import Default from '@astrojs/starlight/components/SocialIcons.astro';
+---
+
+<div class="header-links">
+  <a href="/">News</a>
+  <a href="/guides/getting-started">Guides</a>
+  <a href="/api_docs">API Docs</a>
+  <a href="/changelog">Changelog</a>
+</div>
+
+<Default>
+    <slot />
+
+</Default>
+
+<style>
+  .header-links {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    margin-inline-end: 1rem;
+  }
+  a {
+    text-decoration: none;
+    color: var(--sl-color-text-accent);
+    font-weight: 600;
+    font-size: var(--sl-text-sm);
+  }
+  a:hover {
+    opacity: 0.7;
+  }
+</style>

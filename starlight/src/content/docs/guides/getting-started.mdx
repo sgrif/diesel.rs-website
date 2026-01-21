@@ -1,0 +1,59 @@
+---
+title: "Getting Started with Diesel"
+description: "A step-by-step guide to setting up Diesel with PostgreSQL, SQLite, or MySQL."
+lang: en-US
+---
+
+import { Aside, Tabs, TabItem } from '@astrojs/starlight/components'; 
+
+
+
+For this guide, we're going to walk through some simple examples for each of the pieces of CRUD,
+which stands for "Create Read Update Delete". Each step in this guide will build on the previous
+and is meant to be followed along.
+
+Before we start, make sure you have one of PostgreSQL, SQLite, or MySQL installed and running. In the project repository, you may find various [examples](https://github.com/diesel-rs/diesel/tree/2.3.x/examples) for every supported database.
+
+:::note[A note on Rust versions:]
+  Diesel requires Rust 1.86.0 or later. If you're following along with this guide, make sure you're using at least that version of Rust by running `rustup update stable`.
+:::
+
+## Initializing a new project
+
+The first thing we need to do is generate our project.
+
+```sh title="Generate a new project"
+cargo new --lib diesel_demo
+cd diesel_demo
+```
+
+First, let's add Diesel to our dependencies. We're also going to use a tool called
+[`.env`][dotenvy] to manage our environment variables for us. We'll add it to our dependencies
+as well.
+
+[dotenvy]: https://github.com/allan2/dotenvy
+
+
+
+
+
+## Choosing your Database
+
+<Tabs syncKey="db-backend">
+  <TabItem label="PostgreSQL">
+    ```toml title="Cargo.toml"
+    diesel = { version = "2.2.0", features = ["postgres"] }
+    ```
+  </TabItem>
+  <TabItem label="SQLite">
+    ```toml title="Cargo.toml"
+    diesel = { version = "2.2.0", features = ["sqlite"] }
+    ```
+  </TabItem>
+  <TabItem label="MySQL">
+    ```toml title="Cargo.toml"
+    diesel = { version = "2.2.0", features = ["mysql"] }
+    ```
+  </TabItem>
+</Tabs>
+

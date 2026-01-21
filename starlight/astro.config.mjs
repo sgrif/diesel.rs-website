@@ -20,11 +20,13 @@ export default defineConfig({
 					],
 				},
 				{
-					label: 'Reference',
-					autogenerate: { directory: 'reference' },
+					label: 'Compare Diesel',
+					autogenerate: { directory: 'compare' },
 				},
 			],
 			components: {
+				// This replaces the SocialIcons area with custom component
+				SocialIcons: './src/components/Header.astro',
 				Footer: './src/components/Footer.astro',
 			}
 		}),
