@@ -1,14 +1,7 @@
 ---
-lang: "en-US"
 title: "Diesel 2.0.0"
-css: ../assets/stylesheets/application.css
-include-after: |
-    <script src="../assets/javascripts/application.js"></script>
+lang: "en-US"
 ---
-
-::: demo
-::: content-wrapper
-::: guide-wrapper
 
 Diesel 2.0.0 contains the contributions of more than 130 people. More than 1700 commits were submitted
 over a span of 3 years.
@@ -46,17 +39,14 @@ Diesel 2.0 adds support for `GROUP BY` clauses for select queries.
 
 This means queries like the following one will just work.
 
-::: code-block
 
 [Example]()
 
-```rust
+```rust title="Rust"
  users::table.inner_join(posts::table)
     .group_by(users::id)
     .select((users::name, count(posts::id)))
 ```
-
-:::
 
 As this is the case for all other Diesel built-in query dsl, this construct is fully checked at compile time. This means Diesel
 will ensure that the `GROUP BY` clause is valid for the current query and it will also ensure that expressions appearing inside
@@ -69,11 +59,11 @@ Diesel 2.0 adds support for table aliasing. This enables users to write queries,
 
 The following query demonstrates the support for this feature:
 
-::: code-block
 
 [Example]()
 
-```rust
+
+```rust title="Rust"
 // Define new table alias for the existing `users` table
 let users1 = diesel::alias!(schema::users as user1);
 
@@ -83,8 +73,6 @@ users::table
     .select((users::id, users::name, users1.field(users::name)))
     .order_by(users1.field(users::id))
 ```
-
-:::
 
 Again all of this is checked at compile time. So similar to a normal table, columns from aliases are only allowed to appear if
 the corresponding query actually uses the alias.
@@ -98,11 +86,10 @@ The major use case for this feature is to ensure that columns from a specific qu
 for a corresponding type implementing `Queryable`. This also works for complex queries involving joins or other kinds of nesting.
 
 
-::: code-block 
-
 [Example]()
 
-```rust
+
+```rust title="Rust"
 #[derive(Queryable, Selectable)]
 struct User {
     id: i32,
@@ -112,7 +99,6 @@ struct User {
 let first_user = users.select(User::as_select()).first(connection)?;
 ```
 
-:::
 
 Diesel enforces at type system level that once you provided such a select clause via `User::as_select()` you are only allowed
 to construct this type from the returned result of the corresponding query. This means there is no need to specify the `User` type
@@ -126,16 +112,13 @@ Diesel 2.0 extents the query builder to support query combinations via `UNION`/`
 to easily chain multiple queries together as long as they return fields of the same type. Queries like the following
 one are now supported:
 
-::: code-block
-
 [Example]()
 
-```rust
+
+```rust title="Rust"
  users.select(user_name.nullable())
     .union(animals.select(animal_name).filter(animal_name.is_not_null()))
 ```
-
-:::
 
 As always this is checked at compile time to reject invalid queries, like for example that ones containing select
 clauses with different fields. Checkout the documentation of [`CombineDsl`](https://docs.diesel.rs/2.0.x/diesel/prelude/trait.CombineDsl.html) for details.
@@ -369,8 +352,3 @@ In addition to the Diesel core team, 141 people contributed code to this release
 * κeen
 * 二手掉包工程师
 * 棒棒彬_Binboy
-
-
-:::
-:::
-:::

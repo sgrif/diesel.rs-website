@@ -1,14 +1,8 @@
 ---
-lang: "en-US"
 title: "Diesel 2.3.0"
-css: ../assets/stylesheets/application.css
-include-after: |
-    <script src="../assets/javascripts/application.js"></script>
+lang: "en-US"
 ---
 
-::: demo
-::: content-wrapper
-::: guide-wrapper
 
 Diesel 2.3.0 contains the contributions of 95 people. More than 1142 commits were submitted
 over a span of 16 months.
@@ -40,7 +34,7 @@ Diesel 2.3 provides a new [`#[derive(HasQuery)]`](https://docs.diesel.rs/2.3.x/d
 
 For the most simple case you can use this derive as follows:
 
-```rust
+```rust title="Rust"
 use crate::schema::users;
 
 #[derive(HasQuery)]
@@ -56,7 +50,7 @@ which would be equivalent to deriving [`#[derive(Queryable)]`](https://docs.dies
 
 For more advanced usages you can also specify custom select expressions and `FROM` clauses as part of the derive like this:
 
-```rust
+```rust title="Rust"
 use crate::schema::{employees, departments};
 
 #[derive(HasQuery)]
@@ -77,7 +71,7 @@ let employees_with_salary = Employe::query()
 
 which would be equivalent to the following query:
 
-```rust
+```rust title="Rust"
 employees::table
     .inner_join(departments::table)
     .filter(departments::name.eq_any(["Developers", "Maintainers"]))
@@ -93,7 +87,7 @@ Diesel 2.3 introduces support for constructing [Window function expressions](htt
 
 Diesel provides a set of [built-in Window](https://docs.diesel.rs/2.3.x/diesel/dsl/index.html) functions and also allows to use most of the built-in aggregate functions as window functions. To construct a Window function call it is required to chain at least one [`WindowExpressionMethods`](https://docs.diesel.rs/2.3.x/diesel/expression_methods/trait.WindowExpressionMethods.html) method after the actual function call. For example 
 
-```rust
+```rust title="Rust"
 employees::table
     .select(
         dsl::rank()
@@ -105,7 +99,7 @@ employees::table
 
 corresponds to the following SQL query:
 
-```rust
+```sql title="SQL"
 SELECT
    RANK() OVER(PARTITION BY department ORDER BY salary DESC ROWS UNBOUNDED PRECEDING
 FROM 
@@ -116,7 +110,7 @@ Diesel ensures at compile time that the formed query is valid by restricting tha
 
 Finally you can also define your own window functions via the [`#[declare_sql_function]`](https://docs.diesel.rs/2.3.x/diesel/expression/functions/attr.declare_sql_function.html) procedural macro like this:
 
-```rust
+```rust title="Rust"
 #[declare_sql_function]
 extern "SQL" {
     #[window]
@@ -138,13 +132,13 @@ See [the complete example for more details](https://github.com/diesel-rs/diesel/
 
 We extended Diesel to provide support for the PostgreSQL specific [`MULTIRANGE`](https://www.postgresql.org/docs/current/rangetypes.html) type and also to provide support for a large number of `RANGE` and `MULTIRANGE` specific operators and functions. This feature allows you to construct queries like these:
 
-```rust
+```rust title="Rust"
 diesel::select(dsl::int4range(1, 5, RangeBound::LowerBoundInclusiveUpperBoundExclusive).contains(4))
 ```
 
 which would be equivalent to the following SQL:
 
-```SQL
+```sql title="SQL"
 SELECT int4range(1,5) @> 4;
 ```
 
@@ -159,7 +153,7 @@ Finally we worked on extending the SQLite backend to support [their built-in JSO
 
 You can use this functionality like this:
 
-```rust
+```rust title="Rust"
 let value = diesel::select(jsonb::<Binary, _>(br#"{"this":"is","a":["test"]}"#))
     .get_result::<serde_json::Value>(connection)?;
 ```
@@ -269,7 +263,3 @@ In addition to the Diesel core team, 95 people contributed code to this release.
 * xanonid
 * Xue Haonan
 * Zaira Bibi
-
-:::
-:::
-:::

@@ -1,14 +1,8 @@
 ---
-lang: "en-US"
 title: "Diesel 2.2.0"
-css: ../assets/stylesheets/application.css
-include-after: |
-    <script src="../assets/javascripts/application.js"></script>
+lang: "en-US"
 ---
 
-::: demo
-::: content-wrapper
-::: guide-wrapper
 
 Diesel 2.2.0 contains the contributions of 42 people. More than 560 commits were submitted
 over a span of 12 months.
@@ -25,7 +19,7 @@ In practice that requires specifying the return type of your query part, which i
 
 Without this attribute you would need to write code like this:
 
-```rust
+```rust title="Rust"
 fn users_filtered_by_name(name: &str) -> dsl::Filter<users::table, dsl::Eq<users::name, &str>> {
     users::table.filter(users::name.eq(name))
 }
@@ -33,7 +27,7 @@ fn users_filtered_by_name(name: &str) -> dsl::Filter<users::table, dsl::Eq<users
 
 The new attribute enables you to write just:
 
-```rust
+```rust title="Rust"
 #[dsl::auto_type]
 fn users_filtered_by_name(name: &str) -> _ {
     users::table.filter(users::name.eq(name))
@@ -50,7 +44,7 @@ An [`Instrumentation`](https://docs.diesel.rs/2.2.x/diesel/connection/trait.Inst
 
 Example of a simple `println!` based instrumentation that just logs everything to the standard output:
 
-```rust
+```rust title="Rust"
 let mut connection = PgConnection::establish("postgres://localhost/diesel")?;
 connection.set_instrumentation(|event: InstrumentationEvent<'_>| println!("{event:?}"));
 ```
@@ -61,7 +55,7 @@ Diesel now supports [PostgreSQL's `COPY FROM STDIN` and `COPY TO STDOUT`](https:
 
 Example `COPY FROM` statement using an `Insertable` struct:
 
-```rust
+```rust title="Rust"
 #[derive(Insertable)]
 #[diesel(table_name = users)]
 #[diesel(treat_none_as_default_value = false)]
@@ -84,7 +78,7 @@ assert_eq!(count, 2);
 
 Example `COPY FROM` statement using the low level interface to provide a CSV stream:
 
-```rust
+```rust title="Rust"
 use diesel::pg::CopyFormat;
 let count = diesel::copy_from(users::table)
     .from_raw_data(users::table, |copy| {
@@ -112,7 +106,7 @@ The following two examples demonstrate the new error messages:
 
 For type mismatches between your query and the result type we now include explicit hints to use `#[derive(Selectable)]` + `#[diesel(check_for_backend(…))]`:
 
-```
+```rust title="Rust"
 error[E0277]: the trait bound `(diesel::sql_types::Integer, diesel::sql_types::Text): load_dsl::private::CompatibleType<User, _>` is not satisfied
   --> tests/fail/queryable_with_typemismatch.rs:21:31
    |
@@ -129,8 +123,8 @@ error[E0277]: the trait bound `(diesel::sql_types::Integer, diesel::sql_types::T
 
 For field type mismatches rustc now explicitly tells you that this mapping is not supported:
 
-```
 
+```rust title="Rust"
 error[E0277]: cannot deserialize a value of the database type `diesel::sql_types::Integer` as `*const str`
   --> tests/fail/broken_queryable_by_name.rs:16:5
    |
@@ -208,7 +202,3 @@ In addition to the Diesel core team, 60 people contributed code to this release.
 * yagince
 * Zhai Xiang
 * 森田一世
-
-:::
-:::
-:::
