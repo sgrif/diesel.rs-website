@@ -28,7 +28,7 @@ Images can be added to `src/assets/` and embedded in Markdown with a relative li
 
 Static assets, like favicons, can be placed in the `public/` directory.
 
-## Prerequisits
+## Prerequisites
 
 - [Yarn](https://yarnpkg.com/getting-started/install)
 
