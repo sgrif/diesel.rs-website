@@ -8,6 +8,7 @@ export default defineConfig({
 	integrations: [
 		starlight({
 			title: 'DIESEL',
+			favicon: './src/assets/images/diesel_logo_favicon_32.png',
 			logo: {
 				src: './src/assets/images/diesel_logo_favicon.png',
 			},
