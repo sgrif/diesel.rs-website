@@ -38,7 +38,7 @@ import { features, communityProjects, sponsors, projects } from '../../data/inde
 
 
 <div style="text-align: center; margin-bottom: 4rem;">
-    Still not sold? Have a look at an in-depth [comparison](/compare_diesel.html) with other rust database crates.
+    Still not sold? Have a look at an in-depth [comparison](./compare/compare_diesel) with other rust database crates.
 </div>
 
 
@@ -51,25 +51,21 @@ import { features, communityProjects, sponsors, projects } from '../../data/inde
   <TabItem label="Simple Queries">
     Simple queries are a complete breeze. Loading all users from a database:
 
-    ```rust
-    // Rust code
+    ```rust title="Rust"
     users::table.load(&mut connection)
     ```
 
-    ```sql
-    -- Executed SQL
+    ```sql title="Executed SQL"
     SELECT * FROM users;
     ```
 
     Loading all the posts for a user:
 
-    ```rust
-    // Rust code
+    ```rust title="Rust"
     Post::belonging_to(user).load(&mut connection)
     ```
 
-    ```sql
-    -- Executed SQL
+    ```sql title="Executed SQL"
     SELECT * FROM posts WHERE user_id = 1;
     ```
   </TabItem>
@@ -77,8 +73,7 @@ import { features, communityProjects, sponsors, projects } from '../../data/inde
   <TabItem label="Complex Queries">
     Diesel's powerful query builder helps you construct queries as simple or complex as you need, at zero cost.
 
-    ```rust
-    // Rust code
+    ```rust title="Rust"
     let versions = Version::belonging_to(krate)
       .select(id)
       .order(num.desc())
@@ -90,8 +85,7 @@ import { features, communityProjects, sponsors, projects } from '../../data/inde
       .load::<Download>(&mut conn)?;
     ```
 
-    ```sql
-    -- Executed SQL
+    ```sql title="Executed SQL"
     SELECT version_downloads.*
       WHERE date > (NOW() - '90 days')
         AND version_id = ANY(
@@ -108,7 +102,7 @@ import { features, communityProjects, sponsors, projects } from '../../data/inde
     Diesel codegen generates boilerplate for you. It lets you focus on your business logic, not mapping to and from SQL rows.
 
     **With Diesel:**
-    ```rust
+    ```rust title="Rust"
     #[derive(Queryable)]
     pub struct Download {
         id: i32,
@@ -120,7 +114,7 @@ import { features, communityProjects, sponsors, projects } from '../../data/inde
     ```
 
     **Without Diesel:**
-    ```rust
+    ```rust title="Rust"
     pub struct Download {
         id: i32,
         version_id: i32,
@@ -146,8 +140,7 @@ import { features, communityProjects, sponsors, projects } from '../../data/inde
   <TabItem label="Inserting Data">
     It's not just about reading data. Diesel makes it easy to use structs for new records.
 
-    ```rust
-    // Rust code
+    ```rust title="Rust"
     #[derive(Insertable)]
     #[diesel(table_name = users)]
     struct NewUser<'a> {
@@ -165,8 +158,7 @@ import { features, communityProjects, sponsors, projects } from '../../data/inde
         .execute(&mut connection);
     ```
 
-    ```sql
-    -- Executed SQL
+    ```sql title="Executed SQL"
     INSERT INTO users (name, hair_color) VALUES
       ('Sean', 'Black'),
       ('Gordon', DEFAULT)
@@ -177,20 +169,20 @@ import { features, communityProjects, sponsors, projects } from '../../data/inde
     Diesel's codegen can generate several ways to update a row, letting you encapsulate your logic in the way that makes sense for your app.
 
     **Modifying a struct:**
-    ```rust
+    ```rust title="Rust"
     post.published = true;
     post.save_changes(&mut connection);
     ```
 
     **One-off batch changes:**
-    ```rust
+    ```rust title="Rust"
     update(users.filter(email.like("%@spammer.com")))
         .set(banned.eq(true))
         .execute(&mut connection)
     ```
 
     **Using a struct for encapsulation:**
-    ```rust
+    ```rust title="Rust"
     update(Settings::belonging_to(current_user))
         .set(&settings_form)
         .execute(&mut connection)
@@ -200,7 +192,7 @@ import { features, communityProjects, sponsors, projects } from '../../data/inde
   <TabItem label="Ergonomic Multidatabase support">
     Diesel allows to ergonomically abstract over different database backends while keeping all of it's compile time guarantees.
 
-    ```rust
+    ```rust title="Rust"
     #[derive(diesel::MultiConnection)]
     enum DatabaseConnection {
         Sqlite(diesel::SqliteConnection),
@@ -226,7 +218,7 @@ import { features, communityProjects, sponsors, projects } from '../../data/inde
   <TabItem label="Ergonomic Raw SQL">
     There will always be certain queries that are just easier to write as raw SQL, or can't be expressed with the query builder. Even in these cases, Diesel provides an easy to use API for writing raw SQL.
 
-    ```rust
+    ```rust title="Rust"
     #[derive(QueryableByName)]
     #[diesel(table_name = users)]
     struct User {

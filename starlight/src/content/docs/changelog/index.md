@@ -417,7 +417,7 @@ in a way that makes the pools suitable for use in parallel tests.
   been changed to allow non-references. Users of this type (e.g. code written
   `&DB::RawValue` or `&<DB as Backend>::RawValue>`) should use
   [`backend::RawValue<DB>`][raw-value-2-0-0] instead. Implementors of `Backend`
-  should check the relevant section of [the migration guide][guides/migration_guide.html#2-0-0-from-sql].
+  should check the relevant section of [the migration guide](guides/migration_guide.html#2-0-0-from-sql).
 
 [backend-2-0-0]: http://docs.diesel.rs/2.0.x/diesel/backend/trait.Backend.html
 [raw-value-2-0-0]: http://docs.diesel.rs/2.0.x/diesel/backend/type.RawValue.html

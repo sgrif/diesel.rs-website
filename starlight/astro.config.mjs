@@ -14,11 +14,20 @@ export default defineConfig({
 			social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/diesel-rs/diesel' }],
 			sidebar: [
 				{
-					label: 'Getting Started',
-					items: [
-						// Each item here is one entry in the navigation menu.
-						{ label: 'Getting Started with Diesel', slug: 'guides/getting-started' },
-					],
+					label: 'Guides',
+					autogenerate: { directory: 'guides' },
+				},
+				{
+					label: 'News',
+					autogenerate: { directory: 'news' },
+				},
+				{
+					label: 'API Docs',
+					autogenerate: { directory: 'api_docs' },
+				},
+				{
+					label: 'Changelog',
+					autogenerate: { directory: 'changelog' },
 				},
 				{
 					label: 'Compare Diesel',
@@ -29,7 +38,8 @@ export default defineConfig({
 				// This replaces the SocialIcons area with custom component
 				SocialIcons: './src/components/Header.astro',
 				Footer: './src/components/Footer.astro',
-			}
+			},
+			customCss: ['./src/assets/css/main.css'],
 		}),
 	],
 	markdown: {
