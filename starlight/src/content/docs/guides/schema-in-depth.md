@@ -1,15 +1,8 @@
 ---
-lang: en-US
 title: "Schema in Depth"
-css: ../assets/stylesheets/application.css
-include-after: |
-    <script src="../assets/javascripts/application.js"></script>
+lang: en-US
 ---
 
-
-::: demo
-::: content-wrapper
-::: guide-wrapper
 
 
 In this guide we're going to look at what exactly `diesel print-schema`
@@ -286,7 +279,3 @@ pub mod users {
     }
 }
 ```
-
-:::
-:::
-:::

@@ -1,14 +1,8 @@
 ---
-lang: "en-US"
 title: "All About Selects"
-css: ../assets/stylesheets/application.css
-include-after: |
-    <script src="../assets/javascripts/application.js"></script>
+lang: "en-US"
 ---
 
-::: demo
-::: content-wrapper
-::: guide-wrapper
 
 Most applications fall into a category called "CRUD" apps.
 CRUD stands for "Create, Read, Update, Delete".
@@ -24,11 +18,8 @@ it will also discuss how Diesel maps back query results to your Rust types.
 
 For this guide, our schema will look like this:
 
-::: code-block
 
-[src/schema.rs]()
-
-```rust
+```rust title="src/schema.rs"
 diesel::table! {
     users {
         id -> Integer,
@@ -40,7 +31,6 @@ diesel::table! {
 }
 ```
 
-:::
 
 ## Query Building
 
@@ -59,11 +49,8 @@ Diesel allows to construct `SELECT` statements without `FROM` clauses via the [`
 
 For example you could query information about your PostgreSQL version via the following query:
 
-::: code-block
 
-[src/lib.rs]()
-
-```rust
+```rust title="src/lib.rs"
 use diesel::prelude::*;
 use diesel::expression::functions::declare_sql_function;
 
@@ -77,18 +64,14 @@ let version_text = diesel::select(version()).get_result::<String>(connection)?;
 println!("Running PostgreSQL: `{version_text}`");
 ```
 
-:::
 
 which is equivalent to the following SQL:
 
-::: code-block
 
-[query.sql]()
-```SQL
+```sql title="query.sql"
 SELECT version();
 ```
 
-:::
 
 This simple query already demonstrates several important aspects of constructing `SELECT` queries using Diesel:
 
@@ -101,11 +84,8 @@ The simplest way to construct a `SELECT` statement that loads data from a partic
 
 For example to load all data from a particular table you can use the following query:
 
-::: code-block
 
-[src/lib.rs]()
-
-```rust
+```rust title="src/lib.rs"
 use diesel::prelude::*;
 use crate::schema::users;
 use chrono::NaiveDateTime;
@@ -118,19 +98,14 @@ for user in all_users {
 }
 ```
 
-:::
 
 which is equivalent to the following SQL query:
 
-::: code-block
 
-[query.sql]()
-
-```SQL
+```sql title="query.sql"
 SELECT id, name, hair_color, created_at, updated_at FROM users;
 ```
 
-:::
 
 By default Diesel will always select all columns listed in your [`table!`](https://docs.diesel.rs/2.3.x/diesel/macro.table.html) definition in the same order as listed there.
 
@@ -149,11 +124,8 @@ To construct more complex `SELECT` statements you need to use the methods provid
 
 For example the following query selects all users with an hair color of `green` and orders them by the time of the last update of those data.
 
-::: code-block
 
-[srs/lib.rs]()
-
-```rust
+```rust title="srs/lib.rs"
 use diesel::prelude::*;
 use crate::schema::users;
 use chrono::NaiveDateTime;
@@ -167,21 +139,15 @@ for user in users_with_green_hair {
 }
 ```
 
-:::
-
 This corresponds to the following SQL query:
 
-::: code-block
 
-[query.sql]()
-
-```SQL
+```sql title="query.sql"
 SELECT id, name, hair_color, created_at, updated_at FROM users
 WHERE hair_color = $1
 ORDER BY updated_at DESC;
 ```
 
-:::
 
 Diesel will always use bind values for to include user provided values in the generated query. This ensures that no user provided value can inject additional SQL in the generated query.
 
@@ -204,10 +170,8 @@ Again you can mostly mix and match these function calls as wanted as long as you
 
 Using such [`QueryDsl::select`](https://docs.diesel.rs/2.3.x/diesel/prelude/trait.QueryDsl.html#method.select) allows you to customize the `SELECT` clause of your `SELECT` statement. For example the following query will use a `WINDOW` function as part of the select clause. Keep in mind that changing the `SELECT` clause of your query naturally changes what your query returns, which in turn affects the structure of your Rust side type.
 
-::: code-block
-[src/lib.rs]()
 
-```rust
+```rust title="src/lib.rs"
 use diesel::prelude::*;
 use crate::schema::users;
 
@@ -226,29 +190,21 @@ for user in users {
     }
 }
 ```
-:::
 
 This is equivalent to the following SQL:
 
-::: code-block
 
-[query.sql]()
-
-```SQL
+```sql title="query.sql"
 SELECT id, name, hair_color, lag(id) OVER(PARTITION BY hair_color) FROM users ORDER BY updated_at ASC;
 ```
 
-:::
 
 ### `SELECT` statements via `HasQuery::query()`
 
 The [`#[derive(HasQuery)]`](https://docs.diesel.rs/2.3.x/diesel/prelude/derive.HasQuery.html) macro allows you to associate a particular query with your Rust side type. This ensures that query is always prepopulated with the correct select clause to match your Rust side data structure. 
 
-::: code-block
 
-[src/lib.rs]()
-
-```rust
+```rust title="src/lib.rs"
 use diesel::prelude::*;
 use crate::schema::users;
 
@@ -268,18 +224,13 @@ let users_with_green_hair = User::query()
     .load(conn)?;
 ```
 
-:::
 
 which is equivalent to the following SQL:
 
-::: code-block
 
-[query.sql]()
-
-```SQL
+```sql title="query.sql"
 SELECT name, hair_color, id FROM users WHERE hair_color = $1 ORDER BY updated_at DESC;
 ```
-:::
 
 By default the derive constructs a base query using the provided table including a `SELECT` clause matching the fields of your struct. These fields are mapped to the relevant table columns. 
 
@@ -287,11 +238,7 @@ The [`#[derive(HasQuery)]`](https://docs.diesel.rs/2.3.x/diesel/prelude/derive.H
 
 To mirror the example from the previous section you would need to write code like this:
 
-::: code-block
-
-[src/lib.rs]()
-
-```rust
+```rust title="src/lib.rs"
 use diesel::prelude::*;
 use crate::schema::users;
 
@@ -314,7 +261,6 @@ for user in users {
     }
 }
 ```
-:::
 
 ## Result Mapping
 
@@ -328,66 +274,52 @@ As mentioned several times before Diesel performs checks at compile times to ver
 
 At the most basic level Diesel allows to map query results directly to basic Rust types. For queries returning only a single field you can directly use the field type like this:
 
-::: code-block
 
-[src/lib.rs]()
-
-```rust
+```rust title="src/lib.rs"
 use diesel::prelude::*;
 use crate::schema::users;
 
 let ids: Vec<i32> = users::table.select(users::id).load::<i32>(connection)?;
 ```
-:::
+
 
 You can usually get a list of supported Rust types for a particular SQL side type by checking out the Diesel API documentation of that particular SQL type. This example uses the `users::id` column in your select type. This column is of the type `Integer` so you would need to check the documentation of [`diesel::sql_types::Integer`](https://docs.diesel.rs/2.3.x/diesel/sql_types/struct.Integer.html) to get a list of all compatible Rust side types.
 
 For queries returning more than one field you can use tuples to represent the result type like this:
 
-::: code-block
 
-[src/lib.rs]()
-
-```rust
+```rust title="src/lib.rs"
 use diesel::prelude::*;
 use crate::schema::users;
 
 let id_and_name: Vec<(i32, String)> = users::table.select((users::id, users::name)).load(connection)?;
 ```
-:::
 
-<aside class = "aside aside--note">
-<header class = "aside__header">Single element tuple results:</header>
+:::note[Single element tuple results]
 
-::: aside__text
 Diesel also allows to return single element tuple results for queries only returning a single field by also using a single element tuple in your select clause like this: `users::table.select((users::id, )).load::<(i32,)>(connection)` 
 
 Note that the `,` turns the parenthesized expression into a single element tuple.
+
 :::
 
-</aside>
 
 It is also possible to nest tuples by applying the same nesting both in the SQL representation and the Rust representation:
 
-::: code-block
 
-[src/lib.rs]()
-
-```rust
+```rust title="src/lib.rs"
 use diesel::prelude::*;
 use crate::schema::users;
     
 users::table.select((users::id, users::name, (users::id, users::name)))
     .load::<(i32, String, (i32, String))>(connection)?;
 ```
-:::
 
 This feature is particularly useful if you want to seperate values from different tables later on.
     
-<aside class = "aside aside--note">
-<header class = "aside__header">Maximal supported tuple sizes:</header>
 
-::: aside__text
+:::note[Maximal supported tuple sizes]
+
 Due to limitations of the Rust Language Diesel only supports tuples up to a certain number of elements. If you use the default feature set this number will be 32, if you disable the default features this number decreases to 16. There are additional features (`64-column-tables` and `128-column-tables`) that increase the number of elements in a tuple to the number specified in the feature name. Note that a larger supported maximum size of tuples has impacts on the time required to compile Diesel and also to compile your code. So whenever possible choose a smaller size.
 :::
 
@@ -398,11 +330,8 @@ Mapping query results to tuples is a good idea if your query returns a small num
 
 Diesel provides a [`#[derive(Queryable)`](https://docs.diesel.rs/2.3.x/diesel/deserialize/derive.Queryable.html) proc macro derive to easily map query results to a rust data type. The assumption of this derive is simple: It gets a tuple of values (as shown before) and maps each field of the tuple to the field of the struct in the order of the struct fields. So the first tuple field is mapped to the first struct field and so on.
 
-::: code-block
 
-[src/lib.rs]()
-
-```rust
+```rust title="src/lib.rs"
 use diesel::prelude::*;
 use crate::schema::users;
     
@@ -414,17 +343,14 @@ struct User {
 
 let users: Vec<User> = users::table.select((users::id, users::name)).load::<User>(connection)?;
 ```
-:::
 
 Diesel performs checks if the returned types match your struct and fail compilation if that's for any of the reasons listed before is not the case.  [`#[derive(Queryable)]`](https://docs.diesel.rs/2.3.x/diesel/deserialize/derive.Queryable.html) is the most low level way to map query results provided by Diesel to Rust data structures. It offers the largest level of control at the cost of the worst compilation errors if something goes wrong.
 
 To improve this situation Diesel provides a [`#[derive(Selectable)]`](https://docs.diesel.rs/2.3.x/diesel/expression/derive.Selectable.html) proc macro derive. This derive allows to associate a `SELECT` clause with your Rust struct. It also provides a way to check on struct field level if each field is compatible with the corresponding SQL side type. You usually combine this derive with [`#[derive(Queryable)]`](https://docs.diesel.rs/2.3.x/diesel/deserialize/derive.Queryable.html) like this:
 
-::: code-block
 
-[src/lib.rs]()
 
-```rust
+```rust title="src/lib.rs"
 use diesel::prelude::*;
 use crate::schema::users;
     
@@ -438,7 +364,6 @@ struct User {
 
 let users: Vec<User> = users::table.select(User::as_select()).load(connection)?;
 ```
-:::
 
 
 By calling `.select(User::as_select())` you instruct Diesel to construct whatever `SELECT` clause matches your Rust side type. This locks in the query result type to be only `User` as long as you do not call `.select()` again. The `#[diesel(check_for_backend(diesel::pg::Pg))]` attribute generates additional optional code to improve error messages for the case of a field mismatch for the PostgreSQL backend. You can also pass several backends at once to this attribute by chaining them: `#[diesel(check_for_backend(diesel::pg::Pg, diesel::sqlite::Sqlite))]`. This will generate the necessary check code for all listed backends.
@@ -470,7 +395,3 @@ Notable differences to `#[derive(Selectable)]` and `#[derive(Queryable)]` are:
 * [`#[derive(HasQuery)]`](https://docs.diesel.rs/2.3.x/diesel/prelude/derive.HasQuery.html) accepts a `#[diesel(base_query)]` attribute to associate a specific more complex base query with the particular struct. The default base query is just `users::table`, either based on the explicitly specified table name or based on the infered table name.
 
 We recommend to use [`#[derive(HasQuery)]`](https://docs.diesel.rs/2.3.x/diesel/prelude/derive.HasQuery.html) in any place that is covered by what this derive provided and only fall back to [`#[derive(Queryable)]`](https://docs.diesel.rs/2.3.x/diesel/deserialize/derive.Queryable.html) and [`#[derive(Selectable)]`](https://docs.diesel.rs/2.3.x/diesel/expression/derive.Selectable.html) for more specific use cases.
-
-:::
-:::
-:::

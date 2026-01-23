@@ -1,14 +1,8 @@
 ---
-lang: "en-US"
 title: "All About Inserts"
-css: ../assets/stylesheets/application.css
-include-after: |
-    <script src="../assets/javascripts/application.js"></script>
+lang: "en-US"
 ---
 
-::: demo
-::: content-wrapper
-::: guide-wrapper
 
 Most applications fall into a category called "CRUD" apps.
 CRUD stands for "Create, Read, Update, Delete".
@@ -27,12 +21,11 @@ The first argument to this function is the table you're inserting into.
 
 For this guide, our schema will look like this:
 
-::: code-block
 
 [src/lib.rs](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_inserts/src/lib.rs#L11-L21
 )
 
-```rust
+```rust title="src/lib.rs"
 diesel::table! {
     users {
         id -> Integer,
@@ -44,7 +37,6 @@ diesel::table! {
 }
 ```
 
-:::
 
 Since our functions are going to only operate on the `users` table,
 we can put `use schema::users::dsl::*;` at the top of our function,
@@ -59,17 +51,14 @@ We could write a function that ran that query like this:
 
 [`.default_values`]: https://docs.diesel.rs/2.3.x/diesel/query_builder/insert_statement/struct.IncompleteInsertStatement.html#method.default_values
 
-::: code-block
 
 [src/lib.rs](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_inserts/src/lib.rs#L41-L45)
 
-```rust
+```rust title="src/lib.rs"
 use schema::users::dsl::*;
 
 insert_into(users).default_values().execute(conn)
 ```
-
-:::
 
 It's worth noting that this code will still compile,
 even if you don't have default values on all of your columns.
@@ -85,16 +74,14 @@ we'll see the following:
 
 [`debug_query`]: https://docs.diesel.rs/2.3.x/diesel/fn.debug_query.html
 
-::: code-block
 
 [Generated SQL](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_inserts/src/lib.rs#L47-L54)
 
 
-```sql
+```sql title="Generated SQL"
 INSERT INTO "users" DEFAULT VALUES -- binds: []
 ```
 
-:::
 
 If we want to actually provide values, we can call [`.values`] instead.
 There are a lot of different arguments we can provide here.
@@ -103,58 +90,48 @@ The simplest is a single column/value pair using [`.eq`].
 [`.values`]: https://docs.diesel.rs/2.3.x/diesel/query_builder/insert_statement/struct.IncompleteInsertStatement.html#method.values
 [`.eq`]: https://docs.diesel.rs/2.3.x/diesel/expression_methods/trait.ExpressionMethods.html#method.eq
 
-::: code-block
 
 [src/lib.rs](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_inserts/src/lib.rs#L56-L60
 )
 
-```rust
+```rust title="src/lib.rs"
 use schema::users::dsl::*;
 
 insert_into(users).values(name.eq("Sean")).execute(conn)
 ```
 
-:::
-
 This will generate the following SQL:
 
-::: code-block
 
 [Generated SQL](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_inserts/src/lib.rs#L62-L70)
 
-```sql
+```sql title="Generated SQL"
 INSERT INTO "users" ("name") VALUES ($1)
 -- binds ["Sean"]
 ```
 
-:::
-
 If we want to provide values for more than one column, we can pass a tuple.
 
-::: code-block
 
 [src/lib.rs](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_inserts/src/lib.rs#L72-L78)
 
-```rust
+```rust title="src/lib.rs"
 insert_into(users)
     .values((name.eq("Tess"), hair_color.eq("Brown")))
     .execute(conn)
 ```
 
-:::
 
 This will generate the following SQL:
 
-::: code-block
 
 [Generated SQL](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_inserts/src/lib.rs#L80-L88)
 
-```sql
+```sql title="Generated SQL"
 INSERT INTO "users" ("name", "hair_color") VALUES ($1, $2)
 -- binds: ["Tess", "Brown"]
 ```
 
-:::
 
 ## Insertable
 
@@ -172,11 +149,10 @@ We can derive this automatically by adding [`#[derive(Insertable)]`] to our type
 [`Insertable`]: https://docs.diesel.rs/2.3.x/diesel/prelude/trait.Insertable.html
 [`#[derive(Insertable)]`]: https://docs.diesel.rs/2.3.x/diesel/prelude/derive.Insertable.html
 
-::: code-block
 
 [src/lib.rs](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_inserts/src/lib.rs#L23-L30)
 
-```rust
+```rust title="src/lib.rs"
 use schema::users;
 
 #[derive(Deserialize, Insertable)]
@@ -187,13 +163,9 @@ pub struct UserForm<'a> {
 }
 ```
 
-:::
-
-::: code-block
-
 [src/lib.rs](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_inserts/src/lib.rs#L90-L99)
 
-```rust
+```rust title="src/lib.rs"
 use schema::users::dsl::*;
 
 let json = r#"{ "name": "Sean", "hair_color": "Black" }"#;
@@ -204,27 +176,23 @@ insert_into(users).values(&user_form).execute(conn)?;
 Ok(())
 ```
 
-:::
 
 This will generate the same SQL as if we had used a tuple.
 
-::: code-block
 
 [Generated SQL](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_inserts/src/lib.rs#L101-L111)
 
-```sql
+```sql title="Generated SQL"
 INSERT INTO "users" ("name", "hair_color") VALUES ($1, $2)
 -- binds: ["Sean", "Black"]
 ```
 
-:::
 
 If one of the fields is `None`, the default value will be inserted for that field.
 
-::: code-block
 [src/lib.rs](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_inserts/src/lib.rs#L113-L122)
 
-```rust
+```rust title="src/lib.rs"
 use schema::users::dsl::*;
 
 let json = r#"{ "name": "Ruby", "hair_color": null }"#;
@@ -235,20 +203,17 @@ insert_into(users).values(&user_form).execute(conn)?;
 Ok(())
 ```
 
-:::
 
 That will generate the following SQL:
 
-::: code-block
 
 [Generated SQL](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_inserts/src/lib.rs#L124-L134)
 
-```sql
+```sql title="Generated SQL"
 INSERT INTO "users" ("name", "hair_color") VALUES ($1, DEFAULT)
 -- binds: ["Ruby"]
 ```
 
-:::
 
 ## Batch Insert
 
@@ -260,52 +225,45 @@ On backends that support the `DEFAULT` keyword (all backends except SQLite),
 the data will be inserted in a single query.
 On SQLite, one query will be performed per row.
 
-<aside class = "aside aside--note">
-<header class = "aside__header">Customizing the usage of `DEFAULT` values:</header>
 
-::: aside__text
+:::note[Customizing the usage of `DEFAULT` values]
+
 You can use the `#[diesel(treat_none_as_default_value = false)]` attribute on a struct to disable using `DEFAULT` in place of `None` 
 values and rather use `NULL` values for such fields. This enables for example real batch inserts with the SQLite backend.
+
 :::
-</aside>
 
 For example, if we wanted to insert two rows with a single value,
 we can just use a `Vec`.
 
-::: code-block
 
 [src/lib.rs](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_inserts/src/lib.rs#L136-L142)
 
-```rust
+```rust title="src/lib.rs"
 use schema::users::dsl::*;
 
 insert_into(users)
     .values(&vec![name.eq("Sean"), name.eq("Tess")])
     .execute(conn)
 ```
-:::
 
 Which generates the following SQL:
 
-::: code-block
 
 [Generated SQL](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_inserts/src/lib.rs#L144-L153)
 
-```sql
+```sql title="Generated SQL"
 INSERT INTO "users" ("name") VALUES ($1), ($2)
 -- binds ["Sean", "Tess"]
 ```
 
-:::
 
 If we wanted to use `DEFAULT` for some of our rows, we can use an option here.
 
 
-::: code-block 
-
 [src/lib.rs](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_inserts/src/lib.rs#L155-L161)
 
-```rust
+```rust title="src/lib.rs"
 use schema::users::dsl::*;
 
 insert_into(users)
@@ -313,30 +271,25 @@ insert_into(users)
     .execute(conn)
 ```
 
-:::
 
 Note that the type here is `Option<Eq<Column, Value>>` not `Eq<Column, Option<Value>>`.
 Doing `column.eq(None)` would insert `NULL` not `DEFAULT`.
 This generates the following SQL:
 
-::: code-block
 
 [Generated SQL](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_inserts/src/lib.rs#L163-L172)
 
-```sql
+```sql title="Generated SQL"
 INSERT INTO "users" ("name") VALUES ($1), (DEFAULT)
 -- binds ["Sean"]
 ```
 
-:::
-
 We can do the same thing with tuples.
 
-::: code-block
 
 [src/lib.rs](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_inserts/src/lib.rs#L174-L183)
 
-```rust
+```rust title="src/lib.rs"
 use schema::users::dsl::*;
 
 insert_into(users)
@@ -347,30 +300,26 @@ insert_into(users)
     .execute(conn)
 ```
 
-:::
 
 Which generates the following SQL:
 
 
-::: code-block
 
 [Generated SQL](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_inserts/src/lib.rs#L185-L198)
 
-```sql
+```sql title="Generated SQL"
 INSERT INTO "users" ("name", "hair_color")
 VALUES ($1, $2), ($3, $4)
 -- binds: ["Sean", "Black", "Tess", "Brown"]
 ```
 
-:::
 
 Once again, we can use an `Option` for any of the fields to insert `DEFAULT`.
 
-::: code-block
 
 [src/lib.rs](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_inserts/src/lib.rs#L200-L209)
 
-```rust
+```rust title="src/lib.rs"
 use schema::users::dsl::*;
 
 insert_into(users)
@@ -381,29 +330,24 @@ insert_into(users)
     .execute(conn)
 ```
 
-:::
 
 Which generates the following SQL:
 
-::: code-block
 
 [Generated SQL](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_inserts/src/lib.rs#L211-L224)
 
-```sql
+```sql title="Generated SQL"
 INSERT INTO "users" ("name", "hair_color")
 VALUES ($1, $2), ($3, DEFAULT)
 -- binds: ["Sean", "Black", "Ruby"]
 ```
 
-:::
-
 Finally, `Insertable` structs can be used for batch insert as well.
 
-::: code-block 
 
 [src/lib.rs](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_inserts/src/lib.rs#L226-L238)
 
-```rust
+```rust title="src/lib.rs"
 use schema::users::dsl::*;
 
 let json = r#"[
@@ -417,21 +361,18 @@ insert_into(users).values(&user_form).execute(conn)?;
 Ok(())
 ```
 
-:::
 
 This generates the same SQL as if we had used a tuple:
 
-::: code-block
 
 [Generated SQL](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_inserts/src/lib.rs#L211-L224)
 
-```sql
+```sql title="Generated SQL"
 INSERT INTO "users" ("name", "hair_color")
 VALUES ($1, $2), ($3, $4)
 -- binds: ["Sean", "Black", "Tess", "Brown"]
 ```
 
-:::
 
 ## The `RETURNING` Clause
 
@@ -448,11 +389,10 @@ we can call [`.get_results`] instead of [`.execute`].
 
 Given this struct:
 
-::: code-block
 
 [src/lib.rs](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_inserts/src/lib.rs#L32-L39)
 
-```rust
+```rust title="src/lib.rs"
 #[derive(Queryable, PartialEq, Debug)]
 struct User {
     id: i32,
@@ -463,15 +403,12 @@ struct User {
 }
 ```
 
-:::
-
 We can use `get_results` with this test:
 
-::: code-block
 
 [src/lib.rs](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_inserts/src/lib.rs#L256-L292)
 
-```rust
+```rust title="src/lib.rs"
 use diesel::select;
 use schema::users::dsl::*;
 
@@ -503,24 +440,20 @@ let expected_users = vec![
 assert_eq!(expected_users, inserted_users);
 ```
 
-:::
 
 To inspect the SQL generated by `.get_results` or `.get_result`,
 we will need to call `.as_query` before passing it to `debug_query`.
 The query in the last test generates the following SQL:
 
-::: code-block
-
 [Generated SQL](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_inserts/src/lib.rs#L294-L306)
 
-```sql
+```sql title="Generated SQL"
 INSERT INTO "users" ("id", "name") VALUES ($1, $2), ($3, $4)
 RETURNING "users"."id", "users"."name", "users"."hair_color",
           "users"."created_at", "users"."updated_at"
 -- binds: [1, "Sean", 2, "Tess"]
 ```
 
-:::
 
 You'll notice that we've never given an explicit value for `created_at` and
 `updated_at` in any of our examples.
@@ -533,11 +466,10 @@ by running `SELECT diesel_manage_updated_at('users');` in a migration.
 If we expect one row instead of multiple, we can call `.get_result` instead of
 `.get_results`.
 
-::: code-block
 
 [src/lib.rs](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_inserts/src/lib.rs#L308-L332)
 
-```rust
+```rust title="src/lib.rs"
 use diesel::select;
 use schema::users::dsl::*;
 
@@ -557,31 +489,26 @@ let expected_user = User {
 assert_eq!(expected_user, inserted_user);
 ```
 
-:::
-
 This generates the same SQL as `get_results`:
 
-::: code-block
 
 [Generated SQL](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_inserts/src/lib.rs#L334-L347)
 
-```sql
+```sql title="Generated SQL"
 INSERT INTO "users" ("id", "name") VALUES ($1, $2)
 RETURNING "users"."id", "users"."name", "users"."hair_color",
           "users"."created_at", "users"."updated_at"
 -- binds: [3, "Ruby"]
 ```
 
-:::
 
 Finally, if we only want a single column back, we can call `.returning()` explicitly.
 This code would return the inserted ID:
 
-::: code-block
 
 [src/lib.rs](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_inserts/src/lib.rs#L349-L356)
 
-```rust
+```rust title="src/lib.rs"
 use schema::users::dsl::*;
 
 insert_into(users)
@@ -590,21 +517,18 @@ insert_into(users)
     .get_result(conn)
 ```
 
-:::
 
 Which generates the following SQL:
 
-::: code-block
 
 [Generated SQL](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_inserts/src/lib.rs#L358-L367)
 
-```sql
+```sql title="Generated SQL"
 INSERT INTO "users" ("name") VALUES ($1)
 RETURNING "users"."id"
 -- binds: ["Ruby"]
 ```
 
-:::
 
 ## "Upsert"
 
@@ -637,7 +561,3 @@ You can find the full code examples for each backend at these links:
 [MySQL]: https://github.com/diesel-rs/diesel/tree/2.3.x/examples/mysql/all_about_inserts
 [SQLite]: https://github.com/diesel-rs/diesel/tree/2.3.x/examples/sqlite/all_about_inserts
 
-
-:::
-:::
-:::

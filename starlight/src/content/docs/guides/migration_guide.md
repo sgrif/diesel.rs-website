@@ -1,14 +1,8 @@
 ---
 title: "Diesel 2.0 migration guide"
 lang: en-US
-css: ../assets/stylesheets/application.css
-include-after: |
-    <script src="../assets/javascripts/application.js"></script>
 ---
 
-::: demo
-::: content-wrapper
-::: guide-wrapper
 
 Diesel 2.0 introduces substantial changes to Diesel's inner workings. 
 In some cases this impacts code written using Diesel 1.4.x. 
@@ -66,18 +60,13 @@ are required for all usages of any [`Connection`] type:
 
 [`Connection`]: http://docs.diesel.rs/2.0.x/diesel/connection/trait.Connection.html
 
-::: code-block
 
-[Change]()
-
-```diff
+```diff title="Change"
 - let connection = PgConnection::establish_connection("…")?;
 - let result = some_query.load(&connection)?;
 + let mut connection = PgConnection::establish_connection("…")?;
 + let result = some_query.load(&mut connection)?;
 ```
-
-:::
 
 We expect this to be a straightforward change as the connection already can execute only one query at a time.
 
@@ -118,30 +107,26 @@ That means code using [`embed_migrations!()`] needs to be changed from
 [`embed_migrations!()`]: http://docs.diesel.rs/2.0.x/diesel_migrations/macro.embed_migrations.html
 [`MigrationSource`]: http://docs.diesel.rs/2.0.x/diesel/migration/trait.MigrationSource.html
 
-::: code-block
-[Change]()
 
-```rust
+```rust title="Change"
 embed_migrations!()
 
 fn run_migration(conn: &PgConnection) {
     embedded_migrations::run(conn).unwrap()
 }
 ```
-:::
+
 to 
 
-::: code-block
 
-[Change]()
-```rust
+```rust title="Change"
 pub const MIGRATIONS: EmbeddedMigrations = embed_migrations!();
 
 fn run_migration(conn: &mut PgConnection) {
     conn.run_pending_migrations(MIGRATIONS).unwrap();
 }
 ```
-:::
+
 
 ## Changed nullability of operators<a name="2-0-0-nullability-ops"></a>
 
@@ -182,16 +167,13 @@ it with a corresponding [`SqlType`] implementation:
 [`SqlType`]: http://docs.diesel.rs/2.0.x/diesel/sql_types/trait.SqlType.html
 [`#[derive(SqlType)]`]: http://docs.diesel.rs/2.0.x/diesel/sql_types/derive.SqlType.html
 
-::: code-block
-[Change]()
-```diff
+```diff title="Change"
 - impl NonNull for MyCustomSqlType {}
 + impl SqlType for MyCustomSqlType {
 +     type IsNull = diesel::sql_types::is_nullable::NotNull;
 + }
 ```
 
-:::
 
 Additionally, the diesel CLI tool was changed so that it automatically generates the Rust side definition of custom SQL types 
 as long as they appear on any table. This feature currently only supports the PostgreSQL backend, as all other supported backends
@@ -230,9 +212,7 @@ was received. The new value types for both backends expose a `as_bytes()` method
 
 Any affected backend needs to perform the following changes:
 
-::: code-block
-[Change]()
-```diff
+```diff title="Change"
 impl<DB: Backend> FromSql<YourSqlType, DB> for YourType {
 -    fn from_sql(bytes: &[u8]) -> deserialize::Result<Self> {
 +    fn from_sql(value: backend::RawValue<'_, DB>) -> deserialize::Result<Self> {
@@ -241,7 +221,6 @@ impl<DB: Backend> FromSql<YourSqlType, DB> for YourType {
      }
 }
 ```
-:::
 
 
 ## `no_arg_sql_function`<a name="2-0-0-no_arg_sql_function"></a>
@@ -254,9 +233,7 @@ affects all of the usages of the [`no_arg_sql_function!`] in third party crates.
 [`no_arg_sql_function!`]: http://docs.diesel.rs/2.0.x/diesel/macro.no_arg_sql_function.html
 [`sql_function!`]: http://docs.diesel.rs/2.0.x/diesel/expression/functions/macro.sql_function.html
 
-::: code-block
-[Change]()
-```diff
+```diff title="Change"
 - no_arg_sql_function!(now, sql_types::Timestamp, "Represents the SQL NOW() function");
 - 
 - diesel::select(now)
@@ -269,7 +246,6 @@ affects all of the usages of the [`no_arg_sql_function!`] in third party crates.
 + diesel::select(now())
 ```
 
-:::
 
 ## Changed accepted argument to `eq_any()` for the PostgreSQL backend <a name="2-0-0-changed_eq_any"></a>
 
@@ -293,15 +269,13 @@ trait. Existing implementations of `NonAggregate` must be replaced with an equiv
 
 The following change shows how to replace an existing implementation with a strictly equivalent implementation.
 
-::: code-block
-[Change]()
-```diff
+
+```diff title="Change"
 - impl NonAggregate for MyQueryNode {}
 + impl ValidGrouping<()> for MyQueryNode {
 +    type IsAggregate = is_aggregate::No;
 + }
 ```
-:::
 
 Additional changes may be required to adapt custom query ast implementations to fully support `group_by` clauses. 
 Refer to the documentation of [`ValidGrouping`] for details.
@@ -309,16 +283,13 @@ Refer to the documentation of [`ValidGrouping`] for details.
 In addition, any occurrence of `NonAggregate` in trait bounds needs to be replaced. Again, the following
 change shows the strictly equivalent version:
 
-::: code-block
-[Change]()
-```diff
+```diff title="Change"
  where
 -     T: NonAggregate,
 +     T: ValidGrouping<()>,
 +     T::IsAggregate: MixedGrouping<is_aggregate::No, Output = is_aggregate::No>,
 +     is_aggregate::No: MixedGrouping<T::IsAggregate, Output = is_aggregate::No>,
 ```
-:::
 
 ## Other changes to generics<a name="2-0-0-generic-changes"></a>
 
@@ -364,18 +335,11 @@ occurrence of an error mentioning this trait can simply be fixed by adding a tra
 [`QueryFragment`]: http://docs.diesel.rs/2.0.x/diesel/query_builder/trait.QueryFragment.html
 [`DieselReserveSpecialization`]: http://docs.diesel.rs/2.0.x/diesel/backend/trait.DieselReserveSpecialization.html
 
-::: code-block
-[Change]()
-```rust
+```rust title="Change"
 where
     QueryAstNodeMentionedInTheErrorMessage: QueryFragment<BackendType>
 ```
-:::
 
 This rule has one notable exception: Third party backend implementations. We expect those backends to opt into the 
 `i-implement-a-third-party-backend-and-opt-into-breaking-changes` feature anyway, as it's otherwise not possible to 
 implement a third party backend.
-
-:::
-:::
-:::

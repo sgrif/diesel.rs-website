@@ -1,14 +1,7 @@
 ---
 title: "Configuring Diesel CLI"
 lang: en-US
-css: ../assets/stylesheets/application.css
-include-after: |
-    <script src="../assets/javascripts/application.js"></script>
 ---
-
-::: demo
-::: content-wrapper
-::: guide-wrapper
 
 Diesel CLI is an optional tool Diesel provides to manage your
 database schema. Its main two roles are to run database
@@ -59,11 +52,8 @@ print-schema`. It corresponds to the `--only-tables` and
 `--except-tables` on the command line. Its value should be a map with
 one of those two keys. For example:
 
-::: code-block
 
-[diesel.toml]()
-
-```toml
+```toml title="diesel.toml"
 [print_schema]
 # This will cause only the users and posts tables to be output
 filter = { only_tables = ["users", "posts"] }
@@ -73,7 +63,6 @@ filter = { only_tables = ["users", "posts"] }
 filter = { except_tables = ["comments"] }
 ```
 
-:::
 
 ## The `schema` field
 
@@ -98,16 +87,13 @@ SQLite and MySQL are using a fixed set of sql types.
 
 See the `exclude_custom_type_definitions` field for skipping the generation of certain custom types.
 
-::: code-block
-[diesel.toml]()
 
-```toml
+```toml title="diesel.toml"
 [print_schema]
 # skip generating missing sql type definitions
 generate_missing_sql_type_definitions = false
 ```
 
-:::
 
 ## The `custom_type_derives` field
 
@@ -118,35 +104,27 @@ When set, `diesel print-schema` will behave as if `--custom-type-derives`
 were passed. The `diesel::sql_types::SqlType` trait will be automatically
 derived if this flag is either empty, or doesn't already contain the trait.
 
-::: code-block
 
-[diesel.toml]()
-
-```toml
+```toml title="diesel.toml"
 [print_schema]
 generate_missing_sql_type_definitions = true
 # Derive `SqlType` and `Debug` for the automatically generated sql type definitions
 custom_type_derives = ["diesel::sql_types::SqlType", "std::fmt::Debug"]
 ```
 
-:::
 
 ## The `except_custom_type_definitions` field
 
 This field allows to define a list of regexes matched against custom type names for which diesel-cli should not generate sql type definitions. You should use this option in combination with `import_types` if you use crates like `postgis-diesel` or `pgvector` that provide their own sql type definition for specific custom types. If not set this defaults to an empty list.
 
-::: code-block
 
-[diesel.toml]()
-
-```toml
+```toml title="diesel.toml"
 [print_schema]
 generate_missing_sql_type_definitions = true
 # excludes any type named `Vector` from the generated `sql_types` module
 except_custom_type_definitions = ["Vector"]
 ```
 
-:::
 ## The `import_types` field
 
 This field adds `use` statements to the top of every `table!`
@@ -154,17 +132,12 @@ declaration. When set, `diesel print-schema` will behave as if
 `--import-types` were passed. When no value is given, only types from
 `diesel::sql_types` will be imported.
 
-::: code-block
 
-[diesel.toml]()
-
-```toml
+```toml title="diesel.toml"
 [print_schema]
 # Add types from `diesel_full_text_search` like `tsvector`
 import_types = ["diesel::sql_types::*", "diesel_full_text_search::types::*"]
 ```
-
-:::
 
 ## The `patch_file` field
 
@@ -188,15 +161,10 @@ You can easily generate this file by making the changes you want to
 
 This field allows you to configure diesel-cli to thread `INTEGER PRIMARY KEY` fields as `BIGINT` for sqlite databases. If not set this defaults to false.
 
-::: code-block
-
-[diesel.toml]()
-
-```toml
+```toml title="diesel.toml"
 [print_schema]
 sqlite_integer_primary_key_is_bigint = true
 ```
-:::
 
 ## The `allow_tables_to_appear_in_same_query_config` field
 
@@ -208,16 +176,12 @@ Only tables appearing in this macro call can be joined by diesel. Possible optio
 * `all_tables` list all tables in a single `allow_tables_to_appear_in_same_query!` call (default if not set)
 * `none` do not generate a `allow_tables_to_appear_in_same_query!` call at all
 
-::: code-block
-
-[diesel.toml]()
-
-```toml
+ 
+```toml title="diesel.toml"
 [print_schema]
 allow_tables_to_appear_in_same_query_config = "fk_related_tables"
 ```
 
-:::
 
 ## The `column_sorting` field
 
@@ -226,40 +190,29 @@ This field allows you to configure how diesel-cli orders column names in your `t
 * `ordinal_position` to sort by the ordinal position given by the database. Note that this might be an unstable sorting depending on your migration order. This is the default value if this field is not set.
 * `name` to sort by the actual field name.
 
-::: code-block
 
-[diesel.toml]()
-
-```toml
+```toml title="diesel.toml"
 [print_schema]
 column_sorting = "name"
 ```
-
-:::
 
 ## The `pg_domains_as_custom_types` field
 
 This field allows you to define a list of PostgreSQL domain type names that should be infered as custom SQL types by diesel-cli. This list can contain regular expressions to match on multiple domain types at once.
 
-::: code-block
-
-[diesel.toml]()
-
-```toml
+ 
+```toml title="diesel.toml"
 [print_schema]
 pg_domains_as_custom_types = ["int", "longtext"]
 ```
-:::
 
 ## Nested sub schemas
 
 Diesel-CLI allows to configure nested subschemas via `[print_schema.your_sub_schema]` entries. This allows to split up large `schema.rs` files into smaller ones or generate schema.rs files for multiple database schemas at once. Each subschema can configure all keys described above. Diesel-cli allows to configure the subschema that should be used via the `--schema-key` command line argument. If no such argument is given it default to the top level `[print_schema]` entry.
 
-::: code-block
 
-[diesel.toml]()
 
-```toml
+```toml title="diesel.toml"
 # defines a subschema `user1` including the `user1` table
 [print_schema.user1]
 file = "src/schema1.rs"
@@ -273,10 +226,3 @@ file = "src/schema2.rs"
 with_docs = true
 filter = { only_tables = ["users2"] }
 ```
-
-
-:::
-
-:::
-:::
-:::
