@@ -10,19 +10,27 @@ jobs:
     name: CI
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - name: Build the Webpage
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y pandoc python3-pandocfilters make
-        pandoc --version
-        make page
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Install Node.js and Setup Yarn
+      uses: actions/setup-node@v4
+      with:
+        node-version: 24
+        cache: 'yarn'
+
+    - name: Install dependencies
+      run: yarn install --frozen-lockfile
+
+    - name: Build Starlight Webpage
+      run: yarn build
+
     - name: Deploy
       if: github.repository == 'sgrif/diesel.rs-website' && github.event_name == 'push'
-      uses: JamesIves/github-pages-deploy-action@v4.4.1
+      uses: JamesIves/github-pages-deploy-action@v4.5.0
       with:
-        branch: gh-pages # The branch the action should deploy to.
-        folder: out # The folder the action should deploy.
+        branch: gh-pages
+        folder: dist # Starlight builds to 'dist' by default
         clean: true
         clean-exclude: |
           CNAME
