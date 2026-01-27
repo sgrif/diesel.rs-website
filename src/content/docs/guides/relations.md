@@ -6,7 +6,7 @@ lang: en-US
 For this guide, we're going to look at joins, 1-to-many and many-to-many relations in Diesel.
 Each step in this guide will build on the previous, and is meant to be followed along.
 
-**This guide assumes that you have gone through the [Getting Started Guide](./getting-started.html)**
+**This guide assumes that you have gone through the [Getting Started Guide](/guides/getting-started/)**
 
 ## New project
 

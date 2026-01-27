@@ -330,12 +330,12 @@ in a way that makes the pools suitable for use in parallel tests.
 * Added ability to create custom aggregate functions in SQLite.
 
 * Multiple aggregate expressions can now appear together in the same select
-  clause. See [the upgrade notes](guides/migration_guide.html#2-0-0-upgrade-non-aggregate) for details.
+  clause. See [the upgrade notes](/guides/migration-guide#2-0-0-upgrade-non-aggregate) for details.
 
 * `ValidGrouping` has been added to represent whether an expression is valid for
   a given group by clause, and whether or not it's aggregate. It replaces the
   functionality of `NonAggregate`. See [the upgrade
-  notes](guides/migration_guide.html#2-0-0-upgrade-non-aggregate) for details.
+  notes](/guides/migration-guide#2-0-0-upgrade-non-aggregate) for details.
 
 * It is now possible to inspect the type of values returned from the database
   in such a way to support constructing a dynamic value depending on this type.
@@ -417,7 +417,7 @@ in a way that makes the pools suitable for use in parallel tests.
   been changed to allow non-references. Users of this type (e.g. code written
   `&DB::RawValue` or `&<DB as Backend>::RawValue>`) should use
   [`backend::RawValue<DB>`][raw-value-2-0-0] instead. Implementors of `Backend`
-  should check the relevant section of [the migration guide](guides/migration_guide.html#2-0-0-from-sql).
+  should check the relevant section of [the migration guide](/guides/migration-guide#2-0-0-from-sql).
 
 [backend-2-0-0]: http://docs.diesel.rs/2.0.x/diesel/backend/trait.Backend.html
 [raw-value-2-0-0]: http://docs.diesel.rs/2.0.x/diesel/backend/type.RawValue.html
@@ -437,7 +437,7 @@ in a way that makes the pools suitable for use in parallel tests.
 * The handling of mixed aggregate values is more robust. Invalid queries such as
   `.select(max(id) + other_column)` are now correctly rejected, and valid
   queries such as `.select((count_star(), max(other_column)))` are now correctly
-  accepted. For more details, see [the migration guide](guides/migration_guide.html#2-0-0-upgrade-non-aggregate).
+  accepted. For more details, see [the migration guide](guides/migration-guide#2-0-0-upgrade-non-aggregate).
 
 * `NonAggregate` is now a trait alias for `ValidGrouping<()>` for expressions
   that are not aggregate. On stable this is a normal trait with a blanket impl,
@@ -446,7 +446,7 @@ in a way that makes the pools suitable for use in parallel tests.
 
   Due to language limitations, we cannot make the new trait alias by itself
   represent everything it used to, so in some rare cases code changes may be
-  required. See [the migration guide](guides/migration_guide.html#2-0-0-upgrade-non-aggregate) for details.
+  required. See [the migration guide](/guides/migration-guide#2-0-0-upgrade-non-aggregate) for details.
 
 * Various `__NonExhaustive` variants in different (error-) enums are replaced with
   `#[non_exhaustive]`. If you matched on one of those variants explicitly you need to
@@ -495,7 +495,7 @@ in a way that makes the pools suitable for use in parallel tests.
 
 * Diesel's migration framework was rewritten from the ground. Existing migrations continue to 
   be compatible with the rewrite, but code calling into `diesel_migrations` requires an update.
-  See the [migration guide](guides/migration_guide.html#2-0-0-upgrade-migrations) for details.
+  See the [migration guide](/guides/migration-guide#2-0-0-upgrade-migrations) for details.
 
 * `eq_any()` now emits a `= ANY()` expression for the postgresql backend instead of `IN()`
 * `ne_all()` now emits a `!= ALL()` expression for the postgresql backend instead of `NOT IN()`

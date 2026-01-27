@@ -7,7 +7,7 @@ Diesel 2.0.0 contains the contributions of more than 130 people. More than 1700 
 over a span of 3 years.
 
 As part of this release we introduced numerous new features and rewrote large parts of the internal structure.
-Check out our [changelog for a complete list of changes](/changelog.html). As this is a new major Diesel release it contains a number of breaking changes. Checkout our [migration guide](/guides/migration_guide.html) for details about how to handle those breaking changes.
+Check out our [changelog for a complete list of changes](/changelog.html). As this is a new major Diesel release it contains a number of breaking changes. Checkout our [migration guide](/guides/migration-guide/) for details about how to handle those breaking changes.
 
 This release contains the following parts:
 
@@ -162,41 +162,41 @@ are marked as deprecated in Diesel 1.4.x.
 Any code base migrating from Diesel 1.4.x to Diesel 2.0 is expected to be affected at least by 
 the following changes:
 
-* [Diesel now requires a mutable reference to the connection](/guides/migration_guide.html#2-0-0-mutable-connection)
-* [Changed derive attributes](/guides/migration_guide.html#2-0-0-derive-attributes)
+* [Diesel now requires a mutable reference to the connection](/guides/migration-guide#2-0-0-mutable-connection)
+* [Changed derive attributes](/guides/migration-guide#2-0-0-derive-attributes)
 
 Users of `diesel_migration` are additionally affected by the following change:
 
-* [`diesel_migration` rewrite](/guides/migration_guide.html#2-0-0-upgrade-migrations)
+* [`diesel_migration` rewrite](/guides/migration-guide#2-0-0-upgrade-migrations)
 
 Users of `BoxableExpression` might be affected by the following change:
 
-* [Changed nullability of operators](/guides/migration_guide.html#2-0-0-nullability-ops)
+* [Changed nullability of operators](/guides/migration-guide#2-0-0-nullability-ops)
 
 Users of tables containing a column of the type `Array<T>` are affected by the following change:
 
-* [Changed nullability of array elements](/guides/migration_guide.html#2-0-0-nullability-of-array-elements)
+* [Changed nullability of array elements](/guides/migration-guide#2-0-0-nullability-of-array-elements)
 
 Users that implement support for their SQL types or type mappings are affected 
 by the following changes:
 
-* [Changed required traits for custom SQL types](/guides/migration_guide.html#2-0-0-custom-type-implementation)
-* [Changed `ToSql` implementations](/guides/migration_guide.html#2-0-0-to-sql)
-* [Changed `FromSql` implementations](/guides/migration_guide.html#2-0-0-from-sql)
+* [Changed required traits for custom SQL types](/guides/migration-guide#2-0-0-custom-type-implementation)
+* [Changed `ToSql` implementations](/guides/migration-guide#2-0-0-to-sql)
+* [Changed `FromSql` implementations](/guides/migration-guide#2-0-0-from-sql)
 
 `no_arg_sql_function!` macro is now pending deprecation.
 Users of the macro are advised to consider `sql_function!` macro.
 
-* [Deprecated usage of `no_arg_sql_function!` macro](/guides/migration_guide.html#2-0-0-no_arg_sql_function)
+* [Deprecated usage of `no_arg_sql_function!` macro](/guides/migration-guide#2-0-0-no_arg_sql_function)
 
 Users of `eq_any` on the PostgreSQL backend might hit type rejection error in rare cases.
 
-* [Changed accepted argument to `eq_any()` for the PostgreSQL backend](/guides/migration_guide.html#2-0-0-changed_eq_any)
+* [Changed accepted argument to `eq_any()` for the PostgreSQL backend](/guides/migration-guide#2-0-0-changed_eq_any)
 
 Users that update generic Diesel code will also be affected by the following changes:
 
-* [Removing `NonAggregate` in favor of `ValidGrouping`](/guides/migration_guide.html#2-0-0-upgrade-non-aggregate)
-* [Changed generic bounds](/guides/migration_guide.html#2-0-0-generic-changes)
+* [Removing `NonAggregate` in favor of `ValidGrouping`](/guides/migration-guide#2-0-0-upgrade-non-aggregate)
+* [Changed generic bounds](/guides/migration-guide#2-0-0-generic-changes)
 
 Additionally this release contains many changes for users that implemented a custom backend/connection.
 We do not provide explicit migration steps but we encourage users to reach out with questions pertaining to these changes. 
