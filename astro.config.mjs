@@ -14,9 +14,21 @@ export default defineConfig({
 			},
 			social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/diesel-rs/diesel' }],
 			sidebar: [
+
 				{
-					label: 'Guides',
-					autogenerate: { directory: 'guides' },
+					label: 'Guides to Diesel',
+					items: [
+						{ label: 'Getting Started', link: '/guides/getting-started/' },
+						{ label: 'All About Selects', link: '/guides/all-about-selects/' },
+						{ label: 'All About Updates', link: '/guides/all-about-updates/' },
+						{ label: 'All About Inserts', link: '/guides/all-about-inserts/' },
+						{ label: 'Relations', link: '/guides/relations/' },
+						{ label: 'Composing Applications with Diesel', link: '/guides/composing-applications/' },
+						{ label: 'Schema in Depth', link: '/guides/schema-in-depth/' },
+						{ label: 'Extending Diesel', link: '/guides/extending-diesel/' },
+						{ label: 'Configuring Diesel CLI', link: '/guides/configuring-diesel-cli/' },
+						{ label: 'Diesel 2.0 migration guide', link: '/guides/migration-guide/' },
+					]
 				},
 				{
 					label: 'News',
