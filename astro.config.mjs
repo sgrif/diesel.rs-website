@@ -32,7 +32,13 @@ export default defineConfig({
 				},
 				{
 					label: 'News',
-					autogenerate: { directory: 'news' },
+					items: [
+						{ label: 'News', link: '/news/' },
+						{ label: 'Diesel 2.3.0', link: '/news/2_3_0_release' },
+						{ label: 'Diesel 2.2.0', link: '/news/2_2_0_release' },
+						{ label: 'Diesel 2.1.0', link: '/news/2_1_0_release' },
+						{ label: 'Diesel 2.0.0', link: '/news/2_0_0_release' },
+					]
 				},
 				{
 					label: 'API Docs',
