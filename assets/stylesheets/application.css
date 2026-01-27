@@ -1464,3 +1464,12 @@ div.contribute {
     text-align: left;
     margin: 0 auto;
 }
+
+/* fix for a numbered list */
+ol[type="1"] {
+	list-style-type: decimal;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	padding-left: 40px;
+}
+
