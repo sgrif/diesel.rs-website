@@ -2,3 +2,19 @@
     text-decoration: none;
     font-weight: 400;
 }
+
+/* Getting Started with Diesel */
+
+/* Show TAB ONLY the very first one on the page */
+starlight-tabs[data-sync-key="db-backend"]:first-of-type .tablist-wrapper.astro-esqgolmp {
+    display: flex !important;
+}
+
+/* Hide the rest of the labels */
+aside starlight-tabs[data-sync-key="db-backend"] .tablist-wrapper.astro-esqgolmp {
+    display: none !important;
+}
+
+starlight-tabs[data-sync-key="db-backend"] .tablist-wrapper.astro-esqgolmp {
+    display: none !important;
+}
