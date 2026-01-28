@@ -19,6 +19,7 @@ export default defineConfig({
 				{
 					label: 'Guides to Diesel',
 					items: [
+						{ label: 'Overview', link: '/guides/' },
 						{ label: 'Getting Started', link: '/guides/getting-started/' },
 						{ label: 'All About Selects', link: '/guides/all-about-selects/' },
 						{ label: 'All About Updates', link: '/guides/all-about-updates/' },
