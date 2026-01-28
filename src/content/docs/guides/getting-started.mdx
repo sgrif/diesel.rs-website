@@ -4,11 +4,11 @@ description: "A step-by-step guide to setting up Diesel with PostgreSQL, SQLite,
 lang: en-US
 ---
 
-import { Aside, Tabs, TabItem, LinkButton } from '@astrojs/starlight/components'; 
+import { Aside, Tabs, TabItem } from '@astrojs/starlight/components'; 
 
 
 <Tabs syncKey="db-backend">
-  <TabItem label="PostgreSQL" value="pg" />
+  <TabItem label="PostgreSQL" value="postgres" />
   <TabItem label="SQLite" value="sqlite" />
   <TabItem label="MySQL" value="mysql" />
 </Tabs>
@@ -46,17 +46,7 @@ as well.
 <Tabs syncKey="db-backend">
   <TabItem label="PostgreSQL">
 
-    <LinkButton 
-      href="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/getting_started_step_1/Cargo.toml"
-      variant="minimal" 
-      icon="external"
-      target="_blank"
-      alt="PostgreSQL"
-    >
-      View `Cargo.toml` on GitHub
-    </LinkButton>
-
-    ```toml title="Cargo.toml"
+    ```toml title="Cargo.toml" link="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/getting_started_step_1/Cargo.toml"
     [dependencies]
     diesel = { version = "2.2.0", features = ["postgres"] }
     # build libpq and openssl as part of the build process
@@ -68,18 +58,7 @@ as well.
   </TabItem>
   <TabItem label="SQLite">
 
-    <LinkButton 
-      href="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/sqlite/getting_started_step_1/Cargo.toml"
-      variant="minimal" 
-      icon="external"
-      target="_blank"
-      alt="SQLite"
-    >
-      View `Cargo.toml` on GitHub
-    </LinkButton>
-
-
-    ```toml title="Cargo.toml"
+    ```toml title="Cargo.toml" link="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/sqlite/getting_started_step_1/Cargo.toml"
     [dependencies]
     diesel = { version = "2.2.0", features = ["sqlite", "returning_clauses_for_sqlite_3_35"] }
     # build libsqlite3 as part of the build process
@@ -90,17 +69,7 @@ as well.
   </TabItem>
   <TabItem label="MySQL">
     
-    <LinkButton 
-      href="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/mysql/getting_started_step_1/Cargo.toml"
-      variant="minimal" 
-      icon="external"
-      target="_blank"
-      alt="MySQL"
-    >
-      View `Cargo.toml` on GitHub
-    </LinkButton>
-
-    ```toml title="Cargo.toml"
+    ```toml title="Cargo.toml" link="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/mysql/getting_started_step_1/Cargo.toml"
     [dependencies]
     diesel = { version = "2.2.0", features = ["mysql"] }
     # build libmysqlclient as part of the build process
@@ -275,18 +244,8 @@ Next, we'll write the SQL for migrations:
 
 <Tabs syncKey="db-backend">
   <TabItem label="PostgreSQL">
-
-    <LinkButton 
-      href="https://github.com/diesel-rs/diesel/tree/2.3.x/examples/postgres/getting_started_step_1/migrations/20160815133237_create_posts/up.sql" 
-      variant="minimal" 
-      icon="external"
-      target="_blank"
-      alt="PostgreSQL"
-    >
-      View `up.sql` on GitHub
-    </LinkButton>
     
-    ```sql title="up.sql"
+    ```sql title="up.sql" link="https://github.com/diesel-rs/diesel/tree/2.3.x/examples/postgres/getting_started_step_1/migrations/20160815133237_create_posts/up.sql"
     CREATE TABLE posts (
       id SERIAL PRIMARY KEY,
       title VARCHAR NOT NULL,
@@ -295,17 +254,7 @@ Next, we'll write the SQL for migrations:
     )
     ```
 
-    <LinkButton 
-      href="https://github.com/diesel-rs/diesel/tree/2.3.x/examples/postgres/getting_started_step_1/migrations/20160815133237_create_posts/down.sql"
-      variant="minimal" 
-      icon="external"
-      target="_blank"
-      alt="PostgreSQL"
-    >
-      View `down.sql` on GitHub
-    </LinkButton>
-
-    ```sql title="down.sql"
+    ```sql title="down.sql" link="https://github.com/diesel-rs/diesel/tree/2.3.x/examples/postgres/getting_started_step_1/migrations/20160815133237_create_posts/down.sql"
     DROP TABLE posts
     ```
 
@@ -313,17 +262,7 @@ Next, we'll write the SQL for migrations:
 
   <TabItem label="SQLite">
 
-    <LinkButton 
-      href="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/sqlite/getting_started_step_1/migrations/20170124012402_create_posts/up.sql"
-      variant="minimal" 
-      icon="external"
-      target="_blank"
-      alt="SQLite"
-    >
-      View `up.sql` on GitHub
-    </LinkButton>
-
-    ```sql title="up.sql"
+    ```sql title="up.sql" link="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/sqlite/getting_started_step_1/migrations/20170124012402_create_posts/up.sql"
     CREATE TABLE posts (
       id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
       title VARCHAR NOT NULL,
@@ -332,34 +271,14 @@ Next, we'll write the SQL for migrations:
     )
     ```
 
-    <LinkButton 
-      href="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/sqlite/getting_started_step_1/migrations/20170124012402_create_posts/down.sql"
-      variant="minimal" 
-      icon="external"
-      target="_blank"
-      alt="SQLite"
-    >
-      View `down.sql` on GitHub
-    </LinkButton>
-
-    ```sql title="down.sql"
+    ```sql title="down.sql" link="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/sqlite/getting_started_step_1/migrations/20170124012402_create_posts/down.sql"
     DROP TABLE posts
     ```
   </TabItem>
 
   <TabItem label="MySQL">  
 
-    <LinkButton 
-      href="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/mysql/getting_started_step_1/migrations/20160815133237_create_posts/up.sql"
-      variant="minimal" 
-      icon="external"
-      target="_blank"
-      alt="MySQL"
-    >
-      View `up.sql` on GitHub
-    </LinkButton>
-
-    ```sql title="up.sql"
+    ```sql title="up.sql" link="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/mysql/getting_started_step_1/migrations/20160815133237_create_posts/up.sql"
     CREATE TABLE posts (
       id INTEGER AUTO_INCREMENT PRIMARY KEY,
       title VARCHAR(255) NOT NULL,
@@ -368,17 +287,7 @@ Next, we'll write the SQL for migrations:
     );
     ```
 
-    <LinkButton 
-      href="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/mysql/getting_started_step_1/migrations/20160815133237_create_posts/down.sql"
-      variant="minimal" 
-      icon="external"
-      target="_blank"
-      alt="MySQL"
-    >
-      View `down.sql` on GitHub
-    </LinkButton>
-
-    ```sql title="down.sql"
+    ```sql title="down.sql" link="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/mysql/getting_started_step_1/migrations/20160815133237_create_posts/down.sql"
     DROP TABLE posts
     ```
   </TabItem>
@@ -413,17 +322,7 @@ If you prefer to generate your migrations based on Rust code instead, the diesel
 <Tabs syncKey="db-backend">
   <TabItem label="PostgreSQL">
         
-    <LinkButton 
-      href="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/getting_started_step_1/src/schema.rs"
-      variant="minimal" 
-      icon="external"
-      target="_blank"
-      alt="PostgreSQL"
-    >
-      View `schema.rs` on GitHub
-    </LinkButton>
-
-    ```rust title="schema.rs"
+    ```rust title="schema.rs" link="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/getting_started_step_1/src/schema.rs"
     diesel::table! {
         posts (id) {
             id -> Int4,
@@ -437,17 +336,7 @@ If you prefer to generate your migrations based on Rust code instead, the diesel
 
   <TabItem label="SQLite">
     
-    <LinkButton 
-      href="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/sqlite/getting_started_step_1/src/schema.rs"
-      variant="minimal" 
-      icon="external"
-      target="_blank"
-      alt="SQLite"
-    >
-      View `schema.rs` on GitHub
-    </LinkButton>
-    
-    ```rust title="schema.rs "
+    ```rust title="schema.rs" link="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/sqlite/getting_started_step_1/src/schema.rs"
     diesel::table! {
         posts (id) {
             id -> Integer,
@@ -461,17 +350,7 @@ If you prefer to generate your migrations based on Rust code instead, the diesel
 
   <TabItem label="MySQL">  
     
-    <LinkButton 
-      href="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/mysql/getting_started_step_1/src/schema.rs"
-      variant="minimal" 
-      icon="external"
-      target="_blank"
-      alt="MySQL"
-    >
-      View `schema.rs` on GitHub
-    </LinkButton>
-
-    ```rust title="schema.rs"
+    ```rust title="schema.rs" link="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/mysql/getting_started_step_1/src/schema.rs"
     diesel::table! {
         posts (id) {
             id -> Integer,
@@ -521,17 +400,7 @@ The first thing we need to do is establish a database connection.
 <Tabs syncKey="db-backend">
   <TabItem label="PostgreSQL">
 
-    <LinkButton 
-      href="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/getting_started_step_1/src/lib.rs"
-      variant="minimal" 
-      icon="external"
-      target="_blank"
-      alt="PostgreSQL"
-    >
-      View `src/lib.rs` on GitHub
-    </LinkButton>
-
-      ```rust title="src/lib.rs"
+      ```rust title="src/lib.rs" link="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/getting_started_step_1/src/lib.rs"
       use diesel::prelude::*;
       use dotenvy::dotenv;
       use std::env;
@@ -548,17 +417,7 @@ The first thing we need to do is establish a database connection.
 
   <TabItem label="SQLite">
 
-    <LinkButton 
-      href="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/sqlite/getting_started_step_1/src/lib.rs"
-      variant="minimal" 
-      icon="external"
-      target="_blank"
-      alt="SQLite"
-    >
-      View `src/lib.rs` on GitHub
-    </LinkButton>
-
-      ```rust title="src/lib.rs"
+      ```rust title="src/lib.rs" link="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/sqlite/getting_started_step_1/src/lib.rs"
       use diesel::prelude::*;
       use dotenvy::dotenv;
       use std::env;
@@ -575,17 +434,7 @@ The first thing we need to do is establish a database connection.
 
   <TabItem label="MySQL">  
 
-    <LinkButton 
-      href="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/mysql/getting_started_step_1/src/lib.rs"
-      variant="minimal" 
-      icon="external"
-      target="_blank"
-      alt="MySQL"
-    >
-      View `src/lib.rs` on GitHub
-    </LinkButton>
-
-      ```rust title="src/lib.rs "
+      ```rust title="src/lib.rs" link="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/mysql/getting_started_step_1/src/lib.rs"
       use diesel::prelude::*;
       use dotenvy::dotenv;
       use std::env;
@@ -608,38 +457,42 @@ we'll use to reference tables and columns in our queries.
 We'll add the following lines to the top of `src/lib.rs`:
 
 
-<LinkButton 
-  href="https://github.com/diesel-rs/diesel/tree/2.3.x/examples/$backend/getting_started_step_1/src/lib.rs#L1-L2"
-  variant="minimal" 
-  icon="external"
-  target="_blank"
-  alt="src/lib.rs"
->
-  View `src/lib.rs` on GitHub
-</LinkButton>
+<Tabs syncKey="db-backend">
+  <TabItem label="PostgreSQL">
 
+  ```rust title="src/lib.rs" link="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/getting_started_step_1/src/lib.rs#L1-L2"
+  pub mod models;
+  pub mod schema;
+  ```
 
-```rust title="src/lib.rs"
-pub mod models;
-pub mod schema;
-```
+  </TabItem>
+
+  <TabItem label="SQLite">
+
+  ```rust title="src/lib.rs" link="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/sqlite/getting_started_step_1/src/lib.rs#L1-L2"
+  pub mod models;
+  pub mod schema;
+  ```
+
+  </TabItem>
+
+  <TabItem label="MySQL">  
+
+  ```rust title="src/lib.rs" link="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/mysql/getting_started_step_1/src/lib.rs#L1-L2"
+  pub mod models;
+  pub mod schema;
+  ```
+
+  </TabItem>
+</Tabs>
+
 
 Next we need to create the two modules that we just declared.
 
 <Tabs syncKey="db-backend">
   <TabItem label="PostgreSQL">
 
-    <LinkButton 
-      href="https://github.com/diesel-rs/diesel/tree/2.3.x/examples/postgres/getting_started_step_1/src/models.rs"
-      variant="minimal" 
-      icon="external"
-      target="_blank"
-      alt="PostgreSQL"
-    >
-      View `src/models.rs` on GitHub
-    </LinkButton>
-
-    ```rust title="src/models.rs"
+    ```rust title="src/models.rs" link="https://github.com/diesel-rs/diesel/tree/2.3.x/examples/postgres/getting_started_step_1/src/models.rs"
     use diesel::prelude::*;
 
     #[derive(Queryable, Selectable)]
@@ -656,17 +509,7 @@ Next we need to create the two modules that we just declared.
 
   <TabItem label="SQLite">
 
-    <LinkButton 
-      href="https://github.com/diesel-rs/diesel/tree/2.3.x/examples/sqlite/getting_started_step_1/src/models.rs"
-      variant="minimal" 
-      icon="external"
-      target="_blank"
-      alt="SQLite"
-    >
-      View `src/models.rs` on GitHub
-    </LinkButton>
-
-    ```rust title="src/models.rs"
+    ```rust title="src/models.rs" link="https://github.com/diesel-rs/diesel/tree/2.3.x/examples/sqlite/getting_started_step_1/src/models.rs"
     use diesel::prelude::*;
 
     #[derive(Queryable, Selectable)]
@@ -683,17 +526,7 @@ Next we need to create the two modules that we just declared.
 
   <TabItem label="MySQL">  
 
-    <LinkButton 
-      href="https://github.com/diesel-rs/diesel/tree/2.3.x/examples/mysql/getting_started_step_1/src/models.rs"
-      variant="minimal" 
-      icon="external"
-      target="_blank"
-      alt="MySQL"
-    >
-      View `src/models.rs` on GitHub
-    </LinkButton>
-
-    ```rust title="src/models.rs "
+    ```rust title="src/models.rs" link="https://github.com/diesel-rs/diesel/tree/2.3.x/examples/mysql/getting_started_step_1/src/models.rs"
     use diesel::prelude::*;
 
     #[derive(Queryable, Selectable)]
@@ -731,17 +564,7 @@ The file should look like this:
 
   <TabItem label="PostgreSQL">
 
-    <LinkButton 
-      href="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/getting_started_step_1/src/schema.rs"
-      variant="minimal" 
-      icon="external"
-      target="_blank"
-      alt="PostgreSQL"
-    >
-      View `schema.rs` on GitHub
-    </LinkButton>
-
-    ```rust title="schema.rs"
+    ```rust title="schema.rs" link="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/getting_started_step_1/src/schema.rs"
     diesel::table! {
       posts (id) {
           id -> Int4,
@@ -756,17 +579,7 @@ The file should look like this:
 
   <TabItem label="SQLite">
 
-    <LinkButton 
-      href="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/sqlite/getting_started_step_1/src/schema.rs"
-      variant="minimal" 
-      icon="external"
-      target="_blank"
-      alt="SQLite"
-    >
-      View `schema.rs` on GitHub
-    </LinkButton>
-
-    ```rust title="schema.rs"
+    ```rust title="schema.rs" link="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/sqlite/getting_started_step_1/src/schema.rs"
     diesel::table! {
         posts (id) {
             id -> Integer,
@@ -781,17 +594,7 @@ The file should look like this:
 
   <TabItem label="MySQL">  
     
-    <LinkButton 
-      href="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/mysql/getting_started_step_1/src/schema.rs"
-      variant="minimal" 
-      icon="external"
-      target="_blank"
-      alt="MySQL"
-    >
-      View `schema.rs` on GitHub
-    </LinkButton>
-
-    ```rust title="schema.rs"
+    ```rust title="schema.rs" link="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/mysql/getting_started_step_1/src/schema.rs"
     diesel::table! {
       posts (id) {
           id -> Integer,
@@ -830,32 +633,97 @@ Using `#[derive(Selectable)]` in combination with [`SelectableHelper::as_select`
 
 Let's write the code to actually show us our posts.
 
-[src/bin/show_posts.rs](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/$backend/getting_started_step_1/src/bin/show_posts.rs)
+<Tabs syncKey="db-backend">
 
-```rust title="src/bin/show_posts.rs"
-use self::models::*;
-use diesel::prelude::*;
-use diesel_demo::*;
+  <TabItem label="PostgreSQL">
 
-fn main() {
-    use self::schema::posts::dsl::*;
+  ```rust title="src/bin/show_posts.rs" link="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/getting_started_step_1/src/bin/show_posts.rs"
+  use self::models::*;
+  use diesel::prelude::*;
+  use diesel_demo::*;
 
-    let connection = &mut establish_connection();
-    let results = posts
-        .filter(published.eq(true))
-        .limit(5)
-        .select(Post::as_select())
-        .load(connection)
-        .expect("Error loading posts");
+  fn main() {
+      use self::schema::posts::dsl::*;
 
-    println!("Displaying {} posts", results.len());
-    for post in results {
-        println!("{}", post.title);
-        println!("-----------\n");
-        println!("{}", post.body);
-    }
-}
-```
+      let connection = &mut establish_connection();
+      let results = posts
+          .filter(published.eq(true))
+          .limit(5)
+          .select(Post::as_select())
+          .load(connection)
+          .expect("Error loading posts");
+
+      println!("Displaying {} posts", results.len());
+      for post in results {
+          println!("{}", post.title);
+          println!("-----------\n");
+          println!("{}", post.body);
+      }
+  }
+  ```
+
+  </TabItem>
+
+  <TabItem label="SQLite">
+
+  ```rust title="src/bin/show_posts.rs" link="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/sqlite/getting_started_step_1/src/bin/show_posts.rs"
+  use self::models::*;
+  use diesel::prelude::*;
+  use diesel_demo::*;
+
+  fn main() {
+      use self::schema::posts::dsl::*;
+
+      let connection = &mut establish_connection();
+      let results = posts
+          .filter(published.eq(true))
+          .limit(5)
+          .select(Post::as_select())
+          .load(connection)
+          .expect("Error loading posts");
+
+      println!("Displaying {} posts", results.len());
+      for post in results {
+          println!("{}", post.title);
+          println!("-----------\n");
+          println!("{}", post.body);
+      }
+  }
+  ```
+
+  </TabItem>
+
+  <TabItem label="MySQL">
+
+  ```rust title="src/bin/show_posts.rs" link="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/mysql/getting_started_step_1/src/bin/show_posts.rs"
+  use self::models::*;
+  use diesel::prelude::*;
+  use diesel_demo::*;
+
+  fn main() {
+      use self::schema::posts::dsl::*;
+
+      let connection = &mut establish_connection();
+      let results = posts
+          .filter(published.eq(true))
+          .limit(5)
+          .select(Post::as_select())
+          .load(connection)
+          .expect("Error loading posts");
+
+      println!("Displaying {} posts", results.len());
+      for post in results {
+          println!("{}", post.title);
+          println!("-----------\n");
+          println!("{}", post.body);
+      }
+  }
+  ```
+
+  </TabItem>
+
+</Tabs>
+
 
 The use `self::schema::posts::dsl::*` line imports a bunch of aliases so that we can say `posts`
 instead of `posts::table`, and `published` instead of `posts::published`. It's useful
@@ -877,44 +745,64 @@ Next, let's write some code to create a new post. We'll want a struct to use for
 a new record.
 
 
-<LinkButton 
-  href="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/$backend/getting_started_step_2/src/models.rs"
-  variant="minimal" 
-  icon="external"
-  target="_blank"
-  alt="src/models.rs"
->
-  View `src/models.rs` on GitHub
-</LinkButton>
+<Tabs syncKey="db-backend">
 
-```rust title="src/models.rs"
-use crate::schema::posts;
+  <TabItem label="PostgreSQL">
 
-#[derive(Insertable)]
-#[diesel(table_name = posts)]
-pub struct NewPost<'a> {
-    pub title: &'a str,
-    pub body: &'a str,
-}
-```
+    ```rust title="src/models.rs" link="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/getting_started_step_2/src/models.rs"
+    use crate::schema::posts;
+
+    #[derive(Insertable)]
+    #[diesel(table_name = posts)]
+    pub struct NewPost<'a> {
+        pub title: &'a str,
+        pub body: &'a str,
+    }
+    ```
+
+  </TabItem>
+
+  <TabItem label="SQLite">
+    
+    ```rust title="src/models.rs" link="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/sqlite/getting_started_step_2/src/models.rs"
+    use crate::schema::posts;
+
+    #[derive(Insertable)]
+    #[diesel(table_name = posts)]
+    pub struct NewPost<'a> {
+        pub title: &'a str,
+        pub body: &'a str,
+    }
+    ```
+
+  </TabItem>
+
+  <TabItem label="MySQL">  
+
+    ```rust title="src/models.rs" link="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/mysql/getting_started_step_2/src/models.rs"
+    use crate::schema::posts;
+
+    #[derive(Insertable)]
+    #[diesel(table_name = posts)]
+    pub struct NewPost<'a> {
+        pub title: &'a str,
+        pub body: &'a str,
+    }
+    ```
+
+  </TabItem>
+  
+</Tabs>
+
 
 Now let's add a function to save a new post.
 
 
 <Tabs syncKey="db-backend">
+
   <TabItem label="PostgreSQL">
 
-    <LinkButton 
-      href="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/getting_started_step_2/src/lib.rs"
-      variant="minimal" 
-      icon="external"
-      target="_blank"
-      alt="PostgreSQL"
-    >
-      View `src/lib.rs` on GitHub
-    </LinkButton>
-
-    ```rust title="src/lib.rs"
+    ```rust title="src/lib.rs" link="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/getting_started_step_2/src/lib.rs"
     use self::models::{NewPost, Post};
 
     pub fn create_post(conn: &mut PgConnection, title: &str, body: &str) -> Post {
@@ -934,17 +822,7 @@ Now let's add a function to save a new post.
 
   <TabItem label="SQLite">
 
-    <LinkButton 
-      href="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/sqlite/getting_started_step_2/src/lib.rs"
-      variant="minimal" 
-      icon="external"
-      target="_blank"
-      alt="SQLite"
-    >
-      View `src/lib.rs` on GitHub
-    </LinkButton>
-
-    ```rust title="src/lib.rs"
+    ```rust title="src/lib.rs" link="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/sqlite/getting_started_step_2/src/lib.rs"
     use self::models::{NewPost, Post};
 
     pub fn create_post(conn: &mut SqliteConnection, title: &str, body: &str) -> Post {
@@ -964,17 +842,7 @@ Now let's add a function to save a new post.
 
   <TabItem label="MySQL">  
 
-    <LinkButton 
-      href="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/mysql/getting_started_step_2/src/lib.rs"
-      variant="minimal" 
-      icon="external"
-      target="_blank"
-      alt="MySQL"
-    >
-      View `src/lib.rs` on GitHub
-    </LinkButton>
-
-    ```rust title="src/lib.rs"
+    ```rust title="src/lib.rs" link="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/mysql/getting_started_step_2/src/lib.rs"
     use self::models::{NewPost, Post};
 
     pub fn create_post(conn: &mut MysqlConnection, title: &str, body: &str) -> Post {
@@ -997,6 +865,7 @@ Now let's add a function to save a new post.
     ```
 
   </TabItem>
+  
 </Tabs>
 
 
@@ -1035,35 +904,105 @@ at you, that way. :)
 Now that we've got everything set up, we can create a little script to write a new post.
 
 
-[src/bin/write_post.rs](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/$backend/getting_started_step_2/src/bin/write_post.rs)
+<Tabs syncKey="db-backend">
 
-```rust title="src/bin/write_post.rs"
-use diesel_demo::*;
-use std::io::{stdin, Read};
+  <TabItem label="PostgreSQL">
 
-fn main() {
-    let connection = &mut establish_connection();
+    ```rust title="src/bin/write_post.rs" link="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/getting_started_step_2/src/bin/write_post.rs"
+    use diesel_demo::*;
+    use std::io::{stdin, Read};
 
-    let mut title = String::new();
-    let mut body = String::new();
+    fn main() {
+        let connection = &mut establish_connection();
 
-    println!("What would you like your title to be?");
-    stdin().read_line(&mut title).unwrap();
-    let title = title.trim_end(); // Remove the trailing newline
+        let mut title = String::new();
+        let mut body = String::new();
 
-    println!("\nOk! Let's write {title} (Press {EOF} when finished)\n",);
-    stdin().read_to_string(&mut body).unwrap();
+        println!("What would you like your title to be?");
+        stdin().read_line(&mut title).unwrap();
+        let title = title.trim_end(); // Remove the trailing newline
 
-    let post = create_post(connection, title, &body);
-    println!("\nSaved draft {title} with id {}", post.id);
-}
+        println!("\nOk! Let's write {title} (Press {EOF} when finished)\n",);
+        stdin().read_to_string(&mut body).unwrap();
 
-#[cfg(not(windows))]
-const EOF: &str = "CTRL+D";
+        let post = create_post(connection, title, &body);
+        println!("\nSaved draft {title} with id {}", post.id);
+    }
 
-#[cfg(windows)]
-const EOF: &str = "CTRL+Z";
-```
+    #[cfg(not(windows))]
+    const EOF: &str = "CTRL+D";
+
+    #[cfg(windows)]
+    const EOF: &str = "CTRL+Z";
+    ```
+
+  </TabItem>
+
+  <TabItem label="SQLite">
+
+    ```rust title="src/bin/write_post.rs" link="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/sqlite/getting_started_step_2/src/bin/write_post.rs"
+    use diesel_demo::*;
+    use std::io::{stdin, Read};
+
+    fn main() {
+        let connection = &mut establish_connection();
+
+        let mut title = String::new();
+        let mut body = String::new();
+
+        println!("What would you like your title to be?");
+        stdin().read_line(&mut title).unwrap();
+        let title = title.trim_end(); // Remove the trailing newline
+
+        println!("\nOk! Let's write {title} (Press {EOF} when finished)\n",);
+        stdin().read_to_string(&mut body).unwrap();
+
+        let post = create_post(connection, title, &body);
+        println!("\nSaved draft {title} with id {}", post.id);
+    }
+
+    #[cfg(not(windows))]
+    const EOF: &str = "CTRL+D";
+
+    #[cfg(windows)]
+    const EOF: &str = "CTRL+Z";
+    ```
+
+  </TabItem>
+
+  <TabItem label="MySQL">  
+
+    ```rust title="src/bin/write_post.rs" link="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/mysql/getting_started_step_2/src/bin/write_post.rs"
+    use diesel_demo::*;
+    use std::io::{stdin, Read};
+
+    fn main() {
+        let connection = &mut establish_connection();
+
+        let mut title = String::new();
+        let mut body = String::new();
+
+        println!("What would you like your title to be?");
+        stdin().read_line(&mut title).unwrap();
+        let title = title.trim_end(); // Remove the trailing newline
+
+        println!("\nOk! Let's write {title} (Press {EOF} when finished)\n",);
+        stdin().read_to_string(&mut body).unwrap();
+
+        let post = create_post(connection, title, &body);
+        println!("\nSaved draft {title} with id {}", post.id);
+    }
+
+    #[cfg(not(windows))]
+    const EOF: &str = "CTRL+D";
+
+    #[cfg(windows)]
+    const EOF: &str = "CTRL+Z";
+    ```
+
+  </TabItem>
+  
+</Tabs>
 
 
 We can run our new script with `cargo run --bin write_post`. Go ahead and write a blog post.
@@ -1104,19 +1043,39 @@ relatively simple. Let's jump right into the script:
 
 
 <Tabs syncKey="db-backend">
-  <TabItem label="PostgreSQL/SQLite">
 
-    <LinkButton 
-      href="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/$backend/getting_started_step_3/src/bin/publish_post.rs"
-      variant="minimal" 
-      icon="external"
-      target="_blank"
-      alt="PostgreSQL/SQLite"
-    >
-      View `src/bin/publish_post.rs` on GitHub
-    </LinkButton>
+  <TabItem label="PostgreSQL">
 
-    ```rust title="src/bin/publish_post.rs"
+    ```rust title="src/bin/publish_post.rs" link="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/getting_started_step_3/src/bin/publish_post.rs"
+    use self::models::Post;
+    use diesel::prelude::*;
+    use diesel_demo::*;
+    use std::env::args;
+
+    fn main() {
+        use self::schema::posts::dsl::{posts, published};
+
+        let id = args()
+            .nth(1)
+            .expect("publish_post requires a post id")
+            .parse::<i32>()
+            .expect("Invalid ID");
+        let connection = &mut establish_connection();
+
+        let post = diesel::update(posts.find(id))
+            .set(published.eq(true))
+            .returning(Post::as_returning())
+            .get_result(connection)
+            .unwrap();
+        println!("Published post {}", post.title);
+    }
+    ```
+
+  </TabItem>
+
+  <TabItem label="SQLite">
+
+    ```rust title="src/bin/publish_post.rs" link="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/sqlite/getting_started_step_3/src/bin/publish_post.rs"
     use self::models::Post;
     use diesel::prelude::*;
     use diesel_demo::*;
@@ -1145,17 +1104,7 @@ relatively simple. Let's jump right into the script:
 
   <TabItem label="MySQL">
 
-    <LinkButton 
-      href="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/mysql/getting_started_step_3/src/bin/publish_post.rs"
-      variant="minimal" 
-      icon="external"
-      target="_blank"
-      alt="MySQL"
-    >
-      View `src/bin/publish_post.rs` on GitHub
-    </LinkButton>
-
-    ```rust title="src/bin/publish_post.rs"
+    ```rust title="src/bin/publish_post.rs" link="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/mysql/getting_started_step_3/src/bin/publish_post.rs"
     use self::models::Post;
     use diesel::prelude::*;
     use diesel_demo::*;
@@ -1190,7 +1139,6 @@ relatively simple. Let's jump right into the script:
 </Tabs>
 
 
-
 That's it! Let's try it out with `cargo run --bin publish_post 1`.
 
 ```sh
@@ -1209,38 +1157,115 @@ Notice the [`.optional()`] call. This returns `Option<Post>` instead of throwing
 
 
 
-[src/bin/get_post.rs](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/$backend/getting_started_step_3/src/bin/get_post.rs)
 
-```rust title="src/bin/get_post.rs"
-use self::models::Post;
-use diesel::prelude::*;
-use diesel_demo::*;
-use std::env::args;
+<Tabs syncKey="db-backend">
 
-fn main() {
-    use self::schema::posts::dsl::posts;
+  <TabItem label="PostgreSQL">
 
-    let post_id = args()
-        .nth(1)
-        .expect("get_post requires a post id")
-        .parse::<i32>()
-        .expect("Invalid ID");
+    ```rust title="src/bin/get_post.rs" link="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/getting_started_step_3/src/bin/get_post.rs"
+    use self::models::Post;
+    use diesel::prelude::*;
+    use diesel_demo::*;
+    use std::env::args;
 
-    let connection = &mut establish_connection();
+    fn main() {
+        use self::schema::posts::dsl::posts;
 
-    let post = posts
-        .find(post_id)
-        .select(Post::as_select())
-        .first(connection)
-        .optional(); // This allows for returning an Option<Post>, otherwise it will throw an error
+        let post_id = args()
+            .nth(1)
+            .expect("get_post requires a post id")
+            .parse::<i32>()
+            .expect("Invalid ID");
 
-    match post {
-        Ok(Some(post)) => println!("Post with id: {} has a title: {}", post.id, post.title),
-        Ok(None) => println!("Unable to find post {}", post_id),
-        Err(_) => println!("An error occured while fetching post {}", post_id),
+        let connection = &mut establish_connection();
+
+        let post = posts
+            .find(post_id)
+            .select(Post::as_select())
+            .first(connection)
+            .optional(); // This allows for returning an Option<Post>, otherwise it will throw an error
+
+        match post {
+            Ok(Some(post)) => println!("Post with id: {} has a title: {}", post.id, post.title),
+            Ok(None) => println!("Unable to find post {}", post_id),
+            Err(_) => println!("An error occured while fetching post {}", post_id),
+        }
     }
-}
-```
+    ```
+
+  </TabItem>
+
+  <TabItem label="SQLite">
+
+    ```rust title="src/bin/get_post.rs" link="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/sqlite/getting_started_step_3/src/bin/get_post.rs"
+    use self::models::Post;
+    use diesel::prelude::*;
+    use diesel_demo::*;
+    use std::env::args;
+
+    fn main() {
+        use self::schema::posts::dsl::posts;
+
+        let post_id = args()
+            .nth(1)
+            .expect("get_post requires a post id")
+            .parse::<i32>()
+            .expect("Invalid ID");
+
+        let connection = &mut establish_connection();
+
+        let post = posts
+            .find(post_id)
+            .select(Post::as_select())
+            .first(connection)
+            .optional(); // This allows for returning an Option<Post>, otherwise it will throw an error
+
+        match post {
+            Ok(Some(post)) => println!("Post with id: {} has a title: {}", post.id, post.title),
+            Ok(None) => println!("Unable to find post {}", post_id),
+            Err(_) => println!("An error occured while fetching post {}", post_id),
+        }
+    }
+    ```
+
+  </TabItem>
+
+  <TabItem label="MySQL">
+
+    ```rust title="src/bin/get_post.rs" link="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/mysql/getting_started_step_3/src/bin/get_post.rs"
+    use self::models::Post;
+    use diesel::prelude::*;
+    use diesel_demo::*;
+    use std::env::args;
+
+    fn main() {
+        use self::schema::posts::dsl::posts;
+
+        let post_id = args()
+            .nth(1)
+            .expect("get_post requires a post id")
+            .parse::<i32>()
+            .expect("Invalid ID");
+
+        let connection = &mut establish_connection();
+
+        let post = posts
+            .find(post_id)
+            .select(Post::as_select())
+            .first(connection)
+            .optional(); // This allows for returning an Option<Post>, otherwise it will throw an error
+
+        match post {
+            Ok(Some(post)) => println!("Post with id: {} has a title: {}", post.id, post.title),
+            Ok(None) => println!("Unable to find post {}", post_id),
+            Err(_) => println!("An error occured while fetching post {}", post_id),
+        }
+    }
+    ```
+    
+  </TabItem>
+</Tabs>
+
 
 We can see our post with `cargo run --bin get_post 1`.
 
@@ -1270,27 +1295,85 @@ we don't have time to look up the ID. So let's delete based on the
 title, or even just some words in the title.
 
 
-[src/bin/delete_post.rs](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/$backend/getting_started_step_3/src/bin/delete_post.rs)
 
-```rust title="src/bin/delete_post.rs"
-use diesel::prelude::*;
-use diesel_demo::*;
-use std::env::args;
 
-fn main() {
-    use self::schema::posts::dsl::*;
+<Tabs syncKey="db-backend">
 
-    let target = args().nth(1).expect("Expected a target to match against");
-    let pattern = format!("%{}%", target);
+  <TabItem label="PostgreSQL">
 
-    let connection = &mut establish_connection();
-    let num_deleted = diesel::delete(posts.filter(title.like(pattern)))
-        .execute(connection)
-        .expect("Error deleting posts");
+    ```rust title="src/bin/delete_post.rs" link="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/getting_started_step_3/src/bin/delete_post.rs"
+    use diesel::prelude::*;
+    use diesel_demo::*;
+    use std::env::args;
 
-    println!("Deleted {} posts", num_deleted);
-}
-```
+    fn main() {
+        use self::schema::posts::dsl::*;
+
+        let target = args().nth(1).expect("Expected a target to match against");
+        let pattern = format!("%{}%", target);
+
+        let connection = &mut establish_connection();
+        let num_deleted = diesel::delete(posts.filter(title.like(pattern)))
+            .execute(connection)
+            .expect("Error deleting posts");
+
+        println!("Deleted {} posts", num_deleted);
+    }
+    ```
+
+  </TabItem>
+
+  <TabItem label="SQLite">
+
+    ```rust title="src/bin/delete_post.rs" link="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/sqlite/getting_started_step_3/src/bin/delete_post.rs"
+    use diesel::prelude::*;
+    use diesel_demo::*;
+    use std::env::args;
+
+    fn main() {
+        use self::schema::posts::dsl::*;
+
+        let target = args().nth(1).expect("Expected a target to match against");
+        let pattern = format!("%{}%", target);
+
+        let connection = &mut establish_connection();
+        let num_deleted = diesel::delete(posts.filter(title.like(pattern)))
+            .execute(connection)
+            .expect("Error deleting posts");
+
+        println!("Deleted {} posts", num_deleted);
+    }
+    ```
+
+  </TabItem>
+
+  <TabItem label="MySQL">
+
+    ```rust title="src/bin/delete_post.rs" link="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/mysql/getting_started_step_3/src/bin/delete_post.rs"
+    use diesel::prelude::*;
+    use diesel_demo::*;
+    use std::env::args;
+
+    fn main() {
+        use self::schema::posts::dsl::*;
+
+        let target = args().nth(1).expect("Expected a target to match against");
+        let pattern = format!("%{}%", target);
+
+        let connection = &mut establish_connection();
+        let num_deleted = diesel::delete(posts.filter(title.like(pattern)))
+            .execute(connection)
+            .expect("Error deleting posts");
+
+        println!("Deleted {} posts", num_deleted);
+    }
+    ```
+
+  </TabItem>
+</Tabs>
+
+
+
 
 We can run the script with `cargo run --bin delete_post demo` (at least with the title I chose).
 Your output should look something like:

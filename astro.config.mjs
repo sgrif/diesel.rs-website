@@ -2,6 +2,8 @@
 import starlight from '@astrojs/starlight';
 import { defineConfig } from 'astro/config';
 import rehypeExternalLinks from 'rehype-external-links';
+import { titleLinkPlugin } from './src/plugins/ec-title-link.mjs';
+
 
 // https://astro.build/config
 export default defineConfig({
@@ -59,6 +61,9 @@ export default defineConfig({
 				Footer: './src/components/Footer.astro',
 			},
 			customCss: ['./src/assets/css/main.css'],
+			expressiveCode: {
+				plugins: [titleLinkPlugin()],
+			},
 		}),
 	],
 	markdown: {
