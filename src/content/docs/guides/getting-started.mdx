@@ -4,7 +4,7 @@ description: "A step-by-step guide to setting up Diesel with PostgreSQL, SQLite,
 lang: en-US
 ---
 
-import { Aside, Tabs, TabItem } from '@astrojs/starlight/components'; 
+import { Aside, Tabs, TabItem, LinkButton } from '@astrojs/starlight/components'; 
 
 
 <Tabs syncKey="db-backend">
@@ -46,7 +46,15 @@ as well.
 <Tabs syncKey="db-backend">
   <TabItem label="PostgreSQL">
 
-    [Cargo.toml (PostgreSQL)](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/getting_started_step_1/Cargo.toml)
+    <LinkButton 
+      href="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/getting_started_step_1/Cargo.toml"
+      variant="minimal" 
+      icon="external"
+      target="_blank"
+      alt="PostgreSQL"
+    >
+      View `Cargo.toml` on GitHub
+    </LinkButton>
 
     ```toml title="Cargo.toml"
     [dependencies]
@@ -60,7 +68,16 @@ as well.
   </TabItem>
   <TabItem label="SQLite">
 
-    [Cargo.toml (SQLite)](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/sqlite/getting_started_step_1/Cargo.toml)
+    <LinkButton 
+      href="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/sqlite/getting_started_step_1/Cargo.toml"
+      variant="minimal" 
+      icon="external"
+      target="_blank"
+      alt="SQLite"
+    >
+      View `Cargo.toml` on GitHub
+    </LinkButton>
+
 
     ```toml title="Cargo.toml"
     [dependencies]
@@ -73,7 +90,15 @@ as well.
   </TabItem>
   <TabItem label="MySQL">
     
-    [Cargo.toml (MySQL)](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/mysql/getting_started_step_1/Cargo.toml)
+    <LinkButton 
+      href="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/mysql/getting_started_step_1/Cargo.toml"
+      variant="minimal" 
+      icon="external"
+      target="_blank"
+      alt="MySQL"
+    >
+      View `Cargo.toml` on GitHub
+    </LinkButton>
 
     ```toml title="Cargo.toml"
     [dependencies]
@@ -251,8 +276,16 @@ Next, we'll write the SQL for migrations:
 <Tabs syncKey="db-backend">
   <TabItem label="PostgreSQL">
 
-    [up.sql (PostgreSQL)]( https://github.com/diesel-rs/diesel/tree/2.3.x/examples/postgres/getting_started_step_1/migrations/20160815133237_create_posts/up.sql)
-
+    <LinkButton 
+      href="https://github.com/diesel-rs/diesel/tree/2.3.x/examples/postgres/getting_started_step_1/migrations/20160815133237_create_posts/up.sql" 
+      variant="minimal" 
+      icon="external"
+      target="_blank"
+      alt="PostgreSQL"
+    >
+      View `up.sql` on GitHub
+    </LinkButton>
+    
     ```sql title="up.sql"
     CREATE TABLE posts (
       id SERIAL PRIMARY KEY,
@@ -262,7 +295,15 @@ Next, we'll write the SQL for migrations:
     )
     ```
 
-    [down.sql (PostgreSQL)](https://github.com/diesel-rs/diesel/tree/2.3.x/examples/postgres/getting_started_step_1/migrations/20160815133237_create_posts/down.sql)
+    <LinkButton 
+      href="https://github.com/diesel-rs/diesel/tree/2.3.x/examples/postgres/getting_started_step_1/migrations/20160815133237_create_posts/down.sql"
+      variant="minimal" 
+      icon="external"
+      target="_blank"
+      alt="PostgreSQL"
+    >
+      View `down.sql` on GitHub
+    </LinkButton>
 
     ```sql title="down.sql"
     DROP TABLE posts
@@ -271,7 +312,16 @@ Next, we'll write the SQL for migrations:
   </TabItem>
 
   <TabItem label="SQLite">
-    [up.sql (SQLite)](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/sqlite/getting_started_step_1/migrations/20170124012402_create_posts/up.sql)
+
+    <LinkButton 
+      href="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/sqlite/getting_started_step_1/migrations/20170124012402_create_posts/up.sql"
+      variant="minimal" 
+      icon="external"
+      target="_blank"
+      alt="SQLite"
+    >
+      View `up.sql` on GitHub
+    </LinkButton>
 
     ```sql title="up.sql"
     CREATE TABLE posts (
@@ -282,7 +332,15 @@ Next, we'll write the SQL for migrations:
     )
     ```
 
-    [down.sql (SQLite)](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/sqlite/getting_started_step_1/migrations/20170124012402_create_posts/down.sql)
+    <LinkButton 
+      href="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/sqlite/getting_started_step_1/migrations/20170124012402_create_posts/down.sql"
+      variant="minimal" 
+      icon="external"
+      target="_blank"
+      alt="SQLite"
+    >
+      View `down.sql` on GitHub
+    </LinkButton>
 
     ```sql title="down.sql"
     DROP TABLE posts
@@ -290,7 +348,16 @@ Next, we'll write the SQL for migrations:
   </TabItem>
 
   <TabItem label="MySQL">  
-    [up.sql (MySQL)]( https://github.com/diesel-rs/diesel/blob/2.3.x/examples/mysql/getting_started_step_1/migrations/20160815133237_create_posts/up.sql)
+
+    <LinkButton 
+      href="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/mysql/getting_started_step_1/migrations/20160815133237_create_posts/up.sql"
+      variant="minimal" 
+      icon="external"
+      target="_blank"
+      alt="MySQL"
+    >
+      View `up.sql` on GitHub
+    </LinkButton>
 
     ```sql title="up.sql"
     CREATE TABLE posts (
@@ -301,7 +368,15 @@ Next, we'll write the SQL for migrations:
     );
     ```
 
-    [down.sql (MySQL)](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/mysql/getting_started_step_1/migrations/20160815133237_create_posts/down.sql)
+    <LinkButton 
+      href="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/mysql/getting_started_step_1/migrations/20160815133237_create_posts/down.sql"
+      variant="minimal" 
+      icon="external"
+      target="_blank"
+      alt="MySQL"
+    >
+      View `down.sql` on GitHub
+    </LinkButton>
 
     ```sql title="down.sql"
     DROP TABLE posts
@@ -337,7 +412,17 @@ If you prefer to generate your migrations based on Rust code instead, the diesel
 
 <Tabs syncKey="db-backend">
   <TabItem label="PostgreSQL">
-    [schema.rs (PostgreSQL)](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/getting_started_step_1/src/schema.rs)
+        
+    <LinkButton 
+      href="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/getting_started_step_1/src/schema.rs"
+      variant="minimal" 
+      icon="external"
+      target="_blank"
+      alt="PostgreSQL"
+    >
+      View `schema.rs` on GitHub
+    </LinkButton>
+
     ```rust title="schema.rs"
     diesel::table! {
         posts (id) {
@@ -351,7 +436,17 @@ If you prefer to generate your migrations based on Rust code instead, the diesel
   </TabItem>
 
   <TabItem label="SQLite">
-    [schema.rs (SQLite)](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/sqlite/getting_started_step_1/src/schema.rs)
+    
+    <LinkButton 
+      href="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/sqlite/getting_started_step_1/src/schema.rs"
+      variant="minimal" 
+      icon="external"
+      target="_blank"
+      alt="SQLite"
+    >
+      View `schema.rs` on GitHub
+    </LinkButton>
+    
     ```rust title="schema.rs "
     diesel::table! {
         posts (id) {
@@ -365,7 +460,17 @@ If you prefer to generate your migrations based on Rust code instead, the diesel
   </TabItem>
 
   <TabItem label="MySQL">  
-    [schema.rs (MySQL)](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/mysql/getting_started_step_1/src/schema.rs)
+    
+    <LinkButton 
+      href="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/mysql/getting_started_step_1/src/schema.rs"
+      variant="minimal" 
+      icon="external"
+      target="_blank"
+      alt="MySQL"
+    >
+      View `schema.rs` on GitHub
+    </LinkButton>
+
     ```rust title="schema.rs"
     diesel::table! {
         posts (id) {
@@ -415,7 +520,16 @@ The first thing we need to do is establish a database connection.
 
 <Tabs syncKey="db-backend">
   <TabItem label="PostgreSQL">
-      [src/lib.rs (PostgreSQL)](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/getting_started_step_1/src/lib.rs)
+
+    <LinkButton 
+      href="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/getting_started_step_1/src/lib.rs"
+      variant="minimal" 
+      icon="external"
+      target="_blank"
+      alt="PostgreSQL"
+    >
+      View `src/lib.rs` on GitHub
+    </LinkButton>
 
       ```rust title="src/lib.rs"
       use diesel::prelude::*;
@@ -433,7 +547,16 @@ The first thing we need to do is establish a database connection.
   </TabItem>
 
   <TabItem label="SQLite">
-      [src/lib.rs (SQLite)](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/sqlite/getting_started_step_1/src/lib.rs)
+
+    <LinkButton 
+      href="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/sqlite/getting_started_step_1/src/lib.rs"
+      variant="minimal" 
+      icon="external"
+      target="_blank"
+      alt="SQLite"
+    >
+      View `src/lib.rs` on GitHub
+    </LinkButton>
 
       ```rust title="src/lib.rs"
       use diesel::prelude::*;
@@ -451,7 +574,16 @@ The first thing we need to do is establish a database connection.
   </TabItem>
 
   <TabItem label="MySQL">  
-      [src/lib.rs (MySQL)](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/mysql/getting_started_step_1/src/lib.rs)
+
+    <LinkButton 
+      href="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/mysql/getting_started_step_1/src/lib.rs"
+      variant="minimal" 
+      icon="external"
+      target="_blank"
+      alt="MySQL"
+    >
+      View `src/lib.rs` on GitHub
+    </LinkButton>
 
       ```rust title="src/lib.rs "
       use diesel::prelude::*;
@@ -476,7 +608,16 @@ we'll use to reference tables and columns in our queries.
 We'll add the following lines to the top of `src/lib.rs`:
 
 
-[src/lib.rs](https://github.com/diesel-rs/diesel/tree/2.3.x/examples/$backend/getting_started_step_1/src/lib.rs#L1-L2)
+<LinkButton 
+  href="https://github.com/diesel-rs/diesel/tree/2.3.x/examples/$backend/getting_started_step_1/src/lib.rs#L1-L2"
+  variant="minimal" 
+  icon="external"
+  target="_blank"
+  alt="src/lib.rs"
+>
+  View `src/lib.rs` on GitHub
+</LinkButton>
+
 
 ```rust title="src/lib.rs"
 pub mod models;
@@ -487,7 +628,16 @@ Next we need to create the two modules that we just declared.
 
 <Tabs syncKey="db-backend">
   <TabItem label="PostgreSQL">
-    [src/models.rs (PostgreSQL)](https://github.com/diesel-rs/diesel/tree/2.3.x/examples/postgres/getting_started_step_1/src/models.rs)
+
+    <LinkButton 
+      href="https://github.com/diesel-rs/diesel/tree/2.3.x/examples/postgres/getting_started_step_1/src/models.rs"
+      variant="minimal" 
+      icon="external"
+      target="_blank"
+      alt="PostgreSQL"
+    >
+      View `src/models.rs` on GitHub
+    </LinkButton>
 
     ```rust title="src/models.rs"
     use diesel::prelude::*;
@@ -505,7 +655,16 @@ Next we need to create the two modules that we just declared.
   </TabItem>
 
   <TabItem label="SQLite">
-    [src/models.rs (SQLite)](https://github.com/diesel-rs/diesel/tree/2.3.x/examples/sqlite/getting_started_step_1/src/models.rs)
+
+    <LinkButton 
+      href="https://github.com/diesel-rs/diesel/tree/2.3.x/examples/sqlite/getting_started_step_1/src/models.rs"
+      variant="minimal" 
+      icon="external"
+      target="_blank"
+      alt="SQLite"
+    >
+      View `src/models.rs` on GitHub
+    </LinkButton>
 
     ```rust title="src/models.rs"
     use diesel::prelude::*;
@@ -523,7 +682,16 @@ Next we need to create the two modules that we just declared.
   </TabItem>
 
   <TabItem label="MySQL">  
-    [src/models.rs (MySQL)](https://github.com/diesel-rs/diesel/tree/2.3.x/examples/mysql/getting_started_step_1/src/models.rs)
+
+    <LinkButton 
+      href="https://github.com/diesel-rs/diesel/tree/2.3.x/examples/mysql/getting_started_step_1/src/models.rs"
+      variant="minimal" 
+      icon="external"
+      target="_blank"
+      alt="MySQL"
+    >
+      View `src/models.rs` on GitHub
+    </LinkButton>
 
     ```rust title="src/models.rs "
     use diesel::prelude::*;
@@ -563,8 +731,16 @@ The file should look like this:
 
   <TabItem label="PostgreSQL">
 
-    [schema.rs (PostgreSQL)](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/getting_started_step_1/src/schema.rs)
-    
+    <LinkButton 
+      href="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/getting_started_step_1/src/schema.rs"
+      variant="minimal" 
+      icon="external"
+      target="_blank"
+      alt="PostgreSQL"
+    >
+      View `schema.rs` on GitHub
+    </LinkButton>
+
     ```rust title="schema.rs"
     diesel::table! {
       posts (id) {
@@ -580,8 +756,16 @@ The file should look like this:
 
   <TabItem label="SQLite">
 
-    [schema.rs (SQLite)](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/sqlite/getting_started_step_1/src/schema.rs)
-    
+    <LinkButton 
+      href="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/sqlite/getting_started_step_1/src/schema.rs"
+      variant="minimal" 
+      icon="external"
+      target="_blank"
+      alt="SQLite"
+    >
+      View `schema.rs` on GitHub
+    </LinkButton>
+
     ```rust title="schema.rs"
     diesel::table! {
         posts (id) {
@@ -596,9 +780,17 @@ The file should look like this:
   </TabItem>
 
   <TabItem label="MySQL">  
-
-    [schema.rs (MySQL)](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/mysql/getting_started_step_1/src/schema.rs)
     
+    <LinkButton 
+      href="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/mysql/getting_started_step_1/src/schema.rs"
+      variant="minimal" 
+      icon="external"
+      target="_blank"
+      alt="MySQL"
+    >
+      View `schema.rs` on GitHub
+    </LinkButton>
+
     ```rust title="schema.rs"
     diesel::table! {
       posts (id) {
@@ -685,7 +877,15 @@ Next, let's write some code to create a new post. We'll want a struct to use for
 a new record.
 
 
-[src/models.rs](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/$backend/getting_started_step_2/src/models.rs)
+<LinkButton 
+  href="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/$backend/getting_started_step_2/src/models.rs"
+  variant="minimal" 
+  icon="external"
+  target="_blank"
+  alt="src/models.rs"
+>
+  View `src/models.rs` on GitHub
+</LinkButton>
 
 ```rust title="src/models.rs"
 use crate::schema::posts;
@@ -704,7 +904,15 @@ Now let's add a function to save a new post.
 <Tabs syncKey="db-backend">
   <TabItem label="PostgreSQL">
 
-    [src/lib.rs](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/getting_started_step_2/src/lib.rs)
+    <LinkButton 
+      href="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/getting_started_step_2/src/lib.rs"
+      variant="minimal" 
+      icon="external"
+      target="_blank"
+      alt="PostgreSQL"
+    >
+      View `src/lib.rs` on GitHub
+    </LinkButton>
 
     ```rust title="src/lib.rs"
     use self::models::{NewPost, Post};
@@ -726,8 +934,16 @@ Now let's add a function to save a new post.
 
   <TabItem label="SQLite">
 
-    [src/lib.rs](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/sqlite/getting_started_step_2/src/lib.rs)
-    
+    <LinkButton 
+      href="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/sqlite/getting_started_step_2/src/lib.rs"
+      variant="minimal" 
+      icon="external"
+      target="_blank"
+      alt="SQLite"
+    >
+      View `src/lib.rs` on GitHub
+    </LinkButton>
+
     ```rust title="src/lib.rs"
     use self::models::{NewPost, Post};
 
@@ -748,7 +964,16 @@ Now let's add a function to save a new post.
 
   <TabItem label="MySQL">  
 
-    [src/lib.rs (MySQL)](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/mysql/getting_started_step_2/src/lib.rs)
+    <LinkButton 
+      href="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/mysql/getting_started_step_2/src/lib.rs"
+      variant="minimal" 
+      icon="external"
+      target="_blank"
+      alt="MySQL"
+    >
+      View `src/lib.rs` on GitHub
+    </LinkButton>
+
     ```rust title="src/lib.rs"
     use self::models::{NewPost, Post};
 
@@ -881,7 +1106,15 @@ relatively simple. Let's jump right into the script:
 <Tabs syncKey="db-backend">
   <TabItem label="PostgreSQL/SQLite">
 
-    [src/bin/publish_post.rs](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/$backend/getting_started_step_3/src/bin/publish_post.rs)
+    <LinkButton 
+      href="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/$backend/getting_started_step_3/src/bin/publish_post.rs"
+      variant="minimal" 
+      icon="external"
+      target="_blank"
+      alt="PostgreSQL/SQLite"
+    >
+      View `src/bin/publish_post.rs` on GitHub
+    </LinkButton>
 
     ```rust title="src/bin/publish_post.rs"
     use self::models::Post;
@@ -912,7 +1145,15 @@ relatively simple. Let's jump right into the script:
 
   <TabItem label="MySQL">
 
-    [src/bin/publish_post.rs](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/mysql/getting_started_step_3/src/bin/publish_post.rs)
+    <LinkButton 
+      href="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/mysql/getting_started_step_3/src/bin/publish_post.rs"
+      variant="minimal" 
+      icon="external"
+      target="_blank"
+      alt="MySQL"
+    >
+      View `src/bin/publish_post.rs` on GitHub
+    </LinkButton>
 
     ```rust title="src/bin/publish_post.rs"
     use self::models::Post;
