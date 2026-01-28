@@ -2,6 +2,11 @@
 # yarn lockfile v1
 
 
+"@ascorbic/loader-utils@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@ascorbic/loader-utils/-/loader-utils-1.0.2.tgz#2878ab4790a6a9a8b7e8db5eea5fd387f9adcc40"
+  integrity sha512-pg43g83gojVtEsAkXfjWuzJhuXneJp4wM/leBftGkCPV3yxKgB92EWA+nWu735BgbBMph3P7DrVqVc3ikt+dJA==
+
 "@astrojs/compiler@^2.13.0":
   version "2.13.0"
   resolved "https://registry.yarnpkg.com/@astrojs/compiler/-/compiler-2.13.0.tgz#a40bef3106fff808bd91b41680275a7e28996d63"
@@ -1920,7 +1925,7 @@ mdast-util-find-and-replace@^3.0.0:
     unist-util-is "^6.0.0"
     unist-util-visit-parents "^6.0.0"
 
-mdast-util-from-markdown@^2.0.0:
+mdast-util-from-markdown@^2.0.0, mdast-util-from-markdown@^2.0.2:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/mdast-util-from-markdown/-/mdast-util-from-markdown-2.0.2.tgz#4850390ca7cf17413a9b9a0fbefcd1bc0eb4160a"
   integrity sha512-uZhTV/8NBuw0WHkPTrCqDOl0zVe1BIng5ZtHoDk49ME1qqcjYmmLmOf0gELgcRMxN4w2iuIeVso5/6QymSrgmA==
@@ -2079,7 +2084,7 @@ mdast-util-to-hast@^13.0.0:
     unist-util-visit "^5.0.0"
     vfile "^6.0.0"
 
-mdast-util-to-markdown@^2.0.0, mdast-util-to-markdown@^2.1.0:
+mdast-util-to-markdown@^2.0.0, mdast-util-to-markdown@^2.1.0, mdast-util-to-markdown@^2.1.2:
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/mdast-util-to-markdown/-/mdast-util-to-markdown-2.1.2.tgz#f910ffe60897f04bb4b7e7ee434486f76288361b"
   integrity sha512-xj68wMTvGXVOKonmog6LwyJKrYXZPvlwabaryTjLh9LuvovB/KAH+kvi8Gjj+7rJjsFi23nkUxRQv1KqSroMqA==
@@ -3074,6 +3079,18 @@ space-separated-tokens@^2.0.0:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/space-separated-tokens/-/space-separated-tokens-2.0.2.tgz#1ecd9d2350a3844572c3f4a312bceb018348859f"
   integrity sha512-PEGlAwrG8yXGXRjW32fGbg66JAlOAwbObuqVoJpv/mRgoWDQfgH1wDPvtzWyUSNAXBGSk8h755YDbbcEy3SH2Q==
+
+starlight-changelogs@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/starlight-changelogs/-/starlight-changelogs-0.4.0.tgz#314a00aeec3d661fb749ed6f4c7ccd1cb3338b48"
+  integrity sha512-Yzd10aAet3flycj5dZoUWryE7jdzwhkmoQpHScYUqxF93pE09GCXGGWsfGA/TnG3VH9RquSEBAVwRWz7hyT6Ww==
+  dependencies:
+    "@ascorbic/loader-utils" "^1.0.2"
+    github-slugger "^2.0.0"
+    mdast-util-from-markdown "^2.0.2"
+    mdast-util-to-markdown "^2.1.2"
+    mdast-util-to-string "^4.0.0"
+    unist-util-visit "^5.0.0"
 
 stream-replace-string@^2.0.0:
   version "2.0.0"

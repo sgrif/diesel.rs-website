@@ -2,8 +2,8 @@
 import starlight from '@astrojs/starlight';
 import { defineConfig } from 'astro/config';
 import rehypeExternalLinks from 'rehype-external-links';
+import starlightChangelogs from 'starlight-changelogs';
 import { titleLinkPlugin } from './src/plugins/ec-title-link.mjs';
-
 
 // https://astro.build/config
 export default defineConfig({
@@ -16,7 +16,6 @@ export default defineConfig({
 			},
 			social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/diesel-rs/diesel' }],
 			sidebar: [
-
 				{
 					label: 'Guides to Diesel',
 					items: [
@@ -48,7 +47,7 @@ export default defineConfig({
 				},
 				{
 					label: 'Changelog',
-					autogenerate: { directory: 'changelog' },
+					link: '/changelog/', // This matches the "base" you set in the loader
 				},
 				{
 					label: 'Compare Diesel',
@@ -61,6 +60,7 @@ export default defineConfig({
 				Footer: './src/components/Footer.astro',
 			},
 			customCss: ['./src/assets/css/main.css'],
+			plugins: [starlightChangelogs()],
 			expressiveCode: {
 				plugins: [titleLinkPlugin()],
 			},
