@@ -1,7 +1,63 @@
-.sl-markdown-content a {
-    text-decoration: none;
-    font-weight: 400;
+:root {
+    --primary-gold: #ffcd57;
 }
+
+/*
+========================================================================== 
+LINKS
+==========================================================================   
+*/
+
+a,
+a:hover,
+a:focus,
+a:active,
+a:visited {
+    text-decoration: none !important;
+    /* Forces removal if other styles compete */
+    outline: none;
+    /* Removes the focus ring/border */
+    box-shadow: none;
+    /* Some frameworks use box-shadow for underlines */
+}
+
+a {
+    text-decoration: none;
+    color: var(--link-color, #007acc);
+    transition: all 0.3s ease;
+}
+
+a:hover {
+    color: var(--link-hover-color, #ffd700);
+    text-decoration: none;
+}
+
+a:focus {
+    outline: 2px solid var(--primary-gold);
+    outline-offset: 2px;
+}
+
+a:active {
+    transform: scale(0.98);
+}
+
+.header a {
+    color: white;
+}
+
+
+/*
+========================================================================== 
+FOOTER
+==========================================================================   
+*/
+
+
+
+
+
+
+
 
 /* Getting Started with Diesel */
 
@@ -17,4 +73,366 @@ aside starlight-tabs[data-sync-key="db-backend"] .tablist-wrapper.astro-esqgolmp
 
 starlight-tabs[data-sync-key="db-backend"] .tablist-wrapper.astro-esqgolmp {
     display: none !important;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+body {
+    -webkit-font-feature-settings: "kern", "liga", "pnum";
+    -ms-font-feature-settings: "kern", "liga", "pnum";
+    font-feature-settings: "kern", "liga", "pnum";
+    -webkit-font-smoothing: antialiased;
+    font-family: "Roboto", "Helvetica Neue", "Helvetica", "Roboto", "Arial",
+        sans-serif, sans-serif;
+    font-weight: 300;
+    line-height: 1.5;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: "Roboto", "Helvetica Neue", "Helvetica", "Roboto", "Arial",
+        sans-serif, sans-serif;
+    font-weight: 300;
+    line-height: 1.2;
+    margin: 0 0 0.75em;
+}
+
+h4 {
+    font-weight: 400;
+}
+
+p {
+    margin: 0 0 1.5em;
+}
+
+p a {
+    font-weight: 400;
+}
+
+a {
+    color: var(--primary-gold);
+}
+
+a:active,
+a:focus,
+a:hover {
+    color: #f6c207;
+}
+
+a:active,
+a:focus {
+    outline: none;
+}
+
+a:focus {
+    text-decoration: underline;
+}
+
+
+
+img,
+picture {
+    margin: 0;
+    max-width: 100%;
+}
+
+pre {
+    font-size: 0.85em;
+}
+
+code {
+    font-weight: bold;
+    -webkit-font-feature-settings: "liga" 0;
+    -ms-font-feature-settings: "liga" 0;
+    font-feature-settings: "liga" 0;
+}
+
+html {
+    box-sizing: border-box;
+}
+
+*,
+*::after,
+*::before {
+    box-sizing: inherit;
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    background: #535379;
+    color: #fff;
+    position: relative;
+    min-height: 100%;
+    padding-bottom: 15em;
+    margin: 0;
+}
+
+body.index {
+    background: -webkit-linear-gradient(#535379, #c3c3d6);
+    background: linear-gradient(#535379, #c3c3d6);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+.guide-wrapper::after {
+    clear: both;
+    content: "";
+    display: table;
+}
+
+.guide-wrapper .demo__example pre {
+    margin-bottom: 1.5em;
+}
+
+.guide-wrapper h3 {
+    margin-top: 3em;
+}
+
+.guide-wrapper ul {
+    list-style-type: disc;
+    padding-bottom: 30px;
+    padding-left: 40px;
+}
+
+.content-wrapper {
+    padding: 0 0.75em;
+}
+
+.banner,
+.demo,
+.feature-list,
+.guides-list {
+    display: block;
+    padding: 3.75em 0 3.75em;
+}
+
+.banner::after,
+.demo::after,
+.feature-list::after,
+.guides-list::after {
+    clear: both;
+    content: "";
+    display: table;
+}
+
+.section-heading {
+    text-align: center;
+}
+
+.banner .btn {
+    margin: 0 0.375em 0.75em;
+}
+
+.guides p a,
+.guides ul a {
+    color: var(--primary-gold);
+}
+
+.guides p a:hover,
+.guides ul a:hover {
+    color: #ffbe24;
+}
+
+
+
+
+/*
+========================================================================== 
+LOGO
+==========================================================================   
+*/
+
+
+@-webkit-keyframes logo-pour {
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+
+    50% {
+        -webkit-transform: rotate(10deg);
+        transform: rotate(10deg);
+    }
+
+    100% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+}
+
+@keyframes logo-pour {
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+
+    50% {
+        -webkit-transform: rotate(10deg);
+        transform: rotate(10deg);
+    }
+
+    100% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+}
+
+@-webkit-keyframes logo-drip {
+    0% {
+        opacity: 1;
+        -webkit-transform: translate(73.9292px, 47.71084px);
+        transform: translate(73.9292px, 47.71084px);
+    }
+
+    30% {
+        opacity: 0;
+        -webkit-transform: translate(73.9292px, 60.71084px);
+        transform: translate(73.9292px, 60.71084px);
+    }
+
+    40% {
+        -webkit-transform: translate(73.9292px, 47.71084px);
+        transform: translate(73.9292px, 47.71084px);
+    }
+
+    50% {
+        opacity: 0;
+        -webkit-transform: translate(76.9292px, 39.71084px) scale(0.3);
+        transform: translate(76.9292px, 39.71084px) scale(0.3);
+    }
+
+    100% {
+        opacity: 1;
+        -webkit-transform: translate(73.9292px, 47.71084px) scale(1);
+        transform: translate(73.9292px, 47.71084px) scale(1);
+    }
+}
+
+@keyframes logo-drip {
+    0% {
+        opacity: 1;
+        -webkit-transform: translate(73.9292px, 47.71084px);
+        transform: translate(73.9292px, 47.71084px);
+    }
+
+    30% {
+        opacity: 0;
+        -webkit-transform: translate(73.9292px, 60.71084px);
+        transform: translate(73.9292px, 60.71084px);
+    }
+
+    40% {
+        -webkit-transform: translate(73.9292px, 47.71084px);
+        transform: translate(73.9292px, 47.71084px);
+    }
+
+    50% {
+        opacity: 0;
+        -webkit-transform: translate(76.9292px, 39.71084px) scale(0.3);
+        transform: translate(76.9292px, 39.71084px) scale(0.3);
+    }
+
+    100% {
+        opacity: 1;
+        -webkit-transform: translate(73.9292px, 47.71084px) scale(1);
+        transform: translate(73.9292px, 47.71084px) scale(1);
+    }
+}
+
+.logo.animate #can {
+    -webkit-animation: logo-pour 1s ease-in-out forwards;
+    animation: logo-pour 1s ease-in-out forwards;
+    -webkit-transform-origin: center;
+    transform-origin: center;
+}
+
+.logo.animate #drop {
+    -webkit-animation: logo-drip 1.5s ease-in-out forwards;
+    animation: logo-drip 1.5s ease-in-out forwards;
+    -webkit-transform-origin: left top;
+    transform-origin: left top;
+}
+
+
+
+/*
+========================================================================== 
+CODE SECTIONS 
+==========================================================================   
+*/
+
+
+[data-theme="dark"] {
+    --ec-title-color: #373c46;
+    --ec-bg-primary: #d5dbe6;
+    --ec-bg-secondary: #2b303b;
+    --ec-border-color: #334155;
+    --ec-text-color: #F1F5F9;
+    --ec-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.expressive-code {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.expressive-code .frame.has-title .title {
+    color: var(--ec-title-color);
+    background-color: var(--ec-bg-primary);
+}
+
+.expressive-code .frame {
+    background-color: var(--ec-bg-primary);
+    border-radius: 5px;
+}
+
+.expressive-code pre {
+    background-color: var(--ec-bg-secondary);
+    color: var(--ec-text-color);
+}
+
+.expressive-code code {
+    padding: 1rem;
+    color: var(--ec-text-color);
+}
+
+.expressive-code .frame.is-terminal .header {
+    background-color: var(--ec-bg-primary);
+}
+
+.expressive-code .frame.has-title:not(.is-terminal) .header {
+    background: none;
+    color: var(--ec-title-color);
+}
+
+.expressive-code .frame.has-title:not(.is-terminal) .header::before {
+    content: none;
+}
+
+.expressive-code .frame.has-title:not(.is-terminal) .title::after {
+    content: none;
 }

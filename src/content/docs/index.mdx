@@ -4,37 +4,267 @@ description: Diesel is the most productive way to interact with databases in Rus
 template: splash
 hero:
   tagline: Diesel is the most productive way to interact with databases in Rust because of its safe and composable abstractions over queries.
-  image:
-    file: ../../assets/images/logo.svg
   actions:
-    - text: Getting Started
+    - text: 🚀 Getting Started
       link: /guides/getting-started
-      icon: right-arrow
-      variant: primary
-    - text: Contribute to Diesel
+      class: "lolik"
+    - text: ⭐ Contribute to Diesel
       link: "#contribute"
-      icon: external
-      variant: secondary
+
+head:
+  - tag: style
+    content: |
+      body .main-pane {
+          background: -webkit-linear-gradient(#535379, #c3c3d6);
+          background: linear-gradient(#535379, #c3c3d6);
+          background-repeat: no-repeat;
+          background-attachment: fixed;
+      }
+
+      .hero {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        text-align: center !important;
+        
+        /* Remove all grid properties */
+        grid-template-columns: 1fr !important;
+        grid-template-areas: none !important;
+        gap: 0 !important;
+      }
+      
+      /* Center all direct children */
+      .hero > * {
+        max-width: 1200px !important;
+        width: 100% !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+      }
+      
+      /* Center any nested components */
+      .hero :where(h1, h2, h3, h4, h5, h6, p, div, section, article, aside) {
+        text-align: center !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+      }
+      
+      .rust-link {
+        color: var(--primary-gold);
+      }
+      
+      .rust-link:hover {
+        color: #ffbe24;
+      }
+
+      /* Override the media query */
+      @media (min-width: 50rem) {
+        .hero {
+          display: flex !important;
+          flex-direction: column !important;
+          align-items: center !important;
+          justify-content: center !important;
+          grid-template-columns: 1fr !important;
+        }
+        
+        /* Target any astro classes */
+        .hero:where([class*="astro-"]) {
+          display: flex !important;
+          flex-direction: column !important;
+          align-items: center !important;
+          justify-content: center !important;
+        }
+      }
+
+      .hero h1 {
+        font-size: 2.5rem;
+        width: 70%;
+        margin-bottom: 7rem;
+      }
+
+      .hero .tagline {
+        color: #ffffff;
+      }
+
+      .hero a.sl-link-button {
+        transition: all 0.2s !important;
+        font-weight: 400;
+        letter-spacing: 0.03em; 
+      }
+        
+      /* First button (Getting Started) */
+      .hero a.sl-link-button:first-of-type {
+        background: var(--primary-gold) !important;
+        color: #1a1d23 !important;
+        border: none !important;
+      }
+        
+      .hero a.sl-link-button:first-of-type:hover {
+        background: #ffd700 !important;
+        box-shadow: 0 10px 20px rgba(237, 189, 15, 0.2) !important;
+      }
+        
+      /* Second button (Contribute) */
+      .hero a.sl-link-button:nth-of-type(2) {
+        background: none !important;
+        color: white !important;
+        border: none !important;
+      }
+        
+      .hero a.sl-link-button:nth-of-type(2):hover {
+        background: #8989ae !important;
+        border-color: var(--primary-gold) !important;
+      }
+
+      /* Features */
+      .features-img-container {
+        background-color: rgba(255, 255, 255, 0.15);
+        box-shadow: 0px 10px 50px 0px rgba(0, 0, 0, 0.05), inset 0px 1px 0px 0px rgba(255, 255, 255, 0.18);
+        border-radius: 3px;
+        height: 4.5em;
+        width: 4.5em;
+        
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .features-img {
+        max-width: 60%;
+        max-height: 60%;
+        margin-bottom: 0;
+      }
+
+      .feature-side-by-side {
+        display: flex;
+        gap: 1rem;
+        align-items: flex-start;
+      }
+      
+      .feature-img-side {
+        flex-shrink: 0;
+        width: 5rem;
+      }
+      
+      .feature-card-side {
+        flex: 1;
+      }
+      
+      .feature-row-aligned {
+        margin-bottom: 10rem;
+      }
+
+      /* Large screens (e.g., > 50rem): Force cards into a single aligned row */
+      @media (min-width: 50rem) {
+          .feature-row-aligned .card-grid {
+              display: grid;
+              grid-template-columns: repeat(auto-fit, minmax(0, 1fr)) !important;
+              gap: 1.5rem;
+              align-items: start !important;
+          }
+      }
+
+      .feature-row-aligned .card {
+          background-color: transparent !important;
+          border: none !important;
+          box-shadow: none !important;
+          padding: 0;
+      }
+
+      .feature-row-aligned .card h3 {
+          color: var(--sl-color-white);
+      }
+
+      /* 
+      See some examples
+      Target the Starlight Tabs component 
+      */
+      starlight-tabs.astro-esqgolmp {
+        display: grid;
+        grid-template-columns: 240px 1fr;
+        gap: 2rem;
+        margin: 2rem 0;
+      }
+
+      /* Move tablist to left column */
+      starlight-tabs .tablist-wrapper.astro-esqgolmp {
+        grid-column: 1;
+        border-right: 2px solid rgba(255, 215, 0, 0.2);
+        padding-right: 1.5rem;
+      }
+
+      /* Make tabs vertical */
+      starlight-tabs ul[role="tablist"].astro-esqgolmp {
+        flex-direction: column !important;
+        gap: 0.5rem !important;
+      }
+
+      /* Style tab buttons */
+      starlight-tabs .tab.astro-esqgolmp a.astro-esqgolmp {
+        display: block !important;
+        width: 100% !important;
+        text-align: left !important;
+        padding: 0.75rem 1rem !important;
+        border-radius: 6px !important;
+        border: 1px solid transparent !important;
+        background: transparent !important;
+        color: rgba(255, 255, 255, 0.7) !important;
+        transition: all 0.2s !important;
+        margin-bottom: 0.25rem !important;
+      }
+
+      /* Hover state */
+      starlight-tabs .tab.astro-esqgolmp a.astro-esqgolmp:hover {
+        background: rgba(255, 255, 255, 0.05) !important;
+        color: white !important;
+      }
+
+      /* Active tab */
+      starlight-tabs .tab.astro-esqgolmp a.astro-esqgolmp[aria-selected="true"] {
+        background: rgba(255, 215, 0, 0.1) !important;
+        color: var(--primary-gold) !important;
+        border-color: rgba(255, 215, 0, 0.3) !important;
+        font-weight: 600 !important;
+      }
+
+      /* Content goes to right column */
+      starlight-tabs [role="tabpanel"] {
+        grid-column: 2;
+      }
 ---
 
 import { Card, CardGrid, Tabs, TabItem } from '@astrojs/starlight/components';
 import { features, communityProjects, sponsors, projects } from '../../data/index.js';
+import Footer from '../../components/Footer.astro';
+
+
+
 
 <div style="text-align: center; margin-bottom: 4rem;">
     ## Why did we make Diesel? 
 </div>
 
 
-<CardGrid stagger>
-  {features.map((feature) => (
-    <Card 
-      key={feature.title}
-      title={`<img src="${feature.img}" style="width:2.5rem; display:inline; margin-right:8px; vertical-align:middle;"> ${feature.title}`}
-    >
-      {feature.text}
-    </Card>
-  ))}
-</CardGrid>
+<div class="feature-row-aligned">
+  <CardGrid>
+    {features.map((feature) => (
+      <div class="feature-side-by-side">
+        <div class="feature-img-side">
+          <div class="features-img-container">
+            <img class="features-img" src={feature.img} />
+          </div>
+        </div>
+        <div class="feature-card-side">
+          <h4>{feature.title}</h4>
+          <div key={feature.title}>
+            <p>{feature.text}</p>
+          </div>
+        </div>
+      </div>
+    ))}
+  </CardGrid>
+</div>
+
 
 
 <div style="text-align: center; margin-bottom: 4rem;">
@@ -251,26 +481,25 @@ import { features, communityProjects, sponsors, projects } from '../../data/inde
 
   <TabItem label="Community Extensions">
 
-
-<div style="display: flex; flex-direction: column; gap: 1rem;">
-  {communityProjects.map((project) => (
-    <Card key={project.name}>
-      <div style="display: flex; justify-content: space-between; align-items: center; gap: 1rem;">
-        <h4 style="margin: 0;">
-          <a href={project.githubUrl} target="_blank" style="text-decoration: underline; color: inherit;">
-            <code>{project.name}</code>
+  <div style="display: flex; flex-direction: column; gap: 1rem;">
+    {communityProjects.map((project) => (
+      <Card key={project.name}>
+        <div style="display: flex; justify-content: space-between; align-items: center; gap: 1rem;">
+          <h4 style="margin: 0;">
+            <a href={project.githubUrl} target="_blank" style="text-decoration: underline; color: inherit;">
+              <code>{project.name}</code>
+            </a>
+          </h4>
+          <a href={project.crateUrl} target="_blank">
+            <img src={project.badge} height="20" alt={`${project.name} on crates.io`} />
           </a>
-        </h4>
-        <a href={project.crateUrl} target="_blank">
-          <img src={project.badge} height="20" alt={`${project.name} on crates.io`} />
-        </a>
-      </div>
-      <p style="margin-top: 0.75rem; margin-bottom: 0;">
-        {project.description}
-      </p>
-    </Card>
-  ))}
-</div>
+        </div>
+        <p style="margin-top: 0.75rem; margin-bottom: 0;">
+          {project.description}
+        </p>
+      </Card>
+    ))}
+  </div>
 
     Something missing? Submit an issue [here](https://github.com/sgrif/diesel.rs-website).
 
@@ -278,7 +507,7 @@ import { features, communityProjects, sponsors, projects } from '../../data/inde
 </Tabs>
 
 
-<div style="text-align: center; margin-top: 4rem;">
+<div style="text-align: center; margin-top: 5rem; margin-bottom: 2rem;">
     ## Contribute
 </div>
 
@@ -292,38 +521,46 @@ The Diesel project is always looking for people to help with various parts of th
 * [Sponsoring](https://github.com/weiznich) the maintainers.
 
 
-<div style="text-align: center; margin-top: 4rem;">
+<div style="text-align: center; margin-top: 5rem; margin-bottom: 3rem;">
     ## Security Reviews
 </div>
 
 * October 2025 (Diesel 2.3): [Review](/NGICore-Diesel-penetration-test-report-2025-1.0.pdf) by [RadicallyOpenSecurity](https://www.radicallyopensecurity.com/) as part of the [NLNet](https://nlnet.nl/project/Diesel/) funding.
 
 
-<div style="text-align: center; margin-top: 4rem;">
-    ## Notable Sponsors and Supporters
-</div>
+<div style="text-align: center; margin-top: 5rem; margin-bottom: 3rem;">
+
+## Notable Sponsors and Supporters
+
+<br />
+<br />
 
 We would like to thank all of the sponsors supporting the work on Diesel. Notable large sponsors are:
 
+</div>
+
 <div style="display: flex; flex-direction: column; gap: 1rem;">
   {sponsors.map((sponsor) => (
-    <Card key={sponsor.name}>
+    <span style="margin-bottom: 1rem;">
+      <img 
+        src={sponsor.img} 
+        alt={sponsor.name} 
+        style="width: 20rem; max-width: 100%; height: auto; margin: 0 auto;" 
+      />
+      
+      <br />
+
       <a href={sponsor.url} target="_blank" rel="noopener noreferrer" style="display: block; text-align: center;">
-        <img 
-          src={sponsor.img} 
-          alt={sponsor.name} 
-          style="width: 20rem; max-width: 100%; height: auto; margin: 0 auto;" 
-        />
-        <br />
-        <h4>{sponsor.name}</h4>
+        {sponsor.name}
       </a>
-    </Card>
+    </span>
   ))}
 </div>
 
 <div style="text-align: center; margin-top: 4rem;">
   Additionally we would like to thank all persons sponsoring the project on [GitHub](https://github.com/sponsors/weiznich#sponsors). 
-  <br/>
   Without them developing Diesel wouldn't be possible.
 </div>
 
+
+<Footer/>

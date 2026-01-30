@@ -58,7 +58,8 @@ export default defineConfig({
 			components: {
 				// This replaces the SocialIcons area with custom component
 				SocialIcons: './src/components/Header.astro',
-				Footer: './src/components/Footer.astro',
+				// Hides the theme switch - Dark is used by default
+				ThemeSelect: './src/components/Theme/Empty.astro',
 			},
 			customCss: ['./src/assets/css/main.css'],
 			plugins: [starlightChangelogs()],
