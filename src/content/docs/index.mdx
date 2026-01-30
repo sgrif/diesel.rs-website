@@ -180,36 +180,25 @@ head:
       Target the Starlight Tabs component 
       */
       starlight-tabs.astro-esqgolmp {
+        background-color: rgba(255, 255, 255, 0.15);
         display: grid;
         grid-template-columns: 240px 1fr;
         gap: 2rem;
-        margin: 2rem 0;
-      }
-
-      /* Move tablist to left column */
-      starlight-tabs .tablist-wrapper.astro-esqgolmp {
-        grid-column: 1;
-        border-right: 2px solid rgba(255, 215, 0, 0.2);
-        padding-right: 1.5rem;
+        padding-right: 2rem;
       }
 
       /* Make tabs vertical */
       starlight-tabs ul[role="tablist"].astro-esqgolmp {
         flex-direction: column !important;
-        gap: 0.5rem !important;
+        gap: 1rem !important;
       }
 
       /* Style tab buttons */
       starlight-tabs .tab.astro-esqgolmp a.astro-esqgolmp {
-        display: block !important;
         width: 100% !important;
-        text-align: left !important;
-        padding: 0.75rem 1rem !important;
-        border-radius: 6px !important;
+        padding: 1rem !important;
         border: 1px solid transparent !important;
-        background: transparent !important;
         color: rgba(255, 255, 255, 0.7) !important;
-        transition: all 0.2s !important;
         margin-bottom: 0.25rem !important;
       }
 
@@ -223,13 +212,16 @@ head:
       starlight-tabs .tab.astro-esqgolmp a.astro-esqgolmp[aria-selected="true"] {
         background: rgba(255, 215, 0, 0.1) !important;
         color: var(--primary-gold) !important;
-        border-color: rgba(255, 215, 0, 0.3) !important;
-        font-weight: 600 !important;
+      }
+      
+      .community-project {
+        background-color: #2b303b33;
+        padding: 0.75em;
+        margin-bottom: 1.5em;
       }
 
-      /* Content goes to right column */
-      starlight-tabs [role="tabpanel"] {
-        grid-column: 2;
+      starlight-tabs ul[role="tablist"].astro-esqgolmp:where(.astro-esqgolmp)[role=tablist] {
+        border-bottom: none;
       }
 ---
 
@@ -272,7 +264,7 @@ import Footer from '../../components/Footer.astro';
 </div>
 
 
-<div style="text-align: center; margin-top: 4rem;">
+<div style="text-align: center; margin: 3rem;">
     ## See some examples
 </div>
 
@@ -467,13 +459,19 @@ import Footer from '../../components/Footer.astro';
 
   <TabItem label="Popular Projects using Diesel">
     {projects.map((project) => (
-      <Card 
-        key={project.name}
-        title={`<a href="${project.url}" target="_blank" style="text-decoration: none; color: inherit;">${project.name}</a>`}
-      >
+      <div key={project.name} className="community-project">
+
+        <h2>
+          <a href={project.url} target="_blank">
+            {project.name}
+          </a>
+        </h2>
+        
         <img src={project.img} style={project.imgStyles} alt={project.name} />
+
         {project.description}
-      </Card>
+      
+      </div>
     ))}
 
     Do you have found some cool project that should be linked here? Submit an issue [here](https://github.com/sgrif/diesel.rs-website).
@@ -481,27 +479,39 @@ import Footer from '../../components/Footer.astro';
 
   <TabItem label="Community Extensions">
 
-  <div style="display: flex; flex-direction: column; gap: 1rem;">
+  The community has made some utilities to help make diesel even easier to work with!
+
+  <div>
     {communityProjects.map((project) => (
-      <Card key={project.name}>
+      <div key={project.name} className="community-project">
+        
         <div style="display: flex; justify-content: space-between; align-items: center; gap: 1rem;">
+        
           <h4 style="margin: 0;">
-            <a href={project.githubUrl} target="_blank" style="text-decoration: underline; color: inherit;">
-              <code>{project.name}</code>
+            <a href={project.githubUrl} target="_blank" style="font-family: monospace;">
+              {project.name}
             </a>
           </h4>
+        
           <a href={project.crateUrl} target="_blank">
-            <img src={project.badge} height="20" alt={`${project.name} on crates.io`} />
+            <img src={project.badge} alt={`${project.name} on crates.io`} />
           </a>
+        
         </div>
+
+        <br/>
+        
         <p style="margin-top: 0.75rem; margin-bottom: 0;">
           {project.description}
         </p>
-      </Card>
+      
+      </div>
     ))}
   </div>
 
-    Something missing? Submit an issue [here](https://github.com/sgrif/diesel.rs-website).
+  Something missing? Submit an issue [here](https://github.com/sgrif/diesel.rs-website).
+
+  <br />
 
   </TabItem>
 </Tabs>

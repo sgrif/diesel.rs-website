@@ -24,7 +24,7 @@ a:visited {
 a {
     text-decoration: none;
     color: var(--link-color, #007acc);
-    transition: all 0.3s ease;
+    /* transition: all 0.3s ease; */
 }
 
 a:hover {
@@ -403,6 +403,7 @@ CODE SECTIONS
 .expressive-code .frame.has-title .title {
     color: var(--ec-title-color);
     background-color: var(--ec-bg-primary);
+    border-radius: 5px;
 }
 
 .expressive-code .frame {
