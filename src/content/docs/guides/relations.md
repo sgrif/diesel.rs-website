@@ -9,6 +9,7 @@ Each step in this guide will build on the previous, and is meant to be followed 
 **This guide assumes that you have gone through the [Getting Started Guide](/guides/getting-started/)**
 
 ## New project
+<br />
 
 Let's make a new project for this guide:
 
@@ -31,9 +32,7 @@ cargo add dotenvy
 Your `Cargo.toml` file should now contain entries similar to the following ones:
 
 
-[Cargo.toml](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/relations/Cargo.toml#L8-L10)
-
-```toml title="Cargo.toml"
+```toml title="Cargo.toml" link="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/relations/Cargo.toml#L8-L10"
 [dependencies]
 diesel = { version = "2.1.0", features = ["postgres"] }
 dotenvy = "0.15.6"
@@ -53,12 +52,14 @@ diesel setup
 ```
 
 ## 1-to-many or 1:m
+<br />
 
 We need to create two different objects that we want to connect, for the first
 1-to-many example let's create books and pages. A book can have many pages, but
 a page can only belong to a single book.
 
 ## Migrations
+<br />
 
 ```sh
 diesel migration generate create_books
@@ -68,9 +69,7 @@ diesel migration generate create_pages
 Next, we'll write the SQL for the book migration, which should be straight forward:
 
 
-[up.sql](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/relations/migrations/2023-02-08-193717_create_books/up.sql)
-
-```sql title="up.sql"
+```sql title="up.sql" link="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/relations/migrations/2023-02-08-193717_create_books/up.sql"
 CREATE TABLE books (
   id SERIAL PRIMARY KEY,
   title VARCHAR NOT NULL
@@ -80,8 +79,7 @@ CREATE TABLE books (
 The pages migration needs to point to the book they appear in, therefore we add a reference to the book to the migration:
 
 
-[up.sql](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/relations/migrations/2023-02-08-193718_create_pages/up.sql)
-```sql title="up.sql"
+```sql title="up.sql" link="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/relations/migrations/2023-02-08-193718_create_pages/up.sql"
 CREATE TABLE pages (
   id SERIAL PRIMARY KEY,
   page_number INT NOT NULL,
@@ -94,9 +92,8 @@ CREATE TABLE pages (
 Let's add the corresponding down migrations as well:
 
 
-[down.sql](https://github.com/diesel-rs/diesel/tree/2.3.x/examples/postgres/relations/migrations/2023-02-08-193717_create_books/down.sql)
 
-```sql title="down.sql"
+```sql title="down.sql" link="https://github.com/diesel-rs/diesel/tree/2.3.x/examples/postgres/relations/migrations/2023-02-08-193717_create_books/down.sql"
 DROP TABLE books;
 ```
 
@@ -104,9 +101,7 @@ DROP TABLE books;
 and again for pages
 
 
-[down.sql](https://github.com/diesel-rs/diesel/tree/2.3.x/examples/postgres/relations/migrations/2023-02-08-193718_create_pages/down.sql)
-
-```sql title="down.sql"
+```sql title="down.sql" link="https://github.com/diesel-rs/diesel/tree/2.3.x/examples/postgres/relations/migrations/2023-02-08-193718_create_pages/down.sql"
 DROP TABLE pages;
 ```
 
@@ -124,13 +119,13 @@ diesel migration redo -n 2
 ```
 
 ## Schema.rs
+<br />
 
 The generated schema should now look like this:
 
 
-[schema.rs](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/relations/src/schema.rs)
 
-```rust title="schema.rs"
+```rust title="schema.rs" link="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/relations/src/schema.rs"
 // @generated automatically by Diesel CLI.
 
 diesel::table! {
@@ -162,13 +157,12 @@ joinable into books via the `book_id` and allows for the two to appear in the
 same query. This allows to join this table without specify an explicit `ON` clause. Diesel generates these `joinable!` instances only for cases where there is only a single relation between two tables based on a non-composite foreign key. All other cases require to specify an explicit the `ON` clause while constructing such joins.
 
 ## Models
+<br />
 
 Let's reflect this now in our `model.rs`
 
 
-[src/model.rs](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/relations/src/model.rs#L22-L38)
-
-```rust title="src/model.rs"
+```rust title="src/model.rs" link="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/relations/src/model.rs#L22-L38"
 use diesel::prelude::*;
 
 use crate::schema::{books, pages};
@@ -208,13 +202,13 @@ foreign key field has a different name you can specify that via the `foreign_key
 [associations-docs]: https://docs.diesel.rs/2.3.x/diesel/associations/derive.Associations.html
 
 ## Reading data
+<br />
 
 For ease of following this tutorial, we are going to put all the code into `main.rs`. We create a separate function for each part of the guide. See the linked code for the complete file content.
 
 
-[src/main.rs](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/relations/src/main.rs#L88-L98)
 
-```rust title="src/main.rs"
+```rust title="src/main.rs" link="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/relations/src/main.rs#L88-L98"
 let momo = books::table
     .filter(books::title.eq("Momo"))
     .select(Book::as_select())
@@ -249,9 +243,8 @@ for performance because it executes an unbound number of queries.
 Diesel's [associations API] sidesteps that problem by providing a special tailored API for such cases:
 
 
-[src/main.rs](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/relations/src/main.rs#L100-L115)
 
-```rust title="src/main.rs"
+```rust title="src/main.rs" link="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/relations/src/main.rs#L100-L115"
 let all_books = books::table.select(Book::as_select()).load(conn)?;
 
 // get all pages for all books
@@ -316,19 +309,19 @@ let pages_per_book = pages
 
 
 ## Joins
+<br />
 
 We have currently loaded all pages for a given book by using the API provided by the `diesel::associations` module.
 This API is designed to work for parent-child relations, but not the other way around. Using plain SQL joins is
 the preferred way to resolve such relations the other way around. Diesel provides two kinds of joins: `INNER JOIN` and `LEFT JOIN`, where the former expects that linked elements always exist. The latter allows to include rows with missing linked elements. Both constructs load data by executing a single query.
 
 ### `INNER JOIN`
+<br />
 
 [`QueryDsl::inner_join`](https://docs.diesel.rs/2.3.x/diesel/prelude/trait.QueryDsl.html#method.inner_join) allows to construct `INNER JOIN` statements between different tables.
 
 
-[src/main.rs](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/relations/src/main.rs#L70-L76)
-
-```rust title="src/main.rs"
+```rust title="src/main.rs" link="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/relations/src/main.rs#L70-L76"
 let page_with_book = pages::table
     .inner_join(books::table)
     .filter(books::title.eq("Momo"))
@@ -372,13 +365,12 @@ For joining the same table more than once, refer to the [`alias!`][doc-alias] ma
 [doc-alias]: https://docs.diesel.rs/2.3.x/diesel/macro.alias.html
 
 ### `LEFT JOIN`
+<br />
 
 [`QueryDsl::left_join`](https://docs.diesel.rs/2.3.x/diesel/prelude/trait.QueryDsl.html#method.left_join) allows to construct `LEFT JOIN` statements between different tables.
 
 
-[src/main.rs](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/relations/src/main.rs#L78-L83)
-
-```rust title="src/main.rs"
+```rust title="src/main.rs" link="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/relations/src/main.rs#L78-L83"
 let book_without_pages = books::table
     .left_join(pages::table)
     .select((Book::as_select(), Option::<Page>::as_select()))
@@ -397,6 +389,7 @@ This function can be called for individual columns, expressions or tuples contai
 [doc-nullable]: https://docs.diesel.rs/2.3.x/diesel/expression_methods/trait.NullableExpressionMethods.html#method.nullable
 
 ## many-to-many or m:n
+<br />
 
 We currently have books and they have pages, but books have an author, too. To
 be precise, a book can have more than one author and an author can have more
@@ -406,6 +399,7 @@ concept of `has_many` but instead we are going create a "join table"
 that in action.
 
 ## Migrations
+<br />
 
 ```sh
 diesel migration generate create_authors
@@ -415,9 +409,7 @@ diesel migration generate create_books_authors
 Let's keep it simple and just give our `authors` a name.
 
 
-[up.sql](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/relations/migrations/2023-02-17-084424_add_authors/up.sql)
-
-```sql title="up.sql"
+```sql title="up.sql" link="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/relations/migrations/2023-02-17-084424_add_authors/up.sql"
 CREATE TABLE authors (
   id SERIAL PRIMARY KEY,
   name VARCHAR NOT NULL
@@ -428,12 +420,9 @@ CREATE TABLE authors (
 And the corresponding down migration.
 
 
-[down.sql](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/relations/migrations/2023-02-17-084424_add_authors/down.sql)
-
-```sql title="down.sql"
+```sql title="down.sql" link="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/relations/migrations/2023-02-17-084424_add_authors/down.sql"
 DROP TABLE authors;
 ```
-
 
 
 The `books_authors` migration has two foreign keys which point to book's id and
@@ -441,9 +430,8 @@ the author's id. This allows us to create a many-to-many relation between books
 and authors.
 
 
-[up.sql](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/relations/migrations/2023-02-17-084617_add_books_authors/up.sql)
 
-```sql title="up.sql"
+```sql title="up.sql" link="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/relations/migrations/2023-02-17-084617_add_books_authors/up.sql"
 CREATE TABLE books_authors (
   book_id INTEGER REFERENCES books(id),
   author_id INTEGER REFERENCES authors(id),
@@ -455,9 +443,7 @@ CREATE TABLE books_authors (
 And the corresponding down migration.
 
 
-[down.sql](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/relations/migrations/2023-02-17-084617_add_books_authors/down.sql)
-
-```sql title="down.sql"
+```sql title="down.sql" link="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/relations/migrations/2023-02-17-084617_add_books_authors/down.sql"
 DROP TABLE books_authors;
 ```
 
@@ -472,13 +458,13 @@ diesel migration redo -n 2
 
 
 ## Model
+<br />
 
 Now let's reflect the join table in the `model.rs`. To keep this brief, let's only look at what we are adding.
 
 
-[src/model.rs](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/relations/src/model.rs#L1-L20)
 
-```rust title="src/model.rs"
+```rust title="src/model.rs" link="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/relations/src/model.rs#L1-L20"
 use diesel::prelude::*;
 
 use crate::schema::{books, pages, authors, books_authors};
@@ -506,13 +492,13 @@ pub struct BookAuthor {
 The important part is to give `BooksAuthor` two `belongs_to` that point to the book and the author.
 
 ## Reading data
+<br />
 
 If we now want to load all books of a given author we can combine joins and diesels `BelongingToDsl` to load these data:
 
 
-[src/main.rs](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/relations/src/main.rs#L121-L131)
 
-```rust title="src/main.rs"
+```rust title="src/main.rs" link="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/relations/src/main.rs#L121-L131"
 let astrid_lindgren = authors::table
     .filter(authors::name.eq("Astrid Lindgren"))
     .select(Author::as_select())
@@ -531,10 +517,9 @@ As described before `BookAuthor::belonging_to` constructs a query to which we ca
 
 The same approach can be applied the other way around, to load all authors for a given book:
 
-:::code-block
 
-[src/main.rs](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/relations/src/main.rs#L133-L143)
-```rust title="src/main.rs"
+
+```rust title="src/main.rs" link="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/relations/src/main.rs#L133-L143"
 let collaboration = books::table
     .filter(books::title.eq("Pippi and Momo"))
     .select(Book::as_select())
@@ -552,8 +537,7 @@ println!("Authors for \"Pippi and Momo\": {authors:?}");
 As before we can use this approach to load a list of all authors and their associated books:
 
 
-[src/main.rs](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/relations/src/main.rs#L146-L162)
-```rust title="src/main.rs"
+```rust title="src/main.rs" link="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/relations/src/main.rs#L146-L162"
 let all_authors = authors::table
     .select(Author::as_select())
     .load(conn)?;

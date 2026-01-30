@@ -54,6 +54,7 @@ We do not provide explicit migration steps but we encourage users to reach out w
 
 
 ## Mutable Connections required<a name="2-0-0-mutable-connection"></a>
+<br />
 
 Diesel now requires mutable access to the [`Connection`] to perform any database interaction. The following changes
 are required for all usages of any [`Connection`] type:
@@ -72,6 +73,7 @@ We expect this to be a straightforward change as the connection already can exec
 
 
 ## Derive attributes<a name="2-0-0-derive-attributes"></a>
+<br />
 
 We have updated all of our Diesel derive attributes to follow the patterns that are used
 widely in the Rust's ecosystem. This means that all of them need to be wrapped by `#[diesel()]` now.  You can now specify multiple attributes on the same line using `,` separator.
@@ -81,6 +83,7 @@ warnings. The attributes can be upgraded by either looking at the warnings or by
 diesel derive documentation reference.
 
 ## `diesel_migration` rewrite<a name = "2-0-0-upgrade-migrations"></a>
+<br />
 
 We have completely rewritten the `diesel_migration` crate. As a part of this rewrite all 
 free standing functions are removed from `diesel_migration`. Equivalent functionality 
@@ -129,6 +132,7 @@ fn run_migration(conn: &mut PgConnection) {
 
 
 ## Changed nullability of operators<a name="2-0-0-nullability-ops"></a>
+<br />
 
 We changed the way how we handle the propagation of null values through binary operators. Diesel 1.x always assumed 
 that the result of a binary operation `value_a > value_b` is not nullable, which does not match the behaviour of the 
@@ -141,6 +145,7 @@ there we recommend to use one of the following functions:
 * [`NullableExpressionMethods::assume_not_null()`](http://docs.diesel.rs/2.0.x/diesel/expression_methods/trait.NullableExpressionMethods.html#method.assume_not_null)
 
 ## Changed nullability of array elements<a name="2-0-0-nullability-of-array-elements"></a>
+<br />
 
 We changed the inferred SQL type for columns with array types for the PostgreSQL backend. Instead of using `Array<ST>` 
 we now infer `Array<Nullable<ST>>` to support arrays containing `NULL` values. This change implies a change mapping
@@ -155,6 +160,7 @@ of columns of the corresponding types. It is possible to handle this change usin
 [`#[derive(Queryable)]`]: http://docs.diesel.rs/2.0.x/diesel/deserialize/derive.Queryable.html
 
 ## Custom SQL type implementations<a name="2-0-0-custom-type-implementation"></a>
+<br />
 
 We changed how we mark sql types as nullable at type level. For this we replaced the `NonNull` trait with a 
 more generic [`SqlType`] trait, which allows to mark a sql type as (non-) nullable. This may affect custom
@@ -180,6 +186,7 @@ as long as they appear on any table. This feature currently only supports the Po
 do not support real custom types at SQL level at all.
 
 ## Changed `ToSql` implementations<a name="2-0-0-to-sql"></a>
+<br />
 
 We restructured the way Diesel serializes Rust values to their backend specific representation.
 This enables us to skip copying the value at all if the specific backend supports writing to a 
@@ -202,6 +209,7 @@ For backend concrete implementations, the following functions allow You to work 
 
 
 ## Changed `FromSql` implementations<a name="2-0-0-from-sql"></a>
+<br />
 
 We changed the raw value representation for both PostgreSQL and MySQL
 backends, from a `&[u8]` to an opaque type. This allows us to include additional information like the database side
@@ -224,6 +232,7 @@ impl<DB: Backend> FromSql<YourSqlType, DB> for YourType {
 
 
 ## `no_arg_sql_function`<a name="2-0-0-no_arg_sql_function"></a>
+<br />
 
 The [`no_arg_sql_function!`] was deprecated without direct replacement. At the same time the
 [`sql_function!`] macro gained support for sql functions without argument. This support generates slightly 
@@ -248,6 +257,7 @@ affects all of the usages of the [`no_arg_sql_function!`] in third party crates.
 
 
 ## Changed accepted argument to `eq_any()` for the PostgreSQL backend <a name="2-0-0-changed_eq_any"></a>
+<br />
 
 Diesel 2.0 introduces an optimisation that replaces the `IN($1, ..., $n)` expression generated previously by `.eq_any()` with the more optimised `= ANY($1)` which binds the parameter as single array instead of binding each element separately. This improves the performance of large lists and allows us to keep such queries in the prepared statement cache, which enables future performance improvements. Unfortunately not all previously accepted arguments are accepted now. Newly rejected cases include:
 
@@ -257,6 +267,7 @@ Diesel 2.0 introduces an optimisation that replaces the `IN($1, ..., $n)` expres
 Both cases can be worked around by using boxed queries and repeated chained equality checks.
 
 ## Replacement of `NonAggregate` with `ValidGrouping`<a name="2-0-0-upgrade-non-aggregate"></a>
+<br />
 
 Diesel now fully enforces the aggregation rules, which required us to change the way we represent the aggregation 
 at the type system level. This is used to provide `group_by` support. Diesel's aggregation rules 
@@ -292,12 +303,14 @@ change shows the strictly equivalent version:
 ```
 
 ## Other changes to generics<a name="2-0-0-generic-changes"></a>
+<br />
 
 In addition to the changes listed above, we changed numerous internal details of Diesel. This will have impact on
 most codebases that include non-trivial generic code abstracting over Diesel. This section tries to list as much of those
 changes as possible
 
 ### Removed most of the non-public reachable API
+<br />
 
 With Diesel 2.0 we removed most of the API which was marked with `#[doc(hidden)]`. Technically these parts of the API 
 have always been private to Diesel. This change enforces this distinction in stricter way. In addition, some
@@ -309,6 +322,7 @@ If you depended on such an API and you cannot find a suitable replacement we inv
 feature as part of the stable API.
 
 ### Changed structure of the deserialization traits
+<br />
 
 We changed the internal structure of the [`FromSqlRow`], [`Queryable`] and [`QueryableByName`] trait family used for deserialization. This change allows us to unify our deserialization code.
 We hopefully put sufficient wild card implementations in place so that old trait bounds imply 
@@ -324,6 +338,7 @@ on the corresponding [`RunQueryDsl`] methods.
 [`QueryableByName`]: http://docs.diesel.rs/2.0.x/diesel/prelude/trait.QueryableByName.html
 
 ### Changed the scope of `QueryFragment` implementations
+<br />
 
 With Diesel 2.0, we introduced a way to specialise [`QueryFragment`] implementations for specific backend, while 
 providing a generic implementation for other backends. To be able to use this feature in the future we marked

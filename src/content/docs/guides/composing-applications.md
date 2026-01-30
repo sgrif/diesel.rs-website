@@ -24,9 +24,8 @@ Rather than continuously writing
 we can instead pull this out into a function.
 
 
-[src/models/krate.rs](https://github.com/rust-lang/crates.io/blob/12e75f1a0480f86b7b2efc76e155f449b3be9287/src/models/krate.rs#L168-L170)
 
-```rust title="src/models/krate.rs"
+```rust title="src/models/krate.rs" link="https://github.com/rust-lang/crates.io/blob/12e75f1a0480f86b7b2efc76e155f449b3be9287/src/models/krate.rs#L168-L170"
 use diesel::dsl::Eq;
 use diesel::prelude::define_sql_function;
 use diesel::sql_types::Text;
@@ -53,9 +52,7 @@ we can make the method generic.
 
 
 
-[src/models/krate.rs](https://github.com/rust-lang/crates.io/blob/12e75f1a0480f86b7b2efc76e155f449b3be9287/src/models/krate.rs#L168-L170):
-
-```rust title="src/models/krate.rs"
+```rust title="src/models/krate.rs" link="https://github.com/rust-lang/crates.io/blob/12e75f1a0480f86b7b2efc76e155f449b3be9287/src/models/krate.rs#L168-L170"
 use diesel::dsl::Eq;
 use diesel::prelude::define_sql_function;
 use diesel::sql_types::Text;
@@ -98,9 +95,8 @@ we can box the value instead.
 [`diesel::dsl`]: https://docs.diesel.rs/2.3.x/diesel/dsl/index.html
 
 
-[src/models/krate.rs](https://github.com/rust-lang/crates.io/blob/12e75f1a0480f86b7b2efc76e155f449b3be9287/src/models/krate.rs#L168-L170)
 
-```rust title="src/models/krate.rs"
+```rust title="src/models/krate.rs" link="https://github.com/rust-lang/crates.io/blob/12e75f1a0480f86b7b2efc76e155f449b3be9287/src/models/krate.rs#L168-L170"
 use diesel::pg::Pg;
 use diesel::prelude::sql_function;
 use diesel::sql_types::Text;
@@ -149,9 +145,8 @@ construct the correct return type for you.
 [`#[diesel::dsl::auto_type]`]: https://docs.diesel.rs/2.3.x/diesel/dsl/attr.auto_type.html
 
 
-[src/models/krate.rs](https://github.com/rust-lang/crates.io/blob/12e75f1a0480f86b7b2efc76e155f449b3be9287/src/models/krate.rs#L172-L177)
 
-```rust title="src/models/krate.rs"
+```rust title="src/models/krate.rs" link="https://github.com/rust-lang/crates.io/blob/12e75f1a0480f86b7b2efc76e155f449b3be9287/src/models/krate.rs#L172-L177"
 impl Crate {
     #[diesel::dsl::auto_type(no_type_alias)]
     fn with_name<'a>(name: &'a str) -> _ {
@@ -174,9 +169,8 @@ Because we almost always select a subset of these columns,
 we have an `all` function which selects the columns we need.
 
 
-[src/models/krate.rs](https://github.com/rust-lang/crates.io/blob/12e75f1a0480f86b7b2efc76e155f449b3be9287/src/models/krate.rs#L185-L187)
 
-```rust title="src/models/krate.rs"
+```rust title="src/models/krate.rs" link="https://github.com/rust-lang/crates.io/blob/12e75f1a0480f86b7b2efc76e155f449b3be9287/src/models/krate.rs#L185-L187"
 use diesel::backend::Backend;
 use diesel::dsl::{AsSelect, Select};
 use diesel::pg::Pg;
@@ -210,9 +204,9 @@ We also frequently found ourselves writing
 `Crate::all().filter(with_name(crate_name))`.
 We can pull that into a function as well.
 
-[src/models/krate.rs](https://github.com/rust-lang/crates.io/blob/12e75f1a0480f86b7b2efc76e155f449b3be9287/src/models/krate.rs#L172-L177)
 
-```rust title="src/models/krate.rs"
+
+```rust title="src/models/krate.rs" link="https://github.com/rust-lang/crates.io/blob/12e75f1a0480f86b7b2efc76e155f449b3be9287/src/models/krate.rs#L172-L177"
 use diesel::dsl::Filter;
 
 type ByName<'a> = Filter<All, WithName<'a>>;
@@ -229,9 +223,8 @@ And just like with expressions, if we don't want to write the return types,
 or we want to dynamically construct the query differently, we can box the whole query.
 
 
-[src/models/krate.rs](https://github.com/rust-lang/crates.io/blob/12e75f1a0480f86b7b2efc76e155f449b3be9287/src/models/krate.rs#L172-L177)s)
 
-```rust title="src/models/krate.rs"
+```rust title="src/models/krate.rs" link="https://github.com/rust-lang/crates.io/blob/12e75f1a0480f86b7b2efc76e155f449b3be9287/src/models/krate.rs#L172-L177"
 use diesel::expression::{Expression, AsExpression};
 use diesel::pg::Pg;
 use diesel::sql_types::Text;
@@ -269,9 +262,8 @@ Finally it's again possible to use `#[diesel::dsl::auto_type]` to let the proc-m
 infer the correct return type for you.
 
 
-[src/models/krate.rs](https://github.com/rust-lang/crates.io/blob/12e75f1a0480f86b7b2efc76e155f449b3be9287/src/models/krate.rs#L172-L177)
 
-```rust title="src/models/krate.rs"
+```rust title="src/models/krate.rs" link="https://github.com/rust-lang/crates.io/blob/12e75f1a0480f86b7b2efc76e155f449b3be9287/src/models/krate.rs#L172-L177"
 impl Crate {
     #[diesel::dsl::auto_type(no_type_alias)]
     fn by_name(name: &str) -> _ {
@@ -295,9 +287,8 @@ This allows you to reuse and compose your queries.
 For example, if we had written our `by_name` function like this:
 
 
-[src/models/krate.rs](https://github.com/rust-lang/crates.io/blob/12e75f1a0480f86b7b2efc76e155f449b3be9287/src/models/krate.rs#L172-L177)
 
-```rust title="src/models/krate.rs"
+```rust title="src/models/krate.rs" link="https://github.com/rust-lang/crates.io/blob/12e75f1a0480f86b7b2efc76e155f449b3be9287/src/models/krate.rs#L172-L177"
 impl Crate {
     fn by_name(name: &str, conn: &mut PgConnection) -> QueryResult<Self> {
         Self::all()

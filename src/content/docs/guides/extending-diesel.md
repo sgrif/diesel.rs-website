@@ -17,6 +17,7 @@ This guide is only going to cover extending the query builder.
 How to add support for new SQL types will be covered in a future guide.
 
 ## `sql_function!`
+<br />
 
 The easiest and most common way to extend Diesel's query builder
 is by declaring a new SQL function.
@@ -77,6 +78,7 @@ This lets us write `coalesce<hair_color, &str>`.
 More information can be found in [the API documentation](https://docs.diesel.rs/2.3.x/diesel/expression/functions/macro.sql_function.html)
 
 ## Using Custom SQL and How to Extend the Query DSL
+<br />
 
 Often times it's useful to encapsulate a common SQL pattern.
 For example, if you're doing pagination on your queries,
@@ -107,9 +109,8 @@ The implementation will look like this:
 [`QueryFragment`]: https://docs.diesel.rs/2.3.x/diesel/query_builder/trait.QueryFragment.html
 
 
-[src/pagination.rs](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/advanced-blog-cli/src/pagination.rs#L60-L73)
 
-```rust title="src/pagination.rs"
+```rust title="src/pagination.rs" link="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/advanced-blog-cli/src/pagination.rs#L60-L73"
 impl<T> QueryFragment<Pg> for Paginated<T>
 where
     T: QueryFragment<Pg>,
@@ -156,9 +157,8 @@ we'll implement [`Query`] which states the return type as well.
 
 
 
-[src/pagination.rs](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/advanced-blog-cli/src/pagination.rs#L54-L58)
 
-```rust title="src/pagination.rs"
+```rust title="src/pagination.rs" link="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/advanced-blog-cli/src/pagination.rs#L54-L58"
 impl<T: Query> Query for Paginated<T> {
     type SqlType = (T::SqlType, BigInt);
 }
@@ -176,9 +176,8 @@ as well as a `per_page` method which specifies the number of elements per page.
 In order to add new methods to existing types, we can use a trait.
 
 
-[src/pagination.rs]( https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/advanced-blog-cli/src/pagination.rs#L7-L39)
 
-```rust title="src/pagination.rs"
+```rust title="src/pagination.rs" link="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/advanced-blog-cli/src/pagination.rs#L7-L39"
 pub trait Paginate: Sized {
     fn paginate(self, page: i64) -> Paginated<Self>;
 }
@@ -236,9 +235,8 @@ you usually want the records and the total number of pages.
 We can write that method.
 
 
-[src/pagination.rs]( https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/advanced-blog-cli/src/pagination.rs#L41-L51)
 
-```rust title="src/pagination.rs"
+```rust title="src/pagination.rs" link="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/advanced-blog-cli/src/pagination.rs#L41-L51"
 impl<T> Paginated<T> {
     pub fn load_and_count_pages<'a, U>(self, conn: &mut PgConnection) -> QueryResult<(Vec<U>, i64)>
     where
@@ -266,6 +264,7 @@ You can find the full code for this example in [the "advanced blog" example].
 [the "advanced blog" example]: https://github.com/diesel-rs/diesel/tree/2.3.x/examples/postgres/advanced-blog-cli
 
 ## Custom Operators
+<br />
 
 If you're adding support for a new type to Diesel,
 or working with a type that has incomplete support,
@@ -337,9 +336,8 @@ You'll notice all of the operators specify the backend,
 and many of them specify the return type.
 
 
-[src/lib.rs]( https://github.com/diesel-rs/diesel_full_text_search/blob/27b9946831caa8b08177c1818a50cb7f0563c9c0/src/lib.rs#L57-L62)
 
-```rust title="src/lib.rs"
+```rust title="src/lib.rs" link="https://github.com/diesel-rs/diesel_full_text_search/blob/27b9946831caa8b08177c1818a50cb7f0563c9c0/src/lib.rs#L57-L62"
 diesel::infix_operator!(Matches, " @@ ", backend: Pg);
 diesel::infix_operator!(Concat, " || ", TsVector, backend: Pg);
 diesel::infix_operator!(And, " && ", TsQuery, backend: Pg);
@@ -366,9 +364,8 @@ For example, here's how the [`.eq`] method gets defined by Diesel.
 [`.eq`]: https://docs.diesel.rs/2.3.x/diesel/expression_methods/trait.ExpressionMethods.html#method.eq
 
 
-[src/expression_methods/global_expression_methods.rs](https://github.com/diesel-rs/diesel/blob/2.3.x/diesel/src/expression_methods/global_expression_methods.rs#L71-L77)
 
-```rust title="src/expression_methods/global_expression_methods.rs"
+```rust title="src/expression_methods/global_expression_methods.rs" link="https://github.com/diesel-rs/diesel/blob/2.3.x/diesel/src/expression_methods/global_expression_methods.rs#L71-L77"
 pub trait ExpressionMethods: Expression + Sized {
     fn eq<T>(self, other: T) -> dsl::Eq<Self, T>
     where
@@ -404,9 +401,8 @@ If the operator is specific to only one SQL type,
 we can represent that in our trait.
 
 
-[src/expression_methods/global_expression_methods.rs](https://github.com/diesel-rs/diesel/blob/main/diesel/src/expression_methods/bool_expression_methods.rs)
 
-```rust title="src/expression_methods/global_expression_methods.rs"
+```rust title="src/expression_methods/global_expression_methods.rs" link="https://github.com/diesel-rs/diesel/blob/main/diesel/src/expression_methods/bool_expression_methods.rs"
 pub trait BoolExpressionMethods
 where
     Self: Expression<SqlType = Bool> + Sized,
@@ -438,9 +434,8 @@ Here's how [`not`] is defined in Diesel.
 [`not`]: https://docs.diesel.rs/2.3.x/diesel/dsl/fn.not.html
 
 
-[src/expression/not.rs](https://github.com/diesel-rs/diesel/blob/2.3.x/diesel/src/expression/not.rs#L26-L32)
 
-```rust title="src/expression/not.rs"
+```rust title="src/expression/not.rs" link="https://github.com/diesel-rs/diesel/blob/2.3.x/diesel/src/expression/not.rs#L26-L32"
 pub fn not<T>(expr: T) -> not<T>
 where
     T: Expression,
@@ -467,9 +462,8 @@ Instead, we provide a type that lets you write [`Eq<text_col, &str>`].
 [`Eq<text_col, &str>`]: https://docs.diesel.rs/2.3.x/diesel/helper_types/type.Eq.html
 
 
-[src/expression/helper_types.rs](https://github.com/diesel-rs/diesel/blob/2.3.x/diesel/src/expression/helper_types.rs#L21)
 
-```rust title="src/expression/helper_types.rs"
+```rust title="src/expression/helper_types.rs" link="https://github.com/diesel-rs/diesel/blob/2.3.x/diesel/src/expression/helper_types.rs#L21"
 pub type Eq<Lhs, Rhs> = Grouped<super::operators::Eq<Lhs, AsExpr<Rhs, Lhs>>>;
 ```
 

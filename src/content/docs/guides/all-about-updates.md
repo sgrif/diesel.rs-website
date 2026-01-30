@@ -19,9 +19,7 @@ which types implement it. There are three kinds which implement this trait. The 
 If we have a table that looks like this:
 
 
-[src/lib.rs](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_updates/src/lib.rs#L9-L18)
-
-```rust title="src/lib.rs"
+```rust title="src/lib.rs" link="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_updates/src/lib.rs#L9-L18"
 table! {
     posts {
         id -> BigInt,
@@ -38,9 +36,7 @@ table! {
 We could write a query that publishes all posts by doing:
 
 
-[src/lib.rs](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_updates/src/lib.rs#L30-L34)
-
-```rust title="src/lib.rs"
+```rust title="src/lib.rs" link="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_updates/src/lib.rs#L30-L34"
 use crate::posts::dsl::*;
 
 diesel::update(posts).set(draft.eq(false)).execute(conn)
@@ -54,9 +50,7 @@ If we run `println!("{}", debug_query::<Pg, _>(&our_query));`, we'll see the fol
 [`debug_query`]: https://docs.diesel.rs/2.3.x/diesel/fn.debug_query.html
 
 
-[Generated SQL](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_updates/src/lib.rs#L36-L44)
-
-```sql title="Generated SQL"
+```sql title="Generated SQL" link="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_updates/src/lib.rs#L36-L44"
 UPDATE "posts" SET "draft" = $1 -- binds: [false]
 ```
 
@@ -68,9 +62,7 @@ only touch posts where `publish_at` is in the past like so:
 
 
 
-[src/lib.rs](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_updates/src/lib.rs#L46-L54)
-
-```rust title="src/lib.rs"
+```rust title="src/lib.rs" link="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_updates/src/lib.rs#L46-L54"
 use crate::posts::dsl::*;
 use diesel::dsl::now;
 
@@ -84,9 +76,8 @@ diesel::update(posts)
 That would generate the following SQL:
 
 
-[Generated SQL](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_updates/src/lib.rs#L56-L70)
 
-```sql title="Generated SQL"
+```sql title="Generated SQL" link="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_updates/src/lib.rs#L56-L70"
 UPDATE "posts" SET "draft" = $1 WHERE ("posts"."publish_at" < CURRENT_TIMESTAMP) -- binds: [false]
 ```
 
@@ -104,9 +95,8 @@ noting `Use of undeclared type or module (your_tablename)`.
 If we wanted a struct that mapped to our posts table, it'd look something like this:
 
 
-[src/lib.rs](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_updates/src/lib.rs#L20-L28)
 
-```rust title="src/lib.rs"
+```rust title="src/lib.rs" link="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_updates/src/lib.rs#L20-L28"
 #[derive(Queryable, Identifiable, AsChangeset)]
 pub struct Post {
     pub id: i64,
@@ -132,9 +122,7 @@ which you can do by enabling the `chrono` feature on Diesel.
 If we wanted to publish just this post, we could do it like this:
 
 
-[src/lib.rs](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_updates/src/lib.rs#L72-L76)
-
-```rust title="src/lib.rs"
+```rust title="src/lib.rs" link="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_updates/src/lib.rs#L72-L76"
 diesel::update(post)
     .set(posts::draft.eq(false))
     .execute(conn)
@@ -146,9 +134,7 @@ When we write `update(post)`, that's equivalent to writing `update(posts.find(po
 or `update(posts.filter(id.eq(post.id)))`. We can see this in the generated SQL:
 
 
-[Generated SQL](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_updates/src/lib.rs#L78-L93)
-
-```sql title="Generated SQL"
+```sql title="Generated SQL" link="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_updates/src/lib.rs#L78-L93"
 UPDATE "posts" SET "draft" = $1 WHERE ("posts"."id" = $2) -- binds: [false, 1]
 ```
 
@@ -160,9 +146,8 @@ So far we've just been passing Rust values here, but we can actually use any Die
 For example, we could increment a column:
 
 
-[src/lib.rs](https://github.com/diesel-rs/diesel/tree/2.3.x/examples/postgres/all_about_updates/src/lib.rs#L95-L101)
 
-```rust title="src/lib.rs"
+```rust title="src/lib.rs" link="https://github.com/diesel-rs/diesel/tree/2.3.x/examples/postgres/all_about_updates/src/lib.rs#L95-L101"
 use crate::posts::dsl::*;
 
 diesel::update(posts)
@@ -174,9 +159,7 @@ diesel::update(posts)
 That would generate this SQL:
 
 
-[Generated SQL](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_updates/src/lib.rs#L103-L113)
-
-```sql title="Generated SQL"
+```sql title="Generated SQL" link="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_updates/src/lib.rs#L103-L113"
 UPDATE "posts" SET "visit_count" = ("posts"."visit_count" + $1) -- binds: [1]
 ```
 
@@ -185,9 +168,7 @@ Assigning values directly is great for small, simple changes.
 If we wanted to update multiple columns this way, we can pass a tuple.
 
 
-[src/lib.rs](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_updates/src/lib.rs#L115-L124)
-
-```rust title="src/lib.rs"
+```rust title="src/lib.rs" link="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_updates/src/lib.rs#L115-L124"
 use crate::posts::dsl::*;
 
 diesel::update(posts)
@@ -202,9 +183,7 @@ diesel::update(posts)
 This will generate exactly the SQL you'd expect:
 
 
-[Generated SQL](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_updates/src/lib.rs#L126-L139)
-
-```sql title="Generated SQL"
+```sql title="Generated SQL" link="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_updates/src/lib.rs#L126-L139"
 UPDATE "posts" SET "title" = $1, "body" = $2 -- binds: ["[REDACTED]", "This post has been classified"]
 ```
 
@@ -222,9 +201,8 @@ If we look at the signature of [`.set`], you'll notice that the constraint is fo
 [`#[derive(AsChangeset)]`]: https://docs.diesel.rs/2.3.x/diesel/prelude/derive.AsChangeset.html
 
 
-[src/lib.rs](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_updates/src/lib.rs#L141-L143)
 
-```rust title="src/lib.rs"
+```rust title="src/lib.rs" link="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_updates/src/lib.rs#L141-L143"
 diesel::update(posts::table).set(post).execute(conn)
 ```
 
@@ -232,9 +210,8 @@ diesel::update(posts::table).set(post).execute(conn)
 The SQL will set every field present on the `Post` struct except for the primary key.
 
 
-[Generated SQL](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_updates/src/lib.rs#L145-L175)
 
-```sql title="Generated SQL"
+```sql title="Generated SQL" link="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_updates/src/lib.rs#L145-L175"
 UPDATE "posts" SET "title" = $1, "body" = $2, "draft" = $3, "publish_at" = $4, "visit_count" = $5 -- binds: ["", "", false, now, 0]
 ```
 
@@ -250,9 +227,7 @@ By default, `#[derive(AsChangeset)]` will assume that `None` means that you don'
 to assign that field. For example, if we had the following code:
 
 
-[src/lib.rs](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_updates/src/lib.rs#L177-L191)
-
-```rust title="src/lib.rs"
+```rust title="src/lib.rs" link="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_updates/src/lib.rs#L177-L191"
 #[derive(AsChangeset)]
 #[diesel(table_name = posts)]
 struct PostForm<'a> {
@@ -272,9 +247,8 @@ diesel::update(posts::table)
 That would generate the following SQL:
 
 
-[Generated SQL](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_updates/src/lib.rs#L193-L212)
 
-```sql title="Generated SQL"
+```sql title="Generated SQL" link="https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/all_about_updates/src/lib.rs#L193-L212"
 UPDATE "posts" SET "body" = $1 -- binds: ["My new post"]
 ```
 
