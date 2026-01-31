@@ -176,44 +176,104 @@ head:
       }
 
       /* 
+      ======================================
       See some examples
       Target the Starlight Tabs component 
+      ======================================
       */
+
+      /* MOBILE FIRST (default for smallest screens) */
       starlight-tabs.astro-esqgolmp {
         background-color: rgba(255, 255, 255, 0.15);
-        display: grid;
-        grid-template-columns: 240px 1fr;
-        gap: 2rem;
-        padding-right: 2rem;
+        display: flex;
+        flex-direction: column;
+        border-radius: 3px;
       }
 
-      /* Make tabs vertical */
       starlight-tabs ul[role="tablist"].astro-esqgolmp {
-        flex-direction: column !important;
-        gap: 1rem !important;
+        display: flex;
+        flex-direction: column;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
       }
 
-      /* Style tab buttons */
       starlight-tabs .tab.astro-esqgolmp a.astro-esqgolmp {
-        width: 100% !important;
-        padding: 1rem !important;
-        border: 1px solid transparent !important;
-        color: rgba(255, 255, 255, 0.7) !important;
-        margin-bottom: 0.25rem !important;
+        padding: 1rem;
+        color: rgba(255, 255, 255, 1);
+        border-left: 3px solid transparent;
+        width: 100%;
+      }
+
+      starlight-tabs .tab.astro-esqgolmp[data-selected] a.astro-esqgolmp {
+        border-left-color: rgba(255, 255, 255, 0.8);
+        background-color: rgba(255, 255, 255, 0.1);
+      }
+
+      /* TABLET AND ABOVE */
+      @media screen and (min-width: 769px) {
+        starlight-tabs.astro-esqgolmp {
+          display: grid;
+          grid-template-columns: 240px 1fr;
+        }
+        
+        starlight-tabs ul[role="tablist"].astro-esqgolmp {
+          flex-direction: column;
+          border-bottom: none;
+          border-right: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        starlight-tabs .tab.astro-esqgolmp a.astro-esqgolmp {
+          padding-top: 1.5rem;
+          padding-bottom: 1.5rem;
+          width: 100%;
+          border-left: none;
+          border-right: 3px solid transparent;
+        }
+        
+        starlight-tabs .tab.astro-esqgolmp[data-selected] a.astro-esqgolmp {
+          border-right-color: rgba(255, 255, 255, 0.8);
+          border-left-color: transparent;
+        }
+      }
+
+      /* DESKTOP */
+      @media screen and (min-width: 993px) {
+        starlight-tabs.astro-esqgolmp {
+          grid-template-columns: 240px 1fr;
+        }
       }
 
       /* Hover state */
       starlight-tabs .tab.astro-esqgolmp a.astro-esqgolmp:hover {
-        background: rgba(255, 255, 255, 0.05) !important;
-        color: white !important;
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+        width: 100%;
       }
 
       /* Active tab */
       starlight-tabs .tab.astro-esqgolmp a.astro-esqgolmp[aria-selected="true"] {
-        background: rgba(255, 215, 0, 0.1) !important;
-        color: var(--primary-gold) !important;
+        color: #3e3e5b;
+        background: inherit;
+        font-weight: inherit;
       }
       
+      starlight-tabs .tab.astro-esqgolmp a.astro-esqgolmp[aria-selected="false"] {
+        background: rgba(255, 255, 255, 0.05);
+      }
+
+      starlight-tabs .tab.astro-esqgolmp a.astro-esqgolmp[aria-selected="true"]:hover {
+        color: #3e3e5b;
+      }
+
+      [id^="tab-panel-"] {
+        margin: 2rem;
+      }
+
+      /* 
+      ======================================
+      ======================================
+      */
+
+
       .community-project {
         background-color: #2b303b33;
         padding: 0.75em;

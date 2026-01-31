@@ -101,7 +101,6 @@ body {
     -webkit-font-smoothing: antialiased;
     font-family: "Roboto", "Helvetica Neue", "Helvetica", "Roboto", "Arial",
         sans-serif, sans-serif;
-    font-weight: 300;
     line-height: 1.5;
 }
 
@@ -113,7 +112,6 @@ h5,
 h6 {
     font-family: "Roboto", "Helvetica Neue", "Helvetica", "Roboto", "Arial",
         sans-serif, sans-serif;
-    font-weight: 300;
     line-height: 1.2;
     margin: 0 0 0.75em;
 }
@@ -170,12 +168,6 @@ code {
 
 html {
     box-sizing: border-box;
-}
-
-*,
-*::after,
-*::before {
-    box-sizing: inherit;
 }
 
 html {
