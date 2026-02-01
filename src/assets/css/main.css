@@ -1,5 +1,7 @@
 :root {
     --primary-gold: #ffcd57;
+    --sl-color-accent-high: #474b44;
+    -sl-color-gray-5: rgba(53, 56, 65, 0.3);
 }
 
 /*
@@ -14,17 +16,9 @@ a:focus,
 a:active,
 a:visited {
     text-decoration: none !important;
-    /* Forces removal if other styles compete */
     outline: none;
-    /* Removes the focus ring/border */
     box-shadow: none;
-    /* Some frameworks use box-shadow for underlines */
-}
-
-a {
-    text-decoration: none;
-    color: var(--link-color, #007acc);
-    /* transition: all 0.3s ease; */
+    transition: all 0.2s ease-out;
 }
 
 a:hover {
@@ -45,6 +39,10 @@ a:active {
     color: white;
 }
 
+
+a[href="/changelog/"] {
+    color: white;
+}
 
 /*
 ========================================================================== 
@@ -94,24 +92,13 @@ starlight-tabs[data-sync-key="db-backend"] .tablist-wrapper.astro-esqgolmp {
 
 
 
-body {
-    -webkit-font-feature-settings: "kern", "liga", "pnum";
-    -ms-font-feature-settings: "kern", "liga", "pnum";
-    font-feature-settings: "kern", "liga", "pnum";
-    -webkit-font-smoothing: antialiased;
-    font-family: "Roboto", "Helvetica Neue", "Helvetica", "Roboto", "Arial",
-        sans-serif, sans-serif;
-    line-height: 1.5;
-}
-
 h1,
 h2,
 h3,
 h4,
 h5,
 h6 {
-    font-family: "Roboto", "Helvetica Neue", "Helvetica", "Roboto", "Arial",
-        sans-serif, sans-serif;
+    font-family: "Roboto", "Helvetica Neue", "Helvetica", "Roboto", "Arial", sans-serif, sans-serif;
     line-height: 1.2;
     margin: 0 0 0.75em;
 }
@@ -147,31 +134,13 @@ a:focus {
     text-decoration: underline;
 }
 
-
-
-img,
-picture {
-    margin: 0;
-    max-width: 100%;
-}
-
-pre {
-    font-size: 0.85em;
-}
-
 code {
     font-weight: bold;
+    font-size: 1.1rem;
+    background-color: transparent;
     -webkit-font-feature-settings: "liga" 0;
     -ms-font-feature-settings: "liga" 0;
     font-feature-settings: "liga" 0;
-}
-
-html {
-    box-sizing: border-box;
-}
-
-html {
-    height: 100%;
 }
 
 body {
@@ -179,75 +148,24 @@ body {
     color: #fff;
     position: relative;
     min-height: 100%;
-    padding-bottom: 15em;
-    margin: 0;
+    padding-bottom: 10em;
+
+    -webkit-font-feature-settings: "kern", "liga", "pnum";
+    -ms-font-feature-settings: "kern", "liga", "pnum";
+    font-feature-settings: "kern", "liga", "pnum";
+    -webkit-font-smoothing: antialiased;
+    font-family: "Roboto", "Helvetica Neue", "Helvetica", "Roboto", "Arial", sans-serif, sans-serif;
+    line-height: 1.5;
 }
 
-body.index {
-    background: -webkit-linear-gradient(#535379, #c3c3d6);
-    background: linear-gradient(#535379, #c3c3d6);
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-}
 
-.guide-wrapper::after {
-    clear: both;
-    content: "";
-    display: table;
-}
 
-.guide-wrapper .demo__example pre {
-    margin-bottom: 1.5em;
-}
 
-.guide-wrapper h3 {
-    margin-top: 3em;
-}
 
-.guide-wrapper ul {
-    list-style-type: disc;
-    padding-bottom: 30px;
-    padding-left: 40px;
-}
 
-.content-wrapper {
-    padding: 0 0.75em;
-}
 
-.banner,
-.demo,
-.feature-list,
-.guides-list {
-    display: block;
-    padding: 3.75em 0 3.75em;
-}
 
-.banner::after,
-.demo::after,
-.feature-list::after,
-.guides-list::after {
-    clear: both;
-    content: "";
-    display: table;
-}
-
-.section-heading {
-    text-align: center;
-}
-
-.banner .btn {
-    margin: 0 0.375em 0.75em;
-}
-
-.guides p a,
-.guides ul a {
-    color: var(--primary-gold);
-}
-
-.guides p a:hover,
-.guides ul a:hover {
-    color: #ffbe24;
-}
+/* color: #ffbe24; */
 
 
 
@@ -390,6 +308,7 @@ CODE SECTIONS
 .expressive-code {
     margin-top: 1rem;
     margin-bottom: 1rem;
+    font-size: 1.1rem;
 }
 
 .expressive-code .frame.has-title .title {
@@ -411,6 +330,8 @@ CODE SECTIONS
 .expressive-code code {
     padding: 1rem;
     color: var(--ec-text-color);
+    font-weight: normal;
+    font-size: 1rem;
 }
 
 .expressive-code .frame.is-terminal .header {
