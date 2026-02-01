@@ -4,44 +4,19 @@
     -sl-color-gray-5: rgba(53, 56, 65, 0.3);
 }
 
-/*
-========================================================================== 
-LINKS
-==========================================================================   
-*/
+body {
+    /* background: #535379; */
+    color: #fff;
+    position: relative;
+    min-height: 100%;
+    padding-bottom: 10em;
 
-a,
-a:hover,
-a:focus,
-a:active,
-a:visited {
-    text-decoration: none !important;
-    outline: none;
-    box-shadow: none;
-    transition: all 0.2s ease-out;
-}
-
-a:hover {
-    color: var(--link-hover-color, #ffd700);
-    text-decoration: none;
-}
-
-a:focus {
-    outline: 2px solid var(--primary-gold);
-    outline-offset: 2px;
-}
-
-a:active {
-    transform: scale(0.98);
-}
-
-.header a {
-    color: white;
-}
-
-
-a[href="/changelog/"] {
-    color: white;
+    -webkit-font-feature-settings: "kern", "liga", "pnum";
+    -ms-font-feature-settings: "kern", "liga", "pnum";
+    font-feature-settings: "kern", "liga", "pnum";
+    -webkit-font-smoothing: antialiased;
+    font-family: "Roboto", "Helvetica Neue", "Helvetica", "Roboto", "Arial", sans-serif, sans-serif;
+    line-height: 1.5;
 }
 
 /*
@@ -49,13 +24,6 @@ a[href="/changelog/"] {
 FOOTER
 ==========================================================================   
 */
-
-
-
-
-
-
-
 
 /* Getting Started with Diesel */
 
@@ -73,24 +41,11 @@ starlight-tabs[data-sync-key="db-backend"] .tablist-wrapper.astro-esqgolmp {
     display: none !important;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/*
+========================================================================== 
+HEADERS
+==========================================================================   
+*/
 
 h1,
 h2,
@@ -111,27 +66,37 @@ p {
     margin: 0 0 1.5em;
 }
 
-p a {
-    font-weight: 400;
+/*
+========================================================================== 
+LINKS
+==========================================================================   
+*/
+
+.header a {
+    color: white;
+}
+
+
+a[href="/changelog/"] {
+    color: white;
 }
 
 a {
     color: var(--primary-gold);
+    text-decoration: none;
 }
 
 a:active,
 a:focus,
 a:hover {
     color: #f6c207;
+    text-decoration: none;
+    transition: all 0.2s ease-out;
 }
 
 a:active,
 a:focus {
     outline: none;
-}
-
-a:focus {
-    text-decoration: underline;
 }
 
 code {
@@ -143,158 +108,13 @@ code {
     font-feature-settings: "liga" 0;
 }
 
-body {
-    background: #535379;
-    color: #fff;
-    position: relative;
-    min-height: 100%;
-    padding-bottom: 10em;
-
-    -webkit-font-feature-settings: "kern", "liga", "pnum";
-    -ms-font-feature-settings: "kern", "liga", "pnum";
-    font-feature-settings: "kern", "liga", "pnum";
-    -webkit-font-smoothing: antialiased;
-    font-family: "Roboto", "Helvetica Neue", "Helvetica", "Roboto", "Arial", sans-serif, sans-serif;
-    line-height: 1.5;
-}
-
-
-
-
-
-
-
-
 /* color: #ffbe24; */
-
-
-
-
-/*
-========================================================================== 
-LOGO
-==========================================================================   
-*/
-
-
-@-webkit-keyframes logo-pour {
-    0% {
-        -webkit-transform: rotate(0deg);
-        transform: rotate(0deg);
-    }
-
-    50% {
-        -webkit-transform: rotate(10deg);
-        transform: rotate(10deg);
-    }
-
-    100% {
-        -webkit-transform: rotate(0deg);
-        transform: rotate(0deg);
-    }
-}
-
-@keyframes logo-pour {
-    0% {
-        -webkit-transform: rotate(0deg);
-        transform: rotate(0deg);
-    }
-
-    50% {
-        -webkit-transform: rotate(10deg);
-        transform: rotate(10deg);
-    }
-
-    100% {
-        -webkit-transform: rotate(0deg);
-        transform: rotate(0deg);
-    }
-}
-
-@-webkit-keyframes logo-drip {
-    0% {
-        opacity: 1;
-        -webkit-transform: translate(73.9292px, 47.71084px);
-        transform: translate(73.9292px, 47.71084px);
-    }
-
-    30% {
-        opacity: 0;
-        -webkit-transform: translate(73.9292px, 60.71084px);
-        transform: translate(73.9292px, 60.71084px);
-    }
-
-    40% {
-        -webkit-transform: translate(73.9292px, 47.71084px);
-        transform: translate(73.9292px, 47.71084px);
-    }
-
-    50% {
-        opacity: 0;
-        -webkit-transform: translate(76.9292px, 39.71084px) scale(0.3);
-        transform: translate(76.9292px, 39.71084px) scale(0.3);
-    }
-
-    100% {
-        opacity: 1;
-        -webkit-transform: translate(73.9292px, 47.71084px) scale(1);
-        transform: translate(73.9292px, 47.71084px) scale(1);
-    }
-}
-
-@keyframes logo-drip {
-    0% {
-        opacity: 1;
-        -webkit-transform: translate(73.9292px, 47.71084px);
-        transform: translate(73.9292px, 47.71084px);
-    }
-
-    30% {
-        opacity: 0;
-        -webkit-transform: translate(73.9292px, 60.71084px);
-        transform: translate(73.9292px, 60.71084px);
-    }
-
-    40% {
-        -webkit-transform: translate(73.9292px, 47.71084px);
-        transform: translate(73.9292px, 47.71084px);
-    }
-
-    50% {
-        opacity: 0;
-        -webkit-transform: translate(76.9292px, 39.71084px) scale(0.3);
-        transform: translate(76.9292px, 39.71084px) scale(0.3);
-    }
-
-    100% {
-        opacity: 1;
-        -webkit-transform: translate(73.9292px, 47.71084px) scale(1);
-        transform: translate(73.9292px, 47.71084px) scale(1);
-    }
-}
-
-.logo.animate #can {
-    -webkit-animation: logo-pour 1s ease-in-out forwards;
-    animation: logo-pour 1s ease-in-out forwards;
-    -webkit-transform-origin: center;
-    transform-origin: center;
-}
-
-.logo.animate #drop {
-    -webkit-animation: logo-drip 1.5s ease-in-out forwards;
-    animation: logo-drip 1.5s ease-in-out forwards;
-    -webkit-transform-origin: left top;
-    transform-origin: left top;
-}
-
-
 
 /*
 ========================================================================== 
 CODE SECTIONS 
 ==========================================================================   
 */
-
 
 [data-theme="dark"] {
     --ec-title-color: #373c46;
