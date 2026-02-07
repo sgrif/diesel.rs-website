@@ -48,7 +48,7 @@ export default defineConfig({
 				},
 				{
 					label: 'Changelog',
-					link: '/changelog/', // This matches the "base" you set in the loader
+					link: '/changelog/',
 				},
 				{
 					label: 'Compare Diesel',

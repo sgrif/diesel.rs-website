@@ -1,50 +1,36 @@
 :root {
+    /* Global variables */
+    --font-stack: "Roboto", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+}
+
+:root[data-theme="dark"] {
     --primary-gold: #ffcd57;
+    --primary-gold-hover: #f6c207;
+    --primary-bg: #1a1d23;
+    --primary-text: #ffffff;
+    --bg-accent: #2b303b;
+    --footer-bg: #2b303b;
+    --footer-text: #ffffff;
     --sl-color-accent-high: #474b44;
-    -sl-color-gray-5: rgba(53, 56, 65, 0.3);
+    --sl-color-gray-5: rgba(53, 56, 65, 0.3);
 }
 
 body {
-    /* background: #535379; */
-    color: #fff;
+    background-color: var(--primary-bg);
+    color: var(--primary-text);
     position: relative;
     min-height: 100%;
     padding-bottom: 10em;
-
-    -webkit-font-feature-settings: "kern", "liga", "pnum";
-    -ms-font-feature-settings: "kern", "liga", "pnum";
-    font-feature-settings: "kern", "liga", "pnum";
-    -webkit-font-smoothing: antialiased;
-    font-family: "Roboto", "Helvetica Neue", "Helvetica", "Roboto", "Arial", sans-serif, sans-serif;
     line-height: 1.5;
+    font-family: var(--font-stack);
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: "kern", "liga", "pnum";
 }
 
-/*
+/* 
 ========================================================================== 
-FOOTER
-==========================================================================   
-*/
-
-/* Getting Started with Diesel */
-
-/* Show TAB ONLY the very first one on the page */
-starlight-tabs[data-sync-key="db-backend"]:first-of-type .tablist-wrapper.astro-esqgolmp {
-    display: flex !important;
-}
-
-/* Hide the rest of the labels */
-aside starlight-tabs[data-sync-key="db-backend"] .tablist-wrapper.astro-esqgolmp {
-    display: none !important;
-}
-
-starlight-tabs[data-sync-key="db-backend"] .tablist-wrapper.astro-esqgolmp {
-    display: none !important;
-}
-
-/*
+HEADERS 
 ========================================================================== 
-HEADERS
-==========================================================================   
 */
 
 h1,
@@ -53,7 +39,7 @@ h3,
 h4,
 h5,
 h6 {
-    font-family: "Roboto", "Helvetica Neue", "Helvetica", "Roboto", "Arial", sans-serif, sans-serif;
+    font-family: var(--font-stack);
     line-height: 1.2;
     margin: 0 0 0.75em;
 }
@@ -66,78 +52,66 @@ p {
     margin: 0 0 1.5em;
 }
 
-/*
+/* 
 ========================================================================== 
-LINKS
-==========================================================================   
+LINKS 
+========================================================================== 
 */
-
-.header a {
-    color: white;
-}
-
-
-a[href="/changelog/"] {
-    color: white;
-}
 
 a {
     color: var(--primary-gold);
     text-decoration: none;
+    transition: color 0.2s ease-out;
 }
 
-a:active,
+.header a,
+a[href="/changelog/"] {
+    color: inherit;
+}
+
+a:hover,
 a:focus,
-a:hover {
-    color: #f6c207;
-    text-decoration: none;
-    transition: all 0.2s ease-out;
-}
-
-a:active,
-a:focus {
+a:active {
+    color: var(--primary-gold-hover);
     outline: none;
 }
+
+
+/* 
+========================================================================== 
+CODE & EXPRESSIVE CODE 
+========================================================================== 
+*/
 
 code {
     font-weight: bold;
     font-size: 1.1rem;
     background-color: transparent;
-    -webkit-font-feature-settings: "liga" 0;
-    -ms-font-feature-settings: "liga" 0;
     font-feature-settings: "liga" 0;
 }
-
-/* color: #ffbe24; */
-
-/*
-========================================================================== 
-CODE SECTIONS 
-==========================================================================   
-*/
 
 [data-theme="dark"] {
     --ec-title-color: #373c46;
     --ec-bg-primary: #d5dbe6;
-    --ec-bg-secondary: #2b303b;
+    --ec-bg-secondary: var(--bg-accent);
     --ec-border-color: #334155;
     --ec-text-color: #F1F5F9;
     --ec-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 .expressive-code {
-    margin-top: 1rem;
-    margin-bottom: 1rem;
+    margin: 1rem 0;
     font-size: 1.1rem;
 }
 
-.expressive-code .frame.has-title .title {
-    color: var(--ec-title-color);
+.expressive-code .frame,
+.expressive-code .frame.is-terminal .header {
     background-color: var(--ec-bg-primary);
     border-radius: 5px;
 }
 
-.expressive-code .frame {
+.expressive-code .frame.has-title .title {
+    color: var(--ec-title-color);
     background-color: var(--ec-bg-primary);
     border-radius: 5px;
 }
@@ -148,14 +122,9 @@ CODE SECTIONS
 }
 
 .expressive-code code {
-    padding: 1rem;
     color: var(--ec-text-color);
     font-weight: normal;
     font-size: 1rem;
-}
-
-.expressive-code .frame.is-terminal .header {
-    background-color: var(--ec-bg-primary);
 }
 
 .expressive-code .frame.has-title:not(.is-terminal) .header {
@@ -163,10 +132,310 @@ CODE SECTIONS
     color: var(--ec-title-color);
 }
 
-.expressive-code .frame.has-title:not(.is-terminal) .header::before {
+.expressive-code .frame.has-title:not(.is-terminal) .header::before,
+.expressive-code .frame.has-title:not(.is-terminal) .title::after {
     content: none;
 }
 
-.expressive-code .frame.has-title:not(.is-terminal) .title::after {
-    content: none;
+/* 
+========================================================================== 
+STARLIGHT TABS OVERRIDES 
+========================================================================== 
+*/
+
+/* Show ONLY the first database backend tab on the page */
+starlight-tabs[data-sync-key="db-backend"]:first-of-type .tablist-wrapper.astro-esqgolmp {
+    display: flex !important;
+    /* border: 1px solid var(--ec-border-color); */
+    border-radius: 5px;
+}
+
+starlight-tabs[data-sync-key="db-backend"]:first-of-type .tablist-wrapper.astro-esqgolmp li {
+    border: 1px solid var(--ec-border-color);
+    border-radius: 5px;
+    padding: 0.5rem;
+    margin-left: 2rem;
+}
+
+.tab:where(.astro-esqgolmp) :where(.astro-esqgolmp)[role=tab][aria-selected=true] {
+    font-weight: 400;
+}
+
+
+/* Hide the rest of the labels */
+starlight-tabs[data-sync-key="db-backend"] .tablist-wrapper.astro-esqgolmp,
+aside starlight-tabs[data-sync-key="db-backend"] .tablist-wrapper.astro-esqgolmp {
+    display: none !important;
+}
+
+/* 
+========================================================================== 
+HOME PAGE STYLES 
+========================================================================== 
+*/
+
+/* 
+========================================================================== 
+HOME PAGE STYLES 
+========================================================================== 
+*/
+
+html[data-has-hero] .hero {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+
+    /* Remove all grid properties */
+    grid-template-columns: 1fr !important;
+    grid-template-areas: none !important;
+    gap: 0 !important;
+}
+
+/* Center all direct children */
+html[data-has-hero] .hero>* {
+    max-width: 1200px !important;
+    width: 100% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+/* Center any nested components */
+html[data-has-hero] .hero :where(h1, h2, h3, h4, h5, h6, p, div, section, article, aside) {
+    text-align: center !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+.rust-link {
+    color: var(--primary-gold);
+}
+
+.rust-link:hover {
+    color: #ffbe24;
+}
+
+/* Override the media query */
+@media (min-width: 50rem) {
+    html[data-has-hero] .hero {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        grid-template-columns: 1fr !important;
+    }
+
+    /* Target any astro classes */
+    html[data-has-hero] .hero:where([class*="astro-"]) {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+}
+
+html[data-has-hero] .hero h1 {
+    font-size: 2.5rem;
+    width: 70%;
+    margin-bottom: 7rem;
+}
+
+html[data-has-hero] .hero .tagline {
+    color: #ffffff;
+}
+
+html[data-has-hero] .hero a.sl-link-button {
+    transition: all 0.2s !important;
+    font-weight: 400;
+    letter-spacing: 0.03em;
+}
+
+/* First button (Getting Started) */
+html[data-has-hero] .hero a.sl-link-button:first-of-type {
+    background: var(--primary-gold) !important;
+    color: #1a1d23 !important;
+    border: none !important;
+}
+
+html[data-has-hero] .hero a.sl-link-button:first-of-type:hover {
+    background: #ffd700 !important;
+    box-shadow: 0 10px 20px rgba(237, 189, 15, 0.2) !important;
+}
+
+/* Second button (Contribute) */
+html[data-has-hero] .hero a.sl-link-button:nth-of-type(2) {
+    background: none !important;
+    color: white !important;
+    border: none !important;
+}
+
+html[data-has-hero] .hero a.sl-link-button:nth-of-type(2):hover {
+    background: #8989ae !important;
+    border-color: var(--primary-gold) !important;
+}
+
+/* Features */
+html[data-has-hero] .features-img-container {
+    background-color: rgba(255, 255, 255, 0.15);
+    box-shadow: 0px 10px 50px 0px rgba(0, 0, 0, 0.05), inset 0px 1px 0px 0px rgba(255, 255, 255, 0.18);
+    border-radius: 3px;
+    height: 4.5em;
+    width: 4.5em;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+html[data-has-hero] .features-img {
+    max-width: 60%;
+    max-height: 60%;
+    margin-bottom: 0;
+}
+
+html[data-has-hero] .feature-side-by-side {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+}
+
+html[data-has-hero] .feature-img-side {
+    flex-shrink: 0;
+    width: 5rem;
+}
+
+html[data-has-hero] .feature-card-side {
+    flex: 1;
+}
+
+html[data-has-hero] .feature-row-aligned {
+    margin-bottom: 10rem;
+}
+
+/* Large screens (e.g., > 50rem): Force cards into a single aligned row */
+@media (min-width: 50rem) {
+    html[data-has-hero] .feature-row-aligned .card-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(0, 1fr)) !important;
+        gap: 1.5rem;
+        align-items: start !important;
+    }
+}
+
+html[data-has-hero] .feature-row-aligned .card {
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0;
+}
+
+html[data-has-hero] .feature-row-aligned .card h3 {
+    color: var(--sl-color-white);
+}
+
+/* 
+  ====================================== 
+  See some examples 
+  Target the Starlight Tabs component 
+  ====================================== 
+  */
+
+/* MOBILE FIRST (default for smallest screens) */
+html[data-has-hero] starlight-tabs.astro-esqgolmp {
+    background-color: rgba(255, 255, 255, 0.15);
+    display: flex;
+    flex-direction: column;
+    border-radius: 3px;
+}
+
+html[data-has-hero] starlight-tabs ul[role="tablist"].astro-esqgolmp {
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+html[data-has-hero] starlight-tabs .tab.astro-esqgolmp a.astro-esqgolmp {
+    padding: 1rem;
+    color: rgba(255, 255, 255, 1);
+    border-left: 3px solid transparent;
+    width: 100%;
+    box-shadow: none !important;
+}
+
+html[data-has-hero] starlight-tabs .tab.astro-esqgolmp[data-selected] a.astro-esqgolmp {
+    border-left-color: rgba(255, 255, 255, 0.8);
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* TABLET AND ABOVE */
+@media screen and (min-width: 769px) {
+    html[data-has-hero] starlight-tabs.astro-esqgolmp {
+        display: grid;
+        grid-template-columns: 240px 1fr;
+    }
+
+    html[data-has-hero] starlight-tabs ul[role="tablist"].astro-esqgolmp {
+        flex-direction: column;
+        border-bottom: none;
+        border-right: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    html[data-has-hero] starlight-tabs .tab.astro-esqgolmp a.astro-esqgolmp {
+        padding-top: 1.5rem;
+        padding-bottom: 1.5rem;
+        width: 100%;
+        border-left: none;
+        border-right: 3px solid transparent;
+    }
+
+    html[data-has-hero] starlight-tabs .tab.astro-esqgolmp[data-selected] a.astro-esqgolmp {
+        border-right-color: rgba(255, 255, 255, 0.8);
+        border-left-color: transparent;
+    }
+}
+
+/* DESKTOP */
+@media screen and (min-width: 993px) {
+    html[data-has-hero] starlight-tabs.astro-esqgolmp {
+        grid-template-columns: 240px 1fr;
+    }
+}
+
+/* Hover state */
+html[data-has-hero] starlight-tabs .tab.astro-esqgolmp a.astro-esqgolmp:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    width: 100%;
+}
+
+/* Active tab */
+html[data-has-hero] starlight-tabs .tab.astro-esqgolmp a.astro-esqgolmp[aria-selected="true"] {
+    color: #3e3e5b;
+    background: inherit;
+    font-weight: inherit;
+}
+
+html[data-has-hero] starlight-tabs .tab.astro-esqgolmp a.astro-esqgolmp[aria-selected="false"] {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+html[data-has-hero] starlight-tabs .tab.astro-esqgolmp a.astro-esqgolmp[aria-selected="true"]:hover {
+    color: #3e3e5b;
+}
+
+
+/* 
+  ====================================== 
+  ====================================== 
+  */
+
+.community-project {
+    background-color: #2b303b33;
+    padding: 0.75em;
+    margin-bottom: 1.5em;
+}
+
+starlight-tabs ul[role="tablist"].astro-esqgolmp:where(.astro-esqgolmp)[role=tablist] {
+    border-bottom: none;
 }
