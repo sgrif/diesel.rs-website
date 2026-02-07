@@ -10,9 +10,9 @@ export default defineConfig({
 	integrations: [
 		starlight({
 			title: 'DIESEL',
-			favicon: './src/assets/images/diesel_logo_favicon_32.png',
+			favicon: '/public/images/diesel_logo_favicon_32.png',
 			logo: {
-				src: './src/assets/images/diesel_logo_favicon.png',
+				src: '/public/images/diesel_logo_favicon.png',
 			},
 			social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/diesel-rs/diesel' }],
 			sidebar: [
