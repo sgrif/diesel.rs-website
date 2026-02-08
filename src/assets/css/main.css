@@ -5,15 +5,33 @@
 
 :root[data-theme="dark"] {
     --primary-gold: #ffcd57;
-    --primary-gold-hover: #f6c207;
+    --primary-gold-hover: #ffbe24;
     --primary-bg: #1a1d23;
     --primary-text: #ffffff;
-    --bg-accent: #2b303b;
     --footer-bg: #2b303b;
+    --bg-accent: #2b303b;
     --footer-text: #ffffff;
     --sl-color-accent-high: #474b44;
+    --sl-color-accent: var(--primary-gold);
+    --sl-color-accent-hover: var(--primary-gold-hover);
+    --sl-color-accent-active: var(--primary-gold-hover);
     --sl-color-gray-5: rgba(53, 56, 65, 0.3);
 }
+
+/* :root[data-theme="light"] {
+    --primary-gold: #ffcd57;
+    --primary-gold-hover: #ffbe24;
+    --primary-bg: #1a1d23;
+    --primary-text: #ffffff;
+    --footer-bg: var(--sl-color-bg-nav);
+    --bg-accent: #ffffff;
+    --footer-text: #ffffff;
+    --sl-color-accent-high: #474b44;
+    --sl-color-accent: var(--primary-gold);
+    --sl-color-accent-hover: var(--primary-gold-hover);
+    --sl-color-accent-active: var(--primary-gold-hover);
+    --sl-color-gray-5: rgba(53, 56, 65, 0.3);
+} */
 
 body {
     background-color: var(--primary-bg);
@@ -60,14 +78,37 @@ LINKS
 
 a {
     color: var(--primary-gold);
+}
+
+a:hover,
+a:focus,
+a:active {
+    color: var(--primary-gold-hover);
+}
+
+
+a {
     text-decoration: none;
     transition: color 0.2s ease-out;
+}
+
+.header-links {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    margin-inline-end: 1rem;
+}
+
+.header-links a {
+    color: black;
 }
 
 .header a,
 a[href="/changelog/"] {
     color: inherit;
 }
+
+
 
 a:hover,
 a:focus,
@@ -92,12 +133,22 @@ code {
 
 [data-theme="dark"] {
     --ec-title-color: #373c46;
+    --ec-bg-primary: #d5d5d5;
+    --ec-bg-secondary: var(--bg-accent);
+    --ec-border-color: #2b303b;
+    --ec-text-color: #F1F5F9;
+    --ec-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+/* [data-theme="light"] {
+    --ec-title-color: #373c46;
     --ec-bg-primary: #d5dbe6;
     --ec-bg-secondary: var(--bg-accent);
     --ec-border-color: #334155;
     --ec-text-color: #F1F5F9;
     --ec-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-}
+} */
+
 
 .expressive-code {
     margin: 1rem 0;
@@ -161,18 +212,11 @@ starlight-tabs[data-sync-key="db-backend"]:first-of-type .tablist-wrapper.astro-
     font-weight: 400;
 }
 
-
 /* Hide the rest of the labels */
 starlight-tabs[data-sync-key="db-backend"] .tablist-wrapper.astro-esqgolmp,
 aside starlight-tabs[data-sync-key="db-backend"] .tablist-wrapper.astro-esqgolmp {
     display: none !important;
 }
-
-/* 
-========================================================================== 
-HOME PAGE STYLES 
-========================================================================== 
-*/
 
 /* 
 ========================================================================== 
@@ -208,12 +252,12 @@ html[data-has-hero] .hero :where(h1, h2, h3, h4, h5, h6, p, div, section, articl
     margin-right: auto !important;
 }
 
-.rust-link {
+html[data-has-hero] .rust-link {
     color: var(--primary-gold);
 }
 
-.rust-link:hover {
-    color: #ffbe24;
+html[data-has-hero] .rust-link:hover {
+    color: var(--primary-gold-hover);
 }
 
 /* Override the media query */
@@ -241,7 +285,7 @@ html[data-has-hero] .hero h1 {
     margin-bottom: 7rem;
 }
 
-html[data-has-hero] .hero .tagline {
+html[data-has-hero] .hero h1 {
     color: #ffffff;
 }
 
@@ -251,23 +295,32 @@ html[data-has-hero] .hero a.sl-link-button {
     letter-spacing: 0.03em;
 }
 
+html[data-has-hero] .hero a.sl-link-button {
+    color: var(--primary-bg) !important;
+}
+
 /* First button (Getting Started) */
 html[data-has-hero] .hero a.sl-link-button:first-of-type {
-    background: var(--primary-gold) !important;
-    color: #1a1d23 !important;
     border: none !important;
 }
 
+html[data-has-hero] .hero a.sl-link-button:first-of-type {
+    background: var(--primary-gold) !important;
+}
+
 html[data-has-hero] .hero a.sl-link-button:first-of-type:hover {
-    background: #ffd700 !important;
+    background: var(--primary-gold-hover) !important;
     box-shadow: 0 10px 20px rgba(237, 189, 15, 0.2) !important;
 }
 
 /* Second button (Contribute) */
 html[data-has-hero] .hero a.sl-link-button:nth-of-type(2) {
+    border: none !important;
+}
+
+html[data-has-hero] .hero a.sl-link-button:nth-of-type(2) {
     background: none !important;
     color: white !important;
-    border: none !important;
 }
 
 html[data-has-hero] .hero a.sl-link-button:nth-of-type(2):hover {
@@ -277,8 +330,6 @@ html[data-has-hero] .hero a.sl-link-button:nth-of-type(2):hover {
 
 /* Features */
 html[data-has-hero] .features-img-container {
-    background-color: rgba(255, 255, 255, 0.15);
-    box-shadow: 0px 10px 50px 0px rgba(0, 0, 0, 0.05), inset 0px 1px 0px 0px rgba(255, 255, 255, 0.18);
     border-radius: 3px;
     height: 4.5em;
     width: 4.5em;
@@ -286,6 +337,11 @@ html[data-has-hero] .features-img-container {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+html[data-has-hero] .features-img-container {
+    background-color: rgba(255, 255, 255, 0.15);
+    box-shadow: 0px 10px 50px 0px rgba(0, 0, 0, 0.05), inset 0px 1px 0px 0px rgba(255, 255, 255, 0.18);
 }
 
 html[data-has-hero] .features-img {
@@ -343,10 +399,13 @@ html[data-has-hero] .feature-row-aligned .card h3 {
 
 /* MOBILE FIRST (default for smallest screens) */
 html[data-has-hero] starlight-tabs.astro-esqgolmp {
-    background-color: rgba(255, 255, 255, 0.15);
     display: flex;
     flex-direction: column;
     border-radius: 3px;
+}
+
+html[data-has-hero] starlight-tabs.astro-esqgolmp {
+    background-color: rgba(255, 255, 255, 0.15);
 }
 
 html[data-has-hero] starlight-tabs ul[role="tablist"].astro-esqgolmp {
@@ -357,10 +416,13 @@ html[data-has-hero] starlight-tabs ul[role="tablist"].astro-esqgolmp {
 
 html[data-has-hero] starlight-tabs .tab.astro-esqgolmp a.astro-esqgolmp {
     padding: 1rem;
-    color: rgba(255, 255, 255, 1);
     border-left: 3px solid transparent;
     width: 100%;
     box-shadow: none !important;
+}
+
+html[data-has-hero] starlight-tabs .tab.astro-esqgolmp a.astro-esqgolmp {
+    color: rgba(255, 255, 255, 1);
 }
 
 html[data-has-hero] starlight-tabs .tab.astro-esqgolmp[data-selected] a.astro-esqgolmp {
@@ -373,12 +435,12 @@ html[data-has-hero] starlight-tabs .tab.astro-esqgolmp[data-selected] a.astro-es
     html[data-has-hero] starlight-tabs.astro-esqgolmp {
         display: grid;
         grid-template-columns: 240px 1fr;
+        box-shadow: 0px 10px 50px 0px rgba(0, 0, 0, 0.05), inset 0px 1px 0px 0px rgba(255, 255, 255, 0.18);
     }
 
     html[data-has-hero] starlight-tabs ul[role="tablist"].astro-esqgolmp {
         flex-direction: column;
         border-bottom: none;
-        border-right: 1px solid rgba(255, 255, 255, 0.2);
     }
 
     html[data-has-hero] starlight-tabs .tab.astro-esqgolmp a.astro-esqgolmp {
@@ -390,8 +452,15 @@ html[data-has-hero] starlight-tabs .tab.astro-esqgolmp[data-selected] a.astro-es
     }
 
     html[data-has-hero] starlight-tabs .tab.astro-esqgolmp[data-selected] a.astro-esqgolmp {
-        border-right-color: rgba(255, 255, 255, 0.8);
         border-left-color: transparent;
+    }
+
+    html[data-has-hero] starlight-tabs .tab.astro-esqgolmp[data-selected] a.astro-esqgolmp {
+        border-right-color: rgba(255, 255, 255, 0.8);
+    }
+
+    html[data-has-hero] .tablist-wrapper:where(.astro-esqgolmp)~[role="tabpanel"] {
+        padding: 1.5rem;
     }
 }
 
@@ -405,15 +474,18 @@ html[data-has-hero] starlight-tabs .tab.astro-esqgolmp[data-selected] a.astro-es
 /* Hover state */
 html[data-has-hero] starlight-tabs .tab.astro-esqgolmp a.astro-esqgolmp:hover {
     background: rgba(255, 255, 255, 0.1);
-    color: white;
     width: 100%;
+    color: white;
 }
 
 /* Active tab */
 html[data-has-hero] starlight-tabs .tab.astro-esqgolmp a.astro-esqgolmp[aria-selected="true"] {
-    color: #3e3e5b;
     background: inherit;
     font-weight: inherit;
+}
+
+html[data-has-hero] starlight-tabs .tab.astro-esqgolmp a.astro-esqgolmp[aria-selected="true"] {
+    color: #3e3e5b;
 }
 
 html[data-has-hero] starlight-tabs .tab.astro-esqgolmp a.astro-esqgolmp[aria-selected="false"] {
@@ -424,18 +496,29 @@ html[data-has-hero] starlight-tabs .tab.astro-esqgolmp a.astro-esqgolmp[aria-sel
     color: #3e3e5b;
 }
 
-
 /* 
   ====================================== 
   ====================================== 
   */
 
 .community-project {
-    background-color: #2b303b33;
     padding: 0.75em;
     margin-bottom: 1.5em;
+    background-color: #2b303b33;
 }
 
 starlight-tabs ul[role="tablist"].astro-esqgolmp:where(.astro-esqgolmp)[role=tablist] {
     border-bottom: none;
+}
+
+.footer {
+    background: var(--footer-bg);
+    padding: 4em;
+    text-align: center;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    border-bottom: solid 5px var(--primary-gold);
+
 }

@@ -142,7 +142,7 @@ another table.
 Finally it's possible to use the `#[diesel::dsl::auto_type]` attribute macro, to automatically
 construct the correct return type for you.
 
-[`#[diesel::dsl::auto_type]`]: https://docs.diesel.rs/2.3.x/diesel/dsl/attr.auto_type.html
+[#[diesel::dsl::auto_type]](https://docs.diesel.rs/2.3.x/diesel/dsl/attr.auto_type.html)
 
 
 
