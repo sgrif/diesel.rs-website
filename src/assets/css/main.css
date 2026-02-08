@@ -18,20 +18,21 @@
     --sl-color-gray-5: rgba(53, 56, 65, 0.3);
 }
 
-/* :root[data-theme="light"] {
+:root[data-theme="light"] {
     --primary-gold: #ffcd57;
     --primary-gold-hover: #ffbe24;
     --primary-bg: #1a1d23;
     --primary-text: #ffffff;
-    --footer-bg: var(--sl-color-bg-nav);
-    --bg-accent: #ffffff;
+    --footer-bg: #2b303b;
+    --bg-accent: #ffcd57;
     --footer-text: #ffffff;
     --sl-color-accent-high: #474b44;
     --sl-color-accent: var(--primary-gold);
     --sl-color-accent-hover: var(--primary-gold-hover);
     --sl-color-accent-active: var(--primary-gold-hover);
     --sl-color-gray-5: rgba(53, 56, 65, 0.3);
-} */
+    --sl-icon-color: black;
+}
 
 body {
     background-color: var(--primary-bg);
@@ -77,6 +78,8 @@ LINKS
 */
 
 a {
+    text-decoration: none;
+    transition: color 0.2s ease-out;
     color: var(--primary-gold);
 }
 
@@ -84,12 +87,15 @@ a:hover,
 a:focus,
 a:active {
     color: var(--primary-gold-hover);
+    outline: none;
 }
 
-
-a {
-    text-decoration: none;
+.title-wrapper a span {
     transition: color 0.2s ease-out;
+}
+
+.title-wrapper a:hover span {
+    color: var(--primary-gold-hover);
 }
 
 .header-links {
@@ -99,24 +105,33 @@ a {
     margin-inline-end: 1rem;
 }
 
-.header-links a {
+[data-theme="dark"] .header-links a {
+    color: white;
+}
+
+[data-theme="light"] .header-links a {
     color: black;
 }
 
-.header a,
-a[href="/changelog/"] {
-    color: inherit;
-}
-
-
-
-a:hover,
-a:focus,
-a:active {
+[data-theme="light"] .header-links a:hover {
     color: var(--primary-gold-hover);
-    outline: none;
 }
 
+[data-theme="dark"] .header-links a:hover {
+    color: var(--primary-gold-hover);
+}
+
+[data-theme="light"] .site-title span {
+    color: black;
+}
+
+[data-theme="dark"] .site-title span {
+    color: white;
+}
+
+[data-theme="dark"] a[href="https://github.com/diesel-rs/diesel"] {
+    color: white;
+}
 
 /* 
 ========================================================================== 
@@ -134,21 +149,20 @@ code {
 [data-theme="dark"] {
     --ec-title-color: #373c46;
     --ec-bg-primary: #d5d5d5;
-    --ec-bg-secondary: var(--bg-accent);
+    --ec-bg-secondary: #2b303b;
     --ec-border-color: #2b303b;
     --ec-text-color: #F1F5F9;
     --ec-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
-/* [data-theme="light"] {
+[data-theme="light"] {
     --ec-title-color: #373c46;
-    --ec-bg-primary: #d5dbe6;
-    --ec-bg-secondary: var(--bg-accent);
-    --ec-border-color: #334155;
+    --ec-bg-primary: #d5d5d5;
+    --ec-bg-secondary: #ebeef5;
+    --ec-border-color: #2b303b;
     --ec-text-color: #F1F5F9;
     --ec-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-} */
-
+}
 
 .expressive-code {
     margin: 1rem 0;
