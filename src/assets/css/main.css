@@ -19,17 +19,20 @@
 }
 
 :root[data-theme="light"] {
+    --dark-gold: #966c0c;
+    --dark-gold-hover: #755711;
+
     --primary-gold: #ffcd57;
     --primary-gold-hover: #ffbe24;
-    --primary-bg: #1a1d23;
-    --primary-text: #ffffff;
+    --primary-bg: #ffffff;
+    --primary-text: #1a1d23;
     --footer-bg: #2b303b;
     --bg-accent: #ffcd57;
     --footer-text: #ffffff;
     --sl-color-accent-high: #474b44;
     --sl-color-accent: var(--primary-gold);
-    --sl-color-accent-hover: var(--primary-gold-hover);
-    --sl-color-accent-active: var(--primary-gold-hover);
+    --sl-color-accent-hover: var(--dark-gold-hover);
+    --sl-color-accent-active: var(--dark-gold-hover);
     --sl-color-gray-5: rgba(53, 56, 65, 0.3);
     --sl-icon-color: black;
 }
@@ -77,16 +80,29 @@ LINKS
 ========================================================================== 
 */
 
-a {
+[data-theme="dark"] a {
     text-decoration: none;
     transition: color 0.2s ease-out;
     color: var(--primary-gold);
 }
 
-a:hover,
-a:focus,
-a:active {
+[data-theme="light"] a {
+    text-decoration: none;
+    transition: color 0.2s ease-out;
+    color: var(--dark-gold);
+}
+
+[data-theme="dark"] a:hover,
+[data-theme="dark"] a:focus,
+[data-theme="dark"] a:active {
     color: var(--primary-gold-hover);
+    outline: none;
+}
+
+[data-theme="light"] a:hover,
+[data-theme="light"] a:focus,
+[data-theme="light"] a:active {
+    color: var(--dark-gold-hover);
     outline: none;
 }
 
@@ -133,6 +149,26 @@ a:active {
     color: white;
 }
 
+[data-theme="light"] a[href="https://github.com/diesel-rs/diesel"] {
+    color: black;
+}
+
+[data-theme="light"] a[href="https://github.com/diesel-rs/diesel"] :hover {
+    color: var(--dark-gold-hover);
+}
+
+[data-theme="dark"] a[href="https://github.com/diesel-rs/diesel"] :hover {
+    color: var(--primary-gold-hover);
+}
+
+[data-theme="light"] a[href="/changelog/"] {
+    color: black;
+}
+
+[data-theme="dark"] a[href="/changelog/"] {
+    color: white;
+}
+
 /* 
 ========================================================================== 
 CODE & EXPRESSIVE CODE 
@@ -156,8 +192,8 @@ code {
 }
 
 [data-theme="light"] {
-    --ec-title-color: #373c46;
-    --ec-bg-primary: #d5d5d5;
+    --ec-title-color: #40495c;
+    --ec-bg-primary: #b6bad0;
     --ec-bg-secondary: #ebeef5;
     --ec-border-color: #2b303b;
     --ec-text-color: #F1F5F9;
