@@ -9,6 +9,23 @@ import { titleLinkPlugin } from './src/plugins/ec-title-link.mjs';
 export default defineConfig({
 	site: 'https://diesel.rs',
 	output: 'static',
+	// github pages somehow doesn't like the _astro folder
+	// so we configure starlight/astro to not use that folder
+	build: {
+	   assets: 'static',
+	},
+	vite: {
+          build: {
+            rollupOptions: {
+              output: {
+                // path names relative to `outDir`
+                entryFileNames: 'js/[name]-[hash].js',
+                chunkFileNames: 'js/chunks/[name]-[hash].js',
+                assetFileNames: 'static/[name]-[hash][extname]',
+              },
+            },
+          },
+	},
 	integrations: [
 		starlight({
 			title: 'DIESEL',
