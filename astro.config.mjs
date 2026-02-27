@@ -85,6 +85,14 @@ export default defineConfig({
 			expressiveCode: {
 				plugins: [titleLinkPlugin()],
 			},
+			head: [{
+				tag: 'script',
+				attrs: {
+					defer: true,
+					src: 'https://umami.weiznich.de/script.js',
+					"data-website-id": 'cbfc6769-b0b4-4256-9fbc-f5c053b55bed',
+				}
+			}],
 		}),
 	],
 	markdown: {
