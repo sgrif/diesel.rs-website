@@ -42,8 +42,7 @@ jobs:
   deploy:
     if: github.repository == 'sgrif/diesel.rs-website' && github.event_name == 'push'
     permissions:
-      pages: write
-      id-token: write
+      contents: write
     needs: build
     runs-on: ubuntu-latest
     environment:
