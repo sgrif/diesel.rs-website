@@ -1,6 +1,6 @@
 let userCollections;
 			try {
-				userCollections = (await import('./content.config-Cklb_ry8.js')).collections;
+				userCollections = (await import('./content.config-De-WGXGY.js')).collections;
 			} catch {}
 			const collections = userCollections;
 

@@ -1,5 +1,5 @@
 import { c as createComponent, m as maybeRenderHead, b as renderTemplate, l as createVNode, g as Fragment, _ as __astro_tag_component__ } from './astro/server-CLdwTDY0.js';
-import { e as $$CardGrid, f as $$Tabs, g as $$TabItem } from './Code-DTyl5U7a.js';
+import { e as $$CardGrid, f as $$Tabs, g as $$TabItem } from './Code-C6zxu3W7.js';
 import 'piccolore';
 import 'clsx';
 
@@ -132,7 +132,7 @@ const sponsors = [
     img: '/images/GitHub_Logo.png',
   },
   {
-    name: 'GiGa Infosystems GmbH',
+    name: 'GiGa infosystems GmbH',
     url: 'https://giga-infosystems.com/',
     img: '/images/logo_giga.svg',
   }
