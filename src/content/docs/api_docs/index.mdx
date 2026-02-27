@@ -1,0 +1,39 @@
+---
+title: "API Documentation"
+lang: "en-US"
+head:
+  - tag: style
+    content: |
+      .version-box {
+        margin: 1rem 0rem 2rem 0rem;
+        padding: 1rem 0rem 1rem 1rem;
+      }
+      
+      .version-box:hover {
+        background: var(--sl-color-accent-high);
+        transition: all 0.4s ease-out;
+        border-radius: 5px;
+      }
+---
+
+
+import { Card, Icon, LinkCard } from '@astrojs/starlight/components';
+
+export const dieselVersions = [
+  { label: "main branch", link: "https://docs.diesel.rs/main/diesel/index.html" },
+  { label: "2.3.x", link: "https://docs.diesel.rs/2.3.x/diesel/index.html" },
+  { label: "2.2.x", link: "https://docs.diesel.rs/2.2.x/diesel/index.html" },
+  { label: "2.1.x", link: "https://docs.diesel.rs/2.1.x/diesel/index.html" },
+  { label: "2.0.x", link: "https://docs.diesel.rs/2.0.x/diesel/index.html" },
+  { label: "1.4.x", link: "https://docs.diesel.rs/1.4.x/diesel/index.html" },
+];
+
+
+
+{dieselVersions.map((item) => (
+  <div class="version-box">
+    <a href={item.link}>
+      API Documentation ({`${item.label}`})
+    </a>
+  </div>
+))}

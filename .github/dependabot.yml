@@ -1,0 +1,27 @@
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: weekly
+      day: friday
+    commit-message:
+      include: scope
+    groups:
+      github-actions:
+        patterns:
+          - "*"
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: weekly
+      day: friday
+    groups:
+      starlight:
+        applies-to: "version-updates"
+        patterns:
+          - "*"
+        update-type:
+          - "minor"
+          - "path"
+          - "major"

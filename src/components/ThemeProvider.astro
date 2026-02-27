@@ -1,0 +1,14 @@
+---
+import type { Props } from '@astrojs/starlight/props';
+import Default from '@astrojs/starlight/components/ThemeProvider.astro';
+---
+
+<Default {...Astro.props}><slot /></Default>
+
+<script is:inline>
+	// Set dark theme as default on initial load
+	if (!localStorage.getItem('starlight-theme')) {
+		document.documentElement.dataset.theme = 'dark';
+		localStorage.setItem('starlight-theme', 'dark');
+	}
+</script>
