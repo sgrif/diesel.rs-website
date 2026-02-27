@@ -6,16 +6,21 @@
 :root[data-theme="dark"] {
     --primary-gold: #ffcd57;
     --primary-gold-hover: #ffbe24;
-    --primary-bg: #1a1d23;
+    --primary-bg: #535379;
     --primary-text: #ffffff;
     --footer-bg: #2b303b;
     --bg-accent: #2b303b;
     --footer-text: #ffffff;
-    --sl-color-accent-high: #474b44;
+    --sl-color-bg-sidebar: var(--primary-bg);
+    --sl-color-accent-high: #9c9bb3;
     --sl-color-accent: var(--primary-gold);
     --sl-color-accent-hover: var(--primary-gold-hover);
     --sl-color-accent-active: var(--primary-gold-hover);
     --sl-color-gray-5: rgba(53, 56, 65, 0.3);
+    --sl-color-hairline: #41415d;
+    --sl-color-hairline-light: var(--sl-color-hairline);
+    --sl-color-hairline-shade: var(--sl-color-hairline);
+    --sl-content-width: 60rem;
 }
 
 :root[data-theme="light"] {
@@ -571,4 +576,9 @@ starlight-tabs ul[role="tablist"].astro-esqgolmp:where(.astro-esqgolmp)[role=tab
     left: 0;
     border-bottom: solid 5px var(--primary-gold);
 
+}
+
+/* Hide the theme switcher as currently only the dark theme works*/
+starlight-theme-select {
+  display: none;
 }

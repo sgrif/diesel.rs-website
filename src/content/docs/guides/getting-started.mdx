@@ -882,7 +882,7 @@ Not all databases support `RETURNING` clauses. On backends that support the RETU
 On the SQLite backend, [RETURNING](https://www.sqlite.org/lang_returning.html) has been supported since version 3.35.0. To enable RETURNING clause add feature flag, `returning_clauses_for_sqlite_3_35` in `Cargo.toml`:
 
 ```toml
-diesel = { version = "2.2.0", features = ["sqlite", "returning_clauses_for_sqlite_3_35"] }
+diesel = { version = "2.3.0", features = ["sqlite", "returning_clauses_for_sqlite_3_35"] }
 ```
 
 MySQL does not support RETURNING clauses. To get back all of the inserted rows, we can call `.get_results` instead of `.execute`.
