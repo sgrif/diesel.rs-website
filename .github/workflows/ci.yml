@@ -3,42 +3,53 @@ name: CI
 on:
   pull_request:
   push:
-    branches: [ master ]
+    branches: [master]
 
-permissions:  
+permissions:
   contents: read
 
-
 jobs:
-  ci:
-    permissions:
-      contents: write
+  build:
     name: CI
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout
-      uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-      with:
-        persist-credentials: false
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
 
-    - name: Install Node.js and Setup Yarn
-      uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
-      with:
-        node-version: 24
-        cache: 'yarn'
+      - name: Install Node.js and Setup Yarn
+        uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
+        with:
+          node-version: 24
+          cache: "yarn"
 
-    - name: Install dependencies
-      run: yarn install --frozen-lockfile
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
 
-    - name: Build Starlight Webpage
-      run: yarn build
+      - name: Build Starlight Webpage
+        run: yarn build
 
-    - name: Deploy
-      if: github.repository == 'sgrif/diesel.rs-website' && github.event_name == 'push'
-      uses: JamesIves/github-pages-deploy-action@d92aa235d04922e8f08b40ce78cc5442fcfbfa2f # v4.8.0
-      with:
-        branch: gh-pages
-        folder: dist # Starlight builds to 'dist' by default
-        clean: true
-        clean-exclude: |
-          CNAME
+      - name: Copy CNAME
+        run: cp CNAME dist/CNAME
+
+      - name: Upload pages artefacts
+        id: deployment
+        uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b #v4.0.0
+        with:
+          path: dist/
+
+  deploy:
+    permissions:
+      pages: write
+      id-token: write
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: diesel.rs
+    steps:
+      - name: Deploy
+        id: deployment
+        if: github.repository == 'sgrif/diesel.rs-website' && github.event_name == 'push'
+        uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e #v4.0.5
