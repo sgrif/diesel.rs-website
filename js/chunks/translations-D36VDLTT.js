@@ -138,7 +138,7 @@ class ImmutableDataStore {
    */
   static async fromModule() {
     try {
-      const data = await import('./_astro_data-layer-content-BN8eKshv.js');
+      const data = await import('./_astro_data-layer-content-DdwmZ7PV.js');
       if (data.default instanceof Map) {
         return ImmutableDataStore.fromMap(data.default);
       }
@@ -379,7 +379,7 @@ const CONTENT_LAYER_IMAGE_REGEX = /__ASTRO_IMAGE_="([^"]+)"/g;
 async function updateImageReferencesInBody(html, fileName) {
   const { default: imageAssetMap } = await import('./content-assets-DleWbedO.js');
   const imageObjects = /* @__PURE__ */ new Map();
-  const { getImage } = await import('./_astro_assets-DLVQ1MjI.js').then(n => n._);
+  const { getImage } = await import('./_astro_assets-CYRbqyXM.js').then(n => n._);
   for (const [_full, imagePath] of html.matchAll(CONTENT_LAYER_IMAGE_REGEX)) {
     try {
       const decodedImagePath = JSON.parse(imagePath.replaceAll("&#x22;", '"'));
@@ -441,7 +441,7 @@ async function renderEntry(entry) {
   }
   if (entry.deferredRender) {
     try {
-      const { default: contentModules } = await import('./content-modules-B6rrvjeQ.js');
+      const { default: contentModules } = await import('./content-modules-B2hy9yif.js');
       const renderEntryImport = contentModules.get(entry.filePath);
       return render({
         collection: "",
@@ -608,7 +608,7 @@ const getEntry = createGetEntry({
 	liveCollections,
 });
 
-const starlightConfig = {"logo":{"src":"/public/images/diesel_logo_favicon.png","alt":"","replacesTitle":false},"social":[{"icon":"github","label":"GitHub","href":"https://github.com/diesel-rs/diesel"}],"tableOfContents":{"minHeadingLevel":2,"maxHeadingLevel":3},"editLink":{},"sidebar":[{"label":"Guides to Diesel","translations":{},"collapsed":false,"items":[{"label":"Overview","translations":{},"link":"/guides/","attrs":{}},{"label":"Getting Started","translations":{},"link":"/guides/getting-started/","attrs":{}},{"label":"All About Selects","translations":{},"link":"/guides/all-about-selects/","attrs":{}},{"label":"All About Updates","translations":{},"link":"/guides/all-about-updates/","attrs":{}},{"label":"All About Inserts","translations":{},"link":"/guides/all-about-inserts/","attrs":{}},{"label":"Relations","translations":{},"link":"/guides/relations/","attrs":{}},{"label":"Composing Applications with Diesel","translations":{},"link":"/guides/composing-applications/","attrs":{}},{"label":"Schema in Depth","translations":{},"link":"/guides/schema-in-depth/","attrs":{}},{"label":"Extending Diesel","translations":{},"link":"/guides/extending-diesel/","attrs":{}},{"label":"Configuring Diesel CLI","translations":{},"link":"/guides/configuring-diesel-cli/","attrs":{}},{"label":"Diesel 2.0 migration guide","translations":{},"link":"/guides/migration-guide/","attrs":{}}]},{"label":"News","translations":{},"collapsed":false,"items":[{"label":"News","translations":{},"link":"/news/","attrs":{}},{"label":"Diesel 2.3.0","translations":{},"link":"/news/2_3_0_release","attrs":{}},{"label":"Diesel 2.2.0","translations":{},"link":"/news/2_2_0_release","attrs":{}},{"label":"Diesel 2.1.0","translations":{},"link":"/news/2_1_0_release","attrs":{}},{"label":"Diesel 2.0.0","translations":{},"link":"/news/2_0_0_release","attrs":{}}]},{"label":"API Docs","translations":{},"collapsed":false,"autogenerate":{"directory":"api_docs","attrs":{}}},{"label":"Changelog","translations":{},"link":"/changelog/","attrs":{}},{"label":"Compare Diesel","translations":{},"collapsed":false,"autogenerate":{"directory":"compare","attrs":{}}}],"head":[],"lastUpdated":false,"pagination":true,"favicon":{"href":"/public/images/diesel_logo_favicon_32.png","type":"image/png"},"components":{"Search":"@astrojs/starlight/components/Search.astro"},"titleDelimiter":"|","credits":false,"pagefind":{"ranking":{"pageLength":0.1,"termFrequency":0.1,"termSaturation":2,"termSimilarity":9}},"title":{"en":"DIESEL"},"isMultilingual":false,"defaultLocale":{"label":"English","lang":"en","dir":"ltr"}};
+const starlightConfig = {"logo":{"src":"/public/images/diesel_logo_favicon.png","alt":"","replacesTitle":false},"social":[{"icon":"github","label":"GitHub","href":"https://github.com/diesel-rs/diesel"}],"tableOfContents":{"minHeadingLevel":2,"maxHeadingLevel":3},"editLink":{},"sidebar":[{"label":"Guides to Diesel","translations":{},"collapsed":false,"items":[{"label":"Overview","translations":{},"link":"/guides/","attrs":{}},{"label":"Getting Started","translations":{},"link":"/guides/getting-started/","attrs":{}},{"label":"All About Selects","translations":{},"link":"/guides/all-about-selects/","attrs":{}},{"label":"All About Updates","translations":{},"link":"/guides/all-about-updates/","attrs":{}},{"label":"All About Inserts","translations":{},"link":"/guides/all-about-inserts/","attrs":{}},{"label":"Relations","translations":{},"link":"/guides/relations/","attrs":{}},{"label":"Composing Applications with Diesel","translations":{},"link":"/guides/composing-applications/","attrs":{}},{"label":"Schema in Depth","translations":{},"link":"/guides/schema-in-depth/","attrs":{}},{"label":"Extending Diesel","translations":{},"link":"/guides/extending-diesel/","attrs":{}},{"label":"Configuring Diesel CLI","translations":{},"link":"/guides/configuring-diesel-cli/","attrs":{}},{"label":"Diesel 2.0 migration guide","translations":{},"link":"/guides/migration-guide/","attrs":{}}]},{"label":"News","translations":{},"collapsed":false,"items":[{"label":"News","translations":{},"link":"/news/","attrs":{}},{"label":"Diesel 2.3.0","translations":{},"link":"/news/2_3_0_release","attrs":{}},{"label":"Diesel 2.2.0","translations":{},"link":"/news/2_2_0_release","attrs":{}},{"label":"Diesel 2.1.0","translations":{},"link":"/news/2_1_0_release","attrs":{}},{"label":"Diesel 2.0.0","translations":{},"link":"/news/2_0_0_release","attrs":{}}]},{"label":"API Docs","translations":{},"collapsed":false,"autogenerate":{"directory":"api_docs","attrs":{}}},{"label":"Changelog","translations":{},"link":"/changelog/","attrs":{}},{"label":"Compare Diesel","translations":{},"collapsed":false,"autogenerate":{"directory":"compare","attrs":{}}}],"head":[],"lastUpdated":false,"pagination":true,"favicon":{"href":"/images/diesel_logo_favicon_32.png","type":"image/png"},"components":{"Search":"@astrojs/starlight/components/Search.astro"},"titleDelimiter":"|","credits":false,"pagefind":{"ranking":{"pageLength":0.1,"termFrequency":0.1,"termSaturation":2,"termSimilarity":9}},"title":{"en":"DIESEL"},"isMultilingual":false,"defaultLocale":{"label":"English","lang":"en","dir":"ltr"}};
 
 const project = {"build":{"format":"directory"},"root":"file:///home/runner/work/diesel.rs-website/diesel.rs-website/","srcDir":"file:///home/runner/work/diesel.rs-website/diesel.rs-website/src/","trailingSlash":"ignore"};
 

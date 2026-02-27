@@ -1,5 +1,5 @@
 import { c as createComponent, m as maybeRenderHead, b as renderTemplate, l as createVNode, g as Fragment, _ as __astro_tag_component__ } from './astro/server-CLdwTDY0.js';
-import { e as $$CardGrid, f as $$Tabs, g as $$TabItem } from './Code-6R8n-9Hm.js';
+import { e as $$CardGrid, f as $$Tabs, g as $$TabItem } from './Code-DjsSTwv6.js';
 import 'piccolore';
 import 'clsx';
 

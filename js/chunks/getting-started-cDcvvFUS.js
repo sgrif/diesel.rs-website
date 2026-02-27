@@ -1,5 +1,5 @@
 import { l as createVNode, g as Fragment, _ as __astro_tag_component__ } from './astro/server-CLdwTDY0.js';
-import { f as $$Tabs, g as $$TabItem } from './Code-6R8n-9Hm.js';
+import { f as $$Tabs, g as $$TabItem } from './Code-DjsSTwv6.js';
 import 'clsx';
 
 const frontmatter = {
