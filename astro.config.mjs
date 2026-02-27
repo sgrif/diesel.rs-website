@@ -7,6 +7,8 @@ import { titleLinkPlugin } from './src/plugins/ec-title-link.mjs';
 
 // https://astro.build/config
 export default defineConfig({
+	site: 'https://diesel.rs',
+	output: 'static',
 	integrations: [
 		starlight({
 			title: 'DIESEL',
