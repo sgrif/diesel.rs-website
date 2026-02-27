@@ -1,3 +1,4 @@
+import * as rehypeExpressiveCode from 'rehype-expressive-code';
 import { createRenderer, getStableObjectHash } from 'rehype-expressive-code';
 export * from 'rehype-expressive-code';
 

@@ -1,9 +1,9 @@
-import { c as createComponent, d as createAstro, r as renderComponent, b as renderTemplate, e as renderSlot, m as maybeRenderHead, f as addAttribute, g as Fragment, h as renderScript } from './astro/server-CLdwTDY0.js';
+import { c as createComponent, r as renderComponent, b as renderTemplate, d as createAstro, e as renderSlot, m as maybeRenderHead, f as addAttribute, g as Fragment, h as renderScript } from './astro/server-CLdwTDY0.js';
 import 'piccolore';
-import { H as HeadConfigSchema, b as urlToSlug, s as slugToLocaleData, c as getSidebarFromConfig, d as getSidebar, e as getSiteTitle$1, f as getToC, h as getSiteTitleHref, i as getPrevNextLinks, j as getHead, a as attachRouteDataAndRunMiddleware, $ as $$Page, k as getLoaderConfig, l as context, m as getLink, n as getPathWithLocale, o as getI18nLabel } from './middleware-C493dzNg.js';
+import { H as HeadConfigSchema, b as urlToSlug, s as slugToLocaleData, c as getSidebarFromConfig, d as getSidebar, e as getSiteTitle$1, f as getToC, h as getSiteTitleHref, i as getPrevNextLinks, j as getHead, a as attachRouteDataAndRunMiddleware, $ as $$Page, k as context, l as getLoaderConfig, m as getLink, n as getPathWithLocale, o as getI18nLabel } from './middleware-Bi2AQs9l.js';
 import * as z from 'zod';
-import { s as stripLeadingAndTrailingSlashes, g as getCollectionPathFromRoot, p as project, a as starlightConfig, b as getCollection, r as renderEntry } from './translations-D36VDLTT.js';
-import { I as Icons, a as I18nBadgeConfigSchema, B as BadgeConfigSchema, p as parseAsyncWithFriendlyErrors, b as parseWithFriendlyErrors, $ as $$Badge, c as $$Icon, d as $$LinkButton } from './Code-DjsSTwv6.js';
+import { s as stripLeadingAndTrailingSlashes, g as getCollectionPathFromRoot, p as project, a as starlightConfig, b as getCollection, r as renderEntry } from './translations-PC2KTtba.js';
+import { I as Icons, a as I18nBadgeConfigSchema, B as BadgeConfigSchema, p as parseAsyncWithFriendlyErrors, b as parseWithFriendlyErrors, $ as $$Badge, c as $$Icon, d as $$LinkButton } from './Code-DpnK-cAk.js';
 /* empty css                        */
 import '../../renderers.mjs';
 
@@ -349,7 +349,7 @@ async function getStarlightPageFrontmatter(frontmatter) {
   );
 }
 async function getUserDocsSchema() {
-  const userCollections = (await import('./collection-config-DzI0QOI3.js')).collections;
+  const userCollections = (await import('./collection-config-DA74HSCy.js')).collections;
   return userCollections?.docs?.schema ?? docsSchema();
 }
 

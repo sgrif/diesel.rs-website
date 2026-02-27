@@ -1352,7 +1352,7 @@ async function getRenderer() {
 }
 async function createRenderer() {
   const { astroConfig, ecConfigFileOptions, ecIntegrationOptions = {} } = await import('./config-CA6E-zKS.js');
-  const { createAstroRenderer, mergeEcConfigOptions } = await import('./index-fkXl6p5c.js');
+  const { createAstroRenderer, mergeEcConfigOptions } = await import('./index-BD-MIWs7.js');
   if (typeof mergeEcConfigOptions !== "function") {
     throw new Error(
       `You are trying to use Expressive Code's \`<Code>\` component, but the Expressive Code
@@ -1379,7 +1379,7 @@ async function createRenderer() {
   }
   let mergedEcConfig = mergeEcConfigOptions(ecIntegrationOptions, ecConfigFileOptions);
   try {
-    const { default: preprocessEcConfig } = await import('./preprocess-config-BNxwf4oc.js');
+    const { default: preprocessEcConfig } = await import('./preprocess-config-D6qSotLY.js');
     mergedEcConfig = await preprocessEcConfig({ ecConfig: mergedEcConfig, astroConfig }) || mergedEcConfig;
   } catch (error) {
     const msg = error instanceof Error ? error.message : error;

@@ -138,7 +138,7 @@ class ImmutableDataStore {
    */
   static async fromModule() {
     try {
-      const data = await import('./_astro_data-layer-content-DdwmZ7PV.js');
+      const data = await import('./_astro_data-layer-content-DCMZ2a9g.js');
       if (data.default instanceof Map) {
         return ImmutableDataStore.fromMap(data.default);
       }
@@ -379,7 +379,7 @@ const CONTENT_LAYER_IMAGE_REGEX = /__ASTRO_IMAGE_="([^"]+)"/g;
 async function updateImageReferencesInBody(html, fileName) {
   const { default: imageAssetMap } = await import('./content-assets-DleWbedO.js');
   const imageObjects = /* @__PURE__ */ new Map();
-  const { getImage } = await import('./_astro_assets-CYRbqyXM.js').then(n => n._);
+  const { getImage } = await import('./_astro_assets-BvbSLpI_.js').then(n => n._);
   for (const [_full, imagePath] of html.matchAll(CONTENT_LAYER_IMAGE_REGEX)) {
     try {
       const decodedImagePath = JSON.parse(imagePath.replaceAll("&#x22;", '"'));
@@ -441,7 +441,7 @@ async function renderEntry(entry) {
   }
   if (entry.deferredRender) {
     try {
-      const { default: contentModules } = await import('./content-modules-B2hy9yif.js');
+      const { default: contentModules } = await import('./content-modules-ByWovpaN.js');
       const renderEntryImport = contentModules.get(entry.filePath);
       return render({
         collection: "",
@@ -1991,4 +1991,4 @@ const useTranslations = await createTranslationSystem(
   pluginTranslations
 );
 
-export { BuiltInDefaultLocale as B, CONTENT_LAYER_TYPE as C, DEFAULT_OUTPUT_FORMAT as D, LIVE_CONTENT_TYPE as L, VALID_SUPPORTED_FORMATS as V, starlightConfig as a, getCollection as b, stripTrailingSlash as c, stripLeadingSlash as d, stripHtmlExtension as e, ensureHtmlExtension as f, getCollectionPathFromRoot as g, ensureTrailingSlash as h, pickLang as i, ensureLeadingSlash as j, stripExtension as k, getEntry as l, DEFAULT_HASH_PROPS as m, defineCollection as n, project as p, renderEntry as r, stripLeadingAndTrailingSlashes as s, useTranslations as u };
+export { BuiltInDefaultLocale as B, CONTENT_LAYER_TYPE as C, DEFAULT_OUTPUT_FORMAT as D, LIVE_CONTENT_TYPE as L, VALID_SUPPORTED_FORMATS as V, starlightConfig as a, getCollection as b, stripTrailingSlash as c, stripLeadingSlash as d, ensureHtmlExtension as e, stripHtmlExtension as f, getCollectionPathFromRoot as g, ensureTrailingSlash as h, pickLang as i, ensureLeadingSlash as j, stripExtension as k, getEntry as l, DEFAULT_HASH_PROPS as m, defineCollection as n, project as p, renderEntry as r, stripLeadingAndTrailingSlashes as s, useTranslations as u };
