@@ -127,7 +127,7 @@ export const sponsors = [
     img: '/images/GitHub_Logo.png',
   },
   {
-    name: 'GiGa Infosystems GmbH',
+    name: 'GiGa infosystems GmbH',
     url: 'https://giga-infosystems.com/',
     img: '/images/logo_giga.svg',
   }
