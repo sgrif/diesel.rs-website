@@ -57,7 +57,7 @@ jobs:
       - name: Unpack the artifact
         run: mkdir dist && cd dist && tar xpvf ../artifact.tar && cd ..
       - name: Deploy page
-        uses: JamesIves/github-pages-deploy-action@92aa235d04922e8f08b40ce78cc5442fcfbfa2f # v4.8.0
+        uses: JamesIves/github-pages-deploy-action@d92aa235d04922e8f08b40ce78cc5442fcfbfa2f # v4.8.0
         with:
           branch: gh-pages
           folder: dist
