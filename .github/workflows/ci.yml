@@ -59,6 +59,22 @@ jobs:
           artifact-ids: ${{ inputs.artifact_id }}
       - name: Unpack the artifact
         run: mkdir dist && cd dist && tar xpvf ../artifact.tar && cd ..
+      - name: Copy old links in place
+        run: |
+          cp dist/guides/getting-started/index.html dist/guides/getting-started.html
+          cp dist/guides/all-about-inserts/index.html dist/guides/all-about-inserts.html
+          cp dist/guides/all-about-selects/index.html dist/guides/all-about-selects.html
+          cp dist/guides/composing-applications/index.html dist/guides/composing-applications.html
+          cp dist/guides/configuring-diesel-cli/index.html dist/guides/configuring-diesel-cli.html
+          cp dist/guides/extending-diesel/index.html dist/guides/extending-diesel.html
+          cp dist/guides/migration-guide/index.html dist/guides/migration-guide.html
+          cp dist/guides/relations/index.html dist/guides/relations.html
+          cp dist/guides/schema-in-depth/index.html dist/guides/schema-in-depth.html
+          cp dist/news/2_0_0_release/index.html dist/news/2_0_0_release.html
+          cp dist/news/2_1_0_release/index.html dist/news/2_1_0_release.html
+          cp dist/news/2_2_0_release/index.html dist/news/2_2_0_release.html
+          cp dist/news/2_3_0_release/index.html dist/news/2_3_0_release.html
+          cp dist/compare_diesel/index.html dist/compare_diesel.html
       - name: Deploy page
         uses: JamesIves/github-pages-deploy-action@d92aa235d04922e8f08b40ce78cc5442fcfbfa2f # v4.8.0
         with:
