@@ -1,9 +1,9 @@
 import { c as createComponent, r as renderComponent, b as renderTemplate, d as createAstro, e as renderSlot, m as maybeRenderHead, f as addAttribute, g as Fragment, h as renderScript } from './astro/server-CLdwTDY0.js';
 import 'piccolore';
-import { H as HeadConfigSchema, b as urlToSlug, s as slugToLocaleData, c as getSidebarFromConfig, d as getSidebar, e as getSiteTitle$1, f as getToC, h as getSiteTitleHref, i as getPrevNextLinks, j as getHead, a as attachRouteDataAndRunMiddleware, $ as $$Page, k as context, l as getLoaderConfig, m as getLink, n as getPathWithLocale, o as getI18nLabel } from './middleware-BBsAcFKU.js';
+import { H as HeadConfigSchema, b as urlToSlug, s as slugToLocaleData, c as getSidebarFromConfig, d as getSidebar, e as getSiteTitle$1, f as getToC, h as getSiteTitleHref, i as getPrevNextLinks, j as getHead, a as attachRouteDataAndRunMiddleware, $ as $$Page, k as context, l as getLoaderConfig, m as getLink, n as getPathWithLocale, o as getI18nLabel } from './middleware-DfsB8RtI.js';
 import * as z from 'zod';
-import { s as stripLeadingAndTrailingSlashes, g as getCollectionPathFromRoot, p as project, a as starlightConfig, b as getCollection, r as renderEntry } from './translations-Ds_4FHwt.js';
-import { I as Icons, a as I18nBadgeConfigSchema, B as BadgeConfigSchema, p as parseAsyncWithFriendlyErrors, b as parseWithFriendlyErrors, $ as $$Badge, c as $$Icon, d as $$LinkButton } from './Code-0IDvl7A-.js';
+import { s as stripLeadingAndTrailingSlashes, g as getCollectionPathFromRoot, p as project, a as starlightConfig, b as getCollection, r as renderEntry } from './translations-BxgYTwQl.js';
+import { I as Icons, a as I18nBadgeConfigSchema, B as BadgeConfigSchema, p as parseAsyncWithFriendlyErrors, b as parseWithFriendlyErrors, $ as $$Badge, c as $$Icon, d as $$LinkButton } from './Code-CAgBSuwW.js';
 /* empty css                        */
 import '../../renderers.mjs';
 
@@ -349,7 +349,7 @@ async function getStarlightPageFrontmatter(frontmatter) {
   );
 }
 async function getUserDocsSchema() {
-  const userCollections = (await import('./collection-config-COE8L1nq.js')).collections;
+  const userCollections = (await import('./collection-config-B0L4kP2W.js')).collections;
   return userCollections?.docs?.schema ?? docsSchema();
 }
 
