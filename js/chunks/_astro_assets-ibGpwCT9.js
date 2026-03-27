@@ -1,7 +1,7 @@
 import { joinPaths, isRemotePath } from '@astrojs/internal-helpers/path';
-import { A as AstroError, E as ExpectedImage, w as LocalImageUsedWrongly, M as MissingImageDimension, x as UnsupportedImageFormat, I as IncompatibleDescriptorOptions, y as UnsupportedImageConversion, z as toStyleString, B as NoImageMetadata, C as FailedToFetchRemoteImageDimensions, D as ExpectedImageOptions, G as ExpectedNotESMImage, H as InvalidImageService, d as createAstro, c as createComponent, J as ImageMissingAlt, m as maybeRenderHead, f as addAttribute, s as spreadAttributes, b as renderTemplate, K as ExperimentalFontsNotEnabled, O as FontFamilyNotFound, u as unescapeHTML } from './astro/server-CLdwTDY0.js';
-import { D as DEFAULT_OUTPUT_FORMAT, V as VALID_SUPPORTED_FORMATS, m as DEFAULT_HASH_PROPS } from './translations-BhT_Z1hf.js';
 import { isRemoteAllowed } from '@astrojs/internal-helpers/remote';
+import { A as AstroError, E as ExpectedImage, w as LocalImageUsedWrongly, M as MissingImageDimension, x as UnsupportedImageFormat, I as IncompatibleDescriptorOptions, y as UnsupportedImageConversion, z as toStyleString, B as NoImageMetadata, C as FailedToFetchRemoteImageDimensions, D as RemoteImageNotAllowed, G as ExpectedImageOptions, H as ExpectedNotESMImage, J as InvalidImageService, d as createAstro, c as createComponent, K as ImageMissingAlt, m as maybeRenderHead, f as addAttribute, s as spreadAttributes, b as renderTemplate, O as ExperimentalFontsNotEnabled, P as FontFamilyNotFound, u as unescapeHTML } from './astro/server-B8WrWVi0.js';
+import { D as DEFAULT_OUTPUT_FORMAT, V as VALID_SUPPORTED_FORMATS, m as DEFAULT_HASH_PROPS } from './translations-DVEsdr15.js';
 import * as mime from 'mrmime';
 import 'clsx';
 import 'piccolore';
@@ -222,6 +222,7 @@ const baseService = {
       priority,
       fit,
       position,
+      background,
       ...attributes
     } = options;
     return {
@@ -301,7 +302,8 @@ const baseService = {
       q: "quality",
       f: "format",
       fit: "fit",
-      position: "position"
+      position: "position",
+      background: "background"
     };
     Object.entries(params).forEach(([param, key]) => {
       options[key] && searchParams.append(param, options[key].toString());
@@ -328,7 +330,8 @@ const baseService = {
       format: params.get("f"),
       quality: params.get("q"),
       fit: params.get("fit"),
-      position: params.get("position") ?? void 0
+      position: params.get("position") ?? void 0,
+      background: params.get("background") ?? void 0
     };
     return transform;
   }
@@ -1358,8 +1361,39 @@ async function imageMetadata(data, src) {
   };
 }
 
-async function inferRemoteSize(url) {
-  const response = await fetch(url);
+async function inferRemoteSize(url, imageConfig) {
+  if (!URL.canParse(url)) {
+    throw new AstroError({
+      ...FailedToFetchRemoteImageDimensions,
+      message: FailedToFetchRemoteImageDimensions.message(url)
+    });
+  }
+  const allowlistConfig = imageConfig ? {
+    domains: imageConfig.domains ?? [],
+    remotePatterns: imageConfig.remotePatterns ?? []
+  } : void 0;
+  if (!allowlistConfig) {
+    const parsedUrl = new URL(url);
+    if (!["http:", "https:"].includes(parsedUrl.protocol)) {
+      throw new AstroError({
+        ...FailedToFetchRemoteImageDimensions,
+        message: FailedToFetchRemoteImageDimensions.message(url)
+      });
+    }
+  }
+  if (allowlistConfig && !isRemoteAllowed(url, allowlistConfig)) {
+    throw new AstroError({
+      ...RemoteImageNotAllowed,
+      message: RemoteImageNotAllowed.message(url)
+    });
+  }
+  const response = await fetch(url, { redirect: "manual" });
+  if (response.status >= 300 && response.status < 400) {
+    throw new AstroError({
+      ...FailedToFetchRemoteImageDimensions,
+      message: FailedToFetchRemoteImageDimensions.message(url)
+    });
+  }
   if (!response.body || !response.ok) {
     throw new AstroError({
       ...FailedToFetchRemoteImageDimensions,
@@ -1407,7 +1441,7 @@ async function getConfiguredImageService() {
   if (!globalThis?.astroAsset?.imageService) {
     const { default: service } = await import(
       // @ts-expect-error
-      './sharp-DBTQVaPe.js'
+      './sharp-8OT8tH0K.js'
     ).catch((e) => {
       const error = new AstroError(InvalidImageService);
       error.cause = e;
@@ -1446,13 +1480,21 @@ async function getImage$1(options, imageConfig) {
   };
   let originalWidth;
   let originalHeight;
-  if (options.inferSize && isRemoteImage(resolvedOptions.src) && isRemotePath(resolvedOptions.src)) {
-    const result = await inferRemoteSize(resolvedOptions.src);
-    resolvedOptions.width ??= result.width;
-    resolvedOptions.height ??= result.height;
-    originalWidth = result.width;
-    originalHeight = result.height;
+  if (options.inferSize) {
     delete resolvedOptions.inferSize;
+    if (isRemoteImage(resolvedOptions.src) && isRemotePath(resolvedOptions.src)) {
+      if (!isRemoteAllowed(resolvedOptions.src, imageConfig)) {
+        throw new AstroError({
+          ...RemoteImageNotAllowed,
+          message: RemoteImageNotAllowed.message(resolvedOptions.src)
+        });
+      }
+      const result = await inferRemoteSize(resolvedOptions.src, imageConfig);
+      resolvedOptions.width ??= result.width;
+      resolvedOptions.height ??= result.height;
+      originalWidth = result.width;
+      originalHeight = result.height;
+    }
   }
   const originalFilePath = isESMImportedImage(resolvedOptions.src) ? resolvedOptions.src.fsPath : void 0;
   const clonedSrc = isESMImportedImage(resolvedOptions.src) ? (
@@ -1662,7 +1704,7 @@ const $$Picture = createComponent(async ($$result, $$props, $$slots) => {
   })}  <img${addAttribute(fallbackImage.src, "src")}${spreadAttributes(attributes)}${addAttribute(className, "class")}> </picture>`;
 }, "/home/runner/work/diesel.rs-website/diesel.rs-website/node_modules/astro/components/Picture.astro", void 0);
 
-const fontsMod = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+const mod = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
   __proto__: null
 }, Symbol.toStringTag, { value: 'Module' }));
 
@@ -1705,19 +1747,19 @@ const $$Astro = createAstro("https://diesel.rs");
 const $$Font = createComponent(($$result, $$props, $$slots) => {
   const Astro2 = $$result.createAstro($$Astro, $$props, $$slots);
   Astro2.self = $$Font;
-  const { internalConsumableMap } = fontsMod;
-  if (!internalConsumableMap) {
+  const { componentDataByCssVariable } = mod;
+  if (!componentDataByCssVariable) {
     throw new AstroError(ExperimentalFontsNotEnabled);
   }
   const { cssVariable, preload = false } = Astro2.props;
-  const data = internalConsumableMap.get(cssVariable);
+  const data = componentDataByCssVariable.get(cssVariable);
   if (!data) {
     throw new AstroError({
       ...FontFamilyNotFound,
       message: FontFamilyNotFound.message(cssVariable)
     });
   }
-  const filteredPreloadData = filterPreloads(data.preloadData, preload);
+  const filteredPreloadData = filterPreloads(data.preloads, preload);
   return renderTemplate`<style>${unescapeHTML(data.css)}</style>${filteredPreloadData?.map(({ url, type }) => renderTemplate`<link rel="preload"${addAttribute(url, "href")} as="font"${addAttribute(`font/${type}`, "type")} crossorigin>`)}`;
 }, "/home/runner/work/diesel.rs-website/diesel.rs-website/node_modules/astro/components/Font.astro", void 0);
 
@@ -1736,7 +1778,6 @@ const _astro_assets = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.definePrope
   getConfiguredImageService,
   getImage,
   imageConfig,
-  inferRemoteSize,
   isLocalService
 }, Symbol.toStringTag, { value: 'Module' }));
 

@@ -10,16 +10,16 @@ import * as z from 'zod';
 import { z as z$1 } from 'zod';
 import { slash } from '@astrojs/internal-helpers/path';
 import 'common-ancestor-path';
-import { C as CONTENT_LAYER_TYPE, L as LIVE_CONTENT_TYPE, g as getCollectionPathFromRoot, n as defineCollection } from './translations-BhT_Z1hf.js';
-import { a as AstroUserError } from './astro/server-CLdwTDY0.js';
-import './_astro_assets-C_Xvbk5M.js';
+import { C as CONTENT_LAYER_TYPE, L as LIVE_CONTENT_TYPE, g as getCollectionPathFromRoot, n as defineCollection } from './translations-DVEsdr15.js';
+import { a as AstroUserError } from './astro/server-B8WrWVi0.js';
+import './_astro_assets-ibGpwCT9.js';
 import { existsSync, promises } from 'node:fs';
 import pLimit from 'p-limit';
 import picomatch from 'picomatch';
 import { glob as glob$1 } from 'tinyglobby';
-import { d as docsSchema } from './index@_@astro-CWel0xto.js';
+import { d as docsSchema } from './index@_@astro-BVzLXtSL.js';
 import fs from 'node:fs/promises';
-import { r as stripLeadingAndTrailingSlash, t as stripTrailingSlash } from './middleware-BWWp0jCV.js';
+import { r as stripLeadingAndTrailingSlash, t as stripTrailingSlash } from './middleware-BAnLXGAz.js';
 import { fromMarkdown } from 'mdast-util-from-markdown';
 import { toMarkdown } from 'mdast-util-to-markdown';
 import { toString } from 'mdast-util-to-string';
@@ -151,7 +151,7 @@ function glob(globOptions) {
           store.set({
             id,
             data: parsedData,
-            body,
+            body: globOptions.retainBody === false ? void 0 : body,
             filePath: relativePath2,
             digest,
             rendered,
@@ -162,14 +162,21 @@ function glob(globOptions) {
           store.set({
             id,
             data: parsedData,
-            body,
+            body: globOptions.retainBody === false ? void 0 : body,
             filePath: relativePath2,
             digest,
             deferredRender: true,
             legacyId
           });
         } else {
-          store.set({ id, data: parsedData, body, filePath: relativePath2, digest, legacyId });
+          store.set({
+            id,
+            data: parsedData,
+            body: globOptions.retainBody === false ? void 0 : body,
+            filePath: relativePath2,
+            digest,
+            legacyId
+          });
         }
         fileToIdMap.set(filePath2, id);
       }

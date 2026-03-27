@@ -1,7 +1,7 @@
-import { d as createAstro, c as createComponent, r as renderComponent, b as renderTemplate } from './astro/server-CLdwTDY0.js';
+import { d as createAstro, c as createComponent, r as renderComponent, b as renderTemplate } from './astro/server-B8WrWVi0.js';
 import 'piccolore';
-import { r as renderEntry } from './translations-BhT_Z1hf.js';
-import { g as getRoute, a as attachRouteDataAndRunMiddleware, u as useRouteData, $ as $$Page } from './middleware-BWWp0jCV.js';
+import { r as renderEntry } from './translations-DVEsdr15.js';
+import { g as getRoute, a as attachRouteDataAndRunMiddleware, u as useRouteData, $ as $$Page } from './middleware-BAnLXGAz.js';
 
 const $$Astro = createAstro("https://diesel.rs");
 const $$Common = createComponent(async ($$result, $$props, $$slots) => {

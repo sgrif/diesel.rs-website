@@ -148,6 +148,12 @@ const FailedToFetchRemoteImageDimensions = {
   message: (imageURL) => `Failed to get the dimensions for ${imageURL}.`,
   hint: "Verify your remote image URL is accurate, and that you are not using `inferSize` with a file located in your `public/` folder."
 };
+const RemoteImageNotAllowed = {
+  name: "RemoteImageNotAllowed",
+  title: "Remote image is not allowed",
+  message: (imageURL) => `Remote image ${imageURL} is not allowed by your image configuration.`,
+  hint: "Update `image.domains` or `image.remotePatterns`, or remove `inferSize` for this image."
+};
 const UnsupportedImageFormat = {
   name: "UnsupportedImageFormat",
   title: "Unsupported image format",
@@ -236,7 +242,7 @@ const FontFamilyNotFound = {
   name: "FontFamilyNotFound",
   title: "Font family not found",
   message: (family) => `No data was found for the \`"${family}"\` family passed to the \`<Font>\` component.`,
-  hint: "This is often caused by a typo. Check that the `<Font />` component or `getFontData()` function are using a `cssVariable` specified in your config."
+  hint: "This is often caused by a typo. Check that the `<Font />` component is using a `cssVariable` specified in your config."
 };
 const UnknownContentCollectionError = {
   name: "UnknownContentCollectionError",
@@ -288,7 +294,7 @@ function createComponent(arg1, moduleId, propagation) {
   }
 }
 
-const ASTRO_VERSION = "5.16.11";
+const ASTRO_VERSION = "5.18.1";
 const NOOP_MIDDLEWARE_HEADER = "X-Astro-Noop";
 const originPathnameSymbol = Symbol.for("astro.originPathname");
 
@@ -1227,9 +1233,9 @@ const COMMENT_REPLACER = "\\u003C!--";
 function safeJsonStringify(obj) {
   return JSON.stringify(obj).replace(SCRIPT_RE, SCRIPT_REPLACER).replace(COMMENT_RE, COMMENT_REPLACER);
 }
-function createSearchParams(componentExport, encryptedProps, slots) {
+function createSearchParams(encryptedComponentExport, encryptedProps, slots) {
   const params = new URLSearchParams();
-  params.set("e", componentExport);
+  params.set("e", encryptedComponentExport);
   params.set("p", encryptedProps);
   params.set("s", slots);
   return params;
@@ -1331,13 +1337,14 @@ class ServerIslandComponent {
       }
     }
     const key = await this.result.key;
+    const componentExportEncrypted = await encryptString(key, componentExport);
     const propsEncrypted = Object.keys(this.props).length === 0 ? "" : await encryptString(key, JSON.stringify(this.props));
     const slotsEncrypted = Object.keys(renderedSlots).length === 0 ? "" : await encryptString(key, JSON.stringify(renderedSlots));
     const hostId = await this.getHostId();
     const slash = this.result.base.endsWith("/") ? "" : "/";
     let serverIslandUrl = `${this.result.base}${slash}_server-islands/${componentId}${this.result.trailingSlash === "always" ? "/" : ""}`;
     const potentialSearchParams = createSearchParams(
-      componentExport,
+      componentExportEncrypted,
       propsEncrypted,
       slotsEncrypted
     );
@@ -1359,7 +1366,7 @@ let response = await fetch('${serverIslandUrl}', { headers });`
     ) : (
       // POST request
       `let data = {
-	componentExport: ${safeJsonStringify(componentExport)},
+	encryptedComponentExport: ${safeJsonStringify(componentExportEncrypted)},
 	encryptedProps: ${safeJsonStringify(propsEncrypted)},
 	encryptedSlots: ${safeJsonStringify(slotsEncrypted)},
 };
@@ -2060,7 +2067,6 @@ function normalizeProps(props) {
 }
 async function renderComponentToString(result, displayName, Component, props, slots = {}, isPage = false, route) {
   let str = "";
-  let instructions = null;
   let renderedFirstPageChunk = false;
   let head = "";
   if (isPage && !result.partial && nonAstroPageNeedsHeadInjection(Component)) {
@@ -2077,19 +2083,7 @@ async function renderComponentToString(result, displayName, Component, props, sl
           }
         }
         if (chunk instanceof Response) return;
-        if (isPage) {
-          str += chunkToString(result, chunk);
-        } else {
-          if (chunk instanceof SlotString) {
-            str += chunk;
-            instructions = mergeSlotInstructions(instructions, chunk);
-          } else if (isRenderInstruction(chunk)) {
-            instructions ??= [];
-            instructions.push(chunk);
-          } else {
-            str += chunkToString(result, chunk);
-          }
-        }
+        str += chunkToString(result, chunk);
       }
     };
     const renderInstance = await renderComponent(result, displayName, Component, props, slots);
@@ -2105,10 +2099,7 @@ async function renderComponentToString(result, displayName, Component, props, sl
     }
     throw e;
   }
-  if (isPage) {
-    return str;
-  }
-  return new SlotString(str, instructions);
+  return str;
 }
 function nonAstroPageNeedsHeadInjection(pageComponent) {
   return !!pageComponent?.[needsHeadRenderingSymbol];
@@ -2418,4 +2409,4 @@ function createVNode(type, props = {}, key) {
   return vnode;
 }
 
-export { AstroError as A, NoImageMetadata as B, FailedToFetchRemoteImageDimensions as C, ExpectedImageOptions as D, ExpectedImage as E, ForbiddenRewrite as F, ExpectedNotESMImage as G, InvalidImageService as H, IncompatibleDescriptorOptions as I, ImageMissingAlt as J, ExperimentalFontsNotEnabled as K, LiveContentConfigError as L, MissingImageDimension as M, NOOP_MIDDLEWARE_HEADER as N, FontFamilyNotFound as O, MissingSharp as P, RenderUndefinedEntryError as R, UnknownContentCollectionError as U, __astro_tag_component__ as _, AstroUserError as a, renderTemplate as b, createComponent as c, createAstro as d, renderSlot as e, addAttribute as f, Fragment as g, renderScript as h, defineStyleVars as i, renderHead as j, renderJSX as k, createVNode as l, maybeRenderHead as m, AstroJSX as n, originPathnameSymbol as o, renderUniqueStylesheet as p, renderScriptElement as q, renderComponent as r, spreadAttributes as s, createHeadAndContent as t, unescapeHTML as u, decodeKey as v, LocalImageUsedWrongly as w, UnsupportedImageFormat as x, UnsupportedImageConversion as y, toStyleString as z };
+export { AstroError as A, NoImageMetadata as B, FailedToFetchRemoteImageDimensions as C, RemoteImageNotAllowed as D, ExpectedImage as E, ForbiddenRewrite as F, ExpectedImageOptions as G, ExpectedNotESMImage as H, IncompatibleDescriptorOptions as I, InvalidImageService as J, ImageMissingAlt as K, LiveContentConfigError as L, MissingImageDimension as M, NOOP_MIDDLEWARE_HEADER as N, ExperimentalFontsNotEnabled as O, FontFamilyNotFound as P, MissingSharp as Q, RenderUndefinedEntryError as R, UnknownContentCollectionError as U, __astro_tag_component__ as _, AstroUserError as a, renderTemplate as b, createComponent as c, createAstro as d, renderSlot as e, addAttribute as f, Fragment as g, renderScript as h, defineStyleVars as i, renderHead as j, renderJSX as k, createVNode as l, maybeRenderHead as m, AstroJSX as n, originPathnameSymbol as o, renderUniqueStylesheet as p, renderScriptElement as q, renderComponent as r, spreadAttributes as s, createHeadAndContent as t, unescapeHTML as u, decodeKey as v, LocalImageUsedWrongly as w, UnsupportedImageFormat as x, UnsupportedImageConversion as y, toStyleString as z };

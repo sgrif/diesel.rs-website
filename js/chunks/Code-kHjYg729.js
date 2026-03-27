@@ -1,4 +1,4 @@
-import { d as createAstro, c as createComponent, i as defineStyleVars, r as renderComponent, g as Fragment, b as renderTemplate, m as maybeRenderHead, s as spreadAttributes, f as addAttribute, u as unescapeHTML, a as AstroUserError, e as renderSlot, h as renderScript } from './astro/server-CLdwTDY0.js';
+import { d as createAstro, c as createComponent, i as defineStyleVars, r as renderComponent, g as Fragment, b as renderTemplate, m as maybeRenderHead, s as spreadAttributes, f as addAttribute, u as unescapeHTML, a as AstroUserError, e as renderSlot, h as renderScript } from './astro/server-B8WrWVi0.js';
 import 'piccolore';
 import * as z from 'zod';
 /* empty css                                                            */
@@ -1379,7 +1379,7 @@ async function createRenderer() {
   }
   let mergedEcConfig = mergeEcConfigOptions(ecIntegrationOptions, ecConfigFileOptions);
   try {
-    const { default: preprocessEcConfig } = await import('./preprocess-config-weMI6GhJ.js');
+    const { default: preprocessEcConfig } = await import('./preprocess-config-r3_7bfX8.js');
     mergedEcConfig = await preprocessEcConfig({ ecConfig: mergedEcConfig, astroConfig }) || mergedEcConfig;
   } catch (error) {
     const msg = error instanceof Error ? error.message : error;
