@@ -61,6 +61,8 @@ jobs:
         run: mkdir dist && cd dist && tar xpvf ../artifact.tar && cd ..
       - name: Copy old links in place
         run: |
+          mkdir -p dist/assets
+          cp -r dist/images dist/assets/images
           cp dist/guides/getting-started/index.html dist/guides/getting-started.html
           cp dist/guides/all-about-inserts/index.html dist/guides/all-about-inserts.html
           cp dist/guides/all-about-selects/index.html dist/guides/all-about-selects.html
