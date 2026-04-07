@@ -1,6 +1,6 @@
 let userCollections;
 			try {
-				userCollections = (await import('./content.config-CavsK3W4.js')).collections;
+				userCollections = (await import('./content.config-CoI18LSM.js')).collections;
 			} catch {}
 			const collections = userCollections;
 
