@@ -1,0 +1,25 @@
+- title: Overview
+  pages:
+    - title: Compare Diesel
+    - title: Diesel 2.0 migration guide
+
+- title: Getting Started
+  pages:
+    - title: Getting Started with Diesel
+    - title: Configuring Diesel CLI
+
+- title: Basics Queries
+  pages:
+    - title: All About Inserts
+    - title: All About Selects
+    - title: All About Updates
+    - title: Relations
+
+- title: Structure Your Application
+  pages:
+    - title: Composing Applications with Diesel
+    - title: Extending Diesel
+
+- title: Advanced Topics
+  pages:
+    - title: Schema in Depth
