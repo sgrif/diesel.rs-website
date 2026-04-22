@@ -18,7 +18,7 @@
 		{{ end -}}
 
 		{{ range $page := $group.pages -}}
-			{{ $pageSlug := $page.title | urlize -}}
+			{{ $pageSlug := $page.title | urlize | replaceRE `\.` "-" -}}
 
 			{{ $isActivePage := or $isSectionIndex (eq $urlPageSlug $pageSlug) -}}
 
@@ -37,16 +37,23 @@
 	{{ end -}}
 {{ end -}}
 
+{{ $prevButtonText := "Previous" }}
+{{ $nextButtonText := "Next" }}
+{{ if eq $.Section "news" }}
+	{{ $prevButtonText = "Newer" }}
+	{{ $nextButtonText = "Older" }}
+{{ end }}
+
 <footer id="main-content-footer">
 	{{ if ne $prevPageHref "" -}}
 	<a class="btn"  href="{{ $prevPageHref }}">
 		<span class="material-symbols-outlined">keyboard_arrow_left</span>
-		<span>Previous</span>
+		<span>{{ $prevButtonText }}</span>
 	</a>
 	{{ else -}}
 	<a class="hidden" aria-hidden="true">
 		<span class="material-symbols-outlined">keyboard_arrow_left</span>
-		<span>Previous</span>
+		<span>{{ $prevButtonText }}</span>
 	</a>
 	{{ end -}}
 
@@ -58,12 +65,12 @@
 
 	{{ if ne $nextPageHref "" -}}
 	<a class="btn"  href="{{ $nextPageHref }}">
-		<span>Next</span>
+		<span>{{ $nextButtonText }}</span>
 		<span class="material-symbols-outlined">keyboard_arrow_right</span>
 	</a>
 	{{ else -}}
 	<a class="hidden" aria-hidden="true">
-		<span>Next</span>
+		<span>{{ $nextButtonText }}</span>
 		<span class="material-symbols-outlined">keyboard_arrow_right</span>
 	</a>
 	{{ end -}}

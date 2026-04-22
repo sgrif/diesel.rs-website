@@ -97,9 +97,12 @@
 }
 
 #TableOfContents a code {
-  padding: calc(var(--padding) / 3.7);
+  font-family: var(--font-mono);
+  font-size: .8rem;
+
+  background: var(--background-subtle);
   border-radius: var(--radius);
-  font-size: .9rem;
+  padding: calc(var(--padding) / 3.7);
 }
 
 #TableOfContents a.active {

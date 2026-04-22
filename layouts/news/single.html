@@ -28,7 +28,7 @@
 		(resources.Get "css/left-right-sidebars-layout.css")
 		(resources.Get "css/main-content.css")
 	-}}
-	{{- $css := $css_files | resources.Concat "assets/css/guides.css" | minify | fingerprint }}
+	{{- $css := $css_files | resources.Concat "assets/css/news.css" | minify | fingerprint }}
 	<link rel="stylesheet" href="{{ $css.Permalink }}" integrity="{{ $css.Data.integrity }}">
 </head>
 <body>
@@ -62,7 +62,7 @@
 	(resources.Get "js/off-canvas.js")
 	(resources.Get "js/table-of-contents.js")
 -}}
-{{- $js := $js_files | resources.Concat "assets/js/guides.js" | minify | fingerprint }}
+{{- $js := $js_files | resources.Concat "assets/js/news.js" | minify | fingerprint }}
 <script src="{{ $js.Permalink }}" integrity="{{ $js.Data.integrity }}"></script>
 
 <script src="{{ "pagefind/pagefind-component-ui.js" | absURL }}" type="module"></script>

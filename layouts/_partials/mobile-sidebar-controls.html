@@ -1,0 +1,17 @@
+{{ $sectionButtonText := "On this section" }}
+{{ $sectionButtonIcon := "side_navigation" }}
+{{ if eq $.Section "news" }}
+	{{ $sectionButtonText = "More news" }}
+	{{ $sectionButtonIcon = "breaking_news_alt_1" }}
+{{ end }}
+
+<nav id="mobile-sidebar-controls" aria-label="Mobile Sidebar Controls">
+	<button id="left-sidebar-open-button" class="btn" aria-label="Open {{ .Section | title }} Menu">
+		<span aria-hidden="true" class="material-symbols-outlined">{{ $sectionButtonIcon }}</span>
+		<span>{{ $sectionButtonText }}</span>
+	</button>
+	<button id="right-sidebar-open-button" class="btn" aria-label="Open Page Table of Contents">
+		<span>On this page</span>
+		<span aria-hidden="true" class="material-symbols-outlined">list_alt</span>
+	</button>
+</nav>

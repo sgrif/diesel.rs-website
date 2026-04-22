@@ -2,7 +2,7 @@
 {{ $currentURL := .RelPermalink }}
 
 <header id="site-header">
-	<a id="site-header-logo" href="#">
+	<a id="site-header-logo" href="{{ .Site.Home.Permalink }}">
 		<img src="{{ "images/logo.svg" | absURL }}" alt="Diesel Logo">
 	</a>
 	<nav id="site-header-menu" aria-label="Main">

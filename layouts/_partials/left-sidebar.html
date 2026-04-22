@@ -1,17 +1,19 @@
 <aside id="left-sidebar">
 	<div class="sidebar-controls">
-		<button id="left-sidebar-close-button" class="btn" aria-label="Close Guides Menu">
+		<button id="left-sidebar-close-button" class="btn" aria-label="Close {{ .Section | title }} Menu">
 			<span>Close</span>
 			<span aria-hidden="true" class="material-symbols-outlined">close</span>
 		</button>
 	</div>
 
 	<header>
-		<h2>Guides</h2>
+		<h2>{{ .Section | title }}</h2>
+		{{ if eq .Section "guides" }}
 		<p>{{ .Site.Params.project.latestRelease }}</p>
+		{{ end }}
 	</header>
 
-	<nav id="left-sidebar-nav" aria-label="Guides">
+	<nav id="left-sidebar-nav" aria-label="{{ .Section | title }}">
 		{{ $data := index .Site.Data .Site.Language.Lang .Section "sidebar" }}
 
 		{{- $url := split .Permalink "/" -}}
@@ -22,7 +24,7 @@
 			<summary>{{ $group.title }}</summary>
 			<ul>
 				{{ range $index, $page := $group.pages -}}
-					{{ $pageSlug := $page.title | urlize -}}
+					{{ $pageSlug := $page.title | urlize | replaceRE `\.` "-" -}}
 					{{ $isActivePage := eq $urlPageSlug $pageSlug -}}
 					{{ $href := printf "%s%s/%s/" $.Site.Home.Permalink $.Section $pageSlug -}}
 					{{ $hrefPageTitle := $page.title -}}
