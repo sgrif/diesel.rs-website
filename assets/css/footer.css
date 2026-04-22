@@ -1,0 +1,8 @@
+#site-footer {
+  height: 4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--padding);
+  color: var(--color-nav);
+}

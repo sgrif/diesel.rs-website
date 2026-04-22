@@ -1,0 +1,141 @@
+#left-sidebar > header {
+  padding: var(--padding);
+}
+
+#left-sidebar > header > h2 {
+  display: flex;
+  font-family: var(--font-headings);
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--primary);
+  text-transform: uppercase;
+}
+
+#left-sidebar > header > p {
+  font-size: .6rem;
+  font-weight: 500;
+}
+
+#left-sidebar-nav {
+  padding: var(--padding);
+}
+
+#left-sidebar-nav > details > summary {
+  font-weight: 700;
+  cursor: pointer;
+
+  padding: var(--padding);
+  margin-bottom: var(--padding);
+  border-radius: var(--radius);
+
+  background: var(--background-hover);
+}
+
+#left-sidebar-nav > details[open] > summary {
+  cursor: unset;
+  background: none;
+  margin-bottom: 0;
+}
+
+#left-sidebar-nav > details[open] {
+  padding-bottom: var(--padding_4x);
+}
+
+#left-sidebar-nav > details > ul > li {
+  margin: 0 var(--padding);
+  border-left: 1px solid var(--border);
+}
+
+#left-sidebar-nav > details > ul > li > a {
+  display: flex;
+  cursor: pointer;
+
+  color: var(--color-nav);
+  border-top-right-radius: var(--radius);
+  border-bottom-right-radius: var(--radius);
+
+  padding: var(--padding) var(--padding_2x);
+}
+
+#left-sidebar-nav > details > ul > li > a.active {
+  background: var(--primary);
+  color: var(--color-primary);
+}
+
+#left-sidebar-nav > details > ul > li > a:hover:not(.active) {
+  background: var(--background-hover);
+  color: var(--color);
+}
+
+/* ----------------------------------------------------- */
+
+#right-sidebar > header > h3 {
+  font-family: var(--font-headings);
+  font-weight: 700;
+  text-transform: uppercase;
+
+  padding: var(--padding);
+}
+
+/* Hugo use #TableOfContents for #right-sidebar-nav */
+#TableOfContents {
+  padding: 0 var(--padding);
+}
+
+#TableOfContents ul {
+  border-left: 1px solid var(--border);
+  margin-left: var(--padding);
+}
+
+#TableOfContents a {
+  color: var(--color-nav);
+  display: inline-block;
+  cursor: pointer;
+  padding: var(--padding);
+  border-top-right-radius: var(--radius);
+  border-bottom-right-radius: var(--radius);
+}
+
+#TableOfContents a code {
+  padding: calc(var(--padding) / 3.7);
+  border-radius: var(--radius);
+  font-size: .9rem;
+}
+
+#TableOfContents a.active {
+  background: var(--primary);
+  color: var(--color-primary);
+}
+
+#TableOfContents a:hover:not(.active) {
+  background: var(--background-hover);
+  color: var(--color);
+}
+
+#TableOfContents ul ul {
+  margin-left: var(--padding_4x);
+}
+
+#back-to-top {
+  display: inline-block;
+  padding: var(--padding);
+  color: var(--color-nav);
+  border-radius: var(--radius);
+}
+
+#back-to-top:hover {
+  background: var(--background-hover);
+  color: var(--color);
+}
+
+/* optional deco */
+#TableOfContents ul a::before {
+  content: "";
+  position: relative;
+  display: inline-block;
+  left: calc(-1 * var(--padding));
+  top: -5px;
+  width: calc(var(--padding) * 3);
+  height: 1px;
+  background: var(--border);
+}

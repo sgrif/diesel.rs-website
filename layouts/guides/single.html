@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="{{ .Site.LanguageCode | default `en-US` }}">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="theme-color" content="{{ .Site.Params.project.themeColor }}">
+	<meta name="robots" content="{{ . }}">
+
+	<title>{{ .Title | .RenderString }} · {{ .Site.Title | .RenderString }}</title>
+	<meta name="description" content="{{ .Page.Params.description | default .Site.Params.description | .RenderString }}">
+	<link rel="canonical" href="{{ .Permalink }}">
+
+	{{ partial "favicons.html" . }}
+	{{ partial "og-x-seo.html" . }}
+
+	{{ partial "fonts-and-icons.html" . }}
+	<link href="{{ "pagefind/pagefind-component-ui.css" | absURL }}" rel="stylesheet">
+
+	{{- $css_files := slice
+		(resources.Get "css/reset.css")
+		(resources.Get "css/theme.css")
+		(resources.Get "css/components/button.css")
+		(resources.Get "css/header.css")
+		(resources.Get "css/footer.css")
+		(resources.Get "css/left-right-sidebars.css")
+		(resources.Get "css/left-right-sidebars-openers.css")
+		(resources.Get "css/left-right-sidebars-layout.css")
+		(resources.Get "css/main-content.css")
+	-}}
+	{{- $css := $css_files | resources.Concat "assets/css/guides.css" | minify | fingerprint }}
+	<link rel="stylesheet" href="{{ $css.Permalink }}" integrity="{{ $css.Data.integrity }}">
+</head>
+<body>
+
+{{ partial "header.html" . }}
+{{ partial "guides/mobile-sidebar-controls.html" . }}
+{{ partial "guides/left-sidebar.html" . }}
+
+<main>
+	<article id="main-content" aria-labelledby="main-content-heading" aria-describedby="main-content-summary">
+		<header id="main-content-header">
+			<h1 id="main-content-heading">
+				{{ .Title | safeHTML }}
+			</h1>
+			{{ with .Params.summary }}
+			<p id="main-content-summary">{{ . | $.RenderString }}</p>
+			{{ end }}
+		</header>
+		<div id="main-content-body">
+			{{ .Content | safeHTML }}
+		</div>
+		{{ partial "guides/content-footer.html" . }}
+	</article>
+	{{ partial "guides/right-sidebar.html" . }}
+</main>
+
+{{ partial "footer.html" . }}
+<div id="off-canvas-model"></div>
+
+{{- $js_files := slice
+	(resources.Get "js/off-canvas.js")
+	(resources.Get "js/table-of-contents.js")
+-}}
+{{- $js := $js_files | resources.Concat "assets/js/guides.js" | minify | fingerprint }}
+<script src="{{ $js.Permalink }}" integrity="{{ $js.Data.integrity }}"></script>
+
+<script src="{{ "pagefind/pagefind-component-ui.js" | absURL }}" type="module"></script>
+{{ partial "analytics.html" . }}
+</body>
+</html>

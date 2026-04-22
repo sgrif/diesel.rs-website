@@ -1,0 +1,24 @@
+{{ $section := .Section }}
+{{ $currentURL := .RelPermalink }}
+
+<header id="site-header">
+	<a id="site-header-logo" href="#">
+		<img src="{{ "images/logo.svg" | absURL }}" alt="Diesel Logo">
+	</a>
+	<nav id="site-header-menu" aria-label="Main">
+		{{ range $.Site.Menus.main }}
+		<a href="{{ .URL | absLangURL }}" {{ if or (eq $section .Identifier) (eq $currentURL .URL) -}} class="active"{{ end }}>
+			{{ .Name }}
+		</a>
+		{{ end }}
+	</nav>
+	<div id="site-header-actions">
+		<div id="search-box">
+			<pagefind-modal-trigger></pagefind-modal-trigger>
+			<pagefind-modal></pagefind-modal>
+		</div>
+		<a class="repo-link" href="#">
+			<img src="{{ "images/github-logo.svg" | absURL }}" alt="GitHub Logo">
+		</a>
+	</div>
+</header>

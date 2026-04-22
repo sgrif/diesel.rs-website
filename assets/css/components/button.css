@@ -1,0 +1,17 @@
+.btn {
+  cursor: pointer;
+  display: flex;
+  padding: var(--padding) var(--padding_2x);
+  gap: calc(var(--padding) / 2);
+  font-size: .8rem;
+
+  background: var(--background-subtle);
+  border-radius: var(--radius);
+  color: var(--color-nav);
+  align-items: center;
+}
+
+.btn:hover {
+  color: var(--color);
+  background: var(--background-hover);
+}

@@ -1,0 +1,23 @@
+#mobile-sidebar-controls {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: var(--padding);
+  border-bottom: 1px solid var(--border);
+
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  backdrop-filter: var(--blur);
+}
+
+#mobile-sidebar-controls .btn {
+  font-family: var(--font-headings);
+  font-weight: 500;
+  text-transform: uppercase;
+  background: none;
+}
+
+#mobile-sidebar-controls .btn:hover {
+  background: var(--background-hover);
+}

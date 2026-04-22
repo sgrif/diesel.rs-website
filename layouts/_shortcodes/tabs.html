@@ -1,0 +1,4 @@
+{{ $label := .Get "label" | default "Select by language"}}
+<div class="tabs" role="tablist" aria-label="{{ $label }}">
+	{{ .Inner }}
+</div>

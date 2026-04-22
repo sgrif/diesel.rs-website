@@ -1,0 +1,20 @@
+{{ $emojis := dict
+"tip" ":bulb:"
+"note" ":information_source:"
+"caution" ":exclamation:"
+"important" ":star:"
+"warning" ":information_source:"
+}}
+
+<div class="blockquote-container">
+	<div class="alert-heading">
+		{{ with .AlertTitle }}
+			{{ . }}
+		{{ else }}
+			{{ or (i18n .AlertType) (title .AlertType) }}
+		{{ end }}
+	</div>
+	<blockquote class="alert alert-{{ .AlertType }}">
+		{{ .Text }}
+	</blockquote>
+</div>

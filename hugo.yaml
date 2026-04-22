@@ -1,0 +1,77 @@
+# For more info: https://gohugo.io/configuration/
+enableGitInfo: true
+enableRobotsTXT: true
+disableHugoGeneratorInject: true
+disableKinds: [taxonomy, term]
+
+publishDir: public
+baseURL: https://diesel.rs
+
+markup:
+  highlight:
+    noClasses: false
+  goldmark:
+    renderer:
+      unsafe: true
+    parser:
+      attribute:
+        block: true
+        title: true
+  tableOfContents:
+    pre: '<nav id="TableOfContents" aria-label="Table of Contents">'
+    post: '</nav>'
+
+defaultContentLanguage: en
+languages:
+  en:
+    weight: 1
+    languageName: English
+    languageCode: en-US
+    contentDir: content/en
+    title: Diesel
+    params:
+      description: >-
+        Diesel is the most productive way to interact with databases in Rust
+        because of its safe and composable abstractions over queries.
+
+params:
+  enablePageFind: true
+  analytics:
+    umami:
+      id: cbfc6769-b0b4-4256-9fbc-f5c053b55bed
+      url: https://umami.weiznich.de
+
+  project:
+    startYear: 2015
+    presentYear: 2026
+    themeColor: "#535379"
+    latestRelease: Diesel 2.3.7
+    copyrightHolder: The Diesel Core Team
+    github:
+      main: diesel-rs/diesel
+      website: sgrif/diesel.rs-website
+
+  home:
+    heading: Your next
+    headingSegment2: Theme
+    description: Description
+    getStartedPath: docs/
+
+menus:
+  main:
+    - identifier: news
+      name: News
+      pageRef: /news
+      weight: 10
+    - identifier: guides
+      name: Guides
+      pageRef: /guides
+      weight: 20
+    - identifier: api_docs
+      name: API Docs
+      pageRef: /api_docs
+      weight: 30
+    - identifier: changelog
+      name: Changelog
+      pageRef: /changelog
+      weight: 40

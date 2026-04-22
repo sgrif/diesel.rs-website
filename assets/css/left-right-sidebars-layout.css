@@ -1,0 +1,252 @@
+html {
+  scroll-behavior: smooth;
+  scroll-padding: 2em;
+}
+
+body {
+  font-feature-settings: "kern", "liga", "pnum";
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.625;
+
+  font-family: var(--font);
+  background-color: var(--background);
+  color: var(--color);
+
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+}
+
+#site-header, #site-footer {
+  flex-shrink: 0; /* Prevents header/footer from squishing */
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  width: 100svw;
+  padding: var(--padding);
+  flex: 1;
+}
+
+#left-sidebar, #right-sidebar {
+  position: sticky;
+  top: 0;
+  padding: var(--padding) var(--padding_2x);
+  display: none;
+  overflow-x: auto;
+}
+
+#left-sidebar {
+  width: 85%;
+  left: -85%;
+}
+
+#right-sidebar {
+  width: 85%;
+  right: -85%;
+}
+
+.sidebar-controls {
+  display: flex;
+  padding: var(--padding) var(--padding) 0;
+}
+
+#left-sidebar .sidebar-controls {
+  justify-content: flex-end;
+}
+
+/* Small Tablet */
+@media (min-width: 744px) and (max-width: 1023px) {
+  #left-sidebar {
+    width: 50%;
+    left: -50%;
+  }
+
+  #right-sidebar {
+    width: 50%;
+    right: -50%;
+  }
+}
+
+/* From Large Tablet */
+@media (min-width: 1024px) {
+  main {
+    flex-direction: row;
+  }
+
+  /* make mobile-sidebar-controls hidden but show left-sidebar-open-button */
+  #right-sidebar-open-button, #right-sidebar .sidebar-controls {
+    display: none;
+  }
+
+  #mobile-sidebar-controls {
+    position: fixed;
+    width: auto;
+    background: none;
+    border: none;
+    padding: 0;
+
+    top: calc(var(--site-header-height) + var(--padding_2x));
+    left: var(--padding);
+  }
+
+  #mobile-sidebar-controls .btn {
+    background: var(--background-subtle);
+  }
+
+  #main-content {
+    width: 75vw;
+    overflow-x: auto;
+    padding-top: calc(var(--padding_4x) * 2);
+  }
+
+  #right-sidebar {
+    width: 25%;
+    display: flex;
+    flex-direction: column;
+    align-self: start;
+    position: sticky;
+    top: var(--site-header-height);
+    height: auto;
+    max-height: calc(100vh - var(--site-header-height));
+    flex-shrink: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  #left-sidebar {
+    width: 33%;
+    left: -33%;
+  }
+
+  #site-header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    backdrop-filter: var(--blur);
+  }
+
+  #site-footer {
+    width: 75vw;
+  }
+}
+
+/* From Desktop */
+@media (min-width: 1280px) {
+  #mobile-sidebar-controls, #left-sidebar .sidebar-controls {
+    display: none;
+  }
+
+  body {
+    display: grid;
+    grid-template-columns: 20vw 80vw;
+    grid-template-rows: var(--site-header-height) 1fr auto; /* header, content, footer */
+    min-height: 100vh;
+    overflow-y: visible;
+  }
+
+  #site-header {
+    grid-column: 1 / span 2;
+  }
+
+  #site-footer {
+    grid-row: 3;
+    grid-column: 2;
+  }
+
+  #left-sidebar {
+    grid-column: 1;
+    grid-row: 2 / span 2;
+    width: 20vw;
+    display: flex;
+    flex-direction: column;
+    position: sticky;
+    top: var(--site-header-height);
+    overflow-y: auto;
+    align-self: start;
+    max-height: calc(100vh - var(--site-header-height));
+  }
+
+  main {
+    grid-column: 2;
+    grid-row: 2;
+    width: 80vw;
+    overflow-y: visible;
+    align-items: flex-start;
+  }
+
+  #main-content {
+    padding: var(--padding_4x);
+    width: 60vw;
+  }
+
+  #site-footer {
+    width: 60vw;
+  }
+
+  #left-sidebar, #right-sidebar {
+    padding: var(--padding);
+  }
+}
+
+/* sidebar open */
+#left-sidebar.open, #right-sidebar.open {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  height: 100%;
+  z-index: 20;
+  transition: .3s;
+  background: var(--background-off-canvas);
+  box-shadow: var(--box-shadow-off-canvas);
+}
+
+#left-sidebar.open {
+  animation: slide-in-left .3s forwards;
+  border-right: 2px solid var(--border);
+}
+
+#right-sidebar.open {
+  animation: slide-in-right .3s forwards;
+  border-left: 2px solid var(--border);
+}
+
+/* model */
+body.model-open {
+  overflow: hidden;
+}
+
+#off-canvas-model {
+  display: none;
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 15;
+
+  background: var(--background-subtle);
+  backdrop-filter: var(--blur);
+}
+
+/* off-canvas animation */
+@keyframes slide-in-left {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes slide-in-right {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}

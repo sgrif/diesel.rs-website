@@ -1,0 +1,70 @@
+{{ $prevPageTitle := "" -}}
+{{ $nextPageTitle := "" -}}
+{{ $prevPageHref := "" -}}
+{{ $nextPageHref := "" -}}
+
+{{ $dataLocale := index .Site.Data .Site.Language.Lang -}}
+{{ if isset $dataLocale .Section -}}
+	{{ $data := index .Site.Data .Site.Language.Lang .Section "sidebar" -}}
+	{{ $url := split .Permalink "/" -}}
+	{{ $urlPageSlug := index $url (sub (len $url) 2) -}}
+	{{ $isSectionIndex := eq $urlPageSlug .Section -}}
+	{{ $isActivePagePassed := false -}}
+	{{ $isNextPagePassed := false -}}
+
+	{{ range $group := $data -}}
+		{{ if $isNextPagePassed -}}
+			{{ break -}}
+		{{ end -}}
+
+		{{ range $page := $group.pages -}}
+			{{ $pageSlug := $page.title | urlize -}}
+
+			{{ $isActivePage := or $isSectionIndex (eq $urlPageSlug $pageSlug) -}}
+
+			{{ if $isActivePagePassed -}}
+				{{ $nextPageTitle = $page.title -}}
+				{{ $nextPageHref = printf "%s%s/%s/" $.Site.Home.Permalink $.Section $pageSlug -}}
+				{{ $isNextPagePassed = true -}}
+				{{ break -}}
+			{{ else if $isActivePage -}}
+				{{ $isActivePagePassed = true -}}
+			{{ else -}}
+				{{ $prevPageTitle = $page.title -}}
+				{{ $prevPageHref = printf "%s%s/%s/" $.Site.Home.Permalink $.Section $pageSlug -}}
+			{{ end -}}
+		{{ end -}}
+	{{ end -}}
+{{ end -}}
+
+<footer id="main-content-footer">
+	{{ if ne $prevPageHref "" -}}
+	<a class="btn"  href="{{ $prevPageHref }}">
+		<span class="material-symbols-outlined">keyboard_arrow_left</span>
+		<span>Previous</span>
+	</a>
+	{{ else -}}
+	<a class="hidden" aria-hidden="true">
+		<span class="material-symbols-outlined">keyboard_arrow_left</span>
+		<span>Previous</span>
+	</a>
+	{{ end -}}
+
+	{{ $lastMod := .Lastmod.Format "2006-01-02" -}}
+	<time datetime="{{ $lastMod }}" title="Last updated: {{ $lastMod }}">
+		<span class="material-symbols-outlined">edit_calendar</span>
+		<span>{{ $lastMod }}</span>
+	</time>
+
+	{{ if ne $nextPageHref "" -}}
+	<a class="btn"  href="{{ $nextPageHref }}">
+		<span>Next</span>
+		<span class="material-symbols-outlined">keyboard_arrow_right</span>
+	</a>
+	{{ else -}}
+	<a class="hidden" aria-hidden="true">
+		<span>Next</span>
+		<span class="material-symbols-outlined">keyboard_arrow_right</span>
+	</a>
+	{{ end -}}
+</footer>
