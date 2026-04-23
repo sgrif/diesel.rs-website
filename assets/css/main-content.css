@@ -53,3 +53,8 @@
 #main-content-footer time .material-symbols-outlined {
   color: var(--color-nav);
 }
+
+/* body */
+#main-content-body {
+  overflow-x: auto;
+}

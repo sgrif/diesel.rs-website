@@ -25,10 +25,15 @@ main {
   display: flex;
   flex-direction: column;
   width: 100svw;
-  padding: var(--padding);
   flex: 1;
 }
 
+#main-content {
+  flex: 1;
+  padding: var(--padding);
+}
+
+/* sidebars */
 #left-sidebar, #right-sidebar {
   position: sticky;
   top: 0;
@@ -67,6 +72,10 @@ main {
     width: 50%;
     right: -50%;
   }
+
+  #main-content {
+    padding: var(--padding_2x);
+  }
 }
 
 /* From Large Tablet */
@@ -79,7 +88,6 @@ main {
   #right-sidebar-open-button, #right-sidebar .sidebar-controls {
     display: none;
   }
-
   #mobile-sidebar-controls {
     position: fixed;
     width: auto;
@@ -90,15 +98,14 @@ main {
     top: calc(var(--site-header-height) + var(--padding_2x));
     left: var(--padding);
   }
-
   #mobile-sidebar-controls .btn {
     background: var(--background-subtle);
   }
-
   #main-content {
     width: 75vw;
     overflow-x: auto;
-    padding-top: calc(var(--padding_4x) * 2);
+
+    padding: calc(var(--padding_4x) * 2) var(--padding_4x) var(--padding_4x);
   }
 
   #right-sidebar {
@@ -177,8 +184,9 @@ main {
   }
 
   #main-content {
-    padding: var(--padding_4x);
     width: 60vw;
+
+    padding: var(--padding_4x);
   }
 
   #site-footer {

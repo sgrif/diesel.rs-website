@@ -48,6 +48,10 @@
   }
 }
 
+@view-transition {
+  navigation: auto;
+}
+
 ::selection {
   background: var(--primary);
   color: var(--color-primary);
