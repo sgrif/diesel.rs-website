@@ -1,51 +1,43 @@
-# diesel.rs
+# Diesel.rs ORM Website
 
-[![Built with Starlight](https://astro.badg.es/v2/built-with-starlight/tiny.svg)](https://starlight.astro.build)
-
-
-The content is available here: https://diesel.rs
-
-## 🚀 Project Structure
-
-Inside of your Astro + Starlight project, you'll see the following folders and files:
+## Local Setup
 
 ```
-.
-├── public/
-├── src/
-│   ├── assets/
-│   ├── content/
-│   │   └── docs/
-│   └── content.config.ts
-├── astro.config.mjs
-├── package.json
-└── tsconfig.json
+$ git clone https://github.com/sgrif/diesel.rs-website.git
+$ cd diesel.rs-website
+$ hugo server
 ```
 
-Starlight looks for `.md` or `.mdx` files in the `src/content/docs/` directory. Each file is exposed as a route based on its file name.
+## Project Structure
 
-Images can be added to `src/assets/` and embedded in Markdown with a relative link.
+```
+├── hugo.yaml
+├── content
+│   └── en
+│       ├── guides
+│       ├── api-documentation
+│       ├── news
+│       └── pages
+├── data
+│   └── en
+│       ├── guides
+│       │   └── sidebar.yml
+│       ├── api-documentation
+│       │   └── sidebar.yml
+│       └── news
+│           └── sidebar.yml
+├── layouts
+├── assets
+│   ├── css
+│   └── js
+└── static
+    ├── images
+    └── site.webmanifest
+```
 
-Static assets, like favicons, can be placed in the `public/` directory.
-
-## Prerequisites
-
-- [Yarn](https://yarnpkg.com/getting-started/install)
+> [!NOTE] A note on deployment
+> The master branch will automatically deploy via GitHub Pages.
 
 
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `yarn install`             | Installs dependencies                            |
-| `yarn dev`             | Starts local dev server at `localhost:4321`      |
-| `yarn build`           | Build your production site to `./dist/`          |
-| `yarn preview`         | Preview your build locally, before deploying     |
-| `yarn astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `yarn astro -- --help` | Get help using the Astro CLI                     |
-
-
-
-### Master branch is automatically deployed to Github Pages.
+## Contributing
+Refer [CONTRIBUTING.md](CONTRIBUTING.md).
