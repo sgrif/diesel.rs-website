@@ -1,6 +1,7 @@
+{{ $label := .Get "label" | markdownify }}
 <details name="tabs-{{ add .Parent.Ordinal 1 }}" style="--n: {{ add .Ordinal 1 }}" open>
-	<summary role="tab">
-		{{ .Get "label" | markdownify }}
+	<summary role="tab" data-index="{{ $label }}">
+		{{ $label }}
 	</summary>
 	<div role="tabpanel">
 		{{ .Inner | markdownify }}

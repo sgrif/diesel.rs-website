@@ -64,6 +64,7 @@
 {{- $js_files := slice
 	(resources.Get "js/off-canvas.js")
 	(resources.Get "js/table-of-contents.js")
+	(resources.Get "js/tabs.js")
 -}}
 {{- $js := $js_files | resources.Concat "assets/js/guides.js" | minify | fingerprint }}
 <script src="{{ $js.Permalink }}" integrity="{{ $js.Data.integrity }}"></script>
