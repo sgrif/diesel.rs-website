@@ -1,5 +1,6 @@
 /* header */
 #main-content-header {
+  font-family: var(--font-headings);
   margin-bottom: calc(var(--padding_4x) * 2);
 }
 
@@ -24,14 +25,16 @@
 }
 
 /* footer */
-#main-content-footer{
+#main-content-footer {
   display: grid;
   grid-template-columns: repeat(3, auto);
   justify-content: space-between;
   width: 100%;
+  padding-top: calc(var(--padding_4x)*2);
+  padding-bottom: var(--padding_4x);
 }
 
-#main-content-footer .btn{
+#main-content-footer .btn {
   font-family: var(--font-headings);
   font-weight: 500;
   text-transform: uppercase;
@@ -57,4 +60,292 @@
 /* body */
 #main-content-body {
   overflow-x: auto;
+}
+
+/* Typography */
+#main-content-body p,
+#main-content-body dl,
+#main-content-body ol,
+#main-content-body ul,
+#main-content-body table,
+#main-content-body iframe,
+#main-content-body pre:not(.chroma),
+#main-content-body .highlight {
+  line-height: 1.8em;
+  letter-spacing: -.1px;
+}
+
+#main-content-body strong, #main-content-body b, #main-content-body table th {
+  font-weight: 600
+}
+
+#main-content-body em {
+  font-style: italic
+}
+
+/* Headings */
+#main-content-body h1,
+#main-content-body h2,
+#main-content-body h3,
+#main-content-body h4,
+#main-content-body h5,
+#main-content-body h6 {
+  font-family: var(--font-headings);
+  line-height: 1em;
+  font-weight: 500;
+  margin: 2.6em 0 .1em;
+  color: var(--color)
+}
+
+#main-content-body h1 {
+  font-size: 1.8rem
+}
+
+#main-content-body h2 {
+  font-size: 1.5rem
+}
+
+#main-content-body h3 {
+  font-size: 1.3rem
+}
+
+#main-content-body h4 {
+  font-size: 1.1rem
+}
+
+#main-content-body h2:first-child {
+  margin-top: .6rem
+}
+
+/* Lists */
+#main-content-body ul {
+  list-style: disc
+}
+
+#main-content-body ol {
+  list-style: decimal
+}
+
+#main-content-body dl {
+  list-style: square
+}
+
+#main-content-body li > ul {
+  list-style: circle
+}
+
+#main-content-body li > ol {
+  list-style: lower-alpha
+}
+
+#main-content-body li > ul > li > ul {
+  list-style: square;
+}
+
+#main-content-body li > ol > li > ol {
+  list-style: lower-roman;
+}
+
+/* Blockquote */
+#main-content-body blockquote {
+  padding: var(--padding_2x);
+  background: var(--background-subtle);
+  border-radius: var(--radius);
+  backdrop-filter: blur(--blur);
+}
+
+#main-content-body blockquote footer {
+  margin: 1rem 0;
+  font-style: italic
+}
+
+#main-content-body blockquote footer cite:before {
+  content: "—";
+  padding: 0 .3rem
+}
+
+#main-content-body blockquote footer cite a {
+  color: var(--border);
+}
+
+/* HR */
+#main-content-body hr:before {
+  display: block;
+  text-align: center;
+  content: "∙ ∙ ∙";
+  color: var(--color-nav);
+  letter-spacing: .6rem;
+  top: calc(var(--padding) / 3.7);
+  margin: 2.6rem 0 1rem;
+}
+
+/* Table */
+#main-content-body table {
+  max-width: 100%;
+  border-radius: var(--radius);
+  box-shadow: 0 0 0 1px var(--border);
+}
+
+#main-content-body table thead th:first-child {
+  border-top-left-radius: var(--radius);
+}
+
+#main-content-body table thead th:last-child {
+  border-top-right-radius: var(--radius);
+}
+
+#main-content-body table tbody tr:last-child {
+  border-bottom-left-radius: var(--radius);
+  border-bottom-right-radius: var(--radius);
+}
+
+#main-content-body table tbody tr:last-child td:first-child {
+  border-bottom-left-radius: var(--radius);
+}
+
+#main-content-body table tbody tr:last-child td:last-child {
+  border-bottom-right-radius: var(--radius);
+}
+
+#main-content-body table td,
+#main-content-body table th {
+  padding: calc(var(--padding) / 3) var(--padding);
+}
+
+#main-content-body table tr:nth-child(2n) {
+  background: var(--background-subtle)
+}
+
+#main-content-body table thead tr {
+  background: var(--background-subtle)
+}
+
+/* Links */
+#main-content-body a {
+  color: var(--primary);
+  text-decoration: none
+}
+
+#main-content-body a:hover {
+  text-decoration: underline;
+  background: var(--background-hover);
+}
+
+/* Img/ Video */
+#main-content-body img,
+#main-content-body video {
+  max-width: 100%;
+  border-radius: var(--radius);
+}
+
+/* Spacing */
+#main-content-body p,
+#main-content-body table,
+#main-content-body blockquote,
+#main-content-body iframe,
+#main-content-body .highlight,
+#main-content-body .alert,
+#main-content-body .tabs {
+  margin-top: 1rem;
+}
+
+#main-content-body li p {
+  margin-top: 0
+}
+
+#main-content-body li blockquote,
+#main-content-body li iframe,
+#main-content-body li table,
+#main-content-body li .highlight,
+#main-content-body li .alert,
+#main-content-body li .tabs {
+  margin-bottom: 1rem;
+}
+
+#main-content-body dl,
+#main-content-body ol,
+#main-content-body ul {
+  margin: .6rem 0 0 1.8rem;
+}
+
+#main-content-body dl dl,
+#main-content-body dl ol,
+#main-content-body dl ul,
+#main-content-body ol dl,
+#main-content-body ol ol,
+#main-content-body ol ul,
+#main-content-body ul dl,
+#main-content-body ul ol,
+#main-content-body ul ul {
+  margin-top: 0;
+}
+
+#main-content-body li table {
+  width: 100%;
+}
+
+#main-content-body li blockquote,
+#main-content-body li .highlight,
+#main-content-body li .alert,
+#main-content-body li .tabs {
+  margin: .6rem 1.2rem .6rem 0;
+}
+
+#main-content-body li blockquote {
+  padding: var(--padding);
+}
+
+#main-content-body blockquote *:first-child {
+  margin-top: 0;
+}
+
+/* Code/ Highlight/ Chroma */
+#main-content-body code, #main-content-body pre {
+  font-family: var(--font-mono);
+  font-size: .875rem;
+}
+
+#main-content-body pre, #main-content-body pre code {
+  display: inline-grid;
+}
+
+#main-content-body h1 code,
+#main-content-body h2 code,
+#main-content-body h3 code,
+#main-content-body h4 code,
+#main-content-body h5 code,
+#main-content-body h6 code,
+#main-content-body p code {
+  font-size: .875em;
+}
+
+#main-content-body p code,
+#main-content-body ul code,
+#main-content-body ol code,
+#main-content-body dl code,
+#main-content-body table code {
+  font-size: .875rem;
+}
+
+#main-content-body h1 code,
+#main-content-body h2 code,
+#main-content-body h3 code,
+#main-content-body h4 code,
+#main-content-body h5 code,
+#main-content-body h6 code,
+#main-content-body p code,
+#main-content-body ul code,
+#main-content-body ol code,
+#main-content-body dl code,
+#main-content-body table code {
+  padding: calc(var(--padding) / 3.7);
+  background: var(--background-subtle);
+  border-radius: var(--radius);
+  border: 1px solid var(--border-subtle);
+}
+#main-content-body .chroma code {
+  padding: unset;
+  background: unset;
+  border-radius: unset;
+  border: unset;
 }

@@ -1,6 +1,7 @@
-/* https://github.com/elad2412/the-new-css-reset : v1.11.3 */
+/* https://github.com/elad2412/the-new-css-reset v1.11.3 */
+/* custom styles for: pre, code */
 
-*:where(:not(html, iframe, canvas, img, svg, video, audio):not(svg *, symbol *)) {
+*:where(:not(html, iframe, canvas, img, svg, video, audio, pre, code):not(svg *, symbol *)) {
   all: unset;
   display: revert;
 }
@@ -60,6 +61,10 @@ meter {
   color: unset;
 }
 
+::marker {
+  content: initial;
+}
+
 :where([hidden]) {
   display: none;
 }
@@ -79,6 +84,10 @@ meter {
 :where(dialog:modal) {
   all: revert;
   box-sizing: border-box;
+}
+
+pre, code {
+  margin: 0;
 }
 
 ::-webkit-details-marker {

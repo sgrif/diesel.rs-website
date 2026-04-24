@@ -27,6 +27,8 @@
   --padding_2x: 0.75rem;
   --padding_4x: 1.5rem;
 
+  --site-header-height: 3.6rem;
+
   --pf-background: var(--background);
   --pf-text: var(--color);
   --pf-text-muted: var(--color-nav);
@@ -38,13 +40,14 @@
   --pf-shadow-lg: var(--box-shadow-off-canvas);
   --pf-mark: var(--primary);
 
-  font-size: clamp(1rem, .8rem + .5vw, 1.25rem);
-  --site-header-height: 3.6rem;
+  /*font-size: clamp(1rem, .8rem + .5vw, 1.25rem);*/
+  font-size: clamp(.9rem, .72rem + .5vw, 1.125rem);
 }
 
 @media (min-width: 2500px) {
   :root {
-    font-size: clamp(1.5rem, .5rem + 1vw, 2.5rem);
+    /*font-size: clamp(1.5rem, .5rem + 1vw, 2.5rem);*/
+    font-size: clamp(1.35rem, 0.45rem + 0.9vw, 2.25rem);
   }
 }
 

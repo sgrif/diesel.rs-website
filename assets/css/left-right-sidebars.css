@@ -98,11 +98,12 @@
 
 #TableOfContents a code {
   font-family: var(--font-mono);
-  font-size: .8rem;
+  font-size: .875rem;
 
   background: var(--background-subtle);
   border-radius: var(--radius);
   padding: calc(var(--padding) / 3.7);
+  border: 1px solid var(--border-subtle);
 }
 
 #TableOfContents a.active {

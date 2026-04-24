@@ -1,18 +1,28 @@
-{{ $title := .Attributes.title }}
 {{ $link := .Attributes.link }}
 
-<div class="codeblock-container">
+<div class="code-window highlight">
 	{{ with .Attributes.title }}
-	<div class="codeblock-heading">
-		{{ . }}
+	<div class="code-header">
+		<div class="traffic-lights">
+			<div class="light light-red"></div>
+			<div class="light light-yellow"></div>
+			<div class="light light-green"></div>
+		</div>
+		<span class="code-title">{{ . }}</span>
+		<div>
+			{{ with $link }}
+			<a href="{{ $link }}" class="code-label">Source</a>
+			{{ end }}
+		</div>
 	</div>
 	{{ end }}
-	{{- $result := transform.HighlightCodeBlock . -}}
-
-	{{/* Use .Inner to get only the highlighted code without double-wrapping <pre> tags */}}
-  <div class="highlight">
-    <pre class="chroma"><code class="language-{{ .Type }}" data-lang="{{ .Type }}">
-      {{- $result.Inner -}}
-    </code></pre>
+	<div class="code-body">
+		<pre tabindex="0" class="chroma">
+				<code {{ with .Type }} class="language-{{ . }}" data-lang="{{ . }}"{{ end }}>
+					{{ with transform.HighlightCodeBlock . }}
+						{{ .Inner }}
+					{{ end }}
+				</code>
+		</pre>
 	</div>
 </div>

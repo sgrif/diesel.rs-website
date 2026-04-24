@@ -1,20 +1,23 @@
-{{ $emojis := dict
-"tip" ":bulb:"
-"note" ":information_source:"
-"caution" ":exclamation:"
-"important" ":star:"
-"warning" ":information_source:"
+{{ $iconMap := dict
+"note" "info"
+"tip" "lightbulb"
+"important" "brightness_alert"
+"warning" "warning"
+"caution" "exclamation"
 }}
 
-<div class="blockquote-container">
-	<div class="alert-heading">
+<div class="alert alert-{{ .AlertType }}">
+	<div class="alert-header">
+		<span class="material-symbols-outlined">{{ index $iconMap .AlertType }}</span>
+		<span>
 		{{ with .AlertTitle }}
 			{{ . }}
 		{{ else }}
 			{{ or (i18n .AlertType) (title .AlertType) }}
 		{{ end }}
+		</span>
 	</div>
-	<blockquote class="alert alert-{{ .AlertType }}">
+	<div class="alert-body">
 		{{ .Text }}
-	</blockquote>
+	</div>
 </div>
