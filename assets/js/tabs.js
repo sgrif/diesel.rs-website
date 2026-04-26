@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
         document
             .querySelectorAll(`.tabs[data-group="${CSS.escape(group)}"] details[name]`)
             .forEach((detail) => {
-                const shouldOpen = detail.querySelector('summary[role="tab"]')?.dataset.index === tabKey;
+                const shouldOpen = detail.querySelector('summary')?.dataset.index === tabKey;
                 if (detail.open !== shouldOpen) detail.open = shouldOpen;
             });
 
@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
     ).forEach((group) => syncGroup(group, sessionStorage.getItem(KEY(group))));
 
     document.addEventListener("click", (e) => {
-        const summary = e.target.closest('.tabs[data-group] summary[role="tab"]');
+        const summary = e.target.closest('.tabs[data-group] summary');
         if (!summary) return;
 
         e.preventDefault(); // stop native <details> toggle

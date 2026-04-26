@@ -1,5 +1,5 @@
 {{ $group := .Get "group" }}
 {{ $label := .Get "label" | default "Select Language"}}
-<div class="tabs" role="tablist" aria-label="{{ $label }}" {{ with $group }}data-group="{{ . }}"{{ end }}>
+<div class="tabs" aria-label="{{ $label }}" {{ with $group }}data-group="{{ . }}"{{ end }}>
 	{{ .Inner }}
 </div>
