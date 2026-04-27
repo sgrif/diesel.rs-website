@@ -31,7 +31,10 @@
 		(resources.Get "css/left-right-sidebars-layout.css")
 		(resources.Get "css/main-content.css")
 	-}}
-	{{- $css := $css_files | resources.Concat "assets/css/guides.css" | minify | fingerprint }}
+
+	{{ $cssPath := printf "assets/css/%s.css" .Section }}
+	{{- $css := $css_files | resources.Concat $cssPath | minify | fingerprint }}
+
 	<link rel="stylesheet" href="{{ $css.Permalink }}" integrity="{{ $css.Data.integrity }}">
 </head>
 <body>
@@ -66,7 +69,10 @@
 	(resources.Get "js/table-of-contents.js")
 	(resources.Get "js/tabs.js")
 -}}
-{{- $js := $js_files | resources.Concat "assets/js/guides.js" | minify | fingerprint }}
+
+{{ $jsPath := printf "assets/js/%s.js" .Section }}
+{{- $js := $js_files | resources.Concat $jsPath | minify | fingerprint }}
+
 <script src="{{ $js.Permalink }}" integrity="{{ $js.Data.integrity }}"></script>
 
 <script src="{{ "pagefind/pagefind-component-ui.js" | absURL }}" type="module"></script>
