@@ -1,0 +1,62 @@
+body {
+  font-feature-settings: "kern", "liga", "pnum";
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.625;
+
+  font-family: var(--font);
+  background-color: var(--background);
+  color: var(--color);
+
+  display: flex;
+  flex-direction: column;
+}
+
+#site-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  backdrop-filter: var(--blur);
+}
+
+main {
+  width: 100svw;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+
+  gap: calc(var(--padding_4x) * 2);
+}
+
+main > section {
+  scroll-snap-align: start;
+}
+
+/* typography */
+main h2,
+main h3,
+main h4 {
+  font-family: var(--font-headings);
+  font-weight: 500;
+}
+
+main h2 {
+  font-size: 2.5rem
+}
+
+main h3 {
+  font-size: 1.4rem
+}
+
+main h4 {
+  font-size: 1.1rem
+}
+
+/* utilities */
+.btn-primary .material-symbols-outlined {
+  font-variation-settings: 'FILL' 1;
+  color: var(--color-primary);
+}
+
+.btn-primary:hover .material-symbols-outlined {
+  color: var(--color);
+}

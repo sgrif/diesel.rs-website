@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="{{ .Site.LanguageCode | default `en-US` }}">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="theme-color" content="{{ .Site.Params.project.themeColor }}">
+	<meta name="robots" content="{{ . }}">
+
+	<title>{{ .Site.Title | .RenderString }}</title>
+	<meta name="description" content="{{ .Site.Params.description | .RenderString }}">
+	<link rel="canonical" href="{{ .Permalink }}">
+
+	{{ partial "favicons.html" . }}
+	{{ partial "og-x-seo.html" . }}
+
+	{{ partial "fonts-and-icons.html" . }}
+	<link href="{{ "pagefind/pagefind-component-ui.css" | absURL }}" rel="stylesheet">
+
+	{{- $css_files := slice
+	(resources.Get "css/reset.css")
+	(resources.Get "css/theme.css")
+	(resources.Get "css/components/button.css")
+	(resources.Get "css/components/badge.css")
+	(resources.Get "css/components/codeblock.css")
+	(resources.Get "css/header.css")
+	(resources.Get "css/footer.css")
+	(resources.Get "css/home-layout.css")
+	(resources.Get "css/sections/1-hero.css")
+	(resources.Get "css/sections/2-bento.css")
+	(resources.Get "css/sections/3-features.css")
+	(resources.Get "css/sections/4-card-slider.css")
+	(resources.Get "css/sections/5-contribution.css")
+	(resources.Get "css/sections/6-sponsors.css")
+	-}}
+	{{- $css := $css_files | resources.Concat "assets/css/home.css" | minify | fingerprint }}
+
+	<link rel="stylesheet" href="{{ $css.Permalink }}" integrity="{{ $css.Data.integrity }}">
+</head>
+<body>
+
+{{ partial "header.html" . }}
+
+<main>
+	{{ partial "sections/1-hero.html" . }}
+	{{ partial "sections/2-bento.html" . }}
+	{{ partial "sections/3-features.html" . }}
+	{{ partial "sections/4-card-slider.html" . }}
+	{{ partial "sections/5-contribution.html" . }}
+	{{ partial "sections/6-sponsors.html" . }}
+</main>
+
+{{ partial "footer.html" . }}
+<div id="off-canvas-model"></div>
+
+<script src="{{ "pagefind/pagefind-component-ui.js" | absURL }}" type="module"></script>
+{{ partial "analytics.html" . }}
+</body>
+</html>

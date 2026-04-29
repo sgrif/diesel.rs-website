@@ -5,6 +5,7 @@
 
   --background: #535379;
   --background-subtle: rgba(255, 255, 255, .05);
+  --background-high-surface: #5d5d85;
   --background-hover: rgba(253, 189, 65, .1);
 
   --background-card: rgba(74, 74, 110, .4);
@@ -18,7 +19,7 @@
   --color-nav: #d4d4d4;
 
   --primary: #fdbd41;
-  --color-primary: #422c00;
+  --color-primary: #535379;
 
   --border: rgba(255, 255, 255, 0.1);
   --border-subtle: rgba(255, 255, 255, 0.05);
@@ -66,5 +67,5 @@
 .material-symbols-outlined {
   font-size: 1.2rem;
   font-variation-settings: "FILL" 0, "wght" 300, "GRAD" 0, "opsz" 24;
-  color: var(--primary);
+  color: var(--color-nav);
 }

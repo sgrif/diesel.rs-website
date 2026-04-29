@@ -1,0 +1,58 @@
+<section class="features-section">
+	<header class="features-header">
+		<h2>See it in action</h2>
+		<p>Compare how Diesel transforms complex SQL into readable, safe Rust code.</p>
+	</header>
+	<div class="features-body">
+		<div class="features-title">
+			<button class="tab-btn active">
+				<span class="material-symbols-outlined text-sm">data_object</span>
+				Simple Queries
+			</button>
+			<button class="tab-btn">
+				<span class="material-symbols-outlined text-sm">join_inner</span>
+				Complex Joins
+			</button>
+			<button class="tab-btn">
+				<span class="material-symbols-outlined text-sm">add_box</span>
+				Inserting Data
+			</button>
+			<button class="tab-btn">
+				<span class="material-symbols-outlined text-sm">update</span>
+				Updating Records
+			</button>
+		</div>
+		<div class="features-content">
+			<p>Rust (Diesel)</p>
+			<div style="background: var(--background-terminal); border-radius: var(--radius); overflow: hidden;">
+				<div style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; box-shadow: var(--box-shadow)">
+					<div style="display: flex; align-items: center; gap: 0.5rem;">
+						<div style="display: flex; gap: 0.375rem;">
+							<div style="width: 0.75rem; height: 0.75rem; border-radius: 50%; background: #ff5f56;"></div>
+							<div style="width: 0.75rem; height: 0.75rem; border-radius: 50%; background: #ffbd2e;"></div>
+							<div style="width: 0.75rem; height: 0.75rem; border-radius: 50%; background: #27c93f;"></div>
+						</div>
+						<span class="text-xs font-mono" style="color: var(--text-zinc-400); margin-left: 1rem;">src/models.rs</span>
+					</div>
+				</div>
+				<div class="font-mono text-sm" style="padding: 2rem; line-height: 1.6;">
+					<p style="color: #959dc3;">use <span style="color: #c3e88d;">diesel::prelude::*;</span></p>
+					<p style="margin-top: 1.5rem; color: #959dc3;">#[derive(Queryable, Selectable)]</p>
+					<p style="color: #959dc3;">#[diesel(check_for_backend(diesel::pg::Pg))]</p>
+					<p style="color: #959dc3;"><span style="color: #f07178;">pub struct</span> <span style="color: #ffcb6b;">Post</span> {</p>
+					<p class="pl-8" style="color: #959dc3;"><span style="color: #f07178;">pub</span> id: i32,</p>
+					<p class="pl-8" style="color: #959dc3;"><span style="color: #f07178;">pub</span> title: String,</p>
+					<p class="pl-8" style="color: #959dc3;"><span style="color: #f07178;">pub</span> body: String,</p>
+					<p class="pl-8" style="color: #959dc3;"><span style="color: #f07178;">pub</span> published: bool,</p>
+					<p style="color: #959dc3;">}</p>
+				</div>
+			</div>
+			<p>Equivalent SQL</p>
+			<div class="font-mono text-sm" style="padding: 2rem; background: var(--background-terminal); border-radius: var(--radius);">
+				<p><span style="color: #C4C2EF;">SELECT</span> * <span style="color: #C4C2EF;">FROM</span> posts</p>
+				<p><span style="color: #C4C2EF;">WHERE</span> published = <span style="color: #FDBD41;">1</span></p>
+				<p><span style="color: #C4C2EF;">ORDER BY</span> id <span style="color: #C4C2EF;">DESC</span>;</p>
+			</div>
+		</div>
+	</div>
+</section>

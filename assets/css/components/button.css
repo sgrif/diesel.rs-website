@@ -2,7 +2,7 @@
   cursor: pointer;
   display: flex;
   padding: var(--padding) var(--padding_2x);
-  gap: calc(var(--padding) / 2);
+  gap: calc(var(--padding)/2);
   font-size: .8rem;
 
   background: var(--background-subtle);
@@ -14,4 +14,15 @@
 .btn:hover {
   color: var(--color);
   background: var(--background-hover);
+}
+
+.btn-primary {
+  font-weight: 600;
+  background: var(--primary);
+  color: var(--color-primary);
+}
+
+.btn-primary:hover {
+  background: var(--primary);
+  color: var(--color);
 }
