@@ -4,12 +4,15 @@
   --font-mono: "JetBrains Mono", monospace;
 
   --background: #535379;
-  --background-subtle: rgba(255, 255, 255, 0.05);
+  --background-subtle: rgba(255, 255, 255, .05);
+  --background-hover: rgba(253, 189, 65, .1);
 
-  --background-hover: rgba(253, 189, 65, 0.1);
-  --background-off-canvas: rgba(83, 83, 121, 0.95);
+  --background-card: rgba(74, 74, 110, .4);
+  --background-terminal: rgba(0, 0, 0, .12);
+
+  --background-off-canvas: rgba(83, 83, 121, .95);
   --background-off-canvas-model: rgba(225, 225, 225, .1);
-  --box-shadow-off-canvas: .25.rem 0 .5rem rgba(0, 0, 0, 0.1);
+  --box-shadow-off-canvas: .25.rem 0 .5rem rgba(0, 0, 0, .1);
 
   --color: #f4f4f4;
   --color-nav: #d4d4d4;

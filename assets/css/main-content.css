@@ -117,14 +117,10 @@
   margin-top: .6rem
 }
 
-#main-content-body h2.step {
-  padding-top: var(--padding_2x);
-}
-
 #main-content-body h2.step::before {
   font-family: var(--font);
   content: attr(data-before);
-  font-size: 6rem;
+  font-size: 4.5rem;
 
   position: relative;
   display: block;

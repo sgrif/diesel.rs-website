@@ -43,7 +43,7 @@
 .tabs > details::details-content {
   grid-row: 2;
   grid-column: 1 / -1;
-  background: rgba(0, 0, 0, 0.12);
+  background: var(--background-terminal);
   padding: 0 var(--padding_2x) var(--padding_2x);
   border-bottom-left-radius: calc(var(--radius));
   border-bottom-right-radius: calc(var(--radius));

@@ -1,5 +1,5 @@
 .code-window {
-  background: rgba(0, 0, 0, 0.12);
+  background: var(--background-terminal);
   border-radius: var(--radius);
   overflow: hidden;
 }
@@ -357,12 +357,12 @@
 
 .chroma .gi {
   color: #a6d189;
-  background-color: rgba(0, 0, 0, 0.12);
+  background-color: var(--background-terminal);
 }
 
 .chroma .gd {
   color: #e78284;
-  background-color: rgba(0, 0, 0, 0.12);
+  background-color: var(--background-terminal);
 }
 
 .chroma .ge {
