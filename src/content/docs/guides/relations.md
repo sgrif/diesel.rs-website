@@ -398,7 +398,7 @@ concept of `has_many` but instead we are going create a "join table"
 `books_authors` and add a `belongs_to` to both `books` and `authors`. Let's see
 that in action.
 
-## Migrations
+### Migrations
 <br />
 
 ```sh
@@ -457,7 +457,7 @@ diesel migration redo -n 2
 ```
 
 
-## Model
+### Model
 <br />
 
 Now let's reflect the join table in the `model.rs`. To keep this brief, let's only look at what we are adding.
@@ -491,7 +491,7 @@ pub struct BookAuthor {
 
 The important part is to give `BooksAuthor` two `belongs_to` that point to the book and the author.
 
-## Reading data
+### Reading data
 <br />
 
 If we now want to load all books of a given author we can combine joins and diesels `BelongingToDsl` to load these data:
