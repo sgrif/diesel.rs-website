@@ -1,0 +1,32 @@
+header:
+  title: Contribute to Diesel
+  description: Help us build the most productive way to interact with databases in Rust.
+
+items:
+  - icon: menu_book
+    title: Documentation
+    description: Improve our guides, tutorials, and API docs to make Diesel accessible.
+    link:
+      label: Improve Guides
+      url: "https://docs.rs/diesel/latest/diesel/"
+
+  - icon: terminal
+    title: Core Engine
+    description: Add new backends or optimize query builders for peak performance.
+    link:
+      label: View Issues
+      url: "https://github.com/diesel-rs/diesel/issues"
+
+  - icon: web
+    title: Website
+    description: Improve the diesel.rs website design, accessibility, and UX.
+    link:
+      label: Improve Website
+      url: "https://github.com/sgrif/diesel.rs-website"
+
+  - icon: groups
+    title: Community
+    description: Help with knowledge sharing and welcoming new users on GitHub.
+    link:
+      label: Join Discussion
+      url: "https://github.com/diesel-rs/diesel/discussions"

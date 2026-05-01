@@ -1,0 +1,13 @@
+badge: Safe · Extensible · Performant
+
+title: Diesel is a Safe, Extensible <br/><span>ORM and Query Builder</span>
+
+description: Diesel gets rid of the boilerplate for database interaction without sacrificing performance. It's the most productive way to interact with databases in Rust.
+
+btn_primary:
+  label: Getting Started
+  url: /guides
+
+btn_secondary:
+  label: Contribute
+  url: "#contribute"

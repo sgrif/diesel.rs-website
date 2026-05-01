@@ -1,18 +1,15 @@
 <section class="hero-section">
 	<div class="hero-header">
-		<span class="badge">Safe · Extensible · Performant</span>
+		<span class="badge">{{ .badge }}</span>
 		<h2>
-			Diesel is a Safe, Extensible <br/>
-			<span>ORM and Query Builder</span>
+			{{ .title | markdownify }}
 		</h2>
 	</div>
 	<div class="hero-content">
-		<p>
-			Diesel gets rid of the boilerplate for database interaction without sacrificing performance. It's the most productive way to interact with databases in Rust.
-		</p>
+		<p>{{ .description | markdownify }}</p>
 	</div>
 	<div class="hero-controls">
-		<button class="btn btn-primary">Getting Started</button>
-		<button class="btn btn-outline">Contribute</button>
+		<a href="{{ .btn_primary.url }}" class="btn btn-primary">{{ .btn_primary.label }}</a>
+		<a href="{{ .btn_secondary.url }}" class="btn btn-outline">{{ .btn_secondary.label }}</a>
 	</div>
 </section>

@@ -64,6 +64,10 @@
   opacity: 1;
 }
 
+.sponsors-card:hover a, .sponsors-footer p a {
+  color: var(--primary);
+}
+
 .sponsors-footer {
   display: flex;
   flex-direction: column;

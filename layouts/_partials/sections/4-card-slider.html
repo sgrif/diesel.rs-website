@@ -1,63 +1,34 @@
 <section class="card-slider-section">
 	<header class="card-slider-header">
 		<div>
-			<h3>Trusted in Production</h3>
-			<p>Diesel powers the most critical parts of the Rust ecosystem.</p>
+			<h3>{{ .header.title | markdownify }}</h3>
+			<p>{{ .header.description | markdownify }}</p>
 		</div>
-		<a href="#" style="color: var(--primary)">View all case studies</a>
+		<a href="{{ .header.cta.url }}" style="color: var(--primary)">{{ .header.cta.label }}</a>
 	</header>
+
 	<div class="card-slider-container">
-		<div class="card-slider-track animate-scroll-x">
+		<div class="card-slider-track">
+
+			{{ range .items }}
 			<div class="card-slider-card">
 				<header>
-					<img alt="cargo.io" src="{{ "images/in-production/cargo.png" | absURL }}">
-					<a href=""><h4>crates.io</h4></a>
+					{{ with .image }}
+					<img src="{{ .url | absURL }}" alt="{{ .alt }}">
+					{{ end }}
+					<a href="{{ .url }}"><h4>{{ .name }}</h4></a>
 				</header>
-				<p>
-					crates.io serves as a central registry for sharing “crates”, which are packages or libraries written in Rust that you can use to enhance your projects.
-					This repository contains the source code and infrastructure for the crates.io website, including both frontend and backend components. It uses Diesel as central component to store crate metadata in a database.
-				</p>
+				<p>{{ .description | markdownify }}</p>
+				{{ with .badges }}
 				<footer>
-					<span class="badge">PostgreSQL</span>
+					{{ range . }}
+					<span class="badge">{{ . }}</span>
+					{{ end }}
 				</footer>
+				{{ end }}
 			</div>
-			<div class="card-slider-card">
-				<header>
-					<img alt="Vaultwarden" src="{{ "images/in-production/vaultwarden.svg" | absURL }}">
-					<a href=""><h4>Vaultwarden</h4></a>
-				</header>
-				<p>
-					Vaultwarden is a alternative server implementation of the Bitwarden Client API, written in Rust and compatible with official Bitwarden clients [disclaimer], perfect for self-hosted deployment where running the official resource-heavy service might not be ideal.
-					Diesel is used to store sensitive data in their backend application.
-				</p>
-				<footer>
-					<span class="badge">PostgreSQL</span>
-					<span class="badge">SQLite</span>
-					<span class="badge">MySQL</span>
-				</footer>
-			</div>
-			<div class="card-slider-card">
-				<header>
-					<img alt="Lemmy" src="{{ "images/in-production/lemmy.svg" | absURL }}">
-					<a href=""><h4>Lemmy</h4></a>
-				</header>
-				<p>
-					Lemmy is a link aggregator and forum for the fediverse. It's similar to sites like Reddit, Lobste.rs, or Hacker News:
-					you subscribe to forums you're interested in, post links and discussions, then vote, and comment on them. It's a well established software for the fediverse using Diesel in the backend.
-				</p>
-				<footer>
-					<span class="badge">PostgreSQL</span>
-				</footer>
-			</div>
-			<div class="card-slider-card">
-				<header>
-					<img alt="cargo.io" src="{{ "icon.svg" | absURL }}">
-					<a href=""><h4>You wanna add more?</h4></a>
-				</header>
-				<p>
-					Do you have found some cool project that should be linked here? Submit an issue here.
-				</p>
-			</div>
+			{{ end }}
+
 		</div>
 	</div>
 </section>

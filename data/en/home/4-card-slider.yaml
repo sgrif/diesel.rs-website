@@ -1,0 +1,45 @@
+header:
+  title: Trusted in Production
+  description: Diesel powers the most critical parts of the Rust ecosystem.
+  cta:
+    label: View all case studies
+    url: /case-studies/
+
+items:
+  - name: crates.io
+    url: "https://crates.io/"
+    image:
+      url: images/in-production/cargo.png
+      alt: crates.io
+    description: >
+      crates.io serves as a central registry for sharing “crates”, which are packages or libraries written in Rust that you can use to enhance your projects. 
+      This repository contains the source code and infrastructure for the crates.io website, including both frontend and backend components. 
+      It uses Diesel as central component to store crate metadata in a database.
+    badges: [ PostgreSQL ]
+
+  - name: Vaultwarden
+    url: "https://github.com/dani-garcia/vaultwarden"
+    image:
+      url: images/in-production/vaultwarden.svg
+      alt: Vaultwarden
+    description: >
+      Vaultwarden is a alternative server implementation of the Bitwarden Client API, 
+      written in Rust and compatible with official Bitwarden clients [disclaimer], perfect for self-hosted deployment where running the official resource-heavy service might not be ideal. 
+      Diesel is used to store sensitive data in their backend application.
+    badges: [ PostgreSQL, SQLite, MySQL ]
+
+  - name: Lemmy
+    url: "https://join-lemmy.org/"
+    image:
+      url: images/in-production/lemmy.svg
+      alt: Lemmy
+    description: >
+      Lemmy is a link aggregator and forum for the fediverse. It's similar to sites like Reddit, Lobste.rs, or Hacker News: 
+      you subscribe to forums you're interested in, post links and discussions, then vote, and comment on them. 
+      It's a well established software for the fediverse using Diesel in the backend
+    badges: [ PostgreSQL ]
+
+  - name: You wanna add a notable project using Diesel?
+    url: "https://github.com/sgrif/diesel.rs-website"
+    description: Do you have found some cool project that should be linked here? Submit an issue [here](https://github.com/sgrif/diesel.rs-website).
+    badges: [ ]

@@ -42,12 +42,12 @@
 {{ partial "header.html" . }}
 
 <main>
-	{{ partial "sections/1-hero.html" . }}
-	{{ partial "sections/2-bento.html" . }}
+	{{ partial "sections/1-hero.html" (index .Site.Data .Site.Language.Lang "home" "1-hero") }}
+	{{ partial "sections/2-bento.html" (index .Site.Data .Site.Language.Lang "home" "2-bento") }}
 	{{ partial "sections/3-features.html" . }}
-	{{ partial "sections/4-card-slider.html" . }}
-	{{ partial "sections/5-contribution.html" . }}
-	{{ partial "sections/6-sponsors.html" . }}
+	{{ partial "sections/4-card-slider.html" (index .Site.Data .Site.Language.Lang "home" "4-card-slider") }}
+	{{ partial "sections/5-contribution.html" (index .Site.Data .Site.Language.Lang "home" "5-contribution") }}
+	{{ partial "sections/6-sponsors.html" (index .Site.Data .Site.Language.Lang "home" "6-sponsors") }}
 </main>
 
 {{ partial "footer.html" . }}

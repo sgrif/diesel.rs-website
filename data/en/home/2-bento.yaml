@@ -1,0 +1,24 @@
+items:
+  - col: col-7
+    icon: security
+    title: Preventing Runtime Errors
+    description: Diesel eliminates the possibility of having a mismatch between your database schema and your Rust code. If it compiles, it's valid. No more runtime surprises or production crashes due to typoed columns.
+    badges: [Compiler-Guaranteed Safety]
+
+  - col: col-5
+    icon: speed
+    title: Built for Performance
+    description: Diesel is designed to be as fast as possible. It avoids heap allocations and runtime overhead where other ORMs might struggle. Zero-cost abstractions mean you pay for what you use.
+    badges: [ ]
+
+  - col: col-5
+    icon: extension
+    title: Extensible Querying
+    description: Need a custom SQL function? Diesel's query builder is fully extensible. You can define your own operators or use complex SQL features while maintaining type safety.
+    badges: [ ]
+
+  - col: col-7
+    icon: bolt
+    title: Productive Workflow
+    description: With integrated migrations, CLI tools, and automatic schema generation, Diesel streamlines your entire development lifecycle from the first table to production.
+    badges: [PostgreSQL, MySQL, SQLite]

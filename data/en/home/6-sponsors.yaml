@@ -1,0 +1,32 @@
+header:
+  title: Sponsors
+  description: Your support helps maintain Diesel and ensures it remains the best ORM for the Rust ecosystem.
+
+items:
+  - description: "[NGI Zero Core with NLNet Foundation](https://nlnet.nl/project/Diesel/)"
+    image:
+      url: images/sponsors/ngi0core.svg
+      alt: NGI Zero Core
+
+  - description: "[Federal Ministry of Research, Technology and Space (Germany) with Prototype Fund](https://www.prototypefund.de/projects/diesel-databaseviews)"
+    image:
+      url: images/sponsors/bmftr-en.svg
+      alt: Federal Ministry of Research, Technology and Space (Germany) with Prototype Fund
+
+  - description: "[GitHub Secure Open Source Fund](https://github.blog/open-source/maintainers/securing-the-supply-chain-at-scale-starting-with-71-important-open-source-projects/)"
+    image:
+      url: images/sponsors/github.svg
+      alt: GitHub Secure Open Source Fund
+
+  - description: "[GiGa Infosystems GmbH](https://giga-infosystems.com/)"
+    image:
+      url: images/sponsors/giga.svg
+      alt: GiGa Infosystems GmbH
+
+footer:
+  description: Additionally, we would like to thank all persons sponsoring the project on [GitHub](https://github.com/sponsors/weiznich#sponsors).<br>Without them developing Diesel wouldn't be possible.
+
+sponsorButton:
+  url: "https://github.com/sponsors/weiznich"
+  label: Become a Sponsor
+  labelIcon: favorite
