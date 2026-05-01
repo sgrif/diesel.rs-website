@@ -58,7 +58,7 @@ We need to create two different objects that we want to connect, for the first
 1-to-many example let's create books and pages. A book can have many pages, but
 a page can only belong to a single book.
 
-## Migrations
+### Migrations
 <br />
 
 ```sh
@@ -118,7 +118,7 @@ Let's make sure the down migrations are correct too:
 diesel migration redo -n 2
 ```
 
-## Schema.rs
+### Schema.rs
 <br />
 
 The generated schema should now look like this:
@@ -156,7 +156,7 @@ Diesel picked up on the foreign key references. It created a schema for us that 
 joinable into books via the `book_id` and allows for the two to appear in the
 same query. This allows to join this table without specify an explicit `ON` clause. Diesel generates these `joinable!` instances only for cases where there is only a single relation between two tables based on a non-composite foreign key. All other cases require to specify an explicit the `ON` clause while constructing such joins.
 
-## Models
+### Models
 <br />
 
 Let's reflect this now in our `model.rs`
@@ -201,7 +201,7 @@ foreign key field has a different name you can specify that via the `foreign_key
 
 [associations-docs]: https://docs.diesel.rs/2.3.x/diesel/associations/derive.Associations.html
 
-## Reading data
+### Reading data
 <br />
 
 For ease of following this tutorial, we are going to put all the code into `main.rs`. We create a separate function for each part of the guide. See the linked code for the complete file content.
@@ -308,14 +308,14 @@ let pages_per_book = pages
 :::
 
 
-## Joins
+### Joins
 <br />
 
 We have currently loaded all pages for a given book by using the API provided by the `diesel::associations` module.
 This API is designed to work for parent-child relations, but not the other way around. Using plain SQL joins is
 the preferred way to resolve such relations the other way around. Diesel provides two kinds of joins: `INNER JOIN` and `LEFT JOIN`, where the former expects that linked elements always exist. The latter allows to include rows with missing linked elements. Both constructs load data by executing a single query.
 
-### `INNER JOIN`
+#### `INNER JOIN`
 <br />
 
 [`QueryDsl::inner_join`](https://docs.diesel.rs/2.3.x/diesel/prelude/trait.QueryDsl.html#method.inner_join) allows to construct `INNER JOIN` statements between different tables.
@@ -364,7 +364,7 @@ For joining the same table more than once, refer to the [`alias!`][doc-alias] ma
 [doc-queryable]: https://docs.diesel.rs/2.3.x/diesel/deserialize/trait.Queryable.html
 [doc-alias]: https://docs.diesel.rs/2.3.x/diesel/macro.alias.html
 
-### `LEFT JOIN`
+#### `LEFT JOIN`
 <br />
 
 [`QueryDsl::left_join`](https://docs.diesel.rs/2.3.x/diesel/prelude/trait.QueryDsl.html#method.left_join) allows to construct `LEFT JOIN` statements between different tables.
