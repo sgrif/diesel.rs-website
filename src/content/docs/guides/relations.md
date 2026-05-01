@@ -562,3 +562,147 @@ As before we load all associated books by joining the books table to the query p
 
 The final code for this tutorial can be found [here](https://github.com/diesel-rs/diesel/blob/2.3.x/examples/postgres/relations).
 
+## Polymorphic associations
+<br />
+
+Sometimes you need a single table to belong to more than one type of parent. For example, both books and authors might have images (a cover image and a profile photo, respectively). Rather than creating separate `book_images` and `author_images` tables, you can use a polymorphic association pattern with an `imageable_type` and `imageable_id` column.
+
+Diesel does not have built-in support for polymorphic associations, but the pattern is straightforward to implement using standard queries.
+
+### Migration
+<br />
+
+```sh
+diesel migration generate create_images
+```
+
+The `images` table uses a `imageable_type` column to indicate which table the row is associated with, and `imageable_id` to reference the specific row in that table.
+
+```sql title="up.sql"
+CREATE TABLE images (
+  id SERIAL PRIMARY KEY,
+  url VARCHAR NOT NULL,
+  imageable_type VARCHAR NOT NULL,
+  imageable_id INTEGER NOT NULL
+);
+```
+
+And the corresponding down migration.
+
+```sql title="down.sql"
+DROP TABLE images;
+```
+
+Then run the migration:
+
+```sh
+diesel migration run
+diesel migration redo
+```
+
+:::note
+Because `imageable_id` can reference multiple tables, we cannot use a database-level foreign key constraint here. Referential integrity must be enforced at the application level.
+:::
+
+### Model
+<br />
+
+```rust title="src/model.rs"
+use diesel::prelude::*;
+
+use crate::schema::images;
+
+#[derive(Queryable, Selectable, Identifiable, Debug)]
+#[diesel(table_name = images)]
+pub struct Image {
+    pub id: i32,
+    pub url: String,
+    pub imageable_type: String,
+    pub imageable_id: i32,
+}
+```
+
+Since there is no single parent table to point to, we do not use `#[diesel(belongs_to)]` here. Instead, we query images by filtering on both `imageable_type` and `imageable_id`.
+
+### Reading data
+<br />
+
+To load all images for a given book:
+
+```rust title="src/main.rs"
+let momo = books::table
+    .filter(books::title.eq("Momo"))
+    .select(Book::as_select())
+    .get_result(conn)?;
+
+let book_images = images::table
+    .filter(images::imageable_type.eq("book"))
+    .filter(images::imageable_id.eq(momo.id))
+    .select(Image::as_select())
+    .load(conn)?;
+
+println!("Images for \"Momo\": {book_images:?}");
+```
+
+Similarly, to load all images for a given author:
+
+```rust title="src/main.rs"
+let astrid_lindgren = authors::table
+    .filter(authors::name.eq("Astrid Lindgren"))
+    .select(Author::as_select())
+    .get_result(conn)?;
+
+let author_images = images::table
+    .filter(images::imageable_type.eq("author"))
+    .filter(images::imageable_id.eq(astrid_lindgren.id))
+    .select(Image::as_select())
+    .load(conn)?;
+
+println!("Images for Astrid Lindgren: {author_images:?}");
+```
+
+Given a list of images, you can efficiently load their associated books and authors by partitioning on `imageable_type` and then querying each parent table once:
+
+```rust title="src/main.rs"
+let all_images = images::table
+    .select(Image::as_select())
+    .load(conn)?;
+
+// Partition images by type
+let book_image_ids: Vec<i32> = all_images.iter()
+    .filter(|i| i.imageable_type == "book")
+    .map(|i| i.imageable_id)
+    .collect();
+
+let author_image_ids: Vec<i32> = all_images.iter()
+    .filter(|i| i.imageable_type == "author")
+    .map(|i| i.imageable_id)
+    .collect();
+
+// Load all referenced books and authors in one query each
+let referenced_books = books::table
+    .filter(books::id.eq_any(&book_image_ids))
+    .select(Book::as_select())
+    .load(conn)?;
+
+let referenced_authors = authors::table
+    .filter(authors::id.eq_any(&author_image_ids))
+    .select(Author::as_select())
+    .load(conn)?;
+
+println!("Books from images: {referenced_books:?}");
+println!("Authors from images: {referenced_authors:?}");
+```
+
+This approach avoids the N+1 problem by loading all parents of each type in a single query, regardless of how many images there are.
+
+:::note[Trade-offs of polymorphic associations]
+Polymorphic associations are flexible but come with trade-offs:
+
+* No database-level foreign key constraints, so referential integrity depends on your application logic
+* Queries require filtering on both the type and id columns
+* You cannot use Diesel's `belongs_to` or `BelongingToDsl` for these associations
+
+If you only need a single parent type, prefer a standard foreign key with `belongs_to`. Use polymorphic associations when the same child table genuinely needs to reference multiple unrelated parent tables.
+:::
+
