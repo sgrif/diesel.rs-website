@@ -45,7 +45,7 @@ params:
     startYear: 2015
     presentYear: 2026
     themeColor: "#535379"
-    latestRelease: Diesel 2.3.7
+    latestRelease: Diesel 2.3.9
     copyrightHolder: The Diesel Core Team
     github:
       main: diesel-rs/diesel
@@ -68,8 +68,8 @@ menus:
       pageRef: /guides
       weight: 20
     - identifier: api_docs
-      name: API Docs
-      pageRef: /api_docs
+      name: API Documentation
+      url: "https://docs.diesel.rs/main/diesel/index.html"
       weight: 30
     - identifier: changelog
       name: Changelog
