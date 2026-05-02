@@ -5,7 +5,16 @@
 ```
 $ git clone https://github.com/sgrif/diesel.rs-website.git
 $ cd diesel.rs-website
+$ hugo build
+$ pagefind --site docs
 $ hugo server
+```
+
+## Production Build
+
+```
+$ hugo build --minify
+$ pagefind --site docs
 ```
 
 ## Project Structure
@@ -15,14 +24,14 @@ $ hugo server
 ├── content
 │   └── en
 │       ├── guides
-│       ├── api-documentation
+│       ├── changelog
 │       ├── news
 │       └── pages
 ├── data
 │   └── en
 │       ├── guides
 │       │   └── sidebar.yml
-│       ├── api-documentation
+│       ├── changelog
 │       │   └── sidebar.yml
 │       └── news
 │           └── sidebar.yml
@@ -34,10 +43,3 @@ $ hugo server
     ├── images
     └── site.webmanifest
 ```
-
-> [!NOTE] A note on deployment
-> The master branch will automatically deploy via GitHub Pages.
-
-
-## Contributing
-Refer [CONTRIBUTING.md](CONTRIBUTING.md).
