@@ -57,11 +57,20 @@
 	</a>
 	{{ end -}}
 
-	{{ $lastMod := .Lastmod.Format "2006-01-02" -}}
-	<time datetime="{{ $lastMod }}" title="Last updated: {{ $lastMod }}">
-		<span class="material-symbols-outlined">edit_calendar</span>
-		<span>{{ $lastMod }}</span>
-	</time>
+	{{ if .Date }}
+		{{ $created := .Date.Format "2006-01-02" }}
+		{{ $lastMod := .Lastmod.Format "2006-01-02" }}
+		<time datetime="{{ $created }}" title="Created: {{ $created }}; Last updated: {{ $lastMod }}">
+			<span class="material-symbols-outlined">calendar_month</span>
+			<span>{{ $created }}</span>
+		</time>
+	{{ else }}
+		{{ $lastMod := .Lastmod.Format "2006-01-02" }}
+		<time datetime="{{ $lastMod }}" title="Last updated: {{ $lastMod }}">
+			<span class="material-symbols-outlined">calendar_month</span>
+			<span>{{ $lastMod }}</span>
+		</time>
+	{{ end }}
 
 	{{ if ne $nextPageHref "" -}}
 	<a class="btn"  href="{{ $nextPageHref }}">
