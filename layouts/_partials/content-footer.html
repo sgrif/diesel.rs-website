@@ -39,7 +39,7 @@
 
 {{ $prevButtonText := "Previous" }}
 {{ $nextButtonText := "Next" }}
-{{ if eq $.Section "news" }}
+{{ if or (eq $.Section "news") (eq $.Section "changelog") }}
 	{{ $prevButtonText = "Newer" }}
 	{{ $nextButtonText = "Older" }}
 {{ end }}
