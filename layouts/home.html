@@ -23,6 +23,7 @@
 	(resources.Get "css/components/button.css")
 	(resources.Get "css/components/badge.css")
 	(resources.Get "css/components/codeblock.css")
+	(resources.Get "css/components/accordion-vertical-tabs.css")
 	(resources.Get "css/header.css")
 	(resources.Get "css/footer.css")
 	(resources.Get "css/home-layout.css")
@@ -42,16 +43,15 @@
 {{ partial "header.html" . }}
 
 <main>
-	{{ partial "sections/1-hero.html" (index .Site.Data .Site.Language.Lang "home" "1-hero") }}
-	{{ partial "sections/2-bento.html" (index .Site.Data .Site.Language.Lang "home" "2-bento") }}
-	{{ partial "sections/3-features.html" . }}
-	{{ partial "sections/4-card-slider.html" (index .Site.Data .Site.Language.Lang "home" "4-card-slider") }}
-	{{ partial "sections/5-contribution.html" (index .Site.Data .Site.Language.Lang "home" "5-contribution") }}
-	{{ partial "sections/6-sponsors.html" (index .Site.Data .Site.Language.Lang "home" "6-sponsors") }}
+	{{ partial "sections/1-hero.html" (index site.Data site.Language.Lang "home" "1-hero") }}
+	{{ partial "sections/2-bento.html" (index site.Data site.Language.Lang "home" "2-bento") }}
+	{{ partial "sections/3-features.html" (site.GetPage "/home/features") }}
+	{{ partial "sections/4-card-slider.html" (index site.Data site.Language.Lang "home" "4-card-slider") }}
+	{{ partial "sections/5-contribution.html" (index site.Data site.Language.Lang "home" "5-contribution") }}
+	{{ partial "sections/6-sponsors.html" (index site.Data site.Language.Lang "home" "6-sponsors") }}
 </main>
 
 {{ partial "footer.html" . }}
-<div id="off-canvas-model"></div>
 
 <script src="{{ "pagefind/pagefind-component-ui.js" | absURL }}" type="module"></script>
 {{ partial "analytics.html" . }}

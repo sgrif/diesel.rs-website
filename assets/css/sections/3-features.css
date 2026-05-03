@@ -1,6 +1,6 @@
 .features-section {
   background: var(--background-card);
-  gap: var(--padding_2x);
+  padding-bottom: var(--padding_2x);
 }
 
 .features-header {
@@ -11,58 +11,73 @@
 }
 
 .features-body {
-  display: grid;
-  grid-template-columns: 1fr;
-  margin: 0 auto;
-
-  background: var( --background-terminal);
-  border-radius: var(--radius);
-}
-
-.features-title {
-  grid-column: span 12;
-  border-right: none;
-  border-bottom: 1px solid var(--background-subtle);
-  background: rgba(0, 0, 0, 0.05);
-  padding: 2rem 0;
-}
-
-.features-content {
-  grid-column: span 12;
-  padding: 2rem;
-  background: rgba(0, 0, 0, 0.1);
+  margin: var(--padding_2x);
+  gap: var(--padding_2x);
+  overflow-x: auto;
 }
 
 @media (min-width: 1024px) {
   .features-body {
-    grid-template-columns: repeat(12, 1fr);
     max-width: 80svw;
-  }
-  .features-title {
-    grid-column: span 3;
-    border-right: 1px solid var(--background-subtle);
-    border-bottom: none;
-  }
-  .features-content {
-    grid-column: span 9;
-    padding: 3rem;
+    margin: var(--padding_2x) auto;
   }
 }
 
-.tab-btn {
-  width: 100%;
-  padding: 1rem 2rem;
-  text-align: left;
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  transition: all 0.2s;
-  color: var(--color-nav);
-  font-weight: 500;
+@media (min-width: 1280px) {
+  .features-body {
+    max-width: 60svw;
+  }
 }
 
-.tab-btn.active {
+/* Typography */
+.features-body {
+  font-size: .95rem;
+}
+.features-body p,
+.features-body pre:not(.chroma),
+.features-body .highlight {
+  line-height: 1.8em;
+  letter-spacing: -.1px;
+}
+
+.features-body strong, .features-body b, .features-body table th {
+  font-weight: 600
+}
+
+.features-body em {
+  font-style: italic
+}
+
+/* Links */
+.features-body a {
   color: var(--primary);
-  background: rgba(253, 189, 65, 0.05);
-  font-weight: 700;
+  text-decoration: none
+}
+
+.features-body a:hover {
+  text-decoration: underline;
+  background: var(--background-hover);
+}
+
+/* Spacing */
+.features-body p,
+.features-body .highlight {
+  margin-top: 1rem;
+}
+
+/* Code/ Highlight/ Chroma */
+.features-body code, .features-body pre {
+  font-family: var(--font-mono);
+  font-size: .875rem;
+}
+
+.features-body pre, .features-body pre code {
+  display: inline-grid;
+}
+
+.features-body .chroma code {
+  padding: unset;
+  background: unset;
+  border-radius: unset;
+  border: unset;
 }
