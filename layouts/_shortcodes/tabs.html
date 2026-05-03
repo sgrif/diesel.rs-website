@@ -1,5 +1,7 @@
 {{ $group := .Get "group" }}
 {{ $label := .Get "label" | default "Select Language"}}
-<div class="tabs" aria-label="{{ $label }}" {{ with $group }}data-group="{{ . }}"{{ end }}>
+{{ $count := .Get "count" | default "3" }}
+
+<div class="tabs" style="--tabs-count: {{ $count }};" aria-label="{{ $label }}" {{ with $group }}data-group="{{ . }}" {{ end }}>
 	{{ .Inner }}
 </div>

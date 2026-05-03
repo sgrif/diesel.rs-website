@@ -67,6 +67,7 @@
   .bento-section {
     max-width: 80svw;
     min-height: 80svh;
+    padding: 0;
   }
 }
 

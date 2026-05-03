@@ -1,6 +1,6 @@
 .tabs {
   display: grid;
-  grid-template-columns: repeat(3, minmax(80px, 1fr));
+  grid-template-columns: repeat(var(--tabs-count, 3), minmax(80px, 1fr));
   grid-template-rows: auto 1fr;
 }
 
