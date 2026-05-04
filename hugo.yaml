@@ -51,12 +51,6 @@ params:
       main: diesel-rs/diesel
       website: sgrif/diesel.rs-website
 
-  home:
-    heading: Your next
-    headingSegment2: Theme
-    description: Description
-    getStartedPath: docs/
-
 menus:
   main:
     - identifier: news
