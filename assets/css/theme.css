@@ -43,6 +43,7 @@
   --pf-border: var(--border);
   --pf-shadow-lg: var(--box-shadow-off-canvas);
   --pf-mark: var(--primary);
+  --pf-skeleton: var(--background-subtle);
 
   /*font-size: clamp(1rem, .8rem + .5vw, 1.25rem);*/
   font-size: clamp(.9rem, .72rem + .5vw, 1.125rem);
