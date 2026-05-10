@@ -4,7 +4,7 @@ enableRobotsTXT: true
 disableHugoGeneratorInject: true
 disableKinds: [taxonomy, term]
 
-publishDir: docs
+publishDir: public
 baseURL: https://diesel.rs
 
 markup:

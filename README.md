@@ -6,7 +6,7 @@
 $ git clone https://github.com/sgrif/diesel.rs-website.git
 $ cd diesel.rs-website
 $ hugo build
-$ pagefind --site docs
+$ pagefind --site public
 $ hugo server
 ```
 
@@ -14,7 +14,7 @@ $ hugo server
 
 ```
 $ hugo build --minify
-$ pagefind --site docs
+$ pagefind --site public
 ```
 
 ## Project Structure
