@@ -1,4 +1,4 @@
 {{ $umami := .Site.Params.analytics.umami }}
 {{ if and $umami.url $umami.id }}
-<script defer src="{{ .url }}/script.js" data-website-id="{{ .id }}"></script>
+<script defer src="{{ $umami.url }}/script.js" data-website-id="{{ $umami.id }}"></script>
 {{ end }}
