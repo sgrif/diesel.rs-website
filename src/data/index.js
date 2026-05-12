@@ -130,5 +130,10 @@ export const sponsors = [
     name: 'GiGa infosystems GmbH',
     url: 'https://giga-infosystems.com/',
     img: '/images/logo_giga.svg',
+  },
+  {
+    name: 'Bytebase - Open-source Database DevSecOps',
+    url: 'https://bytebase.com/?utm_source=diesel',
+    img: '/images/logo-bytebase.png',
   }
 ];
