@@ -1379,7 +1379,7 @@ async function createRenderer() {
   }
   let mergedEcConfig = mergeEcConfigOptions(ecIntegrationOptions, ecConfigFileOptions);
   try {
-    const { default: preprocessEcConfig } = await import('./preprocess-config-BR7-4z5W.js');
+    const { default: preprocessEcConfig } = await import('./preprocess-config-DrbqxbH4.js');
     mergedEcConfig = await preprocessEcConfig({ ecConfig: mergedEcConfig, astroConfig }) || mergedEcConfig;
   } catch (error) {
     const msg = error instanceof Error ? error.message : error;
