@@ -96,6 +96,13 @@ export const communityProjects = [
     crateUrl: 'https://crates.io/crates/diesel-guard',
     badge: 'https://img.shields.io/crates/v/diesel-guard.svg?style=for-the-badge',
     description: 'Catch dangerous PostgreSQL migrations before they take down production.'
+  },
+  {
+    name: 'diesel-paradedb',
+    githubUrl: 'https://github.com/cjrh/diesel-paradedb',
+    crateUrl: 'https://crates.io/crates/diesel-paradedb',
+    badge: 'https://img.shields.io/crates/v/diesel-paradedb.svg?style=for-the-badge',
+    description: 'Diesel ORM extensions for ParadeDB operations.'
   }
 ];
 
