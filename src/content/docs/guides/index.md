@@ -33,6 +33,10 @@ This guide covers how to structure your application, and best practices for reus
 Ever wondered what exactly diesel print-schema and table! are doing?
 This guide will walk you through exactly what code gets generated, and how it's done.
 
+#### [SQLite-specific features](/guides/sqlite-features)
+
+Diesel exposes SQLite-only methods on `SqliteConnection` for hardening a connection against untrusted database files, tuning resource limits, registering custom SQL functions with explicit behavior flags, and applying configuration to every connection in your process.
+
 #### [Extending Diesel](/guides/extending-diesel)
 
 Want to use a feature Diesel doesn't support? Have a user defined SQL function?
