@@ -372,7 +372,7 @@ The [`#[derive(Selectable)]`](https://docs.diesel.rs/2.3.x/diesel/expression/der
 
 The `#[diesel(select_expression = users::id.eq(42))]` attribute allows you to provide custom select expressions for specific fields. By default the derive interprets the field name as column name of the corresponding table. The [API Documentation](https://docs.diesel.rs/2.3.x/diesel/expression/trait.Selectable.html#examples) of the trait provides several examples for these attributes.
 
-The [`#[derive(Seletable)]`](https://docs.diesel.rs/2.3.x/diesel/expression/derive.Selectable.html) macro still requires you to take care to manually apply the right select clause and line it up with [`#[derive(Queryable)]`](https://docs.diesel.rs/2.3.x/diesel/deserialize/derive.Queryable.html). The [`#[derive(HasQuery)]`](https://docs.diesel.rs/2.3.x/diesel/prelude/derive.HasQuery.html) macro presented before takes another step and essentially combines both derives into a single derive with some additional functionality added.
+The [`#[derive(Selectable)]`](https://docs.diesel.rs/2.3.x/diesel/expression/derive.Selectable.html) macro still requires you to take care to manually apply the right select clause and line it up with [`#[derive(Queryable)]`](https://docs.diesel.rs/2.3.x/diesel/deserialize/derive.Queryable.html). The [`#[derive(HasQuery)]`](https://docs.diesel.rs/2.3.x/diesel/prelude/derive.HasQuery.html) macro presented before takes another step and essentially combines both derives into a single derive with some additional functionality added.
     
 ```rust
 use diesel::prelude::*;
