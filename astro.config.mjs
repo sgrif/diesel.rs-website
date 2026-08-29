@@ -46,6 +46,7 @@ export default defineConfig({
 						{ label: 'Relations', link: '/guides/relations/' },
 						{ label: 'Composing Applications with Diesel', link: '/guides/composing-applications/' },
 						{ label: 'Schema in Depth', link: '/guides/schema-in-depth/' },
+						{ label: 'SQLite-specific features', link: '/guides/sqlite-features/' },
 						{ label: 'Extending Diesel', link: '/guides/extending-diesel/' },
 						{ label: 'Configuring Diesel CLI', link: '/guides/configuring-diesel-cli/' },
 						{ label: 'Diesel 2.0 migration guide', link: '/guides/migration-guide/' },
