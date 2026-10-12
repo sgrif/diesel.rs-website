@@ -146,8 +146,8 @@ export const sponsors = [
     img: '/images/logo_giga.svg',
   },
   {
-    name: 'Bytebase - Open-source Database DevSecOps',
-    url: 'https://bytebase.com/?utm_source=diesel',
-    img: '/images/logo-bytebase.png',
+    name: 'Rust Foundation',
+    url: 'https://rustfoundation.org/',
+    img: '/images/rf-logo-white-2.svg',
   }
 ];
