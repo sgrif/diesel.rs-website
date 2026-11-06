@@ -5,13 +5,13 @@ lang: en-US
 ---
 
 Diesel exposes a number of SQLite-only methods directly on
-[`SqliteConnection`](https://docs.diesel.rs/main/diesel/sqlite/struct.SqliteConnection.html).
+[`SqliteConnection`](https://docs.diesel.rs/2.4.x/diesel/sqlite/struct.SqliteConnection.html).
 They let you harden a connection against untrusted database files, tune SQLite's
 built-in resource limits, register custom SQL functions with explicit behavior
 flags, and apply configuration to every connection opened in your process. This
 guide covers them together. Exact signatures live on the
-[`SqliteConnection` API page](https://docs.diesel.rs/main/diesel/sqlite/struct.SqliteConnection.html)
-and in the [`diesel::sqlite` module](https://docs.diesel.rs/main/diesel/sqlite/index.html).
+[`SqliteConnection` API page](https://docs.diesel.rs/2.4.x/diesel/sqlite/struct.SqliteConnection.html)
+and in the [`diesel::sqlite` module](https://docs.diesel.rs/2.4.x/diesel/sqlite/index.html).
 
 ## Connection hardening with sqlite3_db_config
 
@@ -115,7 +115,7 @@ SQLite enforces a set of [run-time limits](https://www.sqlite.org/limits.html)
 such as the maximum length of a string or BLOB, the maximum length of an SQL
 statement, the number of columns in a table, and the depth of an expression tree.
 Diesel exposes these through `set_limit` and `get_limit`, keyed by the
-[`SqliteLimit`](https://docs.diesel.rs/main/diesel/sqlite/enum.SqliteLimit.html)
+[`SqliteLimit`](https://docs.diesel.rs/2.4.x/diesel/sqlite/enum.SqliteLimit.html)
 enum.
 
 ```rust
@@ -137,7 +137,7 @@ conn.set_recommended_security_limits();
 ## Custom SQL functions and behavior flags
 
 When you define a custom SQL function with
-[`#[declare_sql_function]`](https://docs.diesel.rs/main/diesel/expression/functions/attr.declare_sql_function.html),
+[`#[declare_sql_function]`](https://docs.diesel.rs/2.4.x/diesel/expression/functions/attr.declare_sql_function.html),
 Diesel generates a helper module named after the function with a `_utils` suffix.
 That module contains the functions you use to register your implementation on a
 connection.
@@ -164,7 +164,7 @@ add_one_utils::register_impl(conn, |x: i32| x + 1)?;
 ```
 
 The behavior flags come from
-[`SqliteFunctionBehavior`](https://docs.diesel.rs/main/diesel/sqlite/struct.SqliteFunctionBehavior.html),
+[`SqliteFunctionBehavior`](https://docs.diesel.rs/2.4.x/diesel/sqlite/struct.SqliteFunctionBehavior.html),
 which is a set of bitflags. The diagram below shows how they interact with the
 trusted-schema setting described earlier.
 
@@ -195,7 +195,7 @@ add_one_utils::register_impl_with_behavior(
 
 Aggregate functions are declared with the same attribute and a type that
 implements
-[`SqliteAggregateFunction`](https://docs.diesel.rs/main/diesel/sqlite/trait.SqliteAggregateFunction.html).
+[`SqliteAggregateFunction`](https://docs.diesel.rs/2.4.x/diesel/sqlite/trait.SqliteAggregateFunction.html).
 The generated `register_impl` takes only the connection (the implementation type is
 supplied as a type parameter), and `register_impl_with_behavior` additionally takes
 a `SqliteFunctionBehavior`.

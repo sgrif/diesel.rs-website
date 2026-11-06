@@ -3,6 +3,12 @@ title: "News"
 lang: en-US
 ---
 
+#### [Diesel 2.4.0](/news/2_4_0_release)
+<br />
+
+Diesel 2.4 introduces support for database views, a new `#[derive(Enum)]` macro to make using Rust enums easier and adds a new MariaDB backend.
+
+
 #### [Diesel 2.3.0](/news/2_3_0_release)
 <br />
 
