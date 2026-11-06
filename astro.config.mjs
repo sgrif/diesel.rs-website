@@ -64,7 +64,7 @@ export default defineConfig({
 				},
 				{
 					label: 'API Docs',
-					autogenerate: { directory: 'api_docs' },
+					items: [{autogenerate: { directory: 'api_docs' }}],
 				},
 				{
 					label: 'Changelog',
@@ -72,7 +72,7 @@ export default defineConfig({
 				},
 				{
 					label: 'Compare Diesel',
-					autogenerate: { directory: 'compare' },
+                    items: [{ autogenerate: { directory: 'compare' }}],
 				},
 			],
 			components: {

@@ -103,6 +103,13 @@ export const communityProjects = [
     crateUrl: 'https://crates.io/crates/diesel-paradedb',
     badge: 'https://img.shields.io/crates/v/diesel-paradedb.svg?style=for-the-badge',
     description: 'Diesel ORM extensions for ParadeDB operations.'
+  },
+  {
+    name: 'better-duck-diesel',
+    githubUrl: 'hhttps://github.com/nimdeveloper/better-duck',
+    crateUrl: 'https://crates.io/crates/better-duck-diesel',
+    badge: 'https://img.shields.io/crates/v/better-duck-diesel.svg?style=for-the-badge',
+    description: 'A diesel backend for the DuckDB database system.'
   }
 ];
 
@@ -139,8 +146,8 @@ export const sponsors = [
     img: '/images/logo_giga.svg',
   },
   {
-    name: 'Bytebase - Open-source Database DevSecOps',
-    url: 'https://bytebase.com/?utm_source=diesel',
-    img: '/images/logo-bytebase.png',
+    name: 'Rust Foundation',
+    url: 'https://rustfoundation.org/',
+    img: '/images/rf-logo-white-2.svg',
   }
 ];
