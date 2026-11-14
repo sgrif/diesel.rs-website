@@ -37,6 +37,13 @@ export const projects = [
     description: "Lemmy is a link aggregator and forum for the fediverse. It's similar to sites like Reddit, Lobste.rs, or Hacker News: you subscribe to forums you're interested in, post links and discussions, then vote, and comment on them. It's a well established software for the fediverse using Diesel in the backend.",
     img: '/images/lemmy.svg',
     imgStyles: 'width: 10rem; height: 10rem;'
+  },
+  {
+    name: 'Wordfully',
+    url: 'https://wordfully.ai/',
+    description: 'Wordfully helps people rephrase sentences, correct spelling and grammar, and adjust the tone of their writing.',
+    img: '/images/wordfully.svg',
+    imgStyles: 'width: 20rem; height: auto;'
   }
 ];
 
