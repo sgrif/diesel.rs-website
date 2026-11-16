@@ -102,7 +102,7 @@ enum Color {
 
 You can also use `#[diesel(sql_types)]` multiple times on the same enum to support mapping to several different types.
 
-As part of this feature, we also added support via the Diesel CLI for automatically generating the corresponding Rust enum definitions for given SQL side enums, including the ability to generate migrations based on these definitions. Support for generating such definitions for existing projects can be enabled by setting `print_schema.custom_enum_derives = true`. For new projects, this will be the default.
+As part of this feature, we also added support via the Diesel CLI for automatically generating the corresponding Rust enum definitions for given SQL side enums, including the ability to generate migrations based on these definitions. Support for generating such definitions for existing projects can be enabled by setting `print_schema.generate_rust_enum_definitions = true`. For new projects, this will be the default.
 
 ## Batch-Updates
 
