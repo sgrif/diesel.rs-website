@@ -56,6 +56,7 @@ export default defineConfig({
 					label: 'News',
 					items: [
 						{ label: 'News', link: '/news/' },
+						{ label: 'Diesel 2.4.0', link: '/news/2_4_0_release' },
 						{ label: 'Diesel 2.3.0', link: '/news/2_3_0_release' },
 						{ label: 'Diesel 2.2.0', link: '/news/2_2_0_release' },
 						{ label: 'Diesel 2.1.0', link: '/news/2_1_0_release' },
